@@ -2,10 +2,10 @@ spring:
   thymeleaf:
     cache: false
   mvc:
-    view:
-      prefix: /WEB-INF/views/
-      suffix: .jsp
-    static-path-pattern: /static/**
+#    view:
+#      prefix: /WEB-INF/views/
+#      suffix: .jsp
+#    static-path-pattern: /static/**
   profiles:
     default: local
     include: secret

@@ -28,7 +28,7 @@
     </logger>
 
     <logger name="org.springframework.web">
-        <level value="info" />
+        <level value="De" />
     </logger>
 
     <!-- SQL Logger -->

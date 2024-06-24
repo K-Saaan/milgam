@@ -1,4 +1,4 @@
-package login.entity;
+package com.example.crowdm.login.entity;
 
 
 import lombok.*;

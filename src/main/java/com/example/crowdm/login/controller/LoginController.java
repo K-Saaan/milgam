@@ -1,7 +1,7 @@
-package login.controller;
+package com.example.crowdm.login.controller;
 
-import login.entity.UserEntity;
-import login.repository.LoginRepository;
+import com.example.crowdm.login.entity.UserEntity;
+import com.example.crowdm.login.repository.LoginRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +38,7 @@ public class LoginController {
         model.addAttribute("errorMessage", errorMessage);
 
         // 예시 코드
-        int userIndex = 1;
-        List<UserEntity> userList = loginRepository.findByUserIndex(userIndex);
+        List<UserEntity> userList = loginRepository.findAll();
 
         return "login/loginPage";
     }
