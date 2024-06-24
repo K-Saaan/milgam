@@ -15,7 +15,7 @@ public class UserEntity {
 
     @Id
     @Column(name = "user_index")
-    private String user_index;
+    private int user_index;
 
     @Column(name = "id")
     private String id;
