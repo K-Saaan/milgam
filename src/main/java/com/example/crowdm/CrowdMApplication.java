@@ -1,0 +1,13 @@
+package com.example.crowdm;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class CrowdMApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(CrowdMApplication.class, args);
+    }
+
+}
