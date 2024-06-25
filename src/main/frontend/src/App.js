@@ -1,19 +1,14 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
+import Main from "./component/Main/Main.js";
+import Test_mj from "./component/Test_mj/Test_mj.js";
 
 function App() {
-    const [hello, setHello] = useState('');
-
-    useEffect(() => {
-        axios.get('/api/test')
-            .then((res) => {
-                setHello(res.data);
-            })
-    }, []);
     return (
-        <div className="App">
-            테스트 페이지 : {hello}
-        </div>
+        <>
+            <Main/>
+            <Test_mj/>
+        </>
     );
 }
 
