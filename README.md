@@ -26,3 +26,7 @@
 <img src="https://img.shields.io/badge/GCP-4285F4?style=flat&logo=googlecloud&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/Jenkins-D24939?style=flat&logo=Jenkins&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/Filezilla-BF0000?style=flat&logo=filezilla&logoColor=white"/></a> 
+
+## Architecture
+
+![README](https://github.com/K-Saaan/crowdm/assets/117886852/6539cf1d-dfd6-49a1-8e66-c3808aae179d)
