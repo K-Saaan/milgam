@@ -1,7 +1,7 @@
-package com.example.crowdm.login.controller;
+package com.example.crowdm.controller;
 
-import com.example.crowdm.login.entity.UserEntity;
-import com.example.crowdm.login.repository.LoginRepository;
+import com.example.crowdm.entity.UserEntity;
+import com.example.crowdm.repository.login.LoginRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +39,7 @@ public class LoginController {
 
         // 예시 코드
         List<UserEntity> userList = loginRepository.findAll();
+        System.out.println("Users : " + userList.size());
 
         return "login/loginPage";
     }

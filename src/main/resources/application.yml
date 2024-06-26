@@ -23,6 +23,17 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  h2:
+    console:
+      enabled: false
 logging:
   level:
     root: info
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+
+key:
+  "1234"
