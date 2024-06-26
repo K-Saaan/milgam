@@ -1,7 +1,8 @@
-package com.example.crowdm.login.entity;
+package com.example.crowdm.entity;
 
 
 import lombok.*;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -10,10 +11,11 @@ import java.sql.Timestamp;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "user_info")
+@Table(name = "users", schema="public")
 public class UserEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_index")
     private int user_index;
 
@@ -21,6 +23,8 @@ public class UserEntity {
     private String id;
     @Column(name = "pw")
     private String pw;
+    @Column(name = "name")
+    private String name;
     @Column(name = "email")
     private String email;
     @Column(name = "phone")
@@ -41,8 +45,8 @@ public class UserEntity {
     private Boolean permission_yn;
     @Column(name = "permission_date")
     private Timestamp permission_date;
-    @Column(name = "permission_admin")
-    private String permission_admin;
+    @Column(name = "admin_index")
+    private String admin_index;
     @Column(name = "fail_cnt")
     private int fail_cnt;
     @Column(name = "pw_duedate")
