@@ -1,4 +1,4 @@
-package com.example.crowdm.entity;
+package com.example.crowdm.entity.user;
 
 
 import lombok.*;

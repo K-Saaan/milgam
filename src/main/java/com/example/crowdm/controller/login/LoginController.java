@@ -1,7 +1,8 @@
-package com.example.crowdm.controller;
+package com.example.crowdm.controller.login;
 
-import com.example.crowdm.entity.UserEntity;
+import com.example.crowdm.entity.user.UserEntity;
 import com.example.crowdm.repository.login.LoginRepository;
+import com.example.crowdm.service.login.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ public class LoginController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private final LoginRepository loginRepository;
-
+    private final LoginService loginService;
 
     /**
      * 1. MethodName: goLoginPage
@@ -38,8 +39,15 @@ public class LoginController {
         model.addAttribute("errorMessage", errorMessage);
 
         // 예시 코드
-        List<UserEntity> userList = loginRepository.findAll();
+        List<UserEntity> userList = loginService.findAllUser();
         System.out.println("Users : " + userList.size());
+        System.out.println("UserList : " + userList);
+
+        loginService.deleteUser(userList.get(0).getUser_index());
+
+        List<UserEntity> userList2 = loginService.findAllUser();
+        System.out.println("Users : " + userList2.size());
+        System.out.println("UserList : " + userList2);
 
         return "login/loginPage";
     }

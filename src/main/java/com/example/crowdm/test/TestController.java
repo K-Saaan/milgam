@@ -15,13 +15,9 @@ import java.util.List;
 @RequestMapping("/api")
 public class TestController {
 
-    @Value("${key}")
-    private String username;
-
     @GetMapping("/hello")
     public String test(HttpServletRequest request, HttpServletResponse response, Model model) {
         System.out.println("api/hello test : " + "hello, world");
-        System.out.println("username : " + username);
 
         return "Hello, world!";
     }

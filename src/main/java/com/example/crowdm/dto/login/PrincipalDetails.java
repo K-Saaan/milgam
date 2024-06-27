@@ -1,4 +1,4 @@
-package com.example.crowdm.dto;
+package com.example.crowdm.dto.login;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.example.crowdm.entity.UserEntity;
+import com.example.crowdm.entity.user.UserEntity;
 
 public class PrincipalDetails implements UserDetails{
     private  final Logger logger = LoggerFactory.getLogger(this.getClass());
