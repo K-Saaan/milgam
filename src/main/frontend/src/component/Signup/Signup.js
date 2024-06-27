@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Button, TextField, Typography, Container, Paper, Box, CircularProgress, InputAdornment } from '@mui/material';
+import { Button, TextField, Typography, Container, Paper, Box, CircularProgress, InputAdornment, Select, MenuItem } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 
 
 function Signup() {
     const [username, setUsername] = useState('');
+    const [usernameError, setUsernameError] = useState(false);
+    const [usernameHelperText, setUsernameHelperText] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState(false);
@@ -16,6 +18,7 @@ function Signup() {
     const [phone, setPhone] = useState('');
     const [phoneError, setPhoneError] = useState(false);
     const [phoneHelperText, setPhoneHelperText] = useState('');
+    const [category, setCategory] = useState('');
 
     const handleSignUp = (event) => {
         event.preventDefault();
@@ -25,8 +28,28 @@ function Signup() {
 
     const isValidUsername = (username) => {
         // 여기에 username 유효성 검사 로직 추가
-        // 예: username이 4자 이상인 경우 유효하다고 가정
-        return username.length >= 4;
+        // 한글 2자 이상 30자 이하, 영어 3자 이상 30자 이하
+        const length = username.length;
+        const hasKorean = /[가-힣]/.test(username);
+        const hasEnglish = /^[A-Za-z]+$/.test(username);
+        const noSpecialChars = /^[가-힣A-Za-z0-9]+$/.test(username);
+        
+        if (length > 30 || !noSpecialChars) return false;
+        if (hasKorean && length >= 2) return true;
+        if (hasEnglish && length >= 3) return true;
+        return false;
+    };
+
+    const handleUsernameChange = (e) => {
+        const newUsername = e.target.value;
+        setUsername(newUsername);
+        if (!isValidUsername(newUsername)) {
+            setUsernameError(true);
+            setUsernameHelperText('한글은 2자 이상, 영어는 3자 이상, 최대 30자까지 입력 가능합니다.');
+        } else {
+            setUsernameError(false);
+            setUsernameHelperText('');
+        }
     };
 
     const isValidPassword = (password) => {
@@ -110,13 +133,19 @@ function Signup() {
                         required
                         fullWidth
                         id="username"
-                        label="Username"
-                        name="username"
+                        label="아이디"
+                        name="Username"
                         autoFocus
                         value={username}
-                        onChange={e => setUsername(e.target.value)}
+                        onChange={handleUsernameChange}
+                        error={usernameError}
+                        helperText={usernameHelperText}
                         InputProps={{
-                            endAdornment: isValidUsername(username) ? <CheckCircleIcon style={{ color: 'green' }} /> : null
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    {!usernameError && username && isValidUsername(username) ? <CheckCircleIcon style={{ color: 'green' }} /> : null}
+                                </InputAdornment>
+                            )
                         }}
                     />
                     <TextField
@@ -124,7 +153,7 @@ function Signup() {
                         required
                         fullWidth
                         id="email"
-                        label="Email Address"
+                        label="이메일"
                         name="email"
                         autoComplete="email"
                         value={email}
@@ -135,7 +164,7 @@ function Signup() {
                         required
                         fullWidth
                         name="password"
-                        label="Password"
+                        label="비밀번호"
                         type="password"
                         id="password"
                         value={password}
@@ -156,7 +185,7 @@ function Signup() {
                         required
                         fullWidth
                         name="confirmPassword"
-                        label="Confirm Password"
+                        label="비밀번호 재확인"
                         type="password"
                         id="confirmPassword"
                         value={confirmPassword}
@@ -177,7 +206,7 @@ function Signup() {
                         required
                         fullWidth
                         id="phone"
-                        label="Phone Number"
+                        label="휴대전화"
                         name="phone"
                         value={phone}
                         onChange={handlePhoneChange}
@@ -191,6 +220,18 @@ function Signup() {
                             )
                         }}
                     />
+                    <TextField
+                        margin="normal"
+                        fullWidth
+                        select
+                        label="구분"
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                        helperText="사용자 유형을 선택하세요"
+                    >
+                        <MenuItem value="director">관공서</MenuItem>
+                        <MenuItem value="host">행사 관리자</MenuItem>
+                    </TextField>
                     <Button
                         type="submit"
                         fullWidth
