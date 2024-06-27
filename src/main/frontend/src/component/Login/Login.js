@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import Main from "../Main/Main.js";
-import Signup from "../Signup/Signup.js";
+import LoginAlert from "./LoginAlert.js"
 
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
@@ -96,6 +94,17 @@ const Login = ({ marginBottom, onSignupClick }) => {
         onSignupClick();
     }
 
+    // 로그인 계정 잠금 팝업
+    const [alertOpen, setOpen] = useState(false);
+
+     const handleClickOpen = () => {
+        setOpen(true);
+     };
+
+     const handleClose = () => {
+        setOpen(false);
+     };
+
     // 로그인 동작
 	const onLogin = async (e) => {
         e.preventDefault();
@@ -118,8 +127,9 @@ const Login = ({ marginBottom, onSignupClick }) => {
         }
 
         if(isValid) {
-            // 현재는 동작 확인을 위해 바로 동작: 대시보드 대신 회원가입으로 확인
-            onSignupClick();
+            // 동작 확인
+            //onSignupClick();
+            handleClickOpen();
 
             //유효 확인
     /*        try {
@@ -134,12 +144,15 @@ const Login = ({ marginBottom, onSignupClick }) => {
                 }
             } catch (error) {
                 console.log(error);
+                //불일치
                 isValid = false;
                 setPasswordError("아이디 혹은 비밀번호를 확인해주세요.");
                 setLoginInput((prev) => ({
                     ...prev,
                     password: ""
                 }));
+                //잠금
+                handleClickOpen();
             }*/
         }
     };
@@ -213,10 +226,13 @@ const Login = ({ marginBottom, onSignupClick }) => {
                 style={{
                     marginTop: "40px",
                     minWidth: "280px",
+                    backgroundColor: "#4880FF",
+                    padding: '10px',
                 }}
             >
                 로그인
             </Button>
+            <LoginAlert alertOpen={alertOpen} handleClose={handleClose} />
         </Stack>
     );
 }
