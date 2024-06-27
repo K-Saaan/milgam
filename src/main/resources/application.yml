@@ -1,0 +1,39 @@
+spring:
+  thymeleaf:
+    cache: false
+  mvc:
+#    view:
+#      prefix: /WEB-INF/views/
+#      suffix: .jsp
+#    static-path-pattern: /static/**
+  profiles:
+    default: local
+    include: secret
+  web:
+    resources:
+      static-locations:
+        classpath:/static/
+      add-mappings: true
+  jpa:
+    database: postgresql
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  h2:
+    console:
+      enabled: false
+logging:
+  logging:
+    config: classpath:logback/logback.xml
+
+# 로그인 실패 횟수
+login:
+  fail:
+    limit : 5
+
+# 파일 경로
+file_path:
