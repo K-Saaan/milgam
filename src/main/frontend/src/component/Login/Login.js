@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Main from "../Main/Main.js";
 import Signup from "../Signup/Signup.js";
 
@@ -8,8 +8,21 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/system';
 
-//스타일 변경
+/*
+  * 1. FileName : Background
+  * 2. Comment   : 로그인 화면 컴포넌트
+  * 3. 작성자    : boreum
+  * 4. 작성일    : 2024. 06. 26
+*/
+
+/*
+  * 1. FunctionName: CustomTextField
+  * 2. Comment   : TextField 스타일 변경
+  * 3. 작성자    : boreum
+  * 4. 작성일    : 2024. 06. 27
+*/
 const CustomTextField = styled(TextField)(({ theme }) => ({
+    width: '370px',
     '& .MuiInputBase-input': {
         color: 'white',
       },
@@ -21,22 +34,30 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
     },
     '& .MuiOutlinedInput-root': {
         backgroundColor: '#323D4E',
+        opacity: 1,
+        height: '52px',
         '& fieldset': {
-            borderColor: '#CFCFCF',
-            borderWidth: '0.6px',
+            borderColor: '#CFCFCF1D',
+            borderWidth: '0.2px',
         },
         '&:hover fieldset': {
-            borderColor: '#CFCFCF',
-            borderWidth: '0.6px',
+            borderColor: '#CFCFCF1D',
+            borderWidth: '0.2px',
         },
         '&.Mui-focused fieldset': {
-            borderColor: '#ffffff',
-            borderWidth: '1.5px',
+            borderColor: '#FFFFFF1D',
+            borderWidth: '2px',
         },
     },
 }));
 
-const Login = ({ marginBottom }) => {
+/*
+  * 1. FunctionName: Login
+  * 2. Comment   : 로그인 화면 출력, 로그인 입력 처리
+  * 3. 작성자    : boreum
+  * 4. 작성일    : 2024. 06. 27
+*/
+const Login = ({ marginBottom, onSignupClick }) => {
     // 입력 받을 아이디, 비밀번호
     const [loginInput, setLoginInput] = useState({
         userId: "",
@@ -46,15 +67,23 @@ const Login = ({ marginBottom }) => {
     // 입력이 들어올 때 아이디, 비밀번호 값 업데이트
     const handleInputChange = (e) => {
         setLoginInput((prev) => ({
-             ...prev,
-             [e.target.id]: e.target.value
+            ...prev,
+            [e.target.id]: e.target.value
          }));
     };
+
+    // 엔터키로 로그인 동작
+    const activeEnter = (e) => {
+        if(e.key === "Enter") {
+            onLogin(e);
+        }
+    }
 
     //에러 메시지
     const [userIdError, setUserIdError] = useState("");
     const [passwordError, setPasswordError] = useState("");
 
+    //에러 메시지에 따른 스타일 변경
     const idStyles = {
         marginBottom: userIdError ? '0px' : '24px'
     };
@@ -62,12 +91,16 @@ const Login = ({ marginBottom }) => {
         marginBottom: passwordError ? '0px' : '24px'
     };
 
-    // 화면 이동을 위한 네비게이터
-    let navigate = useNavigate();
-    // 로그인 버튼 클릭 시 동작
+    //대시보드로 이동할 함수 필요: Main.js
+    const onDashboard = (e) => {
+        onSignupClick();
+    }
+
+    // 로그인 동작
 	const onLogin = async (e) => {
         e.preventDefault();
 
+        // 입력 확인
         let isValid = true;
 
         if (loginInput.userId.trim() === "") {
@@ -85,23 +118,28 @@ const Login = ({ marginBottom }) => {
         }
 
         if(isValid) {
-            // 현재는 동작 확인을 위해 바로 리다이렉트
-            navigate('/');
+            // 현재는 동작 확인을 위해 바로 동작: 대시보드 대신 회원가입으로 확인
+            onSignupClick();
 
+            //유효 확인
     /*        try {
                 const res = await axiosInstance.post(`/com/login`, {
                     userId: loginInput.userId,
                     password: loginInput.password,
                 });
-                //이 안에 로그인 성공 로직
+                // 로그인 성공 로직
                 if (res.status === 200) {
                     console.log(res.data);
-                    navigate('/');
+                    onSignupClick();
                 }
             } catch (error) {
                 console.log(error);
                 isValid = false;
                 setPasswordError("아이디 혹은 비밀번호를 확인해주세요.");
+                setLoginInput((prev) => ({
+                    ...prev,
+                    password: ""
+                }));
             }*/
         }
     };
@@ -116,9 +154,9 @@ const Login = ({ marginBottom }) => {
                 justifyContent: 'center',
                 width: '25ch',
                 padding: '20px',
-                background: '#273142',
                 minHeight: '100vh',
                 margin: 'auto',
+                minWidth: '400px',
             }}
             spacing={3}
             noValidate
@@ -129,6 +167,7 @@ const Login = ({ marginBottom }) => {
                 id="userId"
                 value={loginInput.userId}
                 onChange={handleInputChange}
+                inputProps={{ maxLength: 30, }}
                 size="small"
                 required
                 error={!!userIdError}
@@ -141,6 +180,8 @@ const Login = ({ marginBottom }) => {
                 type="password"
                 value={loginInput.password}
                 onChange={handleInputChange}
+                onKeyDown={(e) => activeEnter(e)}
+                inputProps={{ maxLength: 30, }}
                 size="small"
                 required
                 error={!!passwordError}
@@ -156,21 +197,22 @@ const Login = ({ marginBottom }) => {
                     fontSize: '12px',
                 }}
             >
-                <Link
-                    to="/signup"
+                <Button
+                    variant="text"
+                    onClick={onDashboard}
                     style={{
-                        textDecoration: "none",
-                        color: "gray"
-                }}>
+                        color: "#B6B6B6",
+                    }}
+                >
                     회원가입
-                </Link>
+                </Button>
             </div>
             <Button
                 variant="contained"
                 onClick={onLogin}
                 style={{
                     marginTop: "40px",
-                    minWidth: "150px",
+                    minWidth: "280px",
                 }}
             >
                 로그인
