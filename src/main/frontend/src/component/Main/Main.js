@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Outlet } from "react-router-dom";
-import { Drawer, List, ListItem, ListItemText, IconButton, Box, Typography, CssBaseline, Container } from '@mui/material';
+import { Drawer, List, ListItem, ListItemText, IconButton, Box, Typography, CssBaseline, Container, Grid, Paper } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+// 여기에 사용할 컴포넌트 추가
+// 예시) import Header from "../Test_seungwon/Test_seungwon.js";
+import { useTheme, ThemeProvider } from '@mui/material/styles';
 
 /*
   * 1. MethodName: Background
@@ -10,7 +13,12 @@ import MenuIcon from '@mui/icons-material/Menu';
   * 4. 작성자    : 김미진
   * 5. 작성일    : 2024. 06. 27
 */
+
+
+
+
 function Background() {
+  const theme = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 
   // Drawer 열고 닫는 함수
@@ -34,14 +42,14 @@ function Background() {
           <ListItem button key={text}
              sx={{ 
               '&:hover': {
-              bgcolor: '#4880FF',
+              bgcolor: theme.palette.primary.main,
             }
-          }}>
+            }}>
             <ListItemText 
               primary={text} 
               primaryTypographyProps={{
                 sx: {
-                  color: 'white',
+                  color: theme.palette.text.primary,
                   paddingLeft: 3,
                   paddingTop: 1,
                   fontSize: '1.1rem', 
@@ -55,75 +63,78 @@ function Background() {
     </Box>
   );
 
+  // 공통 스타일을 위한 Box 컴포넌트
+  const CommonContainer = ({ children, noBg }) => (
+    <Container maxWidth={false} sx={{ width: '95%', bgcolor: noBg ? 'transparent' : theme.palette.secondary.main, borderRadius: '12px', padding: '16px', marginTop: '10px', marginBottom: '50px' }}>
+      {children}
+    </Container>
+  );
+
   return (
-    <Box sx={{
-      width: '100%',
-      minHeight: '100vh', // 뷰포트의 최소 높이를 100%로 설정
-      bgcolor: '#273142',
-      color: 'white', 
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center'
-    }}>
-      {/* 헤더 부분 */}
+    <ThemeProvider theme={theme}>
       <Box sx={{
         width: '100%',
-        height: 70,
-        bgcolor: '#313D4F', 
-        color: 'white',
+        minHeight: '100vh', // 뷰포트의 최소 높이를 100%로 설정
+        bgcolor: theme.palette.background.default,
+        color: theme.palette.text.primary, 
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-start', 
-        paddingLeft: 2, 
+        flexDirection: 'column',
+        alignItems: 'center'
       }}>
-        {/* 메뉴 아이콘 버튼 */}
-        <IconButton onClick={toggleDrawer(true)} sx={{ color: 'white', marginRight: 2 }}>
-          <MenuIcon />
-        </IconButton>
-        {/* 헤더 텍스트 */}
-        <Typography variant="h5"
-          sx={{ 
-            fontWeight: 500 
+        {/* 헤더 부분 */}
+        <Box sx={{
+          width: '100%',
+          height: 70,
+          bgcolor: theme.palette.secondary.main, 
+          color: theme.palette.text.primary,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-start', 
+          paddingLeft: 2, 
+        }}>
+          {/* 메뉴 아이콘 버튼 */}
+          <IconButton onClick={toggleDrawer(true)} sx={{ color: 'white', marginRight: 2 }}>
+            <MenuIcon />
+          </IconButton>
+          {/* 헤더 텍스트 */}
+          <Typography variant="h5">
+            MilGam
+          </Typography>
+        </Box>
+        {/* Drawer 컴포넌트 */}
+        <Drawer
+          anchor='left'
+          open={isOpen}
+          onClose={toggleDrawer(false)}
+          PaperProps={{
+            sx: {
+              bgcolor: theme.palette.secondary.main, 
+              color: theme.palette.text.primary, 
+              width: '12%'
+            }
           }}
         >
-          MilGam
-        </Typography>
+          {drawerList()}
+        </Drawer>
+        {/* 컨테이너와 타이포그래피를 하나의 부모 박스 안에 배치 */}
+        <Box sx={{ width: '95%', marginTop: '35px' }}>
+          <Typography variant="h6"
+            sx={{
+              alignSelf: 'flex-start',
+              marginLeft: '3%',
+            }}
+          >
+          </Typography>
+          {/* SimpleContainer 컴포넌트 */}
+          <React.Fragment>
+            <CssBaseline />
+            <Container maxWidth={false} sx={{ width: '95%', bgcolor: '#313D4F', borderRadius: '12px', padding: '16px', marginTop: '10px', marginBottom: '50px' }}>
+              <Outlet/>
+            </Container>
+          </React.Fragment>
+        </Box>
       </Box>
-      {/* Drawer 컴포넌트 */}
-      <Drawer
-        anchor='left'
-        open={isOpen}
-        onClose={toggleDrawer(false)}
-        PaperProps={{
-          sx: {
-            bgcolor: '#313D4F', 
-            color: 'white', 
-            width: '12%'
-          }
-        }}
-      >
-        {drawerList()}
-      </Drawer>
-      {/* 컨테이너 위에 텍스트 추가 */}
-      <Typography variant="h6" 
-        sx={{ 
-          color: 'white', 
-          marginTop: '35px', 
-          alignSelf: 'flex-start', 
-          marginLeft: '3%', 
-          fontSize: '1.5rem', 
-          fontWeight: 700 
-        }}
-      >
-      </Typography>
-      {/* SimpleContainer 컴포넌트 */}
-      <React.Fragment>
-        <CssBaseline />
-        <Container maxWidth={false} sx={{ width: '95%', bgcolor: '#313D4F', borderRadius: '12px', padding: '16px', marginTop: '10px', marginBottom: '50px' }}>
-          <Outlet/>
-        </Container>
-      </React.Fragment>
-    </Box>
+    </ThemeProvider>
   );
 }
 
