@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
+import { Outlet } from "react-router-dom";
 import { Drawer, List, ListItem, ListItemText, IconButton, Box, Typography, CssBaseline, Container } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-// 여기에 사용할 컴포넌트 추가
-// 예시) import Header from "../Test_seungwon/Test_seungwon.js";
-import Login from '../Login/Login.js';
-import Signup from '../Signup/Signup.js';
 
 /*
   * 1. MethodName: Background
@@ -15,15 +12,6 @@ import Signup from '../Signup/Signup.js';
 */
 function Background() {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentComponent, setCurrentComponent] = useState('login'); // 상태를 통해 현재 렌더링할 컴포넌트를 관리
-
-  const handleSignupClick = () => {
-    setCurrentComponent('signup');
-  };
-
-  const handleLoginClick = () => {
-    setCurrentComponent('login');
-  };
 
   // Drawer 열고 닫는 함수
   const toggleDrawer = (open) => (event) => {
@@ -127,17 +115,12 @@ function Background() {
           fontWeight: 700 
         }}
       >
-        {currentComponent === 'login' ? '로그인' : '회원가입'}
       </Typography>
       {/* SimpleContainer 컴포넌트 */}
       <React.Fragment>
         <CssBaseline />
         <Container maxWidth={false} sx={{ width: '95%', bgcolor: '#313D4F', borderRadius: '12px', padding: '16px', marginTop: '10px', marginBottom: '50px' }}>
-          {currentComponent === 'login' ? (
-            <Login onSignupClick={handleSignupClick} />
-          ) : (
-            <Signup onLoginClick={handleLoginClick} />
-          )}
+          <Outlet/>
         </Container>
       </React.Fragment>
     </Box>

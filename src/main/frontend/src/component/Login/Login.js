@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import Main from "../Main/Main.js";
-import Signup from "../Signup/Signup.js";
+import { useNavigate } from "react-router-dom";
+import LoginAlert from "./LoginAlert.js"
 
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
@@ -57,7 +56,9 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
   * 3. 작성자    : boreum
   * 4. 작성일    : 2024. 06. 27
 */
-const Login = ({ marginBottom, onSignupClick }) => {
+const Login = ({ marginBottom }) => {
+    const navigate = useNavigate();
+
     // 입력 받을 아이디, 비밀번호
     const [loginInput, setLoginInput] = useState({
         userId: "",
@@ -91,10 +92,20 @@ const Login = ({ marginBottom, onSignupClick }) => {
         marginBottom: passwordError ? '0px' : '24px'
     };
 
-    //대시보드로 이동할 함수 필요: Main.js
-    const onDashboard = (e) => {
-        onSignupClick();
+    const onSignupClick = (e) => {
+        navigate('/signup');
     }
+
+    // 로그인 계정 잠금 팝업
+    const [alertOpen, setOpen] = useState(false);
+
+     const handleClickOpen = () => {
+        setOpen(true);
+     };
+
+     const handleClose = () => {
+        setOpen(false);
+     };
 
     // 로그인 동작
 	const onLogin = async (e) => {
@@ -118,8 +129,9 @@ const Login = ({ marginBottom, onSignupClick }) => {
         }
 
         if(isValid) {
-            // 현재는 동작 확인을 위해 바로 동작: 대시보드 대신 회원가입으로 확인
-            onSignupClick();
+            // 동작 확인
+            //navigate('/dashboard');
+            handleClickOpen();
 
             //유효 확인
     /*        try {
@@ -130,16 +142,19 @@ const Login = ({ marginBottom, onSignupClick }) => {
                 // 로그인 성공 로직
                 if (res.status === 200) {
                     console.log(res.data);
-                    onSignupClick();
+                    navigate('/dashboard');
                 }
             } catch (error) {
                 console.log(error);
+                //불일치
                 isValid = false;
                 setPasswordError("아이디 혹은 비밀번호를 확인해주세요.");
                 setLoginInput((prev) => ({
                     ...prev,
                     password: ""
                 }));
+                //잠금
+                handleClickOpen();
             }*/
         }
     };
@@ -199,7 +214,7 @@ const Login = ({ marginBottom, onSignupClick }) => {
             >
                 <Button
                     variant="text"
-                    onClick={onDashboard}
+                    onClick={onSignupClick}
                     style={{
                         color: "#B6B6B6",
                     }}
@@ -213,10 +228,13 @@ const Login = ({ marginBottom, onSignupClick }) => {
                 style={{
                     marginTop: "40px",
                     minWidth: "280px",
+                    backgroundColor: "#4880FF",
+                    padding: '10px',
                 }}
             >
                 로그인
             </Button>
+            <LoginAlert alertOpen={alertOpen} handleClose={handleClose} />
         </Stack>
     );
 }
