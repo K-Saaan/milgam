@@ -4,7 +4,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 
 
-function Signup() {
+function SignUp() {
     const [username, setUsername] = useState('');
     const [usernameError, setUsernameError] = useState(false);
     const [usernameHelperText, setUsernameHelperText] = useState('');
@@ -123,7 +123,7 @@ function Signup() {
 
     return (
         <Container component="main" maxWidth="xs">
-            <Paper elevation={6} sx={{ mt: 8, padding: 3 }}>
+           <Paper elevation={6} sx={{ mt: 8, padding: 3 }}>
                 <Typography component="h1" variant="h5">
                     회원가입
                 </Typography>
@@ -246,4 +246,4 @@ function Signup() {
     );
 }
 
-export default Signup;
+export default SignUp;
