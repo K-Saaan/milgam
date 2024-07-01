@@ -13,7 +13,7 @@ import Stack from '@mui/material/Stack';
 
 const LogInForm = ({ marginBottom }) => {
     const navigate = useNavigate();
-    const { register, handleSubmit, formState: { errors }, setError } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
     const [alertOpen, setOpen] = React.useState(false);
 
     const formSx = {
