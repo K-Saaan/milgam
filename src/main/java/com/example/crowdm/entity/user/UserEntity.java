@@ -52,4 +52,9 @@ public class UserEntity {
     @Column(name = "pw_duedate")
     private Timestamp pw_duedate;
 
+
+    public UserEntity(String id, String pw, String name, String email) {
+        this.id = id;
+    }
 }
+
