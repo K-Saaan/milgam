@@ -1,5 +1,12 @@
 import { createTheme } from '@mui/material/styles';
 
+/*
+  * 1. MethodName: createTheme
+  * 2. ClassName : createTheme
+  * 3. Comment   : Theme 설정
+  * 4. 작성자    : mijin
+  * 5. 작성일    : 2024. 06. 28
+*/
 const theme = createTheme({
   palette: {
     mode: 'dark',
