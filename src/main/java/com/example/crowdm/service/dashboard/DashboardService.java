@@ -18,6 +18,11 @@ public class DashboardService {
     private final DashboardRepository dashboardRepository;
     //final 변수: 초기화한 후 값을 변경될 수 없음
 
+    @Transactional
+    public DashboardEntity addDashboard(DashboardEntity dashboardEntity) {
+        return dashboardRepository.save(dashboardEntity);
+    }
+
     public List<DashboardEntity> findAllDashboards(){
         return dashboardRepository.findAll();
     }
