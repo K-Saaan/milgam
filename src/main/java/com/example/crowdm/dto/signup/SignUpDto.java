@@ -10,6 +10,6 @@ public class SignUpDto {
     private String role_index;
 
     public SignUpDto() {
-        return
+        return;
     }
 }
