@@ -44,6 +44,11 @@ const theme = createTheme({
       fontSize: '0.875rem',
       color: '#4880FF',
     },
+    caption: {
+      fontSize: '0.75rem',
+      fontWeight: 600,
+      color: '#FFFFFF', // 흰색
+    },
   },
 
   components: {
