@@ -8,8 +8,13 @@ import LogIn from "./routes/LogIn";
 import Home from "./routes/Home";
 import SignUp from "./routes/SignUp";
 import UploadVideo from "./routes/UploadVideo";
+import VideoResult from "./routes/VideoResult";
+import DirectorSignUp from "./components/SignUp/DirectorSignUp"
+import HostSignUp from "./components/SignUp/HostSignUp";
 import LeftContentArea from "./components/Dashboard/LeftContentArea";
 import LeftContentAreaDetail from "./components/Dashboard/LeftContentAreaDetail";
+
+import Detail from "./routes/Detail";
 
 const router = createBrowserRouter([
   {
@@ -43,10 +48,28 @@ const router = createBrowserRouter([
       {
         path: "signup",
         element: <SignUp />,
+        // children: [
+        //   { path: "directorsignup",
+        //     element: <DirectorSignUp />, },
+        //   { path: "hostsignup",
+        //     element: <HostSignUp />, }
+        // ]
       },
       {
-        path: "uploadvideo",
+        path: "directorsignup",
+        element: <DirectorSignUp />,
+      },
+      {
+        path: "hostsignup",
+        element: <HostSignUp />,
+      },
+      {
+        path: "uploadVideo",
         element: <UploadVideo />,
+      },
+      {
+        path: "videoresult",
+        element: <VideoResult />,
       },
       {
         path: "home",

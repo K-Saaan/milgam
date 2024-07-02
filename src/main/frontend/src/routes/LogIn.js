@@ -1,11 +1,12 @@
-import React from "react";
-import LogInForm from "../component/LogIn/LogInForm.js";
+import React from 'react'
+import LogInForm from '../components/LogIn/LogInForm'
 
-
-const LogIn = ({ }) => {
+function Login(){
     return (
-        <LogInForm/>
+      <>
+            <LogInForm/ >
+      </>
     );
 }
 
-export default LogIn;
+export default Login

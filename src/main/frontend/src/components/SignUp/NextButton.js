@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 
-const SignupButton = () => {
+const NextButton = () => {
     const navigate = useNavigate();
 
     const onSignupClick = () => {
@@ -28,10 +28,10 @@ const SignupButton = () => {
                 onClick={onSignupClick}
                 style={signupButtonStyle}
             >
-                회원가입
+                다음
             </Button>
         </div>
     );
 };
 
-export default SignupButton;
+export default NextButton;
