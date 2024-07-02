@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
+import LeftContentAreaDetail from '../components/Dashboard/LeftContentAreaDetail'; 
 
-export default class Detail extends Component {
-  render() {
-    return (
-      <div>
-        
-      </div>
-    )
-  }
+function Detail() {
+  return (
+    <>
+      <LeftContentAreaDetail />
+    </>
+  )
 }
+
+export default Detail
