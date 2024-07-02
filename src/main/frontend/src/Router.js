@@ -10,6 +10,7 @@ import SignUp from "./routes/SignUp";
 import UploadVideo from "./routes/UploadVideo";
 import LeftContentArea from "./components/Dashboard/LeftContentArea";
 import LeftContentAreaDetail from "./components/Dashboard/LeftContentAreaDetail";
+import Inquiry from "./routes/Inquiry";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "home",
         element: <Home />,
+      },
+      {
+        path: "inquiry",
+        element: <Inquiry />,
       },
     ],
   },

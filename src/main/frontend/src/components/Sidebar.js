@@ -30,13 +30,12 @@ const Sidebar = ({ open, handleDrawerClose }) => {
   const theme = useTheme();
 
   const menuItems = [
-    { path: '/dashboard', text: 'Dashboard', icon: <InboxIcon /> },
-    { path: '/uploadvideo', text: 'Upload Video', icon: <InboxIcon /> },
+    { path: '/dashboard', text: '대시보드', icon: <InboxIcon /> },
+    { path: '/uploadvideo', text: '영상 업로드', icon: <InboxIcon /> },
     { path: '/faq', text: 'FAQ', icon: <InboxIcon /> },
-    { path: '/login', text: 'Log In', icon: <InboxIcon /> },
-    { path: '/signup', text: 'Sign Up', icon: <InboxIcon />},
-    // { path: '/1on1', text: '1:1 Inquiry', icon: <InboxIcon /> }, // 1:1 문의 영어로 변경
-    // { path: '/logout', text: 'Log Out', icon: <InboxIcon /> }, // 로그아웃 영어로 변경
+    { path: '/login', text: '로그인', icon: <InboxIcon /> },
+    { path: '/inquiry', text: '문의 게시판', icon: <InboxIcon /> }, 
+    // { path: '/logout', text: '로그아웃', icon: <InboxIcon /> }, 
   ]
 
   return (
