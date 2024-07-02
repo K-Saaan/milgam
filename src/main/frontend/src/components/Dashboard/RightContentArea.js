@@ -1,11 +1,18 @@
 import React from 'react';
 import { Box, Paper, Typography, List, ListItem, IconButton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 import MailIcon from '@mui/icons-material/Mail'; 
 import { Link } from 'react-router-dom';
 
-const AlertList = ({ alerts, handleAlertClick }) => {
+const RightContentArea = ({ alerts, handleAlertClick }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
+
+  const onAlertClick = (alert) => {
+    handleAlertClick(alert);
+    navigate(`/dashboard/detail/${alert.id}`);
+  };
 
   return (
     <Box sx={{ flex: 3 }}>
@@ -21,9 +28,8 @@ const AlertList = ({ alerts, handleAlertClick }) => {
             <ListItem
               key={alert.id}
               button
-              component={Link}
-              to={`/dashboard/detail`} // detail 경로로 이동
-              onClick={() => handleAlertClick(alert)}
+              key={alert.id}
+              onClick={() => onAlertClick(alert)}
               sx={{
                 bgcolor: '#2B3B5B',
                 borderRadius: 1,
@@ -53,4 +59,4 @@ const AlertList = ({ alerts, handleAlertClick }) => {
   );
 };
 
-export default AlertList;
+export default RightContentArea;

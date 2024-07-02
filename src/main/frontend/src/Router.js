@@ -8,7 +8,8 @@ import LogIn from "./routes/LogIn";
 import Home from "./routes/Home";
 import SignUp from "./routes/SignUp";
 import UploadVideo from "./routes/UploadVideo";
-import Detail from "./routes/Detail";
+import LeftContentArea from "./components/Dashboard/LeftContentArea";
+import LeftContentAreaDetail from "./components/Dashboard/LeftContentAreaDetail";
 
 const router = createBrowserRouter([
   {
@@ -27,8 +28,8 @@ const router = createBrowserRouter([
         path: "dashboard",
         element: <Dashboard />,
         children: [
-          { path: "detail",
-          element: <Detail />, }
+          { path: "", element: <LeftContentArea /> },
+          { path: "detail/:id", element: <LeftContentAreaDetail /> }
         ]
       },
       {
