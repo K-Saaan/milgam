@@ -29,7 +29,7 @@ import java.util.UUID;
 public class VideoController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private final VideoService videoService;
-    private final SimpMessagingTemplate messagingTemplate;
+    public SimpMessagingTemplate messagingTemplate;
 
     /**
      * 1. MethodName: videoUploadPage
@@ -53,9 +53,9 @@ public class VideoController {
      **/
     @PostMapping("/videoUpload")
     public void videoUpload(@RequestParam("chunkFile") MultipartFile mFile,
-                           @RequestParam("index") int index,
-                           @RequestParam("totalChunkSize") int totalChunkSize) throws IOException{
-        videoService.uploadToGCP(mFile, index, totalChunkSize);
+                           @RequestParam("chunkIndex") int chunkIndex,
+                           @RequestParam("totalChunks") int totalChunks) throws IOException{
+        videoService.uploadToGCP(mFile, chunkIndex, totalChunks);
     }
 
     /**
@@ -67,9 +67,12 @@ public class VideoController {
      **/
     @PostMapping("/videoResult")
     public ResponseEntity handleResult(@RequestParam("result") MultipartFile result,
-                            @RequestParam("index") int index,
-                            @RequestParam("totalChunkSize") int totalChunkSize) throws IOException{
+                            @RequestParam("chunkIndex") int chunkIndex,
+                            @RequestParam("totalChunks") int totalChunks) throws IOException{
         String resultContent = new String(result.getBytes(), "UTF-8");
+        logger.info("resultContent = {}", resultContent);
+        logger.info("chunkIndex = {}", chunkIndex);
+        logger.info("totalChunks = {}", totalChunks);
         messagingTemplate.convertAndSend("/topic/video/", resultContent);
         return ResponseEntity.ok("Result to front");
     }

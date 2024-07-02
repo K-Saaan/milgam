@@ -39,26 +39,26 @@ public class VideoService {
     @Value("${file_path.upload}")
     String uploadPath;
 
-    @Value("${server.gcp}")
+    @Value("${server.gcp_upload}")
     String gcpUrl;
 
-    public ResponseEntity<String> uploadToGCP(MultipartFile file, int index, int totalChunkSize) {
+    public ResponseEntity<String> uploadToGCP(MultipartFile file, int chunkIndex, int totalChunks) {
         try{
             RestTemplate restTemplate = new RestTemplate();
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
             String uuid = UUID.randomUUID().toString();
-            String fileName = uuid + index + file.getOriginalFilename();
+            String fileName = uuid + chunkIndex + file.getOriginalFilename();
             body.add("file", new ByteArrayResource(file.getBytes()));
-            body.add("chunkIndex", index);
-            body.add("totalChunkSize", totalChunkSize);
             body.add("fileName", fileName);
+            body.add("chunkIndex", chunkIndex);
+            body.add("totalChunks", totalChunks);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
             HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
             ResponseEntity response = restTemplate.postForEntity(gcpUrl, requestEntity, String.class);
-
+            logger.info("Response : {}",response.getBody().toString());
             return response.ok("upload success");
         }catch (IOException e){
             logger.error("uploadToGCP Error : ",e.getMessage());

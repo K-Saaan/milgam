@@ -38,3 +38,6 @@ login:
 # 파일 경로
 file_path:
   video_path: /video/upload
+
+server:
+  gcp_upload: http://34.80.35.165/upload
