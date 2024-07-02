@@ -61,6 +61,10 @@ const router = createBrowserRouter([
         element: <HostSignUp />,
       },
       {
+        path: "uploadVideo",
+        element: <UploadVideo />,
+      },
+      {
         path: "videoresult",
         element: <VideoResult />,
       },
