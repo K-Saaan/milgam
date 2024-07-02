@@ -8,6 +8,7 @@ import LogIn from "./routes/LogIn";
 import Home from "./routes/Home";
 import SignUp from "./routes/SignUp";
 import UploadVideo from "./routes/UploadVideo";
+import VideoResult from "./routes/VideoResult";
 import Detail from "./routes/Detail";
 
 const router = createBrowserRouter([
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: "uploadvideo",
         element: <UploadVideo />,
+      },
+      {
+        path: "videoresult",
+        element: <VideoResult />,
       },
       {
         path: "home",

@@ -13,7 +13,7 @@ const UploadForm = () => {
     const navigate = useNavigate();
     const inputRef = useRef();
     const [selectedFile, setSelectedFile] = useState(null);
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit } = useForm();
 
     const [isActive, setActive] = useState(false)
     const handleDragStart = () => setActive(true);
@@ -52,9 +52,7 @@ const UploadForm = () => {
     const onHSubmit = (data) => {
         if (selectedFile) {
             /*파일 전송이 들어가야 함*/
-            console.log("File submitted:", selectedFile, data.detail);
-            /*경로 설정 필요*/
-            navigate("/");
+            navigate("/videoresult", { state: { video: selectedFile, detail: data.detail } });
         } else {
             alert("파일을 선택해주세요.");
         }
@@ -89,6 +87,7 @@ const UploadForm = () => {
                         <CustomTextField
                             id="detail" placeholder="영상 내용을 기입해주세요(선택)"
                             {...register("detail")}
+                            onKeyPress={handleSubmit(onHSubmit)}
                         />
                     </div>
                     <LongButton type="submit" style={{marginTop:"40px"}}>분석</LongButton>
