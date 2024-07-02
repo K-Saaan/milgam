@@ -60,7 +60,7 @@ const theme = createTheme({
           padding: '16px',
           marginTop: '10px',
           marginBottom: '50px',
-          backgroundColor: '#273142', // Secondary main color
+          backgroundColor: '#273142', 
         },
       },
     },

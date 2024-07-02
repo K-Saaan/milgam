@@ -3,6 +3,30 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Paper, Typography, Button, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
+const paperStyle = (theme) => ({
+  flexGrow: 1,
+  padding: 2,
+  bgcolor: theme.palette.secondary.main,
+  color: theme.palette.text.primary,
+  height: '400px',
+  borderRadius: 2,
+});
+
+const headerBoxStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: 2,
+};
+
+const titleStyle = (theme) => ({
+  color: theme.palette.text.primary,
+});
+
+const contentStyle = (theme) => ({
+  color: theme.palette.text.primary,
+});
+
 const LeftContentAreaDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -20,16 +44,16 @@ const LeftContentAreaDetail = () => {
   };
 
   return (
-    <Paper sx={{ flexGrow: 1, padding: 2, bgcolor: theme.palette.secondary.main, color: theme.palette.text.primary, height: '400px', borderRadius: 2 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
-        <Typography variant="h6" sx={{ color: theme.palette.text.primary }}>
+    <Paper sx={paperStyle(theme)}>
+      <Box sx={headerBoxStyle}>
+        <Typography variant="h6" sx={titleStyle(theme)}>
           알림 상세 내용
         </Typography>
         <Button variant="contained" color="primary" onClick={handleCloseClick}>
           닫기
         </Button>
       </Box>
-      <Typography variant="body1" sx={{ color: theme.palette.text.primary }}>
+      <Typography variant="body1" sx={contentStyle(theme)}>
         {alertDetails[id] || '알림 상세 내용을 찾을 수 없습니다.'}
       </Typography>
     </Paper>

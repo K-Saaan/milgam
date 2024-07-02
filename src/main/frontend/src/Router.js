@@ -13,6 +13,7 @@ import DirectorSignUp from "./components/SignUp/DirectorSignUp"
 import HostSignUp from "./components/SignUp/HostSignUp";
 import LeftContentArea from "./components/Dashboard/LeftContentArea";
 import LeftContentAreaDetail from "./components/Dashboard/LeftContentAreaDetail";
+import Inquiry from "./routes/Inquiry";
 
 import Detail from "./routes/Detail";
 
@@ -74,6 +75,10 @@ const router = createBrowserRouter([
       {
         path: "home",
         element: <Home />,
+      },
+      {
+        path: "inquiry",
+        element: <Inquiry />,
       },
     ],
   },

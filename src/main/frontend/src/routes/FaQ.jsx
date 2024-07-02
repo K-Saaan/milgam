@@ -1,20 +1,12 @@
-import Background from "../components/Background";
+import React from 'react';
+import FaqContent from '../components/FaQ/FaqContent';
 
-
-
-function FaQ(){
-
-
-    return (
-        <>
-          <h1>FaQ</h1>
-          <Background>
-            hi
-          </Background>
-        </>
-      );
+function FaQ() {
+  return (
+    <>
+      <FaqContent />
+    </>
+  );
 }
-
-
 
 export default FaQ;
