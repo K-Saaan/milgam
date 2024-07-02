@@ -1,0 +1,84 @@
+.upload-bg {
+    display: flex;
+    justify-content: center;
+}
+
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 350px;
+    margin: 50px;
+}
+
+.file-btn {
+    width: 100%;
+    height: 200px;
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    color: #4880FF;
+    background-color: #273142;
+    border: 2px dashed #4880FF;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3ㄴ ease;
+}
+
+.file-btn:hover {
+    color: #4880FF;
+    background-color: #FFFFFF;
+}
+
+.file-btn span {
+    width: 50px;
+    height: 50px;
+    font-size: 30px;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 25px;
+    background-color: #4880FF;
+}
+
+.selected-file {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #4880FF2D;
+    border: 1px solid #4880FF5D;
+    border-radius: 20px;
+    margin-top: 20px;
+    margin-bottom: 25px;
+}
+
+.selected-file p {
+    font-size: 13px;
+    font-weight: 500;
+    margin-left: 15px;
+}
+
+.selected-file button {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    background-color: transparent;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.selected-file button:hover {
+    color: #FFFFFF;
+    background-color: #4880FF;
+}
