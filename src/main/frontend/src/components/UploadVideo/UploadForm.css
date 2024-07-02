@@ -1,6 +1,7 @@
 .upload-bg {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .upload-form {
@@ -53,9 +54,8 @@
     justify-content: space-between;
     background-color: #4880FF2D;
     border: 1px solid #4880FF5D;
-    border-radius: 20px;
-    margin-top: 20px;
-    margin-bottom: 25px;
+    border-radius: 5px;
+    margin-bottom: 5px;
 }
 
 .selected-file p {
@@ -73,7 +73,7 @@
     color: #FFFFFF;
     background-color: transparent;
     border: none;
-    border-radius: 20px;
+    border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
 }

@@ -1,16 +1,19 @@
 import React, { useState, useRef } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import "./UploadForm.css";
 
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import CloudUploadRoundedIcon from '@mui/icons-material/CloudUploadRounded';
 import LongButton from "../Styles/LongButton.js";
+import CustomTextField from "../Styles/CustomTextField.js";
 
 
 const UploadForm = () => {
     const navigate = useNavigate();
     const inputRef = useRef();
     const [selectedFile, setSelectedFile] = useState(null);
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
     const [isActive, setActive] = useState(false)
     const handleDragStart = () => setActive(true);
@@ -46,13 +49,12 @@ const UploadForm = () => {
         setSelectedFile(null);
     };
 
-    const handleSubmit = (e) => {
+    const onHSubmit = (data) => {
         if (selectedFile) {
             /*파일 전송이 들어가야 함*/
-            console.log("File submitted:", selectedFile);
+            console.log("File submitted:", selectedFile, data.detail);
             /*경로 설정 필요*/
             navigate("/");
-            e.preventDefault();
         } else {
             alert("파일을 선택해주세요.");
         }
@@ -61,7 +63,7 @@ const UploadForm = () => {
     return (
         <div className="upload-bg">
             <form className={`upload-form${isActive ? ' active' : ''}`}
-                onSubmit={handleSubmit}
+                onSubmit={handleSubmit(onHSubmit)}
                 onDragEnter={handleDragStart}
                 onDragOver={(e) => e.preventDefault()}
                 onDragLeave={handleDragEnd}
@@ -76,14 +78,20 @@ const UploadForm = () => {
                     분석할 영상을 선택해주세요.
                 </button>}
 
-                {selectedFile && <div>
+                {selectedFile && <div className="upload-bg">
                     <div className="selected-file">
                         <p>{selectedFile.name}</p>
                         <button onClick={removeFile}>
                             <DeleteForeverOutlinedIcon/>
                         </button>
                     </div>
-                    <LongButton type="submit">분석</LongButton>
+                    <div>
+                        <CustomTextField
+                            id="detail" placeholder="영상 내용을 기입해주세요(선택)"
+                            {...register("detail")}
+                        />
+                    </div>
+                    <LongButton type="submit" style={{marginTop:"40px"}}>분석</LongButton>
                 </div>}
             </form>
         </div>
