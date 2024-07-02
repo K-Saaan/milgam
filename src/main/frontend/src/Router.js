@@ -8,6 +8,7 @@ import LogIn from "./routes/LogIn";
 import Home from "./routes/Home";
 import SignUp from "./routes/SignUp";
 import UploadVideo from "./routes/UploadVideo";
+import VideoResult from "./routes/VideoResult";
 import Detail from "./routes/Detail";
 import DirectorSignUp from "./components/SignUp/DirectorSignUp"
 import HostSignUp from "./components/SignUp/HostSignUp";
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: "hostsignup",
         element: <HostSignUp />,
+      },
+      {
+        path: "videoresult",
+        element: <VideoResult />,
       },
       {
         path: "home",

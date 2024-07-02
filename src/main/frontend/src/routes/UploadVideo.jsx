@@ -1,16 +1,12 @@
-
+import UploadForm from "../components/UploadVideo/UploadForm.js";
 
 
 function UploadVideo(){
-
-
     return (
         <>
-          <h1>UploadVideo</h1>
+          <UploadForm />
         </>
       );
 }
-
-
 
 export default UploadVideo;
