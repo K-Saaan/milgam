@@ -9,6 +9,8 @@ import Home from "./routes/Home";
 import SignUp from "./routes/SignUp";
 import UploadVideo from "./routes/UploadVideo";
 import Detail from "./routes/Detail";
+import DirectorSignUp from "./components/SignUp/DirectorSignUp"
+import HostSignUp from "./components/SignUp/HostSignUp";
 
 const router = createBrowserRouter([
   {
@@ -42,10 +44,20 @@ const router = createBrowserRouter([
       {
         path: "signup",
         element: <SignUp />,
+        // children: [
+        //   { path: "directorsignup",
+        //     element: <DirectorSignUp />, },
+        //   { path: "hostsignup",
+        //     element: <HostSignUp />, }
+        // ]
       },
       {
-        path: "uploadvideo",
-        element: <UploadVideo />,
+        path: "directorsignup",
+        element: <DirectorSignUp />,
+      },
+      {
+        path: "hostsignup",
+        element: <HostSignUp />,
       },
     ],
   },
