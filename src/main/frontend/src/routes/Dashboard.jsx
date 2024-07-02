@@ -15,11 +15,6 @@ const Dashboard = () => {
     setSelectedAlert(alert);
   };
 
-  // 닫기 아이콘 클릭 시 호출되는 함수
-  const handleCloseClick = () => {
-    setSelectedAlert(null);
-  };
-
   // 알림 목록 -> 데이터 불러와서 받는걸로
   const alerts = [
     { id: 1, time: '12:53', title: '2구역 Lv.1 이상 행동 감지', details: '2구역에서 이상 행동이 감지되었습니다. 자세한 내용은 여기 있습니다.' },
@@ -38,7 +33,7 @@ const Dashboard = () => {
         </div>
         {/* 우측 알림 리스트 */}
         <div style={{ display: 'grid', gap: '20px', minWidth: '300px' }}>
-          <RightContentArea alerts={alerts} handleAlertClick={handleAlertClick} />
+          <RightContentArea alerts={alerts} handleAlertClick={handleAlertClick} selectedAlert={selectedAlert} />
         </div>
       </div>
     </>
