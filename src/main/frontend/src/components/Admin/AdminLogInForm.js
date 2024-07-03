@@ -2,16 +2,15 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import AccountLockAlert from "./AccountLockAlert.js";
-import NoPermissionAlert from "./NoPermissionAlert.js";
+import NoPermissionAlert from "../LogIn/NoPermissionAlert.js";
 import LongButton from "../Styles/LongButton.js";
-import SignupButton from "./SignupButton.js";
+import SignupButton from "../LogIn/SignupButton.js";
 import CustomTextField from '../Styles/CustomTextField.js';
 
 
 import Stack from '@mui/material/Stack';
 
-const LogInForm = ({ marginBottom }) => {
+const AdminLogInForm = ({ marginBottom }) => {
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [alertOpen, setOpen] = React.useState(false);
@@ -94,4 +93,4 @@ const LogInForm = ({ marginBottom }) => {
     );
 };
 
-export default LogInForm;
+export default AdminLogInForm;
