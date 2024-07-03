@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import RightContentArea from '../components/Dashboard/RightContentArea';
-import LeftContentArea from '../components/Dashboard/LeftContentArea'; 
 import { Outlet } from 'react-router-dom';
-import Typography from '@mui/material/Typography';
 
 const Dashboard = () => {
-  const theme = useTheme();
   const [selectedAlert, setSelectedAlert] = useState(null); // 선택된 알림을 관리하는 상태
 
   // 알림 항목 클릭 시 호출되는 함수
