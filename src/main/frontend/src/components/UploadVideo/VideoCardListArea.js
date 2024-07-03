@@ -2,7 +2,7 @@ import React from "react";
 
 import { Box, Typography, List, ListItem, Divider, useTheme } from '@mui/material';
 import CustomChip from "./CustomChip.js";
-import CustomListItem from "./CustomListItem.js";
+import CustomListItem from "../Styles/CustomListItem.js";
 import MailIcon from '@mui/icons-material/Mail';
 import { Link } from 'react-router-dom';
 

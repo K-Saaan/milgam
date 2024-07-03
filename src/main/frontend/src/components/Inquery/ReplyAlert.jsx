@@ -8,6 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Box, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
+// 제목 스타일
 const titleStyle = (theme) => ({
   fontSize: theme.typography.h6.fontSize,
   fontWeight: theme.typography.h6.fontWeight,
@@ -16,9 +17,9 @@ const titleStyle = (theme) => ({
   justifyContent: 'space-between',
   alignItems: 'center',
   padding: '16px 24px',
-  borderBottom: `1px solid ${theme.palette.text.secondary}`
 });
 
+// 콘텐츠 스타일
 const contentStyle = {
   display: 'flex',
   flexDirection: 'column',
@@ -27,21 +28,14 @@ const contentStyle = {
   color: '#FFFFFF'
 };
 
+// 박스 스타일
 const boxStyle = (theme) => ({
   color: theme.palette.text.primary,
   padding: '8px',
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: '#323D4E',
   borderRadius: '8px',
   border: `1px solid ${theme.palette.background.paper}`,
   minHeight: '50px'
-});
-
-const buttonStyle = (theme) => ({
-  backgroundColor: theme.palette.primary.main,
-  color: 'white',
-  '&:hover': {
-    backgroundColor: theme.palette.primary.main
-  }
 });
 
 const ReplyAlert = ({ open, handleClose, inquiry }) => {
@@ -52,7 +46,7 @@ const ReplyAlert = ({ open, handleClose, inquiry }) => {
       open={open}
       onClose={handleClose}
       PaperProps={{
-        sx: { borderRadius: "12px", backgroundColor: theme.palette.background.paper, width: '600px' }
+        sx: { borderRadius: "12px", background: '#273142', width: '600px' }
       }}
     >
       <Box sx={titleStyle(theme)}>
@@ -63,28 +57,26 @@ const ReplyAlert = ({ open, handleClose, inquiry }) => {
       </Box>
       <DialogContent sx={contentStyle}>
         <Box>
-          <Typography variant="h6" sx={{ color: theme.palette.text.primary, marginBottom: '8px' }}>제목</Typography>
+          <Typography variant="caption" sx={{ color: theme.palette.text.primary, marginBottom: '8px' }}>제목</Typography>
           <Typography sx={boxStyle(theme)}>
             {inquiry.title}
           </Typography>
         </Box>
         <Box>
-          <Typography variant="h6" sx={{ color: theme.palette.text.primary, marginBottom: '8px' }}>내용</Typography>
+          <Typography variant="caption" sx={{ color: theme.palette.text.primary, marginBottom: '8px' }}>내용</Typography>
           <Typography sx={boxStyle(theme)}>
             {inquiry.content}
           </Typography>
         </Box>
         <Box>
-          <Typography variant="h6" sx={{ color: theme.palette.text.primary, marginBottom: '8px' }}>답변</Typography>
+          <Typography variant="caption" sx={{ color: theme.palette.text.primary, marginBottom: '8px' }}>답변</Typography>
           <Typography sx={boxStyle(theme)}>
             {inquiry.reply}
           </Typography>
         </Box>
       </DialogContent>
-      <DialogActions sx={{ padding: '16px 24px', borderTop: `1px solid ${theme.palette.text.secondary}` }}>
-        <Button onClick={handleClose} variant="contained" sx={buttonStyle(theme)}>
-          확인
-        </Button>
+      <DialogActions sx={{ padding: '16px 24px' }}>
+        <Button onClick={handleClose} variant="contained">확인</Button>
       </DialogActions>
     </Dialog>
   );

@@ -4,6 +4,7 @@ import { useTheme } from '@mui/material/styles';
 import CustomCaption from './CustomCaption'
 import CustomPaper from './CustomPaper'
 
+// 이상행동 카드
 const AbnormalBehaviorCard = () => {
   const theme = useTheme();
 

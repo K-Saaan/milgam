@@ -1,14 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import RightContentArea from '../components/Dashboard/RightContentArea';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 const Dashboard = () => {
   const [selectedAlert, setSelectedAlert] = useState(null); // 선택된 알림을 관리하는 상태
+  const location = useLocation();
 
   // 알림 항목 클릭 시 호출되는 함수
   const handleAlertClick = (alert) => {
     setSelectedAlert(alert);
   };
+
+  // 경로가 변경될 때 selectedAlert 초기화
+  useEffect(() => {
+    if (location.pathname === '/dashboard') {
+      setSelectedAlert(null);
+    }
+  }, [location.pathname]);
 
   // 알림 목록 -> 데이터 불러와서 받는걸로
   const alerts = [

@@ -23,7 +23,8 @@ function RegisterAlert({ open, handleClose }) {
       open={open}
       onClose={handleClose}
       PaperProps={{
-        sx: { borderRadius: "12px" },
+        sx: { background: '#273142',
+            borderRadius: "12px" },
       }}
     >
       <DialogTitle>문의</DialogTitle>
@@ -41,6 +42,20 @@ function RegisterAlert({ open, handleClose }) {
           {...register('title', { required: true })}
           error={!!errors.title}
           helperText={errors.title ? 'This field is required' : ''}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              backgroundColor: '#323D4E',
+              '& fieldset': {
+                borderColor: '#CFCFCF1D',
+              },
+              '&:hover fieldset': {
+                borderColor: '#CFCFCF1D',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: '#FFFFFF1D',
+              },
+            },
+          }}
         />
         <DialogContentText>내용</DialogContentText>
         <CustomTextField
@@ -51,11 +66,24 @@ function RegisterAlert({ open, handleClose }) {
           label="문의 내용"
           type="text"
           fullWidth
-          multiline  // 여러 줄 입력을 가능하게 하는 속성
-          rows={4}  // 초기 표시 줄 수
+          multiline // 초기 표시 줄 수
           {...register('content', { required: true })}
           error={!!errors.content}
           helperText={errors.content ? 'This field is required' : ''}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              backgroundColor: '#323D4E',
+              '& fieldset': {
+                borderColor: '#CFCFCF1D',
+              },
+              '&:hover fieldset': {
+                borderColor: '#CFCFCF1D',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: '#FFFFFF1D',
+              },
+            },
+          }}
         />
       </DialogContent>
       <DialogActions>

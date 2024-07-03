@@ -4,6 +4,7 @@ import { useTheme } from '@mui/material/styles';
 import CustomCaption from './CustomCaption'
 import CustomPaper from './CustomPaper'
 
+// 혼잡비율 카드
 const CrowdRatioCard = () => {
   const theme = useTheme();
 

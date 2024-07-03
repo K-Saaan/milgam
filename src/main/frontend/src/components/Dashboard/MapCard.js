@@ -2,23 +2,26 @@ import React from 'react';
 import { Box, Paper, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
+// 지도 영역 바깥 컨테이너 스타일
 const paperStyle = (theme) => ({
   flexGrow: 1,
   padding: 2,
   bgcolor: theme.palette.secondary.main,
   color: theme.palette.text.primary,
-  height: '400px',
+  height: '380px',
   borderRadius: 2,
 });
 
+// 제목 스타일
 const typographyStyle = (theme) => ({
   color: theme.palette.text.primary,
   marginBottom: 1,
 });
 
+// 지도 임시 영역 스타일
 const boxStyle = (theme) => ({
   width: '100%',
-  height: 'calc(100% - 32px)',
+  height: 'calc(100% - 50px)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
