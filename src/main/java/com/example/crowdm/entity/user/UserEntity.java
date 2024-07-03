@@ -2,13 +2,18 @@ package com.example.crowdm.entity.user;
 
 
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 
 @Getter
 @Entity
 @Builder
+@DynamicUpdate
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users", schema="public")
@@ -30,7 +35,7 @@ public class UserEntity {
     @Column(name = "phone")
     private String phone;
     @Column(name = "role_index")
-    private String role_index;
+    private String role_index; //이거 int임
     @Column(name = "apply_date")
     private Timestamp apply_date;
     @Column(name = "account_lock")
@@ -51,5 +56,14 @@ public class UserEntity {
     private int fail_cnt;
     @Column(name = "pw_duedate")
     private Timestamp pw_duedate;
+
+
+    @Transactional
+    public void updatePermissionYn(Timestamp permission_date){
+        this.permission_yn = true;
+        this.permission_date=permission_date;
+        //this.admin_index=1; 나중에 세션값으로 바꿔야함
+
+    }
 
 }
