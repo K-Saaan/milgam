@@ -77,6 +77,7 @@ const InquiryBoard = () => {
           <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleClickOpenRegister}>
             새 문의
           </Button>
+          <RegisterAlert open={openRegister} handleClose={handleCloseRegister} />
         </Box>
         <TableContainer>
           <Table>
@@ -103,7 +104,6 @@ const InquiryBoard = () => {
           </Table>
         </TableContainer>
       </Paper>
-      <RegisterAlert open={openRegister} handleClose={handleCloseRegister} />
       {selectedInquiry && <ReplyAlert open={openReply} handleClose={handleCloseReply} inquiry={selectedInquiry} />}
     </Box>
   );
