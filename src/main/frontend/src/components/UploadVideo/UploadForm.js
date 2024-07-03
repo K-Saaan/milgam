@@ -58,6 +58,12 @@ const UploadForm = () => {
         }
     };
 
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            handleSubmit(onHSubmit)();
+        }
+    };
+
     return (
         <div className="upload-bg">
             <form className={`upload-form${isActive ? ' active' : ''}`}
@@ -87,7 +93,7 @@ const UploadForm = () => {
                         <CustomTextField
                             id="detail" placeholder="영상 내용을 기입해주세요(선택)"
                             {...register("detail")}
-                            onKeyPress={handleSubmit(onHSubmit)}
+                            onKeyPress={handleKeyPress}
                         />
                     </div>
                     <LongButton type="submit" style={{marginTop:"40px"}}>분석</LongButton>

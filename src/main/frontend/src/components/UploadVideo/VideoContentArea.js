@@ -1,52 +1,55 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
-import ReactPlayer from 'react-player/lazy';
 import "./VideoContentArea.css";
+import VideoCard from "./VideoCard.js";
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
-import CircleIcon from '@mui/icons-material/Circle';
 
 
-const VideoContentArea = ({playList, index}) => {
+const paperStyle = (theme) => ({
+  flex: 3,
+  height: '100%',
+  padding: 2,
+  bgcolor: theme.palette.secondary.main,
+  color: theme.palette.text.primary,
+  borderRadius: 2,
+  margin: 2,
+});
+
+const VideoContentArea = ({ playList, index, selectedItem }) => {
+    const theme = useTheme();
     const {state} = useLocation();
+    const playerRef = useRef(null);
+
+    useEffect(() => {
+        if (selectedItem && playerRef.current) {
+            const timeString = selectedItem.time;
+                if (timeString) {
+                    const [minutes, seconds] = timeString.split(':').map(Number);
+                    const totalTimeInSeconds = minutes * 60 + seconds;
+                    playerRef.current.seekTo(totalTimeInSeconds);
+                }
+        }
+    }, [selectedItem]);
 
     return (
-        <div className="v-cont">
-            <Card className="card">
-                <CardContent className="c-cont">
-                    <Typography variant="h5" component="div">
-                      {state.video.name}
-                    </Typography>
-                    <div className="icon-cont">
-                        <CircleIcon className="circle" style={{color: "#E9C157"}}/>
-                        <CircleIcon className="circle" style={{color: "#00B69B"}}/>
-                    </div>
-                </CardContent>
+        <Paper sx={paperStyle(theme)}>
+            <div className="v-cont">
+                <VideoCard video={state.video} playerRef={playerRef}/>
+                <div>{state.detail}</div>
 
-                <CardMedia >
-                    <ReactPlayer
-                        className='react-player'
-                        url={URL.createObjectURL(state.video)}
-                        width='100%' height='100%'
-                        playing={true}
-                        muted={true}
-                        controls={true}
-                        light={false}
-                    />
-                </CardMedia>
-            </Card>
-            <div>{state.detail}</div>
-
-            <Divider style={{background: "#9797973D", marginTop:"20px",marginBottom:"20px"}}/>
-
-            <div>
-                내용상세
+                <div>
+                    {selectedItem &&
+                        <div>
+                            <Divider style={{background: "#9797973D", marginTop:"20px",marginBottom:"20px"}}/>
+                            <div>{selectedItem.details}</div>
+                        </div>
+                    }
+                </div>
             </div>
-        </div>
+        </Paper>
     );
 }
 
