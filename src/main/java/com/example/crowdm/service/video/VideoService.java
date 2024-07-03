@@ -1,7 +1,5 @@
 package com.example.crowdm.service.video;
 
-import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.Storage;
 import config.VideoStreamHandler;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -36,7 +34,7 @@ import java.nio.file.Files;
 public class VideoService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Value("${file_path.upload}")
+    @Value("${file_path.video_path}")
     String uploadPath;
 
     @Value("${server.gcp_upload}")
