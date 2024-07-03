@@ -14,11 +14,11 @@ public class FaqService {
 
     private final FaqRepository faqRepository;
 
-    public List<String> findAllQuestions() {
-        List<String> questions = new ArrayList<>();
+    public List<FaqEntity> findAllQuestions() {
+
         List<FaqEntity> faqList = faqRepository.findAll();
-        faqList.forEach(e -> questions.add(e.getAnswer()));
-        return questions;
+
+        return faqList;
     }
 
     public String findAnswer(int id) {

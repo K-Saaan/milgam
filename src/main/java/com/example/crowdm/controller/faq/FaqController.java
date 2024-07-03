@@ -1,8 +1,10 @@
 package com.example.crowdm.controller.faq;
 
+import com.example.crowdm.entity.faq.FaqEntity;
 import com.example.crowdm.repository.faq.FaqRepository;
 import com.example.crowdm.service.faq.FaqService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,17 +23,18 @@ public class FaqController {
     private final FaqService faqService;
 
     @GetMapping("/question")
-    public String qlist(HttpServletRequest request, HttpServletResponse response, Model model) {
+    public ResponseEntity<List<FaqEntity>> qlist(HttpServletRequest request, HttpServletResponse response, Model model) {
         System.out.println("faq select  : ");
-        List<String> faqList = faqService.findAllQuestions();
+        List<FaqEntity> faqList = faqService.findAllQuestions();
         System.out.println("faqList : " + faqList);
 
         // 모델에 추가하여 View에서 접근 가능하도록 설정 (필요 시)
         model.addAttribute("faqList", faqList);
 
-        return "faqList";  // 실제 뷰 이름으로 변경 필요
+        return ResponseEntity.ok(faqList);
     }
 
+/*
     @GetMapping("/answer")
     public String answer(@RequestParam("id") int id, Model model) {
         System.out.println("faq select  : ");
@@ -45,5 +48,5 @@ public class FaqController {
         model.addAttribute("answer", an);
 
         return "faqAnswer";  // 실제 뷰 이름으로 변경 필요
-    }
+    }*/
 }

@@ -36,6 +36,12 @@ public class UserEntity {
     private String phone;
     @Column(name = "role_index")
     private String role_index; //이거 int임
+    @Column(name = "org")
+    private String org;
+    @Column(name = "org_phone")
+    private String org_phone;
+    @Column(name = "event_index")
+    private Integer event_index;
     @Column(name = "apply_date")
     private Timestamp apply_date;
     @Column(name = "account_lock")
@@ -56,6 +62,8 @@ public class UserEntity {
     private int fail_cnt;
     @Column(name = "pw_duedate")
     private Timestamp pw_duedate;
+    @Column(name = "temppw")
+    private String temppw;
 
 
     @Transactional

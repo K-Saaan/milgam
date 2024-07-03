@@ -1,7 +1,10 @@
 package com.example.crowdm.service.admin;
 
 import com.example.crowdm.dto.user.PermissionList;
+import com.example.crowdm.entity.admin.MyqEntity;
+import com.example.crowdm.entity.faq.FaqEntity;
 import com.example.crowdm.entity.user.UserEntity;
+import com.example.crowdm.repository.admin.MyqRepository;
 import com.example.crowdm.repository.login.LoginRepository;
 import com.example.crowdm.entity.admin.AdminEntity;
 import com.example.crowdm.repository.admin.AdminRepository;
@@ -29,11 +32,12 @@ import common.util.DateUtil;
 public class AdminService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private final LoginRepository loginRepository;
-
+    private final MyqRepository myqRepository;
     public List<UserEntity> showAllUser(){
         List<UserEntity> userList = loginRepository.findAll();
         return userList;
     }
+
 
     //@Transactional
     //public int permissionUpdateUser(int user_index) {
@@ -103,5 +107,9 @@ public class AdminService {
         return answer;
     }
 
+    public List<MyqEntity> myqList() {
+        List<MyqEntity> myqlist=myqRepository.findAll();
+        return myqlist;
+    }
 
 }

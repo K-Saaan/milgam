@@ -1,5 +1,6 @@
 package com.example.crowdm.controller.admin;
 import com.example.crowdm.dto.user.PermissionList;
+import com.example.crowdm.entity.admin.MyqEntity;
 import com.example.crowdm.repository.admin.AdminRepository;
 import com.example.crowdm.service.admin.AdminService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,6 +51,15 @@ public class AdminController {
         List<PermissionList> result = adminService.permissionList();
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/questionlist")
+    public ResponseEntity<List<MyqEntity>> myqList() {
+        List<MyqEntity> result = adminService.myqList();
+        return ResponseEntity.ok(result);
+    }
+
+
+
 
 }
 
