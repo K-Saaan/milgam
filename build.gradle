@@ -56,18 +56,27 @@ dependencies {
     // postgreSQL
     implementation 'org.postgresql:postgresql'
 
+    // Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    // Web socket
+//  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket'
+    
     // Web
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.apache.httpcomponents:httpclient'
 
-    // Google Cloud Storage
+   // Google Cloud Storage
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter', version: '1.2.5.RELEASE'
-    //implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-storage', version: '1.2.5.RELEASE'
+    // implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-storage', version: '1.2.5.RELEASE'
+    
+    //sse
+    implementation 'io.projectreactor:reactor-core:3.4.11'
 
-    // Etc
+     // Etc
     implementation 'commons-io:commons-io:2.8.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
-
 }
 
 tasks.named('test') {
