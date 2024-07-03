@@ -74,4 +74,9 @@ public class UserEntity {
 
     }
 
+
+    public UserEntity(String id, String pw, String name, String email) {
+        this.id = id;
+    }
 }
+
