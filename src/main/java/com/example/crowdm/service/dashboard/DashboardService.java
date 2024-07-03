@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -28,7 +29,7 @@ public class DashboardService {
     }
 
     @Transactional
-    public int deleteUser(Integer log_index){
+    public int deleteDashboard(Integer log_index){
         try{
             dashboardRepository.deleteById(log_index);
             return 1;
@@ -36,7 +37,7 @@ public class DashboardService {
             logger.error("Error: {}", e.getMessage());
             return 0;
         }
-
     }
+
 }
 
