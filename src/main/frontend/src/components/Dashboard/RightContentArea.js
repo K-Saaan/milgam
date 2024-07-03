@@ -3,11 +3,15 @@ import { Box, Paper, Typography, List, ListItem } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import MailIcon from '@mui/icons-material/Mail'; 
+import CustomListItem from '../Styles/CustomListItem';
 
+// 컨테이너의 flex 속성을 설정하여 레이아웃을 조정
 const containerStyle = {
   flex: 3,
+  height: '520px',
 };
 
+// Paper 스타일
 const paperStyle = (theme) => ({
   height: '100%',
   padding: 2,
@@ -16,44 +20,37 @@ const paperStyle = (theme) => ({
   borderRadius: 2,
 });
 
+// 위험 알림 헤더 스타일
 const headerStyle = (theme) => ({
   bgcolor: theme.palette.primary.main,
   padding: 1,
   borderRadius: 1,
   textAlign: 'center',
   marginBottom: 2,
-  height: '40px',
+  height: '40px', 
 });
 
+// 알림 리스트의 스타일
 const listStyle = {
-  height: 'calc(100% - 52px)',
+  height: 'calc(100% - 100px)',
   overflow: 'auto',
 };
 
-const listItemStyle = (theme, isSelected) => ({
-  bgcolor: isSelected ? '#4a4a4a' : '#2B3B5B',
-  borderRadius: 1,
-  marginBottom: 1,
-  padding: 1,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'flex-start',
-  textDecoration: 'none',
-  color: 'inherit',
-});
-
-const timeTextStyle = (theme) => ({
-  color: theme.palette.primary.main,
+// 시간 텍스트의 스타일
+const timeTextStyle = (theme, selected) => ({
+  color: selected ? 'white' : theme.palette.primary.main,
   marginBottom: 1,
 });
 
+// 제목 박스 스타일
 const titleBoxStyle = {
   display: 'flex',
   alignItems: 'center',
 };
 
-const titleTextStyle = (theme) => ({
-  color: theme.palette.primary.main,
+// 제목 텍스트 스타일
+const titleTextStyle = (theme, selected) => ({
+  color: selected ? 'white' : theme.palette.primary.main,
 });
 
 const RightContentArea = ({ alerts, handleAlertClick, selectedAlert }) => {
@@ -75,22 +72,22 @@ const RightContentArea = ({ alerts, handleAlertClick, selectedAlert }) => {
         </Box>
         <List sx={listStyle}>
           {alerts.map(alert => (
-            <ListItem
+            <CustomListItem
               key={alert.id}
               button
               onClick={() => onAlertClick(alert)}
-              sx={listItemStyle(theme, selectedAlert?.id === alert.id)}
+              selected={selectedAlert?.id === alert.id}
             >
-              <Typography variant="body2" sx={timeTextStyle(theme)}>
+              <Typography variant="body2" sx={timeTextStyle(theme, selectedAlert?.id === alert.id)}>
                 {alert.time}
               </Typography>
               <Box sx={titleBoxStyle}>
-                <MailIcon sx={{ color: theme.palette.primary.main, marginRight: 1 }} />
-                <Typography variant="body2" sx={titleTextStyle(theme)}>
+                <MailIcon sx={{ color: selectedAlert?.id === alert.id ? 'white' : theme.palette.primary.main, marginRight: 1 }} />
+                <Typography variant="body2" sx={titleTextStyle(theme, selectedAlert?.id === alert.id)}>
                   {alert.title}
                 </Typography>
               </Box>
-            </ListItem>
+            </CustomListItem>
           ))}
         </List>
       </Paper>

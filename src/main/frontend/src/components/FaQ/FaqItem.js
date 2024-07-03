@@ -6,7 +6,9 @@ import CloseIcon from '@mui/icons-material/Close';
 const FaqItem = ({ item, index, expanded, handleChange }) => {
   const isExpanded = expanded === `panel${index}`;
 
+  // 아코디언 스타일
   const accordionStyle = {
+    // 확장에 따라 색 변경
     backgroundColor: isExpanded ? '#4880FF' : '#273142',
     color: isExpanded ? 'white' : 'inherit',
     mb: 2,
@@ -24,18 +26,22 @@ const FaqItem = ({ item, index, expanded, handleChange }) => {
     },
   };
 
+  // 아코디언 요약 스타일
   const accordionSummaryStyle = {
     '& .MuiAccordionSummary-content': { justifyContent: 'space-between' },
   };
 
+  // 아코디언 세부 스타일
   const accordionDetailsStyle = {
     color: 'white',
   };
 
+  // 질문 텍스트 스타일
   const typographyStyle = {
     fontWeight: 'bold',
   };
 
+  // 본문 텍스트 스타일 
   const typographyBodyStyle = {
     flexGrow: 1,
     marginLeft: 2,

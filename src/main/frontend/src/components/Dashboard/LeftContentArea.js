@@ -6,6 +6,7 @@ import CrowdTrendCard from './CrowdTrendCard';
 import CrowdRatioCard from './CrowdRatioCard';
 import MapCard from './MapCard';
 
+// 대시보드 메인 화면의 좌측 영역
 const LeftContentArea = () => {
   return (
     <Grid container spacing={2}>
