@@ -12,6 +12,7 @@ import VideoResult from "./routes/VideoResult";
 import LeftContentArea from "./components/Dashboard/LeftContentArea";
 import LeftContentAreaDetail from "./components/Dashboard/LeftContentAreaDetail";
 import Inquiry from "./routes/Inquiry";
+import ResetPassword from "./routes/ResetPassword";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
       {
         path: "inquiry",
         element: <Inquiry />,
+      },
+      {
+        path: "resetpassword",
+        element: <ResetPassword />,
       },
     ],
   },
