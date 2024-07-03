@@ -16,7 +16,6 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
     '& .MuiOutlinedInput-root': {
         backgroundColor: '#323D4E',
         opacity: 1,
-        height: '52px',
         '& fieldset': {
             borderColor: '#CFCFCF1D',
             borderWidth: '0.2px',

@@ -1,17 +1,25 @@
 import React from "react";
 
-import { Box, Typography, List, ListItem, Divider, useTheme } from '@mui/material';
+import { Box, Typography, List, Divider, useTheme, Paper } from '@mui/material';
 import CustomChip from "./CustomChip.js";
-import CustomListItem from "./CustomListItem.js";
+import CustomListItem from "../Styles/CustomListItem.js";
 import MailIcon from '@mui/icons-material/Mail';
-import { Link } from 'react-router-dom';
 
+const paperStyle = (theme) => ({
+  flex: 3,
+  height: '100%',
+  padding: 2,
+  bgcolor: theme.palette.secondary.main,
+  color: theme.palette.text.primary,
+  borderRadius: 2,
+  margin: 2,
+});
 
-const VideoCardListArea = ({ alerts }) => {
+const VideoCardListArea = ({ alerts, onSelect }) => {
     const theme = useTheme();
 
     return (
-        <div>
+        <Paper sx={paperStyle(theme)}>
             <div style={{display: 'flex' ,justifyContent: 'space-between', marginBottom:"20px", marginTop:"10px"}}>
                 <CustomChip label="위험" sx={{backgroundColor:"#EF3826"}}/>
                 <CustomChip label="혼잡" sx={{backgroundColor:"#FFA756"}}/>
@@ -23,7 +31,7 @@ const VideoCardListArea = ({ alerts }) => {
             <div>
                 <List sx={{ height: 'calc(100% - 52px)', overflow: 'auto' }}>
                   {alerts.map(alert => (
-                    <CustomListItem key={alert.id} button>
+                    <CustomListItem key={alert.id} onClick={() => onSelect(alert)} button>
                       <Typography variant="body2" sx={{ color: theme.palette.primary.main, marginBottom: 1 }}>
                         {alert.time}
                       </Typography>
@@ -37,7 +45,7 @@ const VideoCardListArea = ({ alerts }) => {
                   ))}
                 </List>
             </div>
-        </div>
+        </Paper>
     );
 }
 
