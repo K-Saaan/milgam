@@ -16,7 +16,7 @@ const ResetPasswordForm = ({ marginBottom }) => {
         alignItems: 'center',
         justifyContent: 'center',
         margin: 'auto',
-        height: '100%',
+        height: '75vh',
     };
 
     const onLogIn = async (data) => {

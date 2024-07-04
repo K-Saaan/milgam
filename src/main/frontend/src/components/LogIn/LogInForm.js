@@ -23,7 +23,7 @@ const LogInForm = ({ marginBottom }) => {
         alignItems: 'center',
         justifyContent: 'center',
         margin: 'auto',
-        height: '100%',
+        height: '75vh',
     };
 
     //회원가입 이동

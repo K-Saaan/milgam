@@ -20,9 +20,13 @@ function UploadVideo(){
     return (
         <DashBackground name={"분석 결과"}
             contents={
-                <div style={{ display: 'grid', gridTemplateColumns: '7fr 3fr' }}>
-                    <VideoContentArea selectedItem={selectedItem}/>
-                    <VideoCardListArea alerts={alerts} onSelect={handleSelect} selectedItem={selectedItem}/>
+                <div style={{ display: 'grid', gridTemplateColumns: '7fr 3fr', gap: '10px'}}>
+                    <div style={{ display: 'grid', gap: '10px' }}>
+                        <VideoContentArea selectedItem={selectedItem}/>
+                    </div>
+                    <div style={{ display: 'grid', gap: '10px', minWidth: '300px' }}>
+                        <VideoCardListArea alerts={alerts} onSelect={handleSelect} selectedItem={selectedItem}/>
+                    </div>
                 </div>
             }
         />

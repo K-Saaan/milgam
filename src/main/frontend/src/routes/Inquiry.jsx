@@ -1,10 +1,11 @@
 import React from 'react';
 import InquiryBoard from '../components/Inquery/InqueryBoard';
+import Background from "../components/Background"
 
 const Inquiry = () => {
   return (
     <>
-      <InquiryBoard />
+      <Background name={"문의 목록"} contents={<InquiryBoard />}/>
     </>
   );
 };

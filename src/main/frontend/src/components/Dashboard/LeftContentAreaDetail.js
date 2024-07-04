@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 const paperStyle = (theme) => ({
   flexGrow: 1,
   padding: 2,
-  bgcolor: theme.palette.secondary.main,
+  backgroundColor: theme.palette.background.paper,
   color: theme.palette.text.primary,
   height: '520px',
   borderRadius: 2,

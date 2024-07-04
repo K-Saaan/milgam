@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RegisterAlert from './RegisterAlert';
 import ReplyAlert from './ReplyAlert';
@@ -14,18 +14,6 @@ const inquiries = [
 const containerStyle = {
   width: '100%',
   padding: 3,
-};
-
-const titleStyle = {
-  mb: 4,
-  color: 'white',
-};
-
-const paperStyle = {
-  padding: 3,
-  borderRadius: 2,
-  backgroundColor: '#273142',
-  color: 'white',
 };
 
 const headerStyle = {
@@ -68,10 +56,6 @@ const InquiryBoard = () => {
 
   return (
     <Box sx={containerStyle}>
-      <Typography variant="h4" sx={titleStyle}>
-        문의하기
-      </Typography>
-      <Paper sx={paperStyle}>
         <Box sx={headerStyle}>
           <Typography variant="h6">내 문의목록</Typography>
           <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleClickOpenRegister}>
@@ -103,7 +87,6 @@ const InquiryBoard = () => {
             </TableBody>
           </Table>
         </TableContainer>
-      </Paper>
       {selectedInquiry && <ReplyAlert open={openReply} handleClose={handleCloseReply} inquiry={selectedInquiry} />}
     </Box>
   );

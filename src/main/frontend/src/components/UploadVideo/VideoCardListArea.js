@@ -1,13 +1,11 @@
 import React from "react";
 
-import { Box, Typography, List, Divider, useTheme, Paper } from '@mui/material';
+import { Box, Typography, List, Divider, useTheme, Container } from '@mui/material';
 import CustomChip from "./CustomChip.js";
 import CustomListItem from "../Styles/CustomListItem.js";
 import MailIcon from '@mui/icons-material/Mail';
 
 const paperStyle = (theme) => ({
-  flex: 3,
-  height: '100%',
   padding: 2,
   backgroundColor: theme.palette.background.paper,
   color: theme.palette.text.primary,
@@ -37,7 +35,7 @@ const VideoCardListArea = ({ alerts, onSelect, selectedItem }) => {
     const theme = useTheme();
 
     return (
-        <Paper sx={paperStyle(theme)}>
+        <Container sx={paperStyle(theme)}>
             <div style={{display: 'flex' ,justifyContent: 'space-between', marginBottom:"20px", marginTop:"10px"}}>
                 <CustomChip label="위험" sx={{backgroundColor:"#EF3826"}}/>
                 <CustomChip label="혼잡" sx={{backgroundColor:"#FFA756"}}/>
@@ -63,7 +61,7 @@ const VideoCardListArea = ({ alerts, onSelect, selectedItem }) => {
                   ))}
                 </List>
             </div>
-        </Paper>
+        </Container>
     );
 }
 

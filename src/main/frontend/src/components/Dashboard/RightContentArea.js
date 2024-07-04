@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Paper, Typography, List, ListItem } from '@mui/material';
+import { Box, Paper, Typography, List } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import MailIcon from '@mui/icons-material/Mail'; 
@@ -15,7 +15,7 @@ const containerStyle = {
 const paperStyle = (theme) => ({
   height: '100%',
   padding: 2,
-  bgcolor: theme.palette.secondary.main,
+  bgcolor: theme.palette.background.paper,
   color: theme.palette.text.primary,
   borderRadius: 2,
 });
