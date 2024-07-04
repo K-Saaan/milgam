@@ -9,14 +9,14 @@ import org.springframework.data.repository.query.Param;
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
-
+@Data
 @Getter
 @Entity
 @Builder
 @DynamicUpdate
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "users", schema="public")
+@Table(name = "users", schema = "public")
 public class UserEntity {
 
     @Id
@@ -67,16 +67,21 @@ public class UserEntity {
 
 
     @Transactional
-    public void updatePermissionYn(Timestamp permission_date){
+    public void updatePermissionYn(Timestamp permission_date) {
         this.permission_yn = true;
-        this.permission_date=permission_date;
+        this.permission_date = permission_date;
         //this.admin_index=1; 나중에 세션값으로 바꿔야함
 
     }
 
 
-    public UserEntity(String id, String pw, String name, String email) {
+    @Builder
+    public UserEntity(String id, String pw, String name, String email, String role_index) {
         this.id = id;
+        this.pw = pw;
+        this.name = name;
+        this.email = email;
+        this.role_index = role_index;
     }
 }
 
