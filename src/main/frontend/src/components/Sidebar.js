@@ -57,7 +57,6 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
     { path: '/login', text: '로그인', icon: <InboxIcon /> },
     { path: '/inquiry', text: '문의 게시판', icon: <InboxIcon /> }, 
     { path: '/logout', text: '로그아웃', icon: <InboxIcon />, action: handleLogoutClick },
-  ]
   ];
 
   // user 상단 메뉴
