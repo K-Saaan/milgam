@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RegisterAlert from './RegisterAlert';
 import ReplyAlert from './ReplyAlert';
@@ -81,12 +81,7 @@ const InquiryBoard = () => {
 
   return (
     <Box sx={containerStyle}>
-      {/* 제목 */}
-      <Typography variant="h4" sx={titleStyle}>
-        문의하기
-      </Typography>
       {/* 내용 */}
-      <Paper sx={paperStyle}>
         <Box sx={headerStyle}>
           <Typography variant="h6">내 문의목록</Typography>
           {/* 새 문의 버튼 */}
@@ -119,7 +114,6 @@ const InquiryBoard = () => {
             </TableBody>
           </Table>
         </TableContainer>
-      </Paper>
       {/* 등록 다이얼로그 */}
       <RegisterAlert open={openRegister} handleClose={handleCloseRegister} />
       {/* 답변 다이얼로그 */}

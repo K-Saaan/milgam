@@ -9,19 +9,17 @@ import Stack from '@mui/material/Stack';
 const AdminLogInForm = ({ marginBottom }) => {
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const [alertOpen, setOpen] = React.useState(false);
 
     const formSx = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        margin: '50px',
+        margin: 'auto',
+        height: '75vh',
     };
 
     const onLogIn = async (data) => {
         const { userId, password } = data;
-        setOpen(true);
-
         /*if (userId && password) {
             try {
                 const res = await axiosInstance.post(`/com/logIn`, { userId, password });
@@ -71,7 +69,6 @@ const AdminLogInForm = ({ marginBottom }) => {
             <div>
                 <LongButton type="submit" variant="contained">로그인</LongButton>
             </div>
-            {/*<AccountLockAlert alertOpen={alertOpen} handleClose={handleClose} />*/}
         </Stack>
     );
 };

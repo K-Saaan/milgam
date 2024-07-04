@@ -14,7 +14,8 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Logout from "./Logout.js";
 
 const drawerWidth = 240;
 
@@ -30,6 +31,19 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 // Sidebar 컴포넌트 정의
 const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
   const theme = useTheme();
+  const [logoutModalOpen, setLogoutModalOpen] = React.useState(false);
+  const navigate = useNavigate();
+
+  const handleLogoutClick = () => {
+      setLogoutModalOpen(true);
+    };
+  const handleLogoutClose = () => {
+    setLogoutModalOpen(false);
+  };
+  const handleLogout = () => {
+      setLogoutModalOpen(false);
+      navigate('/login');
+  };
 
   // admin 메뉴
   const adminMenuItems = [
@@ -42,6 +56,8 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
     { path: '/faq', text: 'FAQ', icon: <InboxIcon /> },
     { path: '/login', text: '로그인', icon: <InboxIcon /> },
     { path: '/inquiry', text: '문의 게시판', icon: <InboxIcon /> }, 
+    { path: '/logout', text: '로그아웃', icon: <InboxIcon />, action: handleLogoutClick },
+  ]
   ];
 
   // user 상단 메뉴
@@ -53,6 +69,7 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
   const topMenuItems = isAdmin ? adminMenuItems : userTopMenuItems;
 
   return (
+    <>
     <Drawer
       sx={{
         width: drawerWidth,
@@ -94,7 +111,11 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
           <List sx={{ position: 'absolute', bottom: '0', width: '100%' }}>
             {userBottomMenuItems.map((item) => (
               <ListItem key={item.text} disablePadding style={{ marginTop: '8px' }}>
-                <ListItemButton component={Link} to={item.path} onClick={handleDrawerClose}>
+                <ListItemButton
+                    component={item.path !== '/logout' ? Link : 'button'}
+                    to={item.path !== '/logout' ? item.path : undefined}
+                    onClick={item.action || handleDrawerClose}
+                >
                   <ListItemIcon>
                     {item.icon}
                   </ListItemIcon>
@@ -106,6 +127,9 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
         </>
       )}
     </Drawer>
+
+    <Logout alertOpen={logoutModalOpen} handleClose={handleLogoutClose} handleLogout={handleLogout}/>
+    </>
   );
 };
 
