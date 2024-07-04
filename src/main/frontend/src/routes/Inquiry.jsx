@@ -1,5 +1,5 @@
 import React from 'react';
-import InquiryBoard from '../components/Inquery/InqueryBoard';
+import InquiryBoard from '../components/Inquiry/InquiryBoard';
 
 const Inquiry = () => {
   return (
