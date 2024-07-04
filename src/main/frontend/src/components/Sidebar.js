@@ -10,6 +10,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Link } from 'react-router-dom';
@@ -26,17 +28,24 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 // Sidebar 컴포넌트 정의
-const Sidebar = ({ open, handleDrawerClose }) => {
+const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
   const theme = useTheme();
 
-  const menuItems = [
-    { path: '/dashboard', text: '대시보드', icon: <InboxIcon /> },
+  const adminMenuItems = [
+    { path: '/admin/approval', text: '회원가입 승인', icon: <PersonAddIcon /> },
+    { path: '/admin/replyinquiry', text: '문의 답변', icon: <QuestionAnswerIcon /> },
+  ];
+
+  const userMenuItems = [
+    { path: '/dashboard', text: '대시보드', icon: <DashboardIcon /> },
     { path: '/uploadvideo', text: '영상 업로드', icon: <InboxIcon /> },
     { path: '/faq', text: 'FAQ', icon: <InboxIcon /> },
     { path: '/login', text: '로그인', icon: <InboxIcon /> },
     { path: '/inquiry', text: '문의 게시판', icon: <InboxIcon /> }, 
     // { path: '/logout', text: '로그아웃', icon: <InboxIcon /> }, 
   ]
+
+  const menuItems = isAdmin ? adminMenuItems : userMenuItems;
 
   return (
     <Drawer
@@ -63,11 +72,11 @@ const Sidebar = ({ open, handleDrawerClose }) => {
       <Divider />
       <List>
         {/* 대시보드와 영상업로드 메뉴 */}
-        {menuItems.slice(0, 2).map((item, index) => (
-          <ListItem key={item.text} disablePadding style={{ marginTop: '8px' }}>
+        {menuItems.map((item) => (
+          <ListItem key={item.text} disablePadding >
             <ListItemButton component={Link} to={item.path} onClick={handleDrawerClose}>
               <ListItemIcon>
-                {index % 2 === 0 ? <DashboardIcon /> : <InboxIcon />}
+                {item.icon}
               </ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>
