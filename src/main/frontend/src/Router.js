@@ -12,9 +12,9 @@ import VideoResult from "./routes/VideoResult";
 import LeftContentArea from "./components/Dashboard/LeftContentArea";
 import LeftContentAreaDetail from "./components/Dashboard/LeftContentAreaDetail";
 import Inquiry from "./routes/Inquiry";
-import Approval from "./components/Admin/Approval";
-import ReplyInquiry from "./components/Admin/ReplyInquiry";
-import AdminLogInForm from "./components/Admin/AdminLogInForm";
+import AdminApproval from "./routes/AdminApproval";
+import AdminReply from "./routes/AdminReply";
+import AdminLogIn from "./routes/AdminLogIn";
 import ResetPassword from "./routes/ResetPassword";
 
 const router = createBrowserRouter([
@@ -28,14 +28,14 @@ const router = createBrowserRouter([
       },
       {
         path: "adminlogin",
-        element: <AdminLogInForm />,
+        element: <AdminLogIn />,
       },
       {
         path: "admin",
         element: <Admin />,
         children: [
-          { path: "approval", element: <Approval /> },
-          { path: "replyinquiry", element: <ReplyInquiry /> }
+          { path: "approval", element: <AdminApproval /> },
+          { path: "replyinquiry", element: <AdminReply /> }
         ]
       },
       {

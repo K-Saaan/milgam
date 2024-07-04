@@ -96,7 +96,6 @@ const ReplyInquiry = () => {
 
     return (
         <div>
-            <h1>문의 답변</h1>
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>

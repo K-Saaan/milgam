@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import FaqItem from './FaqItem';
 
 const questions = [
@@ -19,10 +19,7 @@ function FaqContent() {
   };
 
   return (
-    <Box sx={{ width: '100%', maxWidth: '800px', margin: 'auto', mt: 5 }}>
-      <Typography variant="h4" sx={{ mb: 4, color: 'white' }}>
-        FAQ
-      </Typography>
+    <Box sx={{ width: '100%' }}>
       {questions.map((item, index) => (
         <FaqItem 
           key={index} 

@@ -84,9 +84,6 @@ const ReplyInquiry = () => {
 
   return (
     <>
-        <div>
-            <h1>회원가입 승인</h1>
-        </div>
         <CustomTableContainer component={Paper}>
         <Table>
             <CustomTableHead>
