@@ -33,6 +33,7 @@ public class AdminService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private final LoginRepository loginRepository;
     private final MyqRepository myqRepository;
+
     public List<UserEntity> showAllUser(){
         List<UserEntity> userList = loginRepository.findAll();
         return userList;
@@ -79,7 +80,7 @@ public class AdminService {
         }
     }
 
-    @Autowired
+
     public List<PermissionList> permissionList() {
         List<UserEntity> userList = loginRepository.findAll();
         List<PermissionList> answer = new ArrayList<>();
