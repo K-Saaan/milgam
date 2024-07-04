@@ -12,7 +12,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logout from "./Logout.js";
 
 const drawerWidth = 240;
@@ -30,12 +30,17 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 const Sidebar = ({ open, handleDrawerClose }) => {
   const theme = useTheme();
   const [logoutModalOpen, setLogoutModalOpen] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleLogoutClick = () => {
       setLogoutModalOpen(true);
     };
   const handleLogoutClose = () => {
     setLogoutModalOpen(false);
+  };
+  const handleLogout = () => {
+      setLogoutModalOpen(false);
+      navigate('/login');
   };
 
   const menuItems = [
@@ -104,7 +109,7 @@ const Sidebar = ({ open, handleDrawerClose }) => {
       </List>
     </Drawer>
 
-    <Logout alertOpen={logoutModalOpen} handleClose={handleLogoutClose} />
+    <Logout alertOpen={logoutModalOpen} handleClose={handleLogoutClose} handleLogout={handleLogout}/>
     </>
   );
 };

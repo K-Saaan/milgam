@@ -12,10 +12,11 @@ const paperStyle = (theme) => ({
   flex: 3,
   height: '100%',
   padding: 2,
-  bgcolor: theme.palette.secondary.main,
+  backgroundColor: theme.palette.background.paper,
   color: theme.palette.text.primary,
   borderRadius: 2,
-  margin: 2,
+  marginRight: 2,
+  minHeight: '75vh',
 });
 
 const VideoContentArea = ({ playList, index, selectedItem }) => {
