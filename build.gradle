@@ -75,6 +75,9 @@ dependencies {
      // Etc
     implementation 'commons-io:commons-io:2.8.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    //email
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 tasks.named('test') {
