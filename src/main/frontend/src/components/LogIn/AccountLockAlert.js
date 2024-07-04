@@ -8,28 +8,38 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import CloseIcon from '@mui/icons-material/Close';
+import { useTheme } from '@mui/material/styles';
 
 
-const titleStyle = {
-    color: "#FFFFFF",
+// 타이틀 스타일 정의
+const cTitleStyle = (theme) => ({
+    color: theme.palette.text.primary,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
     margin: "5px",
     fontSize: "15px"
-}
-
+});
+// 내용 정렬
 const actionStyle = {
-    position: 'absolute',
-    right: '10px',
-    top: '50%',
-    transform: 'translateY(-50%)',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
 }
+// 글씨 스타일 정의
+const cTextStyle = (theme) => ({
+    color: theme.palette.text.primary,
+    textAlign: "center",
+    fontSize: "14px"
+});
 
-const textStyle = {color: "#FFFFFF", textAlign: "center", fontSize: "14px"}
-
+// 계정 잠금 때 띄움
 const AccountLockAlert = ({ alertOpen, handleClose }) => {
+    const theme = useTheme();
+    const titleStyle = cTitleStyle(theme);
+    const textStyle = cTextStyle(theme);
+
     return (
         <Dialog
             open={alertOpen}
@@ -47,6 +57,7 @@ const AccountLockAlert = ({ alertOpen, handleClose }) => {
             <DialogTitle id="alert-dialog-title" style={titleStyle}>
                 {"알림"}
                 <DialogActions style={actionStyle}>
+                    {/* 부모에 있는 함수 실행하여 닫음 */}
                     <IconButton onClick={handleClose} style={{color: "white"}}>
                         <CloseIcon/>
                     </IconButton>

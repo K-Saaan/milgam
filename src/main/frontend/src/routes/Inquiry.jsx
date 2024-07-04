@@ -5,7 +5,7 @@ import InquiryBoard from '../components/Inquiry/InquiryBoard';
 const Inquiry = () => {
   return (
     <>
-      <Background name={"문의 목록"} contents={<InquiryBoard />}/>
+      <Background name={"문의"} contents={<InquiryBoard />}/>
     </>
   );
 };

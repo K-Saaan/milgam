@@ -14,9 +14,15 @@ const DashBackground = (props) => {
         flex: 1,
       }}
     >
-      <Container sx={{backgroundColor: 'transparent', margin: 0, padding: "16px", paddingTop: "32px"}}>
+      {/* 헤더 부분 */}
+      <Container
+        sx={{
+            backgroundColor: 'transparent', margin: 0,
+            padding: "16px", paddingTop: "32px", paddingBottom: "32px"
+        }}>
         <h1 style={{margin: "0px", paddingLeft:"16px"}}>{props.name}</h1>
       </Container>
+      {/* 내용 부분 */}
       <Container
         style={{
             backgroundColor: 'transparent',

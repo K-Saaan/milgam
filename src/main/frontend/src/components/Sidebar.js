@@ -34,14 +34,18 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
   const [logoutModalOpen, setLogoutModalOpen] = React.useState(false);
   const navigate = useNavigate();
 
+  // 로그아웃 팝업 열기
   const handleLogoutClick = () => {
       setLogoutModalOpen(true);
     };
+  // 로그아웃 취소
   const handleLogoutClose = () => {
     setLogoutModalOpen(false);
   };
+  // 로그아웃 처리
   const handleLogout = () => {
       setLogoutModalOpen(false);
+      //처리 코드가 들어갈 부분
       navigate('/login');
   };
 
@@ -111,6 +115,7 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
             {userBottomMenuItems.map((item) => (
               <ListItem key={item.text} disablePadding style={{ marginTop: '8px' }}>
                 <ListItemButton
+                    //로그아웃 선택 시 Link 로 이동하는 대신 팝업을 띄우도록 조건 설정
                     component={item.path !== '/logout' ? Link : 'button'}
                     to={item.path !== '/logout' ? item.path : undefined}
                     onClick={item.action || handleDrawerClose}
@@ -127,6 +132,7 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
       )}
     </Drawer>
 
+    {/* 로그아웃 창 */}
     <Logout alertOpen={logoutModalOpen} handleClose={handleLogoutClose} handleLogout={handleLogout}/>
     </>
   );
