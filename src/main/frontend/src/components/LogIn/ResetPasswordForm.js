@@ -1,9 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import LongButton from "../Styles/LongButton.js";
-import SignupButton from "./SignupButton.js";
 import CustomTextField from '../Styles/CustomTextField.js';
 
 import Stack from '@mui/material/Stack';
@@ -11,15 +9,14 @@ import Stack from '@mui/material/Stack';
 const ResetPasswordForm = ({ marginBottom }) => {
     const navigate = useNavigate();
     const { register, handleSubmit, watch, formState: { errors } } = useForm({mode: "onChange"});
-    const [alertOpen, setOpen] = React.useState(false);
     const pwd = watch("pw");
-    const pwdCheck = watch("pwCheck");
 
     const formSx = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        margin: '50px',
+        margin: 'auto',
+        height: '75vh',
     };
 
     const onLogIn = async (data) => {
@@ -55,13 +52,13 @@ const ResetPasswordForm = ({ marginBottom }) => {
                     type="password"
                     {...register("pw", {
                         required: "새로 설정할 비밀번호를 입력해주세요." ,
+                        pattern: {
+                            value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
+                            message: '영어 대소문자, 숫자, 특수문자를 포함시켜주세요.',
+                        },
                         minLength: {
                           value: 8,
                           message: '8글자 이상 입력해주세요.',
-                        },
-                        pattern: {
-                          value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
-                          message: '영어 대소문자, 숫자, 특수문자를 포함시켜주세요.',
                         },
                     })}
                     inputProps={{ maxLength: 30 }}

@@ -4,18 +4,17 @@ import "./VideoContentArea.css";
 import VideoCard from "./VideoCard.js";
 
 import { useTheme } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
+import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 
 
 const paperStyle = (theme) => ({
-  flex: 3,
-  height: '100%',
   padding: 2,
-  bgcolor: theme.palette.secondary.main,
+  backgroundColor: theme.palette.background.paper,
   color: theme.palette.text.primary,
   borderRadius: 2,
-  margin: 2,
+  marginRight: 2,
+  minHeight: '75vh',
 });
 
 const VideoContentArea = ({ playList, index, selectedItem }) => {
@@ -35,7 +34,7 @@ const VideoContentArea = ({ playList, index, selectedItem }) => {
     }, [selectedItem]);
 
     return (
-        <Paper sx={paperStyle(theme)}>
+        <Container sx={paperStyle(theme)}>
             <div className="v-cont">
                 <VideoCard video={state.video} playerRef={playerRef}/>
                 <div>{state.detail}</div>
@@ -49,7 +48,7 @@ const VideoContentArea = ({ playList, index, selectedItem }) => {
                     }
                 </div>
             </div>
-        </Paper>
+        </Container>
     );
 }
 

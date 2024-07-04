@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import VideoContentArea from "../components/UploadVideo/VideoContentArea.js";
 import VideoCardListArea from "../components/UploadVideo/VideoCardListArea.js";
+import DashBackground from "../components/DashBackground.js";
 
 function UploadVideo(){
     // 알림 목록
@@ -17,15 +18,18 @@ function UploadVideo(){
     };
 
     return (
-        <>
-            <div style={{margin:"20px"}}>
-                <h1>분석 결과</h1>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '7fr 3fr' }}>
-                <VideoContentArea selectedItem={selectedItem}/>
-                <VideoCardListArea alerts={alerts} onSelect={handleSelect}/>
-            </div>
-        </>
+        <DashBackground name={"분석 결과"}
+            contents={
+                <div style={{ display: 'grid', gridTemplateColumns: '7fr 3fr', gap: '10px'}}>
+                    <div style={{ display: 'grid', gap: '10px' }}>
+                        <VideoContentArea selectedItem={selectedItem}/>
+                    </div>
+                    <div style={{ display: 'grid', gap: '10px', minWidth: '300px' }}>
+                        <VideoCardListArea alerts={alerts} onSelect={handleSelect} selectedItem={selectedItem}/>
+                    </div>
+                </div>
+            }
+        />
       );
 }
 

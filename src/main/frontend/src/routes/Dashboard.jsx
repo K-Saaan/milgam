@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import RightContentArea from '../components/Dashboard/RightContentArea';
 import { Outlet, useLocation } from 'react-router-dom';
+import DashBackground from "../components/DashBackground.js";
 
 const Dashboard = () => {
   const [selectedAlert, setSelectedAlert] = useState(null); // 선택된 알림을 관리하는 상태
@@ -25,21 +26,22 @@ const Dashboard = () => {
   ];
 
   return (
-    <>
-      <div>
-        <h1>Dashboard</h1>
-      </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '7fr 3fr', gap: '20px' }}>
-        {/* 좌측 콘텐츠 영역 */}
-        <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: '20px' }}>
-          <Outlet />
-        </div>
-        {/* 우측 알림 리스트 */}
-        <div style={{ display: 'grid', gap: '20px', minWidth: '300px' }}>
-          <RightContentArea alerts={alerts} handleAlertClick={handleAlertClick} selectedAlert={selectedAlert} />
-        </div>
-      </div>
-    </>
+    <DashBackground name={"대시보드"}
+        contents={
+            <>
+              <div style={{ display: 'grid', gridTemplateColumns: '7fr 3fr', gap: '20px' }}>
+                {/* 좌측 콘텐츠 영역 */}
+                <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: '20px' }}>
+                  <Outlet />
+                </div>
+                {/* 우측 알림 리스트 */}
+                <div style={{ display: 'grid', gap: '20px', minWidth: '300px' }}>
+                  <RightContentArea alerts={alerts} handleAlertClick={handleAlertClick} selectedAlert={selectedAlert} />
+                </div>
+              </div>
+          </>
+      }
+    />
   );
 }
 

@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 spring:
   thymeleaf:
     cache: false
@@ -27,13 +30,14 @@ spring:
     console:
       enabled: false
 logging:
-  level:
-    root: info
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql: trace
+  logging:
+    config: classpath:logback/logback.xml
 
-key:
-  "1234"
+# 로그인 실패 횟수
+login:
+  fail:
+    limit : 5
+
+# 파일 경로
+file_path:
+  video_path: /video/upload

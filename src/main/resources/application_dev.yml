@@ -1,4 +1,7 @@
 spring:
+  config:
+    activate:
+      on-profile: dev
   thymeleaf:
     cache: false
   mvc:
@@ -6,7 +9,6 @@ spring:
       prefix: /WEB-INF/views/
       suffix: .jsp
     static-path-pattern: /static/**
-  profiles: dev
   include: devsecret
   web:
     resources:
