@@ -10,7 +10,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import Sidebar from './Sidebar'; 
 
-export default function Topbar( isAdmin ) {
+function Topbar({ isAdmin }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false); // 사이드바 상태 관리
 
@@ -106,3 +106,5 @@ export default function Topbar( isAdmin ) {
     </Box>
   );
 }
+
+export default Topbar;

@@ -31,21 +31,26 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
   const theme = useTheme();
 
+  // admin 메뉴
   const adminMenuItems = [
     { path: '/admin/approval', text: '회원가입 승인', icon: <PersonAddIcon /> },
     { path: '/admin/replyinquiry', text: '문의 답변', icon: <QuestionAnswerIcon /> },
   ];
 
-  const userMenuItems = [
-    { path: '/dashboard', text: '대시보드', icon: <DashboardIcon /> },
-    { path: '/uploadvideo', text: '영상 업로드', icon: <InboxIcon /> },
+  // user 하단 메뉴
+  const userBottomMenuItems = [
     { path: '/faq', text: 'FAQ', icon: <InboxIcon /> },
     { path: '/login', text: '로그인', icon: <InboxIcon /> },
     { path: '/inquiry', text: '문의 게시판', icon: <InboxIcon /> }, 
-    // { path: '/logout', text: '로그아웃', icon: <InboxIcon /> }, 
-  ]
+  ];
 
-  const menuItems = isAdmin ? adminMenuItems : userMenuItems;
+  // user 상단 메뉴
+  const userTopMenuItems = [
+    { path: '/dashboard', text: '대시보드', icon: <DashboardIcon /> },
+    { path: '/uploadvideo', text: '영상 업로드', icon: <InboxIcon /> },
+  ];
+
+  const topMenuItems = isAdmin ? adminMenuItems : userTopMenuItems;
 
   return (
     <Drawer
@@ -72,7 +77,7 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
       <Divider />
       <List>
         {/* 대시보드와 영상업로드 메뉴 */}
-        {menuItems.map((item) => (
+        {topMenuItems.map((item) => (
           <ListItem key={item.text} disablePadding >
             <ListItemButton component={Link} to={item.path} onClick={handleDrawerClose}>
               <ListItemIcon>
@@ -83,20 +88,23 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
           </ListItem>
         ))}
       </List>
-      <Divider />
-      <List sx={{ position: 'absolute', bottom: '0', width: '100%' }}>
-        {/* FAQ, 1:1 문의, 로그아웃 메뉴 */}
-        {menuItems.slice(2).map((item) => (
-          <ListItem key={item.text} disablePadding style={{ marginTop: '8px' }}>
-            <ListItemButton component={Link} to={item.path} onClick={handleDrawerClose}>
-              <ListItemIcon>
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText primary={item.text} sx={{ marginLeft: '16px' }}/>
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      {!isAdmin && (
+        <>
+          <Divider />
+          <List sx={{ position: 'absolute', bottom: '0', width: '100%' }}>
+            {userBottomMenuItems.map((item) => (
+              <ListItem key={item.text} disablePadding style={{ marginTop: '8px' }}>
+                <ListItemButton component={Link} to={item.path} onClick={handleDrawerClose}>
+                  <ListItemIcon>
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={item.text} sx={{ marginLeft: '16px' }}/>
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </>
+      )}
     </Drawer>
   );
 };
