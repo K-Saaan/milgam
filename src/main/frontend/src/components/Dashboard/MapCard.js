@@ -6,7 +6,7 @@ import { useTheme } from '@mui/material/styles';
 const paperStyle = (theme) => ({
   flexGrow: 1,
   padding: 2,
-  bgcolor: theme.palette.secondary.main,
+  bgcolor: theme.palette.background.paper,
   color: theme.palette.text.primary,
   height: '380px',
   borderRadius: 2,

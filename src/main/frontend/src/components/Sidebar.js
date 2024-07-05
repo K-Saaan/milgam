@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
+import Backdrop from '@mui/material/Backdrop';
 import IconButton from '@mui/material/IconButton';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
@@ -10,9 +11,12 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Logout from "./Logout.js";
 
 const drawerWidth = 240;
 
@@ -26,19 +30,51 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 // Sidebar 컴포넌트 정의
-const Sidebar = ({ open, handleDrawerClose }) => {
+const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
   const theme = useTheme();
+  const [logoutModalOpen, setLogoutModalOpen] = React.useState(false);
+  const navigate = useNavigate();
 
-  const menuItems = [
-    { path: '/dashboard', text: '대시보드', icon: <InboxIcon /> },
-    { path: '/uploadvideo', text: '영상 업로드', icon: <InboxIcon /> },
+  // 로그아웃 팝업 열기
+  const handleLogoutClick = () => {
+      setLogoutModalOpen(true);
+    };
+  // 로그아웃 취소
+  const handleLogoutClose = () => {
+    setLogoutModalOpen(false);
+  };
+  // 로그아웃 처리
+  const handleLogout = () => {
+      setLogoutModalOpen(false);
+      //처리 코드가 들어갈 부분
+      navigate('/login');
+  };
+
+  // admin 메뉴
+  const adminMenuItems = [
+    { path: '/admin/approval', text: '회원가입 승인', icon: <PersonAddIcon /> },
+    { path: '/admin/replyinquiry', text: '문의 답변', icon: <QuestionAnswerIcon /> },
+  ];
+
+  // user 하단 메뉴
+  const userBottomMenuItems = [
     { path: '/faq', text: 'FAQ', icon: <InboxIcon /> },
     { path: '/login', text: '로그인', icon: <InboxIcon /> },
     { path: '/inquiry', text: '문의 게시판', icon: <InboxIcon /> }, 
-    // { path: '/logout', text: '로그아웃', icon: <InboxIcon /> }, 
-  ]
+    { path: '/logout', text: '로그아웃', icon: <InboxIcon />, action: handleLogoutClick },
+  ];
+
+  // user 상단 메뉴
+  const userTopMenuItems = [
+    { path: '/dashboard', text: '대시보드', icon: <DashboardIcon /> },
+    { path: '/uploadvideo', text: '영상 업로드', icon: <InboxIcon /> },
+  ];
+
+  const topMenuItems = isAdmin ? adminMenuItems : userTopMenuItems;
 
   return (
+    <>
+    <Backdrop open={open} onClick={handleDrawerClose} />
     <Drawer
       sx={{
         width: drawerWidth,
@@ -63,32 +99,44 @@ const Sidebar = ({ open, handleDrawerClose }) => {
       <Divider />
       <List>
         {/* 대시보드와 영상업로드 메뉴 */}
-        {menuItems.slice(0, 2).map((item, index) => (
-          <ListItem key={item.text} disablePadding style={{ marginTop: '8px' }}>
+        {topMenuItems.map((item) => (
+          <ListItem key={item.text} disablePadding >
             <ListItemButton component={Link} to={item.path} onClick={handleDrawerClose}>
               <ListItemIcon>
-                {index % 2 === 0 ? <DashboardIcon /> : <InboxIcon />}
+                {item.icon}
               </ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
-      <Divider />
-      <List sx={{ position: 'absolute', bottom: '0', width: '100%' }}>
-        {/* FAQ, 1:1 문의, 로그아웃 메뉴 */}
-        {menuItems.slice(2).map((item) => (
-          <ListItem key={item.text} disablePadding style={{ marginTop: '8px' }}>
-            <ListItemButton component={Link} to={item.path} onClick={handleDrawerClose}>
-              <ListItemIcon>
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText primary={item.text} sx={{ marginLeft: '16px' }}/>
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      {!isAdmin && (
+        <>
+          <Divider />
+          <List sx={{ position: 'absolute', bottom: '0', width: '100%' }}>
+            {userBottomMenuItems.map((item) => (
+              <ListItem key={item.text} disablePadding style={{ marginTop: '8px' }}>
+                <ListItemButton
+                    //로그아웃 선택 시 Link 로 이동하는 대신 팝업을 띄우도록 조건 설정
+                    component={item.path !== '/logout' ? Link : 'button'}
+                    to={item.path !== '/logout' ? item.path : undefined}
+                    onClick={item.action || handleDrawerClose}
+                >
+                  <ListItemIcon>
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={item.text} sx={{ marginLeft: '16px' }}/>
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </>
+      )}
     </Drawer>
+
+    {/* 로그아웃 창 */}
+    <Logout alertOpen={logoutModalOpen} handleClose={handleLogoutClose} handleLogout={handleLogout}/>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RegisterAlert from './RegisterAlert';
 import ReplyAlert from './ReplyAlert';
@@ -11,16 +11,19 @@ const inquiries = [
   { id: 3, category: '', title: 'Iphone X', status: '완료', inquiryDate: '2024-06-15', replyDate: '2024-06-25' },
 ];
 
+// 컨테이너 스타일
 const containerStyle = {
   width: '100%',
   padding: 3,
 };
 
+// 제목 스타일
 const titleStyle = {
   mb: 4,
   color: 'white',
 };
 
+// Paper 스타일 (둥근 네모)
 const paperStyle = {
   padding: 3,
   borderRadius: 2,
@@ -28,6 +31,7 @@ const paperStyle = {
   color: 'white',
 };
 
+// 헤더 스타일
 const headerStyle = {
   display: 'flex',
   justifyContent: 'space-between',
@@ -35,32 +39,41 @@ const headerStyle = {
   mb: 2,
 };
 
+// 테이블 헤더 스타일
 const tableHeaderStyle = {
   color: 'white',
 };
 
+// 테이블 셀 스타일
 const tableCellStyle = {
   color: 'white',
 };
 
 const InquiryBoard = () => {
+  // 등록 다이얼로그 열림 상태 관리
   const [openRegister, setOpenRegister] = useState(false);
+  // 답변 다이얼로그 열림 상태 관리
   const [openReply, setOpenReply] = useState(false);
+  // 선택된 문의 관리
   const [selectedInquiry, setSelectedInquiry] = useState(null);
 
+  // 등록 다이얼로그 열기
   const handleClickOpenRegister = () => {
     setOpenRegister(true);
   };
 
+  // 등록 다이얼로그 닫기
   const handleCloseRegister = () => {
     setOpenRegister(false);
   };
 
+  // 답변 다이얼로그 열기
   const handleClickOpenReply = (inquiry) => {
     setSelectedInquiry(inquiry);
     setOpenReply(true);
   };
 
+  // 답변 다이얼로그 닫기
   const handleCloseReply = () => {
     setOpenReply(false);
     setSelectedInquiry(null);
@@ -68,16 +81,13 @@ const InquiryBoard = () => {
 
   return (
     <Box sx={containerStyle}>
-      <Typography variant="h4" sx={titleStyle}>
-        문의하기
-      </Typography>
-      <Paper sx={paperStyle}>
+      {/* 내용 */}
         <Box sx={headerStyle}>
           <Typography variant="h6">내 문의목록</Typography>
+          {/* 새 문의 버튼 */}
           <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleClickOpenRegister}>
             새 문의
           </Button>
-          <RegisterAlert open={openRegister} handleClose={handleCloseRegister} />
         </Box>
         <TableContainer>
           <Table>
@@ -92,6 +102,7 @@ const InquiryBoard = () => {
             </TableHead>
             <TableBody>
               {inquiries.map((inquiry) => (
+                // 각 문의 항목을 클릭하면 답변 다이얼로그 열기
                 <TableRow key={inquiry.id} onClick={() => handleClickOpenReply(inquiry)} sx={{ cursor: 'pointer' }}>
                   <TableCell sx={tableCellStyle}>{inquiry.id}</TableCell>
                   <TableCell sx={tableCellStyle}>{inquiry.title}</TableCell>
@@ -103,7 +114,9 @@ const InquiryBoard = () => {
             </TableBody>
           </Table>
         </TableContainer>
-      </Paper>
+      {/* 등록 다이얼로그 */}
+      <RegisterAlert open={openRegister} handleClose={handleCloseRegister} />
+      {/* 답변 다이얼로그 */}
       {selectedInquiry && <ReplyAlert open={openReply} handleClose={handleCloseReply} inquiry={selectedInquiry} />}
     </Box>
   );

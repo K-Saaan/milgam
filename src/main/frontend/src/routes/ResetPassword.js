@@ -1,9 +1,10 @@
 import ResetPasswordForm from '../components/LogIn/ResetPasswordForm'
+import Background from "../components/Background"
 
 function ResetPassword(){
     return (
       <>
-        <ResetPasswordForm/ >
+        <Background name={"비밀번호 재설정"} contents={<ResetPasswordForm/ >}/>
       </>
     );
 }
