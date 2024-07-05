@@ -36,25 +36,22 @@ const LogInForm = ({ marginBottom }) => {
 
     const onLogIn = async (data) => {
         const { id, pw } = data;
-
+        console.log(data);
         if (id && pw) {
             try {
-                const res = await axios.post("Endpoint", data);
-                const { code } = res.data;
-
-                if (code === 200) {
+                const res = await axios.post("https://745d0e3c-ba8c-4122-a3db-c14acf0ed554.mock.pstmn.io/diff", data);
+                console.log(res.data);
+                if (res.data === "success") {
                     navigate('/dashboard');
-                } else if (code === 400) {
+                } else if (res.data === "diff") {
                     setPasswordError("비밀번호가 틀렸습니다.");
-                } else if (code === 401) {
+                } else if (res.data === "lock") {
                     alHandleClickOpen();
-                } else if (code === 402) {
+                } else if (res.data === "assign") {
                     npHandleClickOpen();
                 }
             } catch (error) {
                 console.error("오류가 발생하였습니다:", error);
-                //나중에 지울 부분
-                navigate('/dashboard');
             }
         }
     };

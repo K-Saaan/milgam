@@ -15,14 +15,12 @@ const Background = (props) => {
         padding: "16px",
       }}
     >
-      <Container sx={{backgroundColor: 'transparent', margin: 0, paddingBottom: "16px", paddingTop: "16px"}}>
+      {/* 헤더 부분 */}
+      <Container sx={{backgroundColor: 'transparent', margin: 0, padding: "32px", paddingTop: "16px"}}>
         <h1 style={{margin: "0px"}}>{props.name}</h1>
       </Container>
-      <Container
-        sx={{
-            minHeight: '75vh',
-        }}
-      >
+      {/* 내용 부분 */}
+      <Container sx={{minHeight: '75vh',}}>
         {props.contents}
       </Container>
     </Box>
