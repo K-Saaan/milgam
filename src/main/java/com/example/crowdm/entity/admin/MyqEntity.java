@@ -2,6 +2,7 @@ package com.example.crowdm.entity.admin;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 
 
@@ -38,5 +39,14 @@ public class MyqEntity {
     @Column(name = "admin_index")
     private Integer admin_index;
 
+
+    @Transactional
+    public void updateAnswerDate(Timestamp date, String answercontext){
+        this.admin_index=1;
+        this.answer_date=date;
+        this.answer=answercontext;
+        //this.admin_index=1; 나중에 세션값으로 바꿔야함
+
+    }
 
 }
