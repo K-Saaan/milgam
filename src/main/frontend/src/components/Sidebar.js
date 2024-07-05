@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
+import Backdrop from '@mui/material/Backdrop';
 import IconButton from '@mui/material/IconButton';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
@@ -73,6 +74,7 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
 
   return (
     <>
+    <Backdrop open={open} onClick={handleDrawerClose} />
     <Drawer
       sx={{
         width: drawerWidth,

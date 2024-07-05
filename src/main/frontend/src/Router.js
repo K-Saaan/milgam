@@ -12,10 +12,10 @@ import VideoResult from "./routes/VideoResult";
 import LeftContentArea from "./components/Dashboard/LeftContentArea";
 import LeftContentAreaDetail from "./components/Dashboard/LeftContentAreaDetail";
 import Inquiry from "./routes/Inquiry";
-import AdminApproval from "./routes/AdminApproval";
-import AdminReply from "./routes/AdminReply";
 import AdminLogIn from "./routes/AdminLogIn";
 import ResetPassword from "./routes/ResetPassword";
+import AdminApproval from "./components/Admin/Approval"
+import AdminReply from './components/Admin/ReplyInquiry'
 
 const router = createBrowserRouter([
   {
