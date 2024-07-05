@@ -39,10 +39,12 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
   const handleLogoutClick = () => {
       setLogoutModalOpen(true);
     };
+
   // 로그아웃 취소
   const handleLogoutClose = () => {
     setLogoutModalOpen(false);
   };
+  
   // 로그아웃 처리
   const handleLogout = () => {
       setLogoutModalOpen(false);
@@ -133,7 +135,6 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
         </>
       )}
     </Drawer>
-
     {/* 로그아웃 창 */}
     <Logout alertOpen={logoutModalOpen} handleClose={handleLogoutClose} handleLogout={handleLogout}/>
     </>

@@ -4,27 +4,19 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import Sidebar from './Sidebar'; 
+import { useNavigate } from 'react-router-dom';
+import Sidebar from './Sidebar';
 
 function Topbar({ isAdmin }) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false); // 사이드바 상태 관리
+  const navigate = useNavigate();
 
-  const isMenuOpen = Boolean(anchorEl);
-
-  // 프로필 메뉴 열기 핸들러
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  // 메뉴 닫기 핸들러
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+  React.useEffect(() => {
+    // 컴포넌트가 마운트될 때 사이드바를 닫기 상태로 초기화
+    setOpen(false);
+  }, []);
 
   // 사이드바 열기 핸들러
   const handleDrawerOpen = () => {
@@ -36,28 +28,10 @@ function Topbar({ isAdmin }) {
     setOpen(false);
   };
 
-  const menuId = 'primary-search-account-menu';
-  // 프로필 메뉴 렌더링
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
+  // 페이지 이동 핸들러
+  const handleProfileClick = () => {
+    navigate('/profile');
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -88,19 +62,16 @@ function Topbar({ isAdmin }) {
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton
               size="large"
-              aria-label="account of current user"
-              aria-controls={menuId}
+              aria-label="go to profile page"
               aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
               color="inherit"
+              onClick={handleProfileClick} // 클릭 시 /profile 경로로 이동
             >
               <AccountCircle />
             </IconButton>
           </Box>
         </Toolbar>
       </AppBar>
-      {/* 프로필 메뉴 렌더링 */}
-      {renderMenu}
       {/* 사이드바 컴포넌트 */}
       <Sidebar open={open} handleDrawerClose={handleDrawerClose} isAdmin={isAdmin} />
     </Box>
