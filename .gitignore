@@ -37,3 +37,4 @@ out/
 .vscode/
 /src/main/resources/static/application_secret.yml
 /src/main/resources/application-secret.yml
+venv3/
