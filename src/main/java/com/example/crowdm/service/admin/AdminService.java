@@ -253,7 +253,7 @@ public class AdminService {
                     answer.add(unlockList);
 
                     // 이메일 발송
-                    emailService.sendTemporaryPassword(email, temppw);
+                    //emailService.sendTemporaryPassword(email, temppw);
 
                 } catch (Exception e) {
                     logger.error("Error processing user {}: {}", id, e.getMessage());
