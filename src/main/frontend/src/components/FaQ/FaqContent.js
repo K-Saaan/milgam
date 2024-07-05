@@ -26,7 +26,7 @@ function FaqContent() {
     // 데이터를 가져오는 비동기 함수
     const fetchFaqs = async () => {
       try {
-        const response = await axios.get('/api/faqs'); // 실제 API URL로 대체해야 합니다.
+        const response = await axios.get('/api/question'); // 실제 API URL로 대체해야 합니다.
         setQuestions(response.data);
       } catch (error) {
         console.error('FAQ 데이터를 가져오는 중 오류 발생:', error);
