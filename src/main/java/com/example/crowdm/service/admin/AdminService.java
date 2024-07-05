@@ -1,6 +1,8 @@
 package com.example.crowdm.service.admin;
 
+import com.example.crowdm.dto.faq.MailDto;
 import com.example.crowdm.dto.faq.MyqList;
+
 import com.example.crowdm.dto.faq.UnlockList;
 import com.example.crowdm.dto.user.PermissionList;
 import com.example.crowdm.entity.admin.MyqEntity;
@@ -17,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -25,15 +29,20 @@ import java.sql.Timestamp;
 import java.util.Optional;
 
 
+
 @Service
 @RequiredArgsConstructor
 public class AdminService {
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-
+    //private Logger logger = LoggerFactory.getLogger(this.getClass());
+    //private static final Logger logger2 = Logger.getLogger(AdminService.class.getName());
     private final LoginRepository loginRepository;
     private final MyqRepository myqRepository;
     private EmailService emailService;
+    private MailDto email;
+    private JavaMailSender mailSender;
+    private static final String FROM_ADDRESS = "aivleteam12@gmail.com";
 
+    private static final Logger logger = LoggerFactory.getLogger(AdminService.class);
     public List<UserEntity> showAllUser() {
         List<UserEntity> userList = loginRepository.findAll();
         return userList;
@@ -172,19 +181,19 @@ public class AdminService {
         }
     }
 
-
-
+    /*
     @Transactional
     public List<UnlockList> unlock() {
         List<UserEntity> userList = loginRepository.findAll();
+
         if (userList == null) {
-            return Collections.emptyList(); // or return null or handle appropriately
+            return Collections.emptyList();
         }
 
         List<UnlockList> answer = new ArrayList<>();
         for (UserEntity user : userList) {
             if (user == null) {
-                continue; // or handle this case as needed
+                continue;
             }
 
             String id = user.getId();
@@ -201,12 +210,60 @@ public class AdminService {
                 answer.add(unlockList);
 
                 // Send temporary password via email
-                //emailService.sendTemporaryPassword(email, temppw);
+                SimpleMailMessage message = new SimpleMailMessage();
+                message.setTo(email);
+                message.setFrom(FROM_ADDRESS);
+                message.setSubject("<밀감> 임시 비밀번호입니다");
+                message.setText("임시 비밀번호: " + temppw);
+
+                mailSender.send(message);
+            }
+        }
+        return answer;
+    }*/
+
+    @Transactional
+    public List<UnlockList> unlock() {
+        List<UserEntity> userList = loginRepository.findAll();
+
+        if (userList == null) {
+            logger.error("User list is null.");
+            return Collections.emptyList();
+        }
+
+        List<UnlockList> answer = new ArrayList<>();
+        for (UserEntity user : userList) {
+            if (user == null) {
+                logger.warn("User entity is null.");
+                continue;
+            }
+
+            String id = user.getId();
+            String email = user.getEmail();
+            String roleIndex = user.getRole_index();
+            Timestamp applyDate = user.getApply_date();
+            Boolean account_lock = user.getAccount_lock();
+
+            if (Boolean.TRUE.equals(account_lock)) {
+                try {
+                    String temppw = SimplePasswordGenerator.generateRandomString(12);
+                    user.updateUnlock(temppw);
+                    loginRepository.save(user);
+                    UnlockList unlockList = new UnlockList(id, email, applyDate, roleIndex);
+                    answer.add(unlockList);
+
+                    // 이메일 발송
+                    emailService.sendTemporaryPassword(email, temppw);
+
+                } catch (Exception e) {
+                    logger.error("Error processing user {}: {}", id, e.getMessage());
+                }
             }
         }
         return answer;
     }
-    }
+}
+
 
 
 

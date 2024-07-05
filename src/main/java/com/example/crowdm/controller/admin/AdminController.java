@@ -112,6 +112,13 @@ public class AdminController {
             return ResponseEntity.ok(result);
         }
     }
+
+    @PostMapping("/post-endpoint")
+    public ResponseEntity<String> handlePostRequest(@RequestBody Requestq requestDto) {
+        logger.info("Received POST request with body: {}", requestDto);
+        return ResponseEntity.ok("Request received");
+    }
+
     }
 
 
