@@ -1,12 +1,13 @@
 import Button from '@mui/material/Button';
 import { styled } from '@mui/system';
 
-const LongButton = styled(Button)({
+// 버튼 스타일 지정
+const LongButton = styled(Button)(({ theme }) =>({
     marginTop: "20px",
     width: "280px",
     padding: '10px',
-    backgroundColor: "#4880FF",
-    color: "white"
-});
+    backgroundColor: theme.primary,
+    color: theme.text,
+}));
 
 export default LongButton;

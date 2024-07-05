@@ -57,7 +57,7 @@ const theme = createTheme({
         root: {
           width: '95%',
           borderRadius: '12px',
-          padding: '16px',
+          padding: 0,
           marginTop: '10px',
           marginBottom: '50px',
           backgroundColor: '#273142', 
