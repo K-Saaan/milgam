@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { styled } from '@mui/system';
 
 // const nextButtonStyle = styled(Button)({
@@ -13,9 +13,14 @@ import { styled } from '@mui/system';
 
 const NextButton = () => {
     const navigate = useNavigate();
+    const location = useLocation();
 
     const onNextClick = () => { // 클릭 시 로그인페이지로
-        navigate('/login');
+        if (location.pathname === '/signup') {
+            navigate('/login');
+        } else if (location.pathname === '/profile') {
+            navigate('/dashboard');
+        }
     }
 
     const nextButtonStyle = {   // 버튼 스타일
