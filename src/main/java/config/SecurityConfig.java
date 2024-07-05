@@ -24,7 +24,7 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeRequests() //인증, 인가가 필요한 URL 지정
                 .antMatchers("/static/css/**","/static/js/**","/static/image/**","/static/font/**").permitAll()
-                .antMatchers("/home/home","/login/loginPage","/login/loginAction","/login/registerPage","/login/register","/hello").permitAll()
+                .antMatchers("/home/home","/login/loginPage","/login/loginAction","/login/registerPage","/login/register").permitAll()
                 .anyRequest().authenticated() // 그 외 모든 url은 로그인 필요
                 .and()
                     .formLogin() // form login 방식 적용

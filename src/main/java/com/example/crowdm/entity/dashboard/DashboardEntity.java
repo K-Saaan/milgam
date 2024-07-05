@@ -26,7 +26,11 @@ public class DashboardEntity {
     @Column(name = "context")
     private String context;
 
+    @Column(name = "context_title")
+    private String contextTitle;
+
     @Column(name = "analysis_index")
     private int analysis_index;
+
 
 }

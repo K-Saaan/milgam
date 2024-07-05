@@ -80,4 +80,9 @@ public class UserEntity {
         this.fail_cnt=0;
     }
 
+
+    public UserEntity(String id, String pw, String name, String email) {
+        this.id = id;
+    }
 }
+
