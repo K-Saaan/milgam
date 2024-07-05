@@ -16,6 +16,7 @@ import Approval from "./components/Admin/Approval";
 import ReplyInquiry from "./components/Admin/ReplyInquiry";
 import AdminLogInForm from "./components/Admin/AdminLogInForm";
 import ResetPassword from "./routes/ResetPassword";
+import Profile from "./routes/Profile";
 
 const router = createBrowserRouter([
   {
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
       {
         path: "resetpassword",
         element: <ResetPassword />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
       },
     ],
   },
