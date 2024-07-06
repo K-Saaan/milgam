@@ -1,20 +1,17 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { CustomTypographyWrapper, CustomTypography } from './CustomTypo';
 import NextButton from "../SignUp/NextButton.js";
-import { Stack, Grid, Box, ToggleButton,
-    ToggleButtonGroup, TextField, Button,
-    Select, MenuItem, FormControl, InputLabel,
-    IconButton, Autocomplete } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Grid, Select, MenuItem, FormControl, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import CustomTextField from '../Styles/CustomTextField.js';
 import NewEvent from './NewEvent';
+import { useTheme } from '@mui/material/styles';
+
 
 const ProfileForm = ({ marginBottom }) => {
-    
+    const theme = useTheme();
+
     // 페이지 이동 부분 const
     const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수
     const onNextClick = () => {    // 대시보드 페이지로 이동하도록
@@ -149,7 +146,10 @@ const ProfileForm = ({ marginBottom }) => {
                                 return selected;
                             }}
                         label="이벤트"
-                        sx={{ backgroundColor: '#323D4E', color: 'white' }}
+                        sx={{
+                            backgroundColor: theme.palette.secondary.main, color: theme.palette.text.primary,
+                            width: "370px"
+                        }}
                     >
                         <MenuItem value="event1">Event 1</MenuItem>
                         <MenuItem value="event2">Event 2</MenuItem>

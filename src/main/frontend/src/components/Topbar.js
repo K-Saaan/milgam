@@ -8,7 +8,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import Sidebar from './Sidebar';
 import { useTheme } from '@mui/material/styles';
 
 const barBoxStyle = { flexGrow: 1 };
@@ -23,8 +22,6 @@ function Topbar({ isAdmin }) {
 
   const theme = useTheme();
   const appBarStyle = abStyle(theme);
-
-  const isMenuOpen = Boolean(anchorEl);
 
   React.useEffect(() => {
     // 컴포넌트가 마운트될 때 사이드바를 닫기 상태로 초기화

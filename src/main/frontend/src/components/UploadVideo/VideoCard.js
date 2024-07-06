@@ -39,8 +39,8 @@ const VideoCard = memo(({ video, playerRef }) => {
                 </Typography>
                 {/* 변경될 부분. 위험 정도를 색으로 알리는 아이콘 */}
                 <div style={iContStyle(theme)}>
-                    <CircleIcon style={iconStyle(theme)} style={{color: "#E9C157"}}/>
-                    <CircleIcon style={iconStyle(theme)} style={{color: "#00B69B"}}/>
+                    <CircleIcon style={{...iconStyle(theme), color: "#E9C157"}}/>
+                    <CircleIcon style={{...iconStyle(theme), color: "#00B69B"}}/>
                 </div>
             </CardContent>
             {/* 영상 출력 */}

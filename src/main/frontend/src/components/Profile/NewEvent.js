@@ -6,9 +6,12 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import { useTheme } from '@mui/material/styles';
 
 const NewEvent = ({ open, onClose, onAddEvent }) => {
     const [newEvent, setNewEvent] = useState('');
+    const theme = useTheme();
 
     const handleInputChange = (event) => {
         setNewEvent(event.target.value);
@@ -23,15 +26,16 @@ const NewEvent = ({ open, onClose, onAddEvent }) => {
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>새 이벤트 추가</DialogTitle>
+            <Divider style={{background: theme.palette.divider}} />
             <DialogContent>
-                <DialogContentText>
+                <DialogContentText style={{marginBottom: "10px"}}>
                     새 이벤트의 이름을 입력하고 확인을 눌러 추가하세요.
                 </DialogContentText>
                 <TextField
                     autoFocus
                     margin="dense"
                     id="new-event"
-                    label="새 이벤트"
+                    placeholder="새 이벤트"
                     type="text"
                     fullWidth
                     variant="outlined"
@@ -40,10 +44,10 @@ const NewEvent = ({ open, onClose, onAddEvent }) => {
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose} color="primary">
+                <Button variant="contained" onClick={onClose} color="primary">
                     취소
                 </Button>
-                <Button onClick={handleAddEvent} color="primary">
+                <Button variant="contained" onClick={handleAddEvent} color="primary">
                     확인
                 </Button>
             </DialogActions>
