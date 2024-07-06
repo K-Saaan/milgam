@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import Divider from '@mui/material/Divider';
 
 // 제목 스타일
 const titleStyle = (theme) => ({
@@ -47,7 +48,7 @@ const ReplyAlert = ({ open, handleClose, inquiry }) => {
       onClose={handleClose}
       // 다이얼로그 스타일
       PaperProps={{
-        sx: { borderRadius: "12px", background: '#273142', width: '600px' }
+        sx: { borderRadius: "12px", background: theme.palette.background.paper, width: '600px' }
       }}
     >
       <Box sx={titleStyle(theme)}>
@@ -56,6 +57,7 @@ const ReplyAlert = ({ open, handleClose, inquiry }) => {
           <CloseIcon />
         </IconButton>
       </Box>
+      <Divider style={{background: theme.palette.divider}} />
       <DialogContent sx={contentStyle}>
         <Box>
           <Typography variant="caption" sx={{ color: theme.palette.text.primary, marginBottom: '8px' }}>제목</Typography>

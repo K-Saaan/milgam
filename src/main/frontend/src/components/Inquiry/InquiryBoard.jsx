@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
+import { styled, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RegisterAlert from './RegisterAlert';
 import ReplyAlert from './ReplyAlert';
+import { useTheme } from '@mui/material/styles';
 
 // 문의 데이터 예시
 const inquiries = [
@@ -17,39 +18,39 @@ const containerStyle = {
   padding: 3,
 };
 
-// 제목 스타일
-const titleStyle = {
-  mb: 4,
-  color: 'white',
-};
-
-// Paper 스타일 (둥근 네모)
-const paperStyle = {
-  padding: 3,
-  borderRadius: 2,
-  backgroundColor: '#273142',
-  color: 'white',
-};
+// 행 스타일
+const CustomTableRow = styled(TableRow)(({ theme }) => ({
+    cursor: 'pointer',
+    backgroundColor: theme.palette.background.paper,
+    '&:hover': {
+      backgroundColor: theme.palette.action.hover,
+    },
+}));
 
 // 헤더 스타일
-const headerStyle = {
+const headerStyle = (theme) => ({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  mb: 2,
-};
+  mb: 4,
+});
 
 // 테이블 헤더 스타일
-const tableHeaderStyle = {
-  color: 'white',
-};
+const tableHeaderStyle = (theme) => ({
+  color: theme.palette.text.primary,
+  borderBottom: `2px solid ${theme.palette.divider}`,
+  backgroundColor: theme.palette.background.default
+});
 
 // 테이블 셀 스타일
-const tableCellStyle = {
-  color: 'white',
-};
+const tableCellStyle = (theme) => ({
+  color: theme.palette.text.primary,
+  borderBottom: `2px solid ${theme.palette.divider}`,
+});
 
 const InquiryBoard = () => {
+  const theme = useTheme();
+
   // 등록 다이얼로그 열림 상태 관리
   const [openRegister, setOpenRegister] = useState(false);
   // 답변 다이얼로그 열림 상태 관리
@@ -82,34 +83,34 @@ const InquiryBoard = () => {
   return (
     <Box sx={containerStyle}>
       {/* 내용 */}
-        <Box sx={headerStyle}>
+        <Box sx={headerStyle(theme)}>
           <Typography variant="h6">내 문의목록</Typography>
           {/* 새 문의 버튼 */}
           <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleClickOpenRegister}>
             새 문의
           </Button>
         </Box>
-        <TableContainer>
+        <TableContainer sx={{borderRadius: "15px 15px 0px 0px"}}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell sx={tableHeaderStyle}>번호</TableCell>
-                <TableCell sx={tableHeaderStyle}>제목</TableCell>
-                <TableCell sx={tableHeaderStyle}>상태</TableCell>
-                <TableCell sx={tableHeaderStyle}>문의 날짜</TableCell>
-                <TableCell sx={tableHeaderStyle}>답변 날짜</TableCell>
+                <TableCell sx={tableHeaderStyle(theme)}>번호</TableCell>
+                <TableCell sx={tableHeaderStyle(theme)}>제목</TableCell>
+                <TableCell sx={tableHeaderStyle(theme)}>상태</TableCell>
+                <TableCell sx={tableHeaderStyle(theme)}>문의 날짜</TableCell>
+                <TableCell sx={tableHeaderStyle(theme)}>답변 날짜</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {inquiries.map((inquiry) => (
                 // 각 문의 항목을 클릭하면 답변 다이얼로그 열기
-                <TableRow key={inquiry.id} onClick={() => handleClickOpenReply(inquiry)} sx={{ cursor: 'pointer' }}>
-                  <TableCell sx={tableCellStyle}>{inquiry.id}</TableCell>
-                  <TableCell sx={tableCellStyle}>{inquiry.title}</TableCell>
-                  <TableCell sx={tableCellStyle}>{inquiry.status}</TableCell>
-                  <TableCell sx={tableCellStyle}>{inquiry.inquiryDate}</TableCell>
-                  <TableCell sx={tableCellStyle}>{inquiry.replyDate}</TableCell>
-                </TableRow>
+                <CustomTableRow key={inquiry.id} onClick={() => handleClickOpenReply(inquiry)} sx={{ cursor: 'pointer' }}>
+                  <TableCell sx={tableCellStyle(theme)}>{inquiry.id}</TableCell>
+                  <TableCell sx={tableCellStyle(theme)}>{inquiry.title}</TableCell>
+                  <TableCell sx={tableCellStyle(theme)}>{inquiry.status}</TableCell>
+                  <TableCell sx={tableCellStyle(theme)}>{inquiry.inquiryDate}</TableCell>
+                  <TableCell sx={tableCellStyle(theme)}>{inquiry.replyDate}</TableCell>
+                </CustomTableRow>
               ))}
             </TableBody>
           </Table>

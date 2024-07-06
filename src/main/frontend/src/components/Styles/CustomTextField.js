@@ -22,17 +22,17 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
         opacity: 1,
         //기본
         '& fieldset': {
-            borderColor: '#CFCFCF1D',
+            borderColor: theme.palette.border.primary,
             borderWidth: '0.2px',
         },
         //커서 올릴 때(변화 없는 거 맞음)
         '&:hover fieldset': {
-            borderColor: '#CFCFCF1D',
+            borderColor: theme.palette.border.primary,
             borderWidth: '0.2px',
         },
         //클릭
         '&.Mui-focused fieldset': {
-            borderColor: '#FFFFFF1D',
+            borderColor: theme.palette.border.secondary,
             borderWidth: '2px',
         },
     },

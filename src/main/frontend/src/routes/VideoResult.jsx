@@ -4,6 +4,23 @@ import VideoContentArea from "../components/UploadVideo/VideoContentArea.js";
 import VideoCardListArea from "../components/UploadVideo/VideoCardListArea.js";
 import DashBackground from "../components/DashBackground.js";
 
+const containerStyle = {
+  display: 'grid',
+  gridTemplateColumns: '7fr 3fr',
+  gap: '10px',
+};
+
+const leftSectionStyle = {
+  display: 'grid',
+  gap: '10px',
+};
+
+const rightSectionStyle = {
+  display: 'grid',
+  gap: '10px',
+  minWidth: '300px',
+};
+
 function UploadVideo(){
     // 알림 목록 더미 데이터
     const alerts = [
@@ -20,14 +37,18 @@ function UploadVideo(){
     return (
         <DashBackground name={"분석 결과"}
             contents={
-                <div style={{ display: 'grid', gridTemplateColumns: '7fr 3fr', gap: '10px'}}>
+                <div style={containerStyle}>
                     {/* 비디오가 재생되는 왼쪽 부분 */}
-                    <div style={{ display: 'grid', gap: '10px' }}>
+                    <div style={leftSectionStyle}>
                         <VideoContentArea selectedItem={selectedItem}/>
                     </div>
                     {/* 결과 목록이 나타나는 오른쪽 부분 */}
-                    <div style={{ display: 'grid', gap: '10px', minWidth: '300px' }}>
-                        <VideoCardListArea alerts={alerts} onSelect={handleSelect} selectedItem={selectedItem}/>
+                    <div style={rightSectionStyle}>
+                        <VideoCardListArea
+                            alerts={alerts}
+                            onSelect={handleSelect}
+                            selectedItem={selectedItem}
+                        />
                     </div>
                 </div>
             }

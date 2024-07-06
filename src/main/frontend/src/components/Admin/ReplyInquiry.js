@@ -6,10 +6,16 @@ import ReplyInquiryAlert from './ReplyInquiryAlert';
 // 행 스타일
 const CustomTableRow = styled(TableRow)(({ theme }) => ({
     cursor: 'pointer',
+    backgroundColor: theme.palette.background.paper,
     '&:hover': {
       backgroundColor: theme.palette.action.hover,
     },
-  }));
+}));
+
+const CustomTableCell = styled(TableCell)(({ theme }) => ({
+  color: theme.palette.text.primary,
+  borderBottom: `2px solid ${theme.palette.divider}`,
+}));
 
 const ReplyInquiry = () => {
     // 임시 데이터 설정
@@ -40,7 +46,7 @@ const ReplyInquiry = () => {
         name: "박영희",
         answer_date: null,
         end_date: null
-        }
+        },
     ];
 
     // 상태관리 변수들
@@ -111,12 +117,12 @@ const ReplyInquiry = () => {
                     <TableBody>
                         {questions.map((question, index) => (
                             <CustomTableRow  key={question.id} onClick={() => openModal(question)}>
-                                <TableCell>{index + 1}</TableCell>
-                                <TableCell>{question.question_title}</TableCell>
-                                <TableCell>{question.name}</TableCell>
-                                <TableCell>{question.end_date ? '완료' : '대기'}</TableCell>
-                                <TableCell>{question.question_date}</TableCell>
-                                <TableCell>{question.answer_date || '-'}</TableCell>
+                                <CustomTableCell>{index + 1}</CustomTableCell>
+                                <CustomTableCell>{question.question_title}</CustomTableCell>
+                                <CustomTableCell>{question.name}</CustomTableCell>
+                                <CustomTableCell>{question.end_date ? '완료' : '대기'}</CustomTableCell>
+                                <CustomTableCell>{question.question_date}</CustomTableCell>
+                                <CustomTableCell>{question.answer_date || '-'}</CustomTableCell>
                             </CustomTableRow >
                         ))}
                     </TableBody>

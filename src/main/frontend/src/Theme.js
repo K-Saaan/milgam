@@ -11,18 +11,28 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     background: {
-      default: '#1B2431',
-      paper: '#273142',
+      default: '#292929',
+      paper: '#383838',
+      item: '#FF90003D',
     },
     primary: {
-      main: '#4880FF',
+      main: '#E8710A',
     },
     secondary: {
-      main: '#313D4F',
+      main: '#403a34',
     },
     text: {
       primary: '#FFFFFF',
-      secondary: '#CBD5E0',
+      secondary: '#aba19b',
+    },
+    divider: '#9797973D',
+    cancel: "#848484",
+    warn: "#FF4F4F",
+    comp: "#00B69B",
+    prog: "#F39C12",
+    border: {
+      primary: '#CFCFCF1D',
+      secondary: "#FFFFFF1D",
     },
   },
 
@@ -42,7 +52,7 @@ const theme = createTheme({
     },
     body2: {
       fontSize: '0.875rem',
-      color: '#4880FF',
+      color: '#E8710A',
     },
     caption: {
       fontSize: '0.75rem',
@@ -60,7 +70,7 @@ const theme = createTheme({
           padding: 0,
           marginTop: '10px',
           marginBottom: '50px',
-          backgroundColor: '#273142', 
+          backgroundColor: '#383838',
         },
       },
     },

@@ -8,10 +8,23 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import Sidebar from './Sidebar';
+import { useTheme } from '@mui/material/styles';
+
+const barBoxStyle = { flexGrow: 1 };
+const abStyle = (theme) => ({backgroundColor: theme.palette.background.paper});
+const menuIconStyle = { mr: 2 };
+const titleStyle = { display: { xs: 'none', sm: 'block' } };
+const profileIconStyle = { display: { xs: 'none', md: 'flex' } };
 
 function Topbar({ isAdmin }) {
   const [open, setOpen] = React.useState(false); // 사이드바 상태 관리
   const navigate = useNavigate();
+
+  const theme = useTheme();
+  const appBarStyle = abStyle(theme);
+
+  const isMenuOpen = Boolean(anchorEl);
 
   React.useEffect(() => {
     // 컴포넌트가 마운트될 때 사이드바를 닫기 상태로 초기화
@@ -34,8 +47,8 @@ function Topbar({ isAdmin }) {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+    <Box sx={barBoxStyle}>
+      <AppBar position="static" style={appBarStyle}>
         <Toolbar>
           {/* 사이드바 열기 버튼 */}
           <IconButton
@@ -44,7 +57,7 @@ function Topbar({ isAdmin }) {
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen} // 사이드바 열기 클릭 핸들러
-            sx={{ mr: 2 }}
+            sx={menuIconStyle}
           >
             <MenuIcon />
           </IconButton>
@@ -53,13 +66,13 @@ function Topbar({ isAdmin }) {
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
+            sx={titleStyle}
           >
             MilGam
           </Typography>
-          <Box sx={{ flexGrow: 1 }} />
+          <Box sx={barBoxStyle} />
           {/* 데스크탑 화면에서 프로필 아이콘 */}
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={profileIconStyle}>
             <IconButton
               size="large"
               aria-label="go to profile page"
