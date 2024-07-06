@@ -1,15 +1,98 @@
 import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import "./UploadForm.css";
+import { makeStyles } from '@mui/styles';
+import { useTheme } from '@mui/material/styles';
 
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import CloudUploadRoundedIcon from '@mui/icons-material/CloudUploadRounded';
 import LongButton from "../Styles/LongButton.js";
 import CustomTextField from "../Styles/CustomTextField.js";
 
+const useStyles = makeStyles((theme) => ({
+  uploadBG: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: "65vh",
+    flexDirection: "column",
+  },
+  uploadForm: {
+    display: 'flex',
+    flexDirection: "column",
+    alignItems: 'center',
+    width: "350px",
+    margin: "50px",
+  },
+  fileBtn: {
+    width: '100%',
+    height: '200px',
+    fontSize: '18px',
+    fontWeight: 500,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '15px',
+    color: theme.palette.primary.main,
+    backgroundColor: theme.palette.background.paper,
+    border: `2px dashed ${theme.palette.primary.main}`,
+    borderRadius: '20px',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    '&:hover': {
+      color: theme.palette.primary.main,
+      backgroundColor: theme.palette.text.primary,
+    },
+  },
+  fileBtnSpan: {
+    width: '50px',
+    height: '50px',
+    fontSize: '30px',
+    color: '#FFFFFF',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '25px',
+    backgroundColor: theme.palette.primary.main,
+  },
+  selectedFile: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: `${theme.palette.primary.main}2D`,
+    border: `1px solid ${theme.palette.primary.main}5D`,
+    borderRadius: '5px',
+    marginBottom: '5px',
+  },
+  selectedFileP: {
+    fontSize: '13px',
+    fontWeight: 500,
+    marginLeft: '15px',
+  },
+  selectedFileButton: {
+    width: '50px',
+    height: '50px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: theme.palette.text.primary,
+    backgroundColor: 'transparent',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    '&:hover': {
+      color: theme.palette.text.primary,
+      backgroundColor: theme.palette.primary.main,
+    },
+  },
+}));
 
 const UploadForm = () => {
+    const theme = useTheme();
+    const classes = useStyles(theme);
     const navigate = useNavigate();
     const inputRef = useRef();
     const [selectedFile, setSelectedFile] = useState(null);
@@ -52,7 +135,6 @@ const UploadForm = () => {
     // 파일 전송 처리
     const onHSubmit = (data) => {
         if (selectedFile) {
-            /*파일 전송이 들어가야 함*/
             navigate("/videoresult", { state: { video: selectedFile, detail: data.detail } });
         } else {
             alert("파일을 선택해주세요.");
@@ -66,9 +148,9 @@ const UploadForm = () => {
     };
 
     return (
-        <div className="upload-bg">
+        <div className={classes.uploadBG}>
             {/* 입력 폼 처리 */}
-            <form className={`upload-form${isActive ? ' active' : ''}`}
+            <form className={`${classes.uploadForm}${isActive ? ' active' : ''}`}
                 onSubmit={handleSubmit(onHSubmit)}
                 onDragEnter={handleDragStart}
                 onDragOver={(e) => e.preventDefault()}
@@ -81,16 +163,16 @@ const UploadForm = () => {
                     ref={inputRef} onChange={handleOnChange}
                 />
                 {/* 선택 파일이 없을 때 나타남 */}
-                {!selectedFile && <button className="file-btn" onClick={onChooseFile}>
-                    <span><CloudUploadRoundedIcon/></span>
+                {!selectedFile && <button className={classes.fileBtn} onClick={onChooseFile}>
+                    <span className={classes.fileBtnSpan}><CloudUploadRoundedIcon/></span>
                     분석할 영상을 선택해주세요.
                 </button>}
                 {/* 선택한 파일이 있을 때 나타남 */}
-                {selectedFile && <div className="upload-bg">
+                {selectedFile && <div className={classes.uploadBG}>
                     {/* 파일 명, 선택 취소 */}
-                    <div className="selected-file">
-                        <p>{selectedFile.name}</p>
-                        <button onClick={removeFile}>
+                    <div className={classes.selectedFile}>
+                        <p className={classes.selectedFileP}>{selectedFile.name}</p>
+                        <button onClick={removeFile} className={classes.selectedFileButton}>
                             <DeleteForeverOutlinedIcon/>
                         </button>
                     </div>
@@ -103,7 +185,7 @@ const UploadForm = () => {
                         />
                     </div>
                     {/* 분석 결과로 이동하는 버튼 */}
-                    <LongButton type="submit" style={{marginTop:"40px"}}>분석</LongButton>
+                    <LongButton variant="contained" type="submit" style={{marginTop:"40px"}}>분석</LongButton>
                 </div>}
             </form>
         </div>

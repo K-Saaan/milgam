@@ -6,15 +6,18 @@ import { Outlet, useLocation } from "react-router-dom";
 import Topbar from "./components/Topbar"
 import Theme from './Theme.js';
 
-// function App() {
-//   return (
-//     <ThemeProvider theme={Theme}>
-//         <CssBaseline />
-//         <Topbar />
-//         <Outlet />
-//     </ThemeProvider>
-//   );
-// }
+
+const sectionStyle = {
+  width: '100%',
+  minWidth: "1000px",
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+};
+
+const contentBoxStyle = {
+  flex: 1,
+};
 
 function App() {
   // 어드민 페이지일 때 사이드바를 변경하기 위한 코드
@@ -23,27 +26,15 @@ function App() {
 
   return (
     <ThemeProvider theme={Theme}>
-        <CssBaseline />
-        <Box
-          component="section"
-          sx={{
-            width: '100%',
-            height: '100vh',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <div>
-            <Topbar isAdmin={isAdmin} />
-          </div>
-          <Box
-            sx={{
-              flex: 1,
-              overflow: 'auto',
-            }}>
-            <Outlet />
-          </Box>
+      <CssBaseline />
+      <Box component="section" sx={sectionStyle}>
+        <div>
+          <Topbar isAdmin={isAdmin} />
+        </div>
+        <Box sx={contentBoxStyle}>
+          <Outlet />
         </Box>
+      </Box>
     </ThemeProvider>
   );
 }

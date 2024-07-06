@@ -28,6 +28,11 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
+const drawerPaperStyle = {
+  width: drawerWidth,
+  boxSizing: 'border-box',
+};
+
 // Sidebar 컴포넌트 정의
 const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
   const theme = useTheme();
@@ -37,6 +42,7 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
   // 로그아웃 팝업 열기
   const handleLogoutClick = () => {
       setLogoutModalOpen(true);
+      handleDrawerClose();
     };
   // 로그아웃 취소
   const handleLogoutClose = () => {
@@ -77,10 +83,7 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
       sx={{
         width: drawerWidth,
         flexShrink: 0,
-        '& .MuiDrawer-paper': {
-          width: drawerWidth,
-          boxSizing: 'border-box',
-        },
+        '& .MuiDrawer-paper': drawerPaperStyle,
       }}
       variant="persistent"
       anchor="left"

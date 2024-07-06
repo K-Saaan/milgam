@@ -2,7 +2,7 @@
 const paperStyle = (theme) => ({
     flex: 1,
     padding: 2,
-    bgcolor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.paper,
     color: theme.palette.text.primary,
     height: '120px', // 높이를 120px로 설정
     borderRadius: 2,

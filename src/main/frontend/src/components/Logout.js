@@ -56,7 +56,7 @@ const Logout = ({ alertOpen, handleClose, handleLogout }) => {
             <DialogTitle id="alert-dialog-title" style={titleStyle}>
                 로그아웃
             </DialogTitle>
-            <Divider style={{background: "#9797973D", marginLeft: '40px', marginRight: '40px',}} />
+            <Divider style={{background: theme.palette.divider, marginLeft: '40px', marginRight: '40px',}} />
             <DialogContent style={{margin: "20px", marginBottom: "10px",}}>
                 <DialogContentText id="alert-dialog-slide-description" style={textStyle} >
                     로그아웃 하시겠습니까?
