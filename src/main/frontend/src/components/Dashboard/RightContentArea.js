@@ -38,7 +38,7 @@ const listStyle = {
 
 // 시간 텍스트의 스타일
 const timeTextStyle = (theme, selected) => ({
-  color: selected ? 'white' : theme.palette.primary.main,
+  color: selected ? theme.palette.text.primary : theme.palette.primary.main,
   marginBottom: 1,
 });
 
@@ -50,7 +50,7 @@ const titleBoxStyle = {
 
 // 제목 텍스트 스타일
 const titleTextStyle = (theme, selected) => ({
-  color: selected ? 'white' : theme.palette.primary.main,
+  color: selected ? theme.palette.text.primary : theme.palette.primary.main,
 });
 
 const RightContentArea = ({ alerts, handleAlertClick, selectedAlert }) => {

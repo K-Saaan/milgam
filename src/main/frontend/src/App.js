@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Box } from '@mui/material';
 import { Outlet, useLocation } from "react-router-dom";
 import Topbar from "./components/Topbar"
-import Theme from './Theme.js';
+import { darkTheme, lightTheme } from './Theme.js';
 
 
 const sectionStyle = {
@@ -24,12 +24,18 @@ function App() {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith('/admin');
 
+  // 테마 변경
+  const [currentTheme, setCurrentTheme] = useState(darkTheme);
+  const toggleTheme = (themeType) => {
+    setCurrentTheme(themeType === 'light' ? lightTheme : darkTheme);
+  };
+
   return (
-    <ThemeProvider theme={Theme}>
+    <ThemeProvider theme={currentTheme}>
       <CssBaseline />
       <Box component="section" sx={sectionStyle}>
         <div>
-          <Topbar isAdmin={isAdmin} />
+          <Topbar isAdmin={isAdmin} toggleTheme={toggleTheme}/>
         </div>
         <Box sx={contentBoxStyle}>
           <Outlet />

@@ -14,8 +14,8 @@ import LeftContentAreaDetail from "./components/Dashboard/LeftContentAreaDetail"
 import Inquiry from "./routes/Inquiry";
 import AdminLogIn from "./routes/AdminLogIn";
 import ResetPassword from "./routes/ResetPassword";
-import AdminApproval from "./components/Admin/Approval";
-import AdminReply from './components/Admin/ReplyInquiry';
+import AdminApproval from "./routes/AdminApproval";
+import AdminReply from './routes/AdminReply';
 import Profile from './routes/Profile';
 
 const router = createBrowserRouter([

@@ -63,9 +63,9 @@ const Logout = ({ alertOpen, handleClose, handleLogout }) => {
                 </DialogContentText>
                  <DialogActions style={actionStyle}>
                     {/* 부모에 있는 함수 실행 */}
-                    <Button variant="contained" onClick={handleClose} style={btnStyle}>
-                        취소
-                    </Button>
+                    <Button variant="contained" onClick={handleClose}
+                        sx={{...btnStyle, backgroundColor: theme.palette.cancel, '&:hover': { backgroundColor: 'inherit' } }}
+                    >취소</Button>
                     {/* 부모에 있는 함수 실행 */}
                     <Button variant="contained" onClick={handleLogout} style={btnStyle}>
                         로그아웃

@@ -7,7 +7,7 @@ import { createTheme } from '@mui/material/styles';
   * 4. 작성자    : mijin
   * 5. 작성일    : 2024. 06. 28
 */
-const theme = createTheme({
+const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     background: {
@@ -77,4 +77,72 @@ const theme = createTheme({
   },
 });
 
-export default theme;
+const lightTheme = createTheme({
+  palette: {
+    mode: 'light',
+    background: {
+      default: '#FFFFFF',
+      paper: '#F7F7F7',
+      item: '#E8710A1A',
+    },
+    primary: {
+      main: '#F9AB00',
+    },
+    secondary: {
+      main: '#f5efe9',
+    },
+    text: {
+      primary: '#524e4a',
+      secondary: '#59402a',
+    },
+    divider: '#9797973D',
+    cancel: "#d6d6d6",
+    warn: "#ff7878",
+    comp: "#34e0c7",
+    prog: "#f7b957",
+    border: {
+      primary: '#4d4d4d3D',
+      secondary: "#524e4a1D",
+    },
+  },
+  typography: {
+    fontFamily: '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
+    h5: {
+      fontWeight: 500,
+    },
+    h6: {
+      fontSize: '1.5rem',
+      fontWeight: 700,
+      color: '#524e4a',
+    },
+    body1: {
+      fontSize: '1rem',
+      color: '#524e4a',
+    },
+    body2: {
+      fontSize: '0.875rem',
+      color: '#F9AB00',
+    },
+    caption: {
+      fontSize: '0.75rem',
+      fontWeight: 600,
+      color: '#F9AB00',
+    },
+  },
+  components: {
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          width: '95%',
+          borderRadius: '12px',
+          padding: 0,
+          marginTop: '10px',
+          marginBottom: '50px',
+          backgroundColor: '#F5F5F5',
+        },
+      },
+    },
+  },
+});
+
+export { darkTheme, lightTheme };

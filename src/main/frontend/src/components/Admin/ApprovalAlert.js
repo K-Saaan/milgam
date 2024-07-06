@@ -42,9 +42,15 @@ const ApprovalAlert = ({ open, handleClose, handleApprovalOrRejection, inquiry }
          </div>
       </DialogContent>
       <DialogActions style={actionStyle}>
-        <Button variant="contained" onClick={handleClose} style={{...btnStyle, backgroundColor: theme.palette.cancel}}>취소</Button>
-        <Button variant="contained" onClick={() => handleApprovalOrRejection('0')} style={{...btnStyle, backgroundColor: theme.palette.warn}}>거절</Button>
-        <Button variant="contained" onClick={() => handleApprovalOrRejection('1')} style={{...btnStyle, backgroundColor: theme.palette.comp}}>승인</Button>
+        <Button variant="contained" onClick={handleClose}
+            sx={{...btnStyle, backgroundColor: theme.palette.cancel, '&:hover': { backgroundColor: 'inherit' } }}
+        >취소</Button>
+        <Button variant="contained" onClick={() => handleApprovalOrRejection('0')}
+            sx={{...btnStyle, backgroundColor: theme.palette.warn, '&:hover': { backgroundColor: 'inherit' }}}
+        >거절</Button>
+        <Button variant="contained" onClick={() => handleApprovalOrRejection('1')}
+            sx={{...btnStyle, backgroundColor: theme.palette.comp, '&:hover': { backgroundColor: 'inherit' }}}
+        >승인</Button>
       </DialogActions>
     </Dialog>
   );
