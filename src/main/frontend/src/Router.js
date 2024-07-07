@@ -1,7 +1,7 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
-import AdminLogIn from "./routes/AdminLogIn";
+import Admin from "./routes/Admin";
 import Dashboard from "./routes/Dashboard";
 import FaQ from "./routes/FaQ";
 import LogIn from "./routes/LogIn";
@@ -12,7 +12,10 @@ import VideoResult from "./routes/VideoResult";
 import LeftContentArea from "./components/Dashboard/LeftContentArea";
 import LeftContentAreaDetail from "./components/Dashboard/LeftContentAreaDetail";
 import Inquiry from "./routes/Inquiry";
+import AdminLogIn from "./routes/AdminLogIn";
 import ResetPassword from "./routes/ResetPassword";
+import AdminApproval from "./components/Admin/Approval"
+import AdminReply from './components/Admin/ReplyInquiry'
 
 const router = createBrowserRouter([
   {
@@ -24,8 +27,16 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "admin",
+        path: "adminlogin",
         element: <AdminLogIn />,
+      },
+      {
+        path: "admin",
+        element: <Admin />,
+        children: [
+          { path: "approval", element: <AdminApproval /> },
+          { path: "replyinquiry", element: <AdminReply /> }
+        ]
       },
       {
         path: "dashboard",
