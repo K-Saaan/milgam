@@ -7,10 +7,37 @@ import { useTheme } from '@mui/material/styles';
 
 // 문의 데이터 예시
 const inquiries = [
-  { id: 1, category: '[카테고리] 제목', title: 'Makeup', status: '대기', inquiryDate: '2024-06-26', replyDate: '' },
-  { id: 2, category: '', title: 'Asus Laptop', status: '완료', inquiryDate: '2024-06-20', replyDate: '2024-06-25' },
-  { id: 3, category: '', title: 'Iphone X', status: '완료', inquiryDate: '2024-06-15', replyDate: '2024-06-25' },
+  { 
+    id: 1, 
+    category: '[카테고리] 제목', 
+    title: 'Makeup', 
+    status: '대기', 
+    inquiryDate: '2024-06-26', 
+    replyDate: '', 
+    content: '메이크업 제품에 대한 문의 내용입니다.'
+  },
+  { 
+    id: 2, 
+    category: '', 
+    title: 'Asus Laptop', 
+    status: '완료', 
+    inquiryDate: '2024-06-20', 
+    replyDate: '2024-06-25', 
+    content: 'Asus 노트북에 대한 문의 내용입니다.', 
+    reply: 'Asus 노트북에 대한 답변 내용입니다.\n\n문제의 원인을 파악한 결과, 드라이버 업데이트가 필요합니다.\n추가로, 배터리 문제는 서비스 센터에서 점검 받으시길 권장드립니다.'
+  },
+  { 
+    id: 3, 
+    category: '', 
+    title: 'Iphone X', 
+    status: '완료', 
+    inquiryDate: '2024-06-15', 
+    replyDate: '2024-06-25', 
+    content: 'Iphone X에 대한 문의 내용입니다.', 
+    reply: 'Iphone X에 대한 답변 내용입니다.\n\n소프트웨어 업데이트 후 문제가 해결되지 않으면, 가까운 애플 스토어를 방문해주세요.\n또한, 배터리 성능 저하 문제는 교체가 필요할 수 있습니다.'
+  },
 ];
+
 
 // 컨테이너 스타일
 const containerStyle = {

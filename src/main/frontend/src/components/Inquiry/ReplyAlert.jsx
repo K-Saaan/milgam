@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import DialogContentText from '@mui/material/DialogContentText';
 import Divider from '@mui/material/Divider';
 
 // 제목 스타일
@@ -31,12 +32,16 @@ const contentStyle = {
 
 // 박스 스타일
 const boxStyle = (theme) => ({
-  color: theme.palette.text.primary,
-  padding: '8px',
-  backgroundColor: '#323D4E',
+  color: theme.palette.text.secondary,
+  padding: '14px',
+  backgroundColor: theme.palette.secondary.main,
   borderRadius: '8px',
-  border: `1px solid ${theme.palette.background.paper}`,
-  minHeight: '50px'
+  border: `1px solid ${theme.palette.border.primary}`,
+  minHeight: '50px',
+  borderWidth: '0.2px',
+  opacity: 1,
+  display: 'flex',
+  alignItems: 'center',
 });
 
 const ReplyAlert = ({ open, handleClose, inquiry }) => {
@@ -60,19 +65,22 @@ const ReplyAlert = ({ open, handleClose, inquiry }) => {
       <Divider style={{background: theme.palette.divider}} />
       <DialogContent sx={contentStyle}>
         <Box>
-          <Typography variant="caption" sx={{ color: theme.palette.text.primary, marginBottom: '8px' }}>제목</Typography>
+          {/* <Typography variant="caption" sx={{ color: theme.palette.text.primary, marginBottom: '8px' }}>제목</Typography> */}
+          <DialogContentText sx={{ marginBottom: '8px' }}>제목</DialogContentText>
           <Typography sx={boxStyle(theme)}>
             {inquiry.title}
           </Typography>
         </Box>
         <Box>
-          <Typography variant="caption" sx={{ color: theme.palette.text.primary, marginBottom: '8px' }}>내용</Typography>
+          {/* <Typography variant="caption" sx={{ color: theme.palette.text.primary, marginBottom: '8px' }}>내용</Typography> */}
+          <DialogContentText sx={{ marginBottom: '8px' }}>내용</DialogContentText>
           <Typography sx={boxStyle(theme)}>
             {inquiry.content}
           </Typography>
         </Box>
         <Box>
-          <Typography variant="caption" sx={{ color: theme.palette.text.primary, marginBottom: '8px' }}>답변</Typography>
+          {/* <Typography variant="caption" sx={{ color: theme.palette.text.primary, marginBottom: '8px' }}>답변</Typography> */}
+          <DialogContentText sx={{ marginBottom: '8px' }}>답변</DialogContentText>
           <Typography sx={boxStyle(theme)}>
             {inquiry.reply}
           </Typography>
