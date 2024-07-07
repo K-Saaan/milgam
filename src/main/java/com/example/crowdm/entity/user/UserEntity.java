@@ -73,15 +73,5 @@ public class UserEntity {
         //this.admin_index=1; 나중에 세션값으로 바꿔야함
 
     }
-
-
-    @Builder
-    public UserEntity(String id, String pw, String name, String email, String role_index) {
-        this.id = id;
-        this.pw = pw;
-        this.name = name;
-        this.email = email;
-        this.role_index = role_index;
-    }
 }
 
