@@ -67,7 +67,7 @@ public class AdminController {
 
     @GetMapping("/questionlist")
     public ResponseEntity<List<MyqList>> myqList() {
-        List<MyqList> result = adminService.myqList();
+        List<MyqEntity> result = adminService.myqList();
         return ResponseEntity.ok(result);
     }
 
