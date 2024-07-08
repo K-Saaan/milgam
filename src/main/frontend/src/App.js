@@ -8,15 +8,18 @@ import { darkTheme, lightTheme } from './Theme.js';
 
 
 const sectionStyle = {
-  width: '100%',
+  width: '100vw',
   minWidth: "1000px",
-  height: '100%',
+  height: '100vh',
   display: 'flex',
   flexDirection: 'column',
 };
 
 const contentBoxStyle = {
   flex: 1,
+  display:'flex',
+  justifyContent:'center',
+
 };
 
 function App() {

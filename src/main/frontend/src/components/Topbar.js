@@ -6,17 +6,21 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import { useTheme } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 
+
 const barBoxStyle = { flexGrow: 1 };
 const abStyle = (theme) => ({backgroundColor: theme.palette.background.paper});
 const menuIconStyle = (theme) => ({ mr: 2, color: theme.palette.text.primary });
-const titleStyle = { display: { xs: 'none', sm: 'block' } };
+const titleStyle = { display: {  sm: 'block' } };
+// xs: 'none',
 const profileIconStyle = { display: { xs: 'none', md: 'flex' } };
+
+
 
 function Topbar({ isAdmin, toggleTheme }) {
   const [open, setOpen] = React.useState(false); // 사이드바 상태 관리
@@ -67,14 +71,21 @@ function Topbar({ isAdmin, toggleTheme }) {
             <MenuIcon />
           </IconButton>
           {/* 앱 타이틀 */}
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={titleStyle}
-          >
-            MilGam
-          </Typography>
+
+{/* ####################################################################################### */}
+{/* "text-decoration= none" 부탁~~~~ */}
+          <Link to="home">
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={titleStyle}
+            >
+              MilGam
+            </Typography>
+          </Link>
+{/* ####################################################################################### */}
+
           <Box sx={barBoxStyle} />
           <IconButton sx={{color: theme.palette.text.primary}} onClick={handleToggleClick}>
             {theme.palette.mode === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
