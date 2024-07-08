@@ -23,7 +23,7 @@ public class DashboardController {
         return dashboardService.findAllDashboards();
     }
 
-    
+
     @GetMapping("/add")
     public DashboardEntity addDashboard(@RequestBody DashboardEntity dashboardEntity) {
         logger.info("Adding dashboard: {}", dashboardEntity);
