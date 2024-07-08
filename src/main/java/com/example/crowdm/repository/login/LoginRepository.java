@@ -8,17 +8,16 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import com.example.crowdm.entity.user.UserEntity;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
-
+import java.util.Optional;
 
 @Repository
-public interface LoginRepository extends JpaRepository<UserEntity, Integer>, JpaSpecificationExecutor<UserEntity> {
+public interface LoginRepository extends JpaRepository<UserEntity, String>, JpaSpecificationExecutor<UserEntity> {
+    Optional<UserEntity> findById(int userIndex); // 제네릭 타입을 String으로 변경
     /*
     @Modifying
     @Transactional
