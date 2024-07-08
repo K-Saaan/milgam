@@ -37,6 +37,8 @@ public class AdminService {
     //private static final Logger logger2 = Logger.getLogger(AdminService.class.getName());
     private final LoginRepository loginRepository;
     private final MyqRepository myqRepository;
+
+    public List<UserEntity> showAllUser(){
     private EmailService emailService;
     private MailDto email;
     private JavaMailSender mailSender;
