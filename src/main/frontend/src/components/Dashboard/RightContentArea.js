@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Paper, Typography, List, ListItem } from '@mui/material';
+import { Box, Paper, Typography, List } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import MailIcon from '@mui/icons-material/Mail'; 
@@ -15,7 +15,7 @@ const containerStyle = {
 const paperStyle = (theme) => ({
   height: '100%',
   padding: 2,
-  bgcolor: theme.palette.secondary.main,
+  bgcolor: theme.palette.background.paper,
   color: theme.palette.text.primary,
   borderRadius: 2,
 });
@@ -38,7 +38,7 @@ const listStyle = {
 
 // 시간 텍스트의 스타일
 const timeTextStyle = (theme, selected) => ({
-  color: selected ? 'white' : theme.palette.primary.main,
+  color: selected ? theme.palette.text.primary : theme.palette.primary.main,
   marginBottom: 1,
 });
 
@@ -50,7 +50,7 @@ const titleBoxStyle = {
 
 // 제목 텍스트 스타일
 const titleTextStyle = (theme, selected) => ({
-  color: selected ? 'white' : theme.palette.primary.main,
+  color: selected ? theme.palette.text.primary : theme.palette.primary.main,
 });
 
 const RightContentArea = ({ alerts, handleAlertClick, selectedAlert }) => {
@@ -66,7 +66,7 @@ const RightContentArea = ({ alerts, handleAlertClick, selectedAlert }) => {
     <Box sx={containerStyle}>
       <Paper sx={paperStyle(theme)}>
         <Box sx={headerStyle(theme)}>
-          <Typography variant="subtitle1" sx={{ color: 'white', fontWeight: 600, fontSize: '1rem' }}>
+          <Typography variant="subtitle1" sx={{ color: theme.palette.text.primary, fontWeight: 600, fontSize: '1rem' }}>
             위험 알림
           </Typography>
         </Box>
@@ -82,7 +82,7 @@ const RightContentArea = ({ alerts, handleAlertClick, selectedAlert }) => {
                 {alert.time}
               </Typography>
               <Box sx={titleBoxStyle}>
-                <MailIcon sx={{ color: selectedAlert?.id === alert.id ? 'white' : theme.palette.primary.main, marginRight: 1 }} />
+                <MailIcon sx={{ color: selectedAlert?.id === alert.id ? theme.palette.text.primary : theme.palette.primary.main, marginRight: 1 }} />
                 <Typography variant="body2" sx={titleTextStyle(theme, selectedAlert?.id === alert.id)}>
                   {alert.title}
                 </Typography>

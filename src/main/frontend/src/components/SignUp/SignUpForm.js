@@ -1,42 +1,20 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Grid, Box, MenuItem, FormControl, Autocomplete,
-    InputLabel, Select, TextField, Button, styled } from '@mui/material';
-import Stack from '@mui/material/Stack';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { MenuItem, Button } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import LongButton from "../Styles/LongButton.js";
 import NextButton from "./NextButton.js";
 import CustomTextField from '../Styles/CustomTextField.js';
-import Background from "../Background";
 import EmailAlert from './EmailAlert';
+import { useTheme } from '@mui/material/styles';
 
 const SignUpForm = ({ marginBottom }) => {
+    const theme = useTheme();
 
-    const { register, handleSubmit, formState: { errors }, setValue, watch, control } = useForm();
-    const [alertOpen, setOpen] = React.useState(false);
-    const userType = watch('userType'); // 폼 필드 값 관찰
-    const [redirectPath, setRedirectPath] = useState(null); // 리다이렉션 경로 상태
-    const formSx = { // 폼 스타일
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        margin: '50px',
-        flexDirection: 'column', // 요소들을 세로로 정렬
-        maxHeight: 'calc(100vh - 100px)', // 전체 화면에서 일정 높이를 제외한 만큼의 최대 높이 설정
-        overflowY: 'auto', // 세로 스크롤만 활성화
-    };
-    const handleClickOpen = () => { // 알림창 열림 함수
-        setOpen(true);
-    };
-    const handleClose = () => { // 알림창 닫힘 함수
-        setOpen(false);
-    };
-    const [role, setRole] = useState(''); // 현재 선택된 역할을 관리하는 상태
+    const { register, formState: { errors } } = useForm();
     
     // 페이지 이동 부분 const
     const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수
@@ -58,8 +36,6 @@ const SignUpForm = ({ marginBottom }) => {
             setCustomOrg('');  // '직접 입력'이 아니면 입력 필드 초기화
         }
     };
-    // 날짜 선택 부분 const
-    const [startdate, setStartdate] = React.useState(null);
     // 이메일 인증 부분 const
     const [openRegister, setOpenRegister] = useState(false);
     const handleClickOpenRegister = () => {
@@ -68,12 +44,23 @@ const SignUpForm = ({ marginBottom }) => {
     const handleCloseRegister = () => {
         setOpenRegister(false);
     };
+    // 화면
+    const paperStyle = {
+        padding: '20px',
+        margin: 'auto',
+        maxHeight: 'calc(100vh - 100px)', // 브라우저 창 높이에서 100px 뺀 값
+        overflowY: 'auto', // 내용이 많을 경우 스크롤
+        color: theme.palette.text.primary, // 글자색
+        width: '80%', // 너비 설정
+        display: 'flex', // flex 컨테이너로 설정
+        flexDirection: 'column', // 자식 요소들을 수직으로 배치
+        alignItems: 'center' // 자식 요소들을 중앙에 정렬
+      };
+      
+
 
     return (
-        <Background
-            name="회원가입"
-            contents={
-            <Box sx={{ display: 'flex', flexDirection: 'column', margin: '50px' }}>
+            <div style={paperStyle}>
                 <div>
                     <CustomTextField
                         label="이름"
@@ -111,7 +98,7 @@ const SignUpForm = ({ marginBottom }) => {
                     />
                 </div>
                 <div>
-                   <CustomTextField
+                <CustomTextField
                         label="이메일"
                         id="email"
                         {...register("email", { required: "이메일을 입력해주세요." })}
@@ -119,14 +106,14 @@ const SignUpForm = ({ marginBottom }) => {
                         error={!!errors.email}
                         helperText={errors.email?.message}
                         style={{ marginBottom: errors.email ? '0px' : '23px' }}
-                    /> 
+                    />
                 </div>
                 <Button variant="contained" color="primary" onClick={handleClickOpenRegister}>
                     이메일 인증
                 </Button>
                 <EmailAlert open={openRegister} handleClose={handleCloseRegister} />
                 <div>
-                   <CustomTextField
+                <CustomTextField
                         label="비밀번호"
                         id="pw"
                         {...register("pw", { required: "비밀번호를 입력해주세요." })}
@@ -175,7 +162,7 @@ const SignUpForm = ({ marginBottom }) => {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         {/* <DemoContainer components={['DatePicker']}> */}
                             <DatePicker label="시작 날짜"
-                            renderInput={(params) => <CustomTextField {...params} />} 
+                                renderInput={(params) => <CustomTextField {...params} />}
                             />
                         {/* </DemoContainer> */}
                     </LocalizationProvider>
@@ -236,9 +223,7 @@ const SignUpForm = ({ marginBottom }) => {
                 <div>
                     <NextButton type="submit" onClick={onNextClick}>완료</NextButton>
                 </div>
-            </Box>
-            }
-        />
+            </div>
     );
 };
 

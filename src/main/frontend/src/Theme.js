@@ -7,22 +7,32 @@ import { createTheme } from '@mui/material/styles';
   * 4. 작성자    : mijin
   * 5. 작성일    : 2024. 06. 28
 */
-const theme = createTheme({
+const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     background: {
-      default: '#1B2431',
-      paper: '#273142',
+      default: '#292929',
+      paper: '#383838',
+      item: '#FF90003D',
     },
     primary: {
-      main: '#4880FF',
+      main: '#E8710A',
     },
     secondary: {
-      main: '#313D4F',
+      main: '#403a34',
     },
     text: {
       primary: '#FFFFFF',
-      secondary: '#CBD5E0',
+      secondary: '#aba19b',
+    },
+    divider: '#9797973D',
+    cancel: "#848484",
+    warn: "#FF4F4F",
+    comp: "#00B69B",
+    prog: "#F39C12",
+    border: {
+      primary: '#CFCFCF1D',
+      secondary: "#FFFFFF1D",
     },
   },
 
@@ -42,7 +52,7 @@ const theme = createTheme({
     },
     body2: {
       fontSize: '0.875rem',
-      color: '#4880FF',
+      color: '#E8710A',
     },
     caption: {
       fontSize: '0.75rem',
@@ -57,14 +67,82 @@ const theme = createTheme({
         root: {
           width: '95%',
           borderRadius: '12px',
-          padding: '16px',
+          padding: 0,
           marginTop: '10px',
           marginBottom: '50px',
-          backgroundColor: '#273142', 
+          backgroundColor: '#383838',
         },
       },
     },
   },
 });
 
-export default theme;
+const lightTheme = createTheme({
+  palette: {
+    mode: 'light',
+    background: {
+      default: '#FFFFFF',
+      paper: '#F7F7F7',
+      item: '#E8710A1A',
+    },
+    primary: {
+      main: '#F9AB00',
+    },
+    secondary: {
+      main: '#f5efe9',
+    },
+    text: {
+      primary: '#524e4a',
+      secondary: '#59402a',
+    },
+    divider: '#9797973D',
+    cancel: "#d6d6d6",
+    warn: "#ff7878",
+    comp: "#34e0c7",
+    prog: "#f7b957",
+    border: {
+      primary: '#4d4d4d3D',
+      secondary: "#524e4a1D",
+    },
+  },
+  typography: {
+    fontFamily: '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
+    h5: {
+      fontWeight: 500,
+    },
+    h6: {
+      fontSize: '1.5rem',
+      fontWeight: 700,
+      color: '#524e4a',
+    },
+    body1: {
+      fontSize: '1rem',
+      color: '#524e4a',
+    },
+    body2: {
+      fontSize: '0.875rem',
+      color: '#F9AB00',
+    },
+    caption: {
+      fontSize: '0.75rem',
+      fontWeight: 600,
+      color: '#F9AB00',
+    },
+  },
+  components: {
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          width: '95%',
+          borderRadius: '12px',
+          padding: 0,
+          marginTop: '10px',
+          marginBottom: '50px',
+          backgroundColor: '#F5F5F5',
+        },
+      },
+    },
+  },
+});
+
+export { darkTheme, lightTheme };

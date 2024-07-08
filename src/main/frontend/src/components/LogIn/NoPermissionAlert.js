@@ -8,58 +8,63 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import CloseIcon from '@mui/icons-material/Close';
+import { useTheme } from '@mui/material/styles';
 
 
-const titleStyle = {
-    color: "#FFFFFF",
+// 타이틀 스타일 정의
+const cTitleStyle = (theme) => ({
+    color: theme.palette.text.primary,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
     margin: "5px",
     fontSize: "15px"
-}
-
+});
+// 내용 정렬
 const actionStyle = {
-    position: 'absolute',
-    right: '10px',
-    top: '50%',
-    transform: 'translateY(-50%)',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
 }
+// 글씨 스타일 정의
+const cTextStyle = (theme) => ({
+    color: theme.palette.text.primary,
+    textAlign: "center",
+    fontSize: "14px"
+});
 
-const textStyle = {color: "#FFFFFF", textAlign: "center", fontSize: "14px"}
+// 관리자 승인 전일 때 띄움
+const NoPermissionAlert = ({ alertOpen, handleClose }) => {
+    const theme = useTheme();
+    const titleStyle = cTitleStyle(theme);
+    const textStyle = cTextStyle(theme);
 
-const NoPermmisionAlert = ({ alertOpen, handleClose }) => {
     return (
         <Dialog
             open={alertOpen}
             onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-
             PaperProps={{
-                style: {
-                    background: '#273142',
-                    width: "350px",
-                }
+                style: { background: theme.palette.background.paper, width: "350px",}
             }}
         >
             <DialogTitle id="alert-dialog-title" style={titleStyle}>
                 {"알림"}
                 <DialogActions style={actionStyle}>
-                    <IconButton onClick={handleClose} style={{color: "white"}}>
+                    {/* 부모에 있는 함수 실행하여 닫음 */}
+                    <IconButton onClick={handleClose} style={{color: theme.palette.text.primary}}>
                         <CloseIcon/>
                     </IconButton>
                 </DialogActions>
             </DialogTitle>
-            <Divider style={{background: "#9797973D", marginLeft: '40px', marginRight: '40px',}} />
+            <Divider style={{background: theme.palette.divider, marginLeft: '40px', marginRight: '40px',}} />
             <DialogContent style={{margin: "20px", marginBottom: "30px",}}>
                 <DialogContentText id="alert-dialog-slide-description" style={textStyle} >
                     관리자 승인 전입니다.
                 </DialogContentText>
                 <DialogContentText
                     id="alert-dialog-slide-description"
-                    style={{color: "#979797", textAlign: "center", fontSize: "12px", marginTop: "10px"}}
+                    style={{color: theme.palette.text.secondary, textAlign: "center", fontSize: "12px", marginTop: "10px"}}
                 >
                     추후 다시 시도해주세요.
                 </DialogContentText>
@@ -68,4 +73,4 @@ const NoPermmisionAlert = ({ alertOpen, handleClose }) => {
     );
 }
 
-export default NoPermmisionAlert;
+export default NoPermissionAlert;

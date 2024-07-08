@@ -73,6 +73,12 @@ public class UserEntity {
         //this.admin_index=1; 나중에 세션값으로 바꿔야함
 
     }
+    @Transactional
+    public void updateUnlock(String temppw){
+        this.temppw=temppw;
+        this.account_lock=false;
+        this.fail_cnt=0;
+    }
 
 
     public UserEntity(String id, String pw, String name, String email) {
