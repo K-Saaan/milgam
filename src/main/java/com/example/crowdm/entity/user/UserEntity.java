@@ -73,10 +73,5 @@ public class UserEntity {
         //this.admin_index=1; 나중에 세션값으로 바꿔야함
 
     }
-
-
-    public UserEntity(String id, String pw, String name, String email) {
-        this.id = id;
-    }
 }
 

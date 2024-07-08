@@ -45,6 +45,7 @@ const ReplyAlert = ({ open, handleClose, inquiry }) => {
     <Dialog
       open={open}
       onClose={handleClose}
+      // 다이얼로그 스타일
       PaperProps={{
         sx: { borderRadius: "12px", background: '#273142', width: '600px' }
       }}

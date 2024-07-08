@@ -1,7 +1,7 @@
 import { ListItem } from '@mui/material';
 import { styled } from '@mui/system';
 
-const CustomListItem = styled(ListItem)({
+const CustomListItem = styled(ListItem)(({ theme }) => ({
     backgroundColor: '#2B3B5B',
     borderRadius: '5px',
     marginBottom: '10px',
@@ -11,6 +11,6 @@ const CustomListItem = styled(ListItem)({
     alignItems: 'flex-start',
     textDecoration: 'none',
     color: 'inherit',
-});
+}));
 
 export default CustomListItem;

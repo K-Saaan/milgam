@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * 1. ClassName: DateUtil
@@ -452,6 +453,19 @@ public class DateUtil {
         cal.add(Calendar.HOUR, hour);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         return sdf.format(cal.getTime());
+    }
+
+    /**
+     * yyyy-mm-dd hh:mm:ss 형태의 날짜를 Timestamp로 변환.
+     * @return Timestamp 변환문자열
+     */
+
+    public static Timestamp getStringTimestamp() {
+        SimpleDateFormat formatter = new SimpleDateFormat ( "yyyy-mm-dd hh:mm:ss", Locale.KOREA );
+        Date currentTime = new Date ( );
+        String dTime = formatter.format (currentTime);
+
+        return Timestamp.valueOf(dTime);
     }
 
 }

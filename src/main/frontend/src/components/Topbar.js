@@ -8,10 +8,9 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import Sidebar from './Sidebar'; // Sidebar 컴포넌트를 불러옴
+import Sidebar from './Sidebar'; 
 
-
-export default function Topbar() {
+function Topbar({ isAdmin }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false); // 사이드바 상태 관리
 
@@ -103,7 +102,9 @@ export default function Topbar() {
       {/* 프로필 메뉴 렌더링 */}
       {renderMenu}
       {/* 사이드바 컴포넌트 */}
-      <Sidebar open={open} handleDrawerClose={handleDrawerClose} />
+      <Sidebar open={open} handleDrawerClose={handleDrawerClose} isAdmin={isAdmin} />
     </Box>
   );
 }
+
+export default Topbar;
