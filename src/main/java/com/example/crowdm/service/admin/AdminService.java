@@ -39,13 +39,12 @@ public class AdminService {
         return userList;
     }
 
-
     //@Transactional
     //public int permissionUpdateUser(int user_index) {
-        //logger.info("permissionUpdateUser {}", user_index);
-        //
-        //Optional<UserEntity> user = loginRepository.findById(user_index);
-        //user.ifPresent(value -> value.setPermissionYn(true));
+    //logger.info("permissionUpdateUser {}", user_index);
+    //
+    //Optional<UserEntity> user = loginRepository.findById(user_index);
+    //user.ifPresent(value -> value.setPermissionYn(true));
         /*try {
             String u_i=Integer.toString(user_index);
             int premission = loginRepository.updatePermissionYnById(user_index);
@@ -58,6 +57,7 @@ public class AdminService {
             logger.error("Error updating permission for user " + user_index + ": " + e.getMessage());
             return 0;
         }*/
+
     @Transactional
     public int permissionUpdateUser(int user_index) {
         Timestamp permission_date = new Timestamp(System.currentTimeMillis());
