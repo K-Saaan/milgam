@@ -62,7 +62,7 @@ public class DashboardService {
     private final List<SseEmitter> emitters = new ArrayList<>();
 
     public SseEmitter subscribe() {
-        SseEmitter emitter = new SseEmitter();
+        SseEmitter emitter = new SseEmitter(3600000L);
         synchronized (emitters) {
             emitters.add(emitter);
         }

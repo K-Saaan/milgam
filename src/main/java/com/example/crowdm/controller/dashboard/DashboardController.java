@@ -23,7 +23,7 @@ public class DashboardController {
         return dashboardService.findAllDashboards();
     }
 
-    @PostMapping
+    @GetMapping("/add")
     public DashboardEntity addDashboard(@RequestBody DashboardEntity dashboardEntity) {
         logger.info("Adding dashboard: {}", dashboardEntity);
         return dashboardService.addDashboard(dashboardEntity);
@@ -43,6 +43,7 @@ public class DashboardController {
 
     @GetMapping("/noti")
     public SseEmitter getDashboards() {
+        logger.info("Subscribing to dashboard notifications");
         return dashboardService.subscribe();
     }
 }
