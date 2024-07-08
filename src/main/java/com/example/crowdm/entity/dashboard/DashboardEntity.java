@@ -6,8 +6,12 @@ import lombok.*;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+import com.example.crowdm.listener.dashboard.DashboardListener;
+
 @Getter
+@Setter
 @Entity
+@EntityListeners(DashboardListener.class)
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
