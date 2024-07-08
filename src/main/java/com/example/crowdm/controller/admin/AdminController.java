@@ -65,53 +65,53 @@ public class AdminController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/questionlist")
-    public ResponseEntity<List<MyqList>> myqList() {
-        List<MyqEntity> result = adminService.myqList();
-        return ResponseEntity.ok(result);
-    }
+//    @GetMapping("/questionlist")
+//    public ResponseEntity<List<MyqList>> myqList() {
+//        List<MyqEntity> result = adminService.myqList();
+//        return ResponseEntity.ok(result);
+//    }
 
     /*@PostMapping("/answer")
     public ResponseEntity<String> answer(@RequestBody Requestq answerRequest) {
         int result = adminService.answering(answerRequest.getMyq_index(), answerRequest.getAnswer());
         return ResponseEntity.ok("ok");
     }*/
-    @PostMapping("/answer")
-    public ResponseEntity<Answerq> answer(@RequestBody Requestq answerRequest) {
-        int result = adminService.answering(answerRequest.getMyq_index(), answerRequest.getAnswer());
+//    @PostMapping("/answer")
+//    public ResponseEntity<Answerq> answer(@RequestBody Requestq answerRequest) {
+//        int result = adminService.answering(answerRequest.getMyq_index(), answerRequest.getAnswer());
+//
+//        System.out.println(answerRequest.getMyq_index());
+//        // Fetch the updated entity from the repository
+//        MyqEntity myqEntity = myqRepository.findById(answerRequest.getMyq_index()).orElse(null);
+//        if (myqEntity == null) {
+//            return ResponseEntity.status(404).body(null); // or handle error as needed
+//        }
+//
+//        // Map MyqEntity to Answerq DTO
+//        Answerq answerResponse = new Answerq(
+//                myqEntity.getMyq_index(),
+//                myqEntity.getQuestion_title(),
+//                myqEntity.getUser_index(),
+//                myqEntity.getQuestion_date(),
+//                myqEntity.getAnswer_date(),
+//                myqEntity.getAnswer(),
+//                result == 1 ? "Answered" : "Failed"
+//        );
+//
+//        return ResponseEntity.ok(answerResponse);
+//    }
 
-        System.out.println(answerRequest.getMyq_index());
-        // Fetch the updated entity from the repository
-        MyqEntity myqEntity = myqRepository.findById(answerRequest.getMyq_index()).orElse(null);
-        if (myqEntity == null) {
-            return ResponseEntity.status(404).body(null); // or handle error as needed
-        }
-
-        // Map MyqEntity to Answerq DTO
-        Answerq answerResponse = new Answerq(
-                myqEntity.getMyq_index(),
-                myqEntity.getQuestion_title(),
-                myqEntity.getUser_index(),
-                myqEntity.getQuestion_date(),
-                myqEntity.getAnswer_date(),
-                myqEntity.getAnswer(),
-                result == 1 ? "Answered" : "Failed"
-        );
-
-        return ResponseEntity.ok(answerResponse);
-    }
-
-    @GetMapping("/unlock")
-    public ResponseEntity<?> unlock() {
-        List<UnlockList> result = adminService.unlock();
-        if (result == null || result.isEmpty()) {
-            // Return an error response if no data or an unexpected error occurs
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No data found or unexpected error occurred");
-        } else {
-            // Return the list of unlocked users
-            return ResponseEntity.ok(result);
-        }
-    }
+//    @GetMapping("/unlock")
+//    public ResponseEntity<?> unlock() {
+//        List<UnlockList> result = adminService.unlock();
+//        if (result == null || result.isEmpty()) {
+//            // Return an error response if no data or an unexpected error occurs
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No data found or unexpected error occurred");
+//        } else {
+//            // Return the list of unlocked users
+//            return ResponseEntity.ok(result);
+//        }
+//    }
 
     @PostMapping("/post-endpoint")
     public ResponseEntity<String> handlePostRequest(@RequestBody Requestq requestDto) {
