@@ -2,15 +2,18 @@ import React from 'react';
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Stack } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
+import { useTheme } from '@mui/material/styles';
+
 
 const FaqItem = ({ item, index, expanded, handleChange }) => {
   const isExpanded = expanded === `panel${index}`;
+  const theme = useTheme();
 
   // 아코디언 스타일
   const accordionStyle = {
     // 확장에 따라 색 변경
-    backgroundColor: isExpanded ? '#4880FF' : '#273142',
-    color: isExpanded ? 'white' : 'inherit',
+    backgroundColor: isExpanded ? theme.palette.primary.main : theme.palette.background.paper,
+    color: isExpanded ? theme.palette.text.primary : 'inherit',
     mb: 2,
     borderRadius: '12px',
     '&:first-of-type': {
@@ -33,7 +36,7 @@ const FaqItem = ({ item, index, expanded, handleChange }) => {
 
   // 아코디언 세부 스타일
   const accordionDetailsStyle = {
-    color: 'white',
+    color: theme.palette.text.primary,
   };
 
   // 질문 텍스트 스타일
@@ -54,7 +57,7 @@ const FaqItem = ({ item, index, expanded, handleChange }) => {
       sx={accordionStyle}
     >
       <AccordionSummary
-        expandIcon={isExpanded ? <CloseIcon sx={{ color: 'white' }} /> : <ExpandMoreIcon />}
+        expandIcon={isExpanded ? <CloseIcon sx={{ color: theme.palette.text.primary }} /> : <ExpandMoreIcon />}
         aria-controls={`panel${index}bh-content`}
         id={`panel${index}bh-header`}
         sx={accordionSummaryStyle}
@@ -68,10 +71,10 @@ const FaqItem = ({ item, index, expanded, handleChange }) => {
       </AccordionSummary>
       <AccordionDetails sx={accordionDetailsStyle}>
         <Stack direction="row" alignItems="center" spacing={2}>
-          <Typography variant="body2" sx={{ color: 'white' }}>
+          <Typography variant="body2" sx={{ color: theme.palette.text.primary }}>
             A
           </Typography>
-          <Typography variant="body2" sx={{ color: 'white' }}>
+          <Typography variant="body2" sx={{ color: theme.palette.text.primary }}>
             {item.answer}
           </Typography>
         </Stack>
