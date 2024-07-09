@@ -93,11 +93,11 @@ public class AdminService {
             Integer user_index= user.getUser_index();
             String id = user.getId();
             String email = user.getEmail();
-            String roleIndex = user.getRole_index();
+            int roleIndex = user.getRole_index();
             Timestamp applyDate = user.getApply_date();
             Boolean permissionYn = user.getPermission_yn();
 
-            String role = "1".equals(roleIndex) ? "host" : "director";
+            String role = 1 == (roleIndex) ? "host" : "director";
             String status;
             if (permissionYn == null) {
                 status = "processing";
@@ -180,21 +180,29 @@ public class AdminService {
 
             String id = user.getId();
             String email = user.getEmail();
-            String roleIndex = user.getRole_index();
+            int roleIndex = user.getRole_index();
             Timestamp applyDate = user.getApply_date();
             Boolean account_lock = user.getAccount_lock();
-            String status;
-            if (roleIndex == "2") {
-                status = "host";
-            } else {
-                status = "director";
-            }
+            /*
+            * 2024.07.09
+            * 작성자: 유병민
+            * DB 확인 했을 때 role_index가 bigint로 되어있는 것을 보고
+            * 이에 맞춰 데이터 형식만 바꾸겠습니다. 확인 부탁드립니다.
+            *
+            *
+            * */
+//            String status;
+//            if (roleIndex == 2) {
+//                status = "host";
+//            } else {
+//                status = "director";
+//            }
             if (Boolean.TRUE.equals(account_lock)) {
                 try {
                     String temppw = SimplePasswordGenerator.generateRandomString(12);
                     user.updateUnlock(temppw);
                     loginRepository.save(user);
-                    UnlockList unlockList = new UnlockList(id, email, applyDate, status);
+                    UnlockList unlockList = new UnlockList(id, email, applyDate, roleIndex);
                     answer.add(unlockList);
                     System.out.println("Start emailService.sendTemporaryPassword >>>>>>>>>>>>>>>>>>>>> ");
                     // 이메일 발송

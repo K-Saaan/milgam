@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.js": "/static/js/main.a0d99bd7.js",
+    "main.js": "/static/js/main.9d30fc78.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.746231f8.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.b13d87b6.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.f0f4f3a8.chunk.js",
@@ -13,10 +13,11 @@
     "reactPlayerMixcloud.js": "/static/js/reactPlayerMixcloud.5765a57c.chunk.js",
     "reactPlayerVidyard.js": "/static/js/reactPlayerVidyard.68101865.chunk.js",
     "reactPlayerKaltura.js": "/static/js/reactPlayerKaltura.2861fcb3.chunk.js",
-    "reactPlayerFilePlayer.js": "/static/js/reactPlayerFilePlayer.b0d0f556.chunk.js",
+    "reactPlayerFilePlayer.js": "/static/js/reactPlayerFilePlayer.81faab88.chunk.js",
     "reactPlayerPreview.js": "/static/js/reactPlayerPreview.bf25e6f7.chunk.js",
+    "static/media/pic.jpg": "/static/media/pic.57c9f1e0a58298cc6bba.jpg",
     "index.html": "/index.html",
-    "main.a0d99bd7.js.map": "/static/js/main.a0d99bd7.js.map",
+    "main.9d30fc78.js.map": "/static/js/main.9d30fc78.js.map",
     "reactPlayerYouTube.746231f8.chunk.js.map": "/static/js/reactPlayerYouTube.746231f8.chunk.js.map",
     "reactPlayerSoundCloud.b13d87b6.chunk.js.map": "/static/js/reactPlayerSoundCloud.b13d87b6.chunk.js.map",
     "reactPlayerVimeo.f0f4f3a8.chunk.js.map": "/static/js/reactPlayerVimeo.f0f4f3a8.chunk.js.map",
@@ -29,10 +30,10 @@
     "reactPlayerMixcloud.5765a57c.chunk.js.map": "/static/js/reactPlayerMixcloud.5765a57c.chunk.js.map",
     "reactPlayerVidyard.68101865.chunk.js.map": "/static/js/reactPlayerVidyard.68101865.chunk.js.map",
     "reactPlayerKaltura.2861fcb3.chunk.js.map": "/static/js/reactPlayerKaltura.2861fcb3.chunk.js.map",
-    "reactPlayerFilePlayer.b0d0f556.chunk.js.map": "/static/js/reactPlayerFilePlayer.b0d0f556.chunk.js.map",
+    "reactPlayerFilePlayer.81faab88.chunk.js.map": "/static/js/reactPlayerFilePlayer.81faab88.chunk.js.map",
     "reactPlayerPreview.bf25e6f7.chunk.js.map": "/static/js/reactPlayerPreview.bf25e6f7.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.a0d99bd7.js"
+    "static/js/main.9d30fc78.js"
   ]
 }
