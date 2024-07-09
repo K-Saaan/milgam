@@ -2,7 +2,7 @@ package com.example.crowdm.service.admin;
 
 import com.example.crowdm.dto.faq.MailDto;
 import com.example.crowdm.dto.faq.MyqList;
-
+import com.example.crowdm.service.mail.MailSender;
 import com.example.crowdm.dto.faq.UnlockList;
 import com.example.crowdm.dto.user.PermissionList;
 import com.example.crowdm.entity.admin.MyqEntity;
@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.example.crowdm.service.mail.MailSender;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,31 +38,14 @@ public class AdminService {
     //private static final Logger logger2 = Logger.getLogger(AdminService.class.getName());
     private final LoginRepository loginRepository;
     private final MyqRepository myqRepository;
-
+    private final MailSender mailSender;
     public List<UserEntity> showAllUser() {
         List<UserEntity> userList = loginRepository.findAll();
         return userList;
     }
 
 
-    //@Transactional
-    //public int permissionUpdateUser(int user_index) {
-    //logger.info("permissionUpdateUser {}", user_index);
-    //
-    //Optional<UserEntity> user = loginRepository.findById(user_index);
-    //user.ifPresent(value -> value.setPermissionYn(true));
-        /*try {
-            String u_i=Integer.toString(user_index);
-            int premission = loginRepository.updatePermissionYnById(user_index);
-            // int date = loginRepository.updatePermissionDateById(user_index, permission_date);
-            // int index = loginRepository.updateAdminIndexById(user_index,5);
-            logger.info("premission {}", premission);
 
-            return 1;
-        } catch (Exception e) {
-            logger.error("Error updating permission for user " + user_index + ": " + e.getMessage());
-            return 0;
-        }*/
     @Transactional
     public int permissionUpdateUser(int user_index) {
         Timestamp permission_date = new Timestamp(System.currentTimeMillis());
@@ -139,24 +123,7 @@ public class AdminService {
 
 
     public Integer answering(int myq_index, String answercontext) {
-        /*try {
-            Timestamp date = new Timestamp(System.currentTimeMillis());
-            Optional<MyqEntity> myqOptional = myqRepository.findById(myq_index);
-            if (myqOptional.isPresent()) {
-                MyqEntity myq = myqOptional.get();
-                myq.updateAnswerDate(date, answercontext);
-                myqRepository.save(myq);
-                logger.info("Answer updated for question {}", myq_index);
-                return 1;
-            } else {
-                logger.error("Answer not found with {}", myq_index);
-                return 0;
-            }
-        } catch (Exception e) {
-            logger.error("Error updating  " + myq_index + ": " + e.getMessage());
-            return 0;
-        }
-    }*/
+
         try {
             Timestamp date = new Timestamp(System.currentTimeMillis());
             Optional<MyqEntity> myqOptional = myqRepository.findById(myq_index);
@@ -176,46 +143,7 @@ public class AdminService {
         }
     }
 
-    /*
-    @Transactional
-    public List<UnlockList> unlock() {
-        List<UserEntity> userList = loginRepository.findAll();
 
-        if (userList == null) {
-            return Collections.emptyList();
-        }
-
-        List<UnlockList> answer = new ArrayList<>();
-        for (UserEntity user : userList) {
-            if (user == null) {
-                continue;
-            }
-
-            String id = user.getId();
-            String email = user.getEmail();
-            String roleIndex = user.getRole_index();
-            Timestamp applyDate = user.getApply_date();
-            Boolean account_lock = user.getAccount_lock();
-
-            if (Boolean.TRUE.equals(account_lock)) {
-                String temppw = SimplePasswordGenerator.generateRandomString(12);
-                user.updateUnlock(temppw);
-                loginRepository.save(user);
-                UnlockList unlockList = new UnlockList(id, email, applyDate, roleIndex);
-                answer.add(unlockList);
-
-                // Send temporary password via email
-                SimpleMailMessage message = new SimpleMailMessage();
-                message.setTo(email);
-                message.setFrom(FROM_ADDRESS);
-                message.setSubject("<밀감> 임시 비밀번호입니다");
-                message.setText("임시 비밀번호: " + temppw);
-
-                mailSender.send(message);
-            }
-        }
-        return answer;
-    }*/
 
     @Transactional
     public List<UnlockList> unlock() {
@@ -238,17 +166,22 @@ public class AdminService {
             String roleIndex = user.getRole_index();
             Timestamp applyDate = user.getApply_date();
             Boolean account_lock = user.getAccount_lock();
-
+            String status;
+            if (roleIndex == "2") {
+                status = "host";
+            } else {
+                status = "director";
+            }
             if (Boolean.TRUE.equals(account_lock)) {
                 try {
                     String temppw = SimplePasswordGenerator.generateRandomString(12);
                     user.updateUnlock(temppw);
                     loginRepository.save(user);
-                    UnlockList unlockList = new UnlockList(id, email, applyDate, roleIndex);
+                    UnlockList unlockList = new UnlockList(id, email, applyDate, status);
                     answer.add(unlockList);
                     System.out.println("Start emailService.sendTemporaryPassword >>>>>>>>>>>>>>>>>>>>> ");
                     // 이메일 발송
-                    emailService.sendTemporaryPassword(email, temppw);
+                    mailSender.sendMailTemppw(email, "temppw", temppw);
                     System.out.println("Start emailService.sendTemporaryPassword >>>>>>>>>>>>>>>>>>>>> ");
                 } catch (Exception e) {
                     logger.error("Error processing user {}: {}", id, e.getMessage());
