@@ -29,7 +29,6 @@ import java.sql.Timestamp;
 import java.util.Optional;
 
 
-
 @Service
 @RequiredArgsConstructor
 public class AdminService {
@@ -69,6 +68,7 @@ public class AdminService {
             logger.error("Error updating permission for user " + user_index + ": " + e.getMessage());
             return 0;
         }*/
+
     @Transactional
     public int permissionUpdateUser(int user_index) {
         Timestamp permission_date = new Timestamp(System.currentTimeMillis());
