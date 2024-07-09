@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Grid, MenuItem, Button, FormControl, DialogActions,
     FormHelperText, InputLabel, Select, IconButton, InputAdornment } from '@mui/material';
