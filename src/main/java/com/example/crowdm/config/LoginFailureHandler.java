@@ -1,7 +1,7 @@
 package com.example.crowdm.config;
 
 import com.example.crowdm.entity.user.UserEntity;
-import com.example.crowdm.repository.User.UserRepository;
+//import com.example.crowdm.repository.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
@@ -19,7 +19,7 @@ import java.net.URLEncoder;
 public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     @Autowired
-    private UserRepository userRepository;
+    //private UserRepository userRepository;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {

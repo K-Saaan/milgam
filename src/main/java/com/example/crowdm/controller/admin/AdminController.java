@@ -4,6 +4,7 @@ import com.example.crowdm.dto.faq.MyqList;
 import com.example.crowdm.dto.faq.Requestq;
 import com.example.crowdm.dto.faq.UnlockList;
 import com.example.crowdm.dto.user.PermissionList;
+import com.example.crowdm.dto.user.UserDetail;
 import com.example.crowdm.entity.admin.MyqEntity;
 import com.example.crowdm.entity.user.UserEntity;
 import com.example.crowdm.repository.admin.AdminRepository;
@@ -70,14 +71,30 @@ public class AdminController {
     }
 
 
+    @GetMapping("/deny")
+    public ResponseEntity<String> deny(@RequestParam("user_index") int user_index) {
+        int updateResult=adminService.denyUpdateUser(user_index);
+        if (updateResult == 1) {
+            return ResponseEntity.ok("OK");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating permission");
+        }
+    }
+/*
+    @GetMapping("/userdetail")
+    public ResponseEntity<List<UserDetail>> userdetail(@RequestParam("user_index") int user_index) {
+        List<UserDetail> result=adminService.userdetail(user_index);
+        return ResponseEntity.ok(result);
+
+    }*/
     /**
-     * 1. MethodName: permissionlist
+     * 1. MethodName: userlist
      * 2. ClassName : AdminController
      * 3. Comment   : 회원가입한 유저들 목록
      * 4. 작성자    : boyeong
      * 5. 작성일    : 2024. 07. 09
      **/
-    @GetMapping("/permissionlist")
+    @GetMapping("/usrelist")
     public ResponseEntity<List<PermissionList>> permissionList() {
         List<PermissionList> result = adminService.permissionList();
         return ResponseEntity.ok(result);

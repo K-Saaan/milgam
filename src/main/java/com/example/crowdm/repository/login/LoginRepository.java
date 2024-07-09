@@ -39,4 +39,5 @@ public interface LoginRepository extends JpaRepository<UserEntity, Integer>, Jpa
 
     @Query(value = "select * from users where id = :userId and pw = :password", nativeQuery=true)
     UserEntity findByUser(@Param("userId") String userId, @Param("password") String password);
+
 }
