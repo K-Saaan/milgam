@@ -33,10 +33,10 @@ import java.nio.file.Files;
 public class VideoService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Value("${file_path.video_path}")
+//    @Value("${file_path.video_path}")
     String uploadPath;
 
-    @Value("${server.gcp_upload}")
+//    @Value("${server.gcp_upload}")
     String gcpUrl;
 
     public ResponseEntity<String> uploadToGCP(MultipartFile file, int chunkIndex, int totalChunks) {

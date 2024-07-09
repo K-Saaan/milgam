@@ -2,7 +2,7 @@ package com.example.crowdm.service.admin;
 
 import com.example.crowdm.dto.faq.MailDto;
 import com.example.crowdm.dto.faq.MyqList;
-
+import com.example.crowdm.service.mail.MailSender;
 import com.example.crowdm.dto.faq.UnlockList;
 import com.example.crowdm.dto.user.PermissionList;
 import com.example.crowdm.entity.admin.MyqEntity;
@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.example.crowdm.service.mail.MailSender;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ public class AdminService {
     //private static final Logger logger2 = Logger.getLogger(AdminService.class.getName());
     private final LoginRepository loginRepository;
     private final MyqRepository myqRepository;
-
+    private final MailSender mailSender;
     public List<UserEntity> showAllUser() {
         List<UserEntity> userList = loginRepository.findAll();
         return userList;
@@ -89,7 +90,7 @@ public class AdminService {
         List<UserEntity> userList = loginRepository.findAll();
         List<PermissionList> answer = new ArrayList<>();
         for (UserEntity user : userList) {
-            //Integer user_index= user.getUser_index();
+            Integer user_index= user.getUser_index();
             String id = user.getId();
             String email = user.getEmail();
             String roleIndex = user.getRole_index();
@@ -106,7 +107,7 @@ public class AdminService {
                 status = "rejected";
             }
 
-            PermissionList permissionList = new PermissionList(id, email, role, applyDate, status);
+            PermissionList permissionList = new PermissionList(user_index, id, email, role, applyDate, status);
             answer.add(permissionList);
         }
         return answer;
@@ -139,24 +140,7 @@ public class AdminService {
 
 
     public Integer answering(int myq_index, String answercontext) {
-        /*try {
-            Timestamp date = new Timestamp(System.currentTimeMillis());
-            Optional<MyqEntity> myqOptional = myqRepository.findById(myq_index);
-            if (myqOptional.isPresent()) {
-                MyqEntity myq = myqOptional.get();
-                myq.updateAnswerDate(date, answercontext);
-                myqRepository.save(myq);
-                logger.info("Answer updated for question {}", myq_index);
-                return 1;
-            } else {
-                logger.error("Answer not found with {}", myq_index);
-                return 0;
-            }
-        } catch (Exception e) {
-            logger.error("Error updating  " + myq_index + ": " + e.getMessage());
-            return 0;
-        }
-    }*/
+
         try {
             Timestamp date = new Timestamp(System.currentTimeMillis());
             Optional<MyqEntity> myqOptional = myqRepository.findById(myq_index);
@@ -176,46 +160,7 @@ public class AdminService {
         }
     }
 
-    /*
-    @Transactional
-    public List<UnlockList> unlock() {
-        List<UserEntity> userList = loginRepository.findAll();
 
-        if (userList == null) {
-            return Collections.emptyList();
-        }
-
-        List<UnlockList> answer = new ArrayList<>();
-        for (UserEntity user : userList) {
-            if (user == null) {
-                continue;
-            }
-
-            String id = user.getId();
-            String email = user.getEmail();
-            String roleIndex = user.getRole_index();
-            Timestamp applyDate = user.getApply_date();
-            Boolean account_lock = user.getAccount_lock();
-
-            if (Boolean.TRUE.equals(account_lock)) {
-                String temppw = SimplePasswordGenerator.generateRandomString(12);
-                user.updateUnlock(temppw);
-                loginRepository.save(user);
-                UnlockList unlockList = new UnlockList(id, email, applyDate, roleIndex);
-                answer.add(unlockList);
-
-                // Send temporary password via email
-                SimpleMailMessage message = new SimpleMailMessage();
-                message.setTo(email);
-                message.setFrom(FROM_ADDRESS);
-                message.setSubject("<밀감> 임시 비밀번호입니다");
-                message.setText("임시 비밀번호: " + temppw);
-
-                mailSender.send(message);
-            }
-        }
-        return answer;
-    }*/
 
     @Transactional
     public List<UnlockList> unlock() {
@@ -238,18 +183,23 @@ public class AdminService {
             String roleIndex = user.getRole_index();
             Timestamp applyDate = user.getApply_date();
             Boolean account_lock = user.getAccount_lock();
-
+            String status;
+            if (roleIndex == "2") {
+                status = "host";
+            } else {
+                status = "director";
+            }
             if (Boolean.TRUE.equals(account_lock)) {
                 try {
                     String temppw = SimplePasswordGenerator.generateRandomString(12);
                     user.updateUnlock(temppw);
                     loginRepository.save(user);
-                    UnlockList unlockList = new UnlockList(id, email, applyDate, roleIndex);
+                    UnlockList unlockList = new UnlockList(id, email, applyDate, status);
                     answer.add(unlockList);
-
+                    System.out.println("Start emailService.sendTemporaryPassword >>>>>>>>>>>>>>>>>>>>> ");
                     // 이메일 발송
-                    //emailService.sendTemporaryPassword(email, temppw);
-
+                    mailSender.sendMailTemppw(email, "temppw", temppw);
+                    System.out.println("Start emailService.sendTemporaryPassword >>>>>>>>>>>>>>>>>>>>> ");
                 } catch (Exception e) {
                     logger.error("Error processing user {}: {}", id, e.getMessage());
                 }
