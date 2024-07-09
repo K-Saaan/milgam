@@ -26,7 +26,7 @@ const DashBackground = (props) => {
       <Container
         style={{
             backgroundColor: 'transparent',
-            height: '75vh',
+            minHeight: '65vh',
             padding: 0,
             margin: 0,
         }}
