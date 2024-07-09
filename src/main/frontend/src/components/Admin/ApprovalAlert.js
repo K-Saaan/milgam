@@ -33,22 +33,22 @@ const ApprovalAlert = ({ open, handleClose, handleApprovalOrRejection, inquiry }
             <Typography variant="body1"><strong>이메일:</strong> {inquiry.email}</Typography>
             <Typography variant="body1"><strong>이름:</strong> {inquiry.name}</Typography>
             <Typography variant="body1"><strong>전화번호:</strong> {inquiry.phone}</Typography>
-            <Typography variant="body1"><strong>구분:</strong> {inquiry.role_index}</Typography>
+            <Typography variant="body1"><strong>구분:</strong> {inquiry.role}</Typography>
             <Typography variant="body1"><strong>시작 날짜:</strong> {inquiry.start_date}</Typography>
             <Typography variant="body1"><strong>종료 날짜:</strong> {inquiry.end_date}</Typography>
             <Typography variant="body1"><strong>조직:</strong> {inquiry.org}</Typography>
             <Typography variant="body1"><strong>조직 전화번호:</strong> {inquiry.org_phone}</Typography>
-            <Typography variant="body1"><strong>상태:</strong> {inquiry.permission_yn === '1' ? '승인' : inquiry.permission_yn === '0' ? '거절' : '진행중'}</Typography>
+            <Typography variant="body1"><strong>상태:</strong> {inquiry.status === '1' ? '승인' : inquiry.permission_yn === '0' ? '거절' : '진행중'}</Typography>
          </div>
       </DialogContent>
       <DialogActions style={actionStyle}>
         <Button variant="contained" onClick={handleClose}
             sx={{...btnStyle, backgroundColor: theme.palette.cancel, '&:hover': { backgroundColor: 'inherit' } }}
         >취소</Button>
-        <Button variant="contained" onClick={() => handleApprovalOrRejection('0')}
+        <Button variant="contained" onClick={() => handleApprovalOrRejection('rejected')}
             sx={{...btnStyle, backgroundColor: theme.palette.warn, '&:hover': { backgroundColor: 'inherit' }}}
         >거절</Button>
-        <Button variant="contained" onClick={() => handleApprovalOrRejection('1')}
+        <Button variant="contained" onClick={() => handleApprovalOrRejection('completed')}
             sx={{...btnStyle, backgroundColor: theme.palette.comp, '&:hover': { backgroundColor: 'inherit' }}}
         >승인</Button>
       </DialogActions>
