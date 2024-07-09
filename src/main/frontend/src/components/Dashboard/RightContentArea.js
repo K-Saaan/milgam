@@ -75,6 +75,7 @@ const RightContentArea = ({ handleAlertClick, selectedAlert }) => {
         </Box>
         <List sx={listStyle}>
           {Object.keys(alerts).map((key, index) => (
+            
             <CustomListItem
               key={index}
               button
@@ -82,12 +83,12 @@ const RightContentArea = ({ handleAlertClick, selectedAlert }) => {
               selected={selectedAlert?.id === alerts[key].id}
             >
               <Typography variant="body2" sx={timeTextStyle(theme, selectedAlert?.id === alerts[key].id)}>
-                {alerts[key].time}
+                {alerts[key][alerts[key].length-1].date}
               </Typography>
               <Box sx={titleBoxStyle}>
                 <MailIcon sx={{ color: selectedAlert?.id === alerts[key].id ? theme.palette.text.primary : theme.palette.primary.main, marginRight: 1 }} />
                 <Typography variant="body2" sx={titleTextStyle(theme, selectedAlert?.id === alerts[key].id)}>
-                  {alerts[key].title}
+                  {alerts[key][alerts[key].length-1].context}
                 </Typography>
               </Box>
             </CustomListItem>
