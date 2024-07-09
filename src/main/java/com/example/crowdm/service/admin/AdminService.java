@@ -94,7 +94,7 @@ public class AdminService {
         List<UserEntity> userList = loginRepository.findAll();
         List<PermissionList> answer = new ArrayList<>();
         for (UserEntity user : userList) {
-            //Integer user_index= user.getUser_index();
+            Integer user_index= user.getUser_index();
             String id = user.getId();
             String email = user.getEmail();
             String roleIndex = user.getRole_index();
@@ -111,7 +111,7 @@ public class AdminService {
                 status = "rejected";
             }
 
-            PermissionList permissionList = new PermissionList(id, email, role, applyDate, status);
+            PermissionList permissionList = new PermissionList(user_index, id, email, role, applyDate, status);
             answer.add(permissionList);
         }
         return answer;
@@ -251,10 +251,10 @@ public class AdminService {
                     loginRepository.save(user);
                     UnlockList unlockList = new UnlockList(id, email, applyDate, roleIndex);
                     answer.add(unlockList);
-
+                    System.out.println("Start emailService.sendTemporaryPassword >>>>>>>>>>>>>>>>>>>>> ");
                     // 이메일 발송
-                    //emailService.sendTemporaryPassword(email, temppw);
-
+                    emailService.sendTemporaryPassword(email, temppw);
+                    System.out.println("Start emailService.sendTemporaryPassword >>>>>>>>>>>>>>>>>>>>> ");
                 } catch (Exception e) {
                     logger.error("Error processing user {}: {}", id, e.getMessage());
                 }

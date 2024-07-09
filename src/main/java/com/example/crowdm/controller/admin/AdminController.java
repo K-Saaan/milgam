@@ -10,10 +10,12 @@ import com.example.crowdm.repository.admin.AdminRepository;
 import com.example.crowdm.repository.admin.MyqRepository;
 import com.example.crowdm.service.admin.AdminService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+//import config.SecurityConfig;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,19 +31,18 @@ import java.util.Map;
 
 import java.util.HashMap;
 
-@RestController
+//@RestController
+//@Import({SecurityConfig.class})
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
 public class AdminController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Autowired
-    private AdminService adminService;
 
+    private final AdminService adminService;
 
-    @Autowired
-    private MyqRepository myqRepository;
+    private final MyqRepository myqRepository;
 
     private final AdminRepository adminRepository;
 
@@ -76,7 +77,7 @@ public class AdminController {
         int result = adminService.answering(answerRequest.getMyq_index(), answerRequest.getAnswer());
         return ResponseEntity.ok("ok");
     }*/
-    @PostMapping("/answer")
+    @RequestMapping(value = "/answer", method = RequestMethod.POST)
     public ResponseEntity<Answerq> answer(@RequestBody Requestq answerRequest) {
         int result = adminService.answering(answerRequest.getMyq_index(), answerRequest.getAnswer());
 
