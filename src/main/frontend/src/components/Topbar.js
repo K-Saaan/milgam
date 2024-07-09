@@ -4,27 +4,37 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import Sidebar from './Sidebar'; 
+import { useNavigate } from 'react-router-dom';
+import Sidebar from './Sidebar';
+import { useTheme } from '@mui/material/styles';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
-function Topbar({ isAdmin }) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+const barBoxStyle = { flexGrow: 1 };
+const abStyle = (theme) => ({backgroundColor: theme.palette.background.paper});
+const menuIconStyle = (theme) => ({ mr: 2, color: theme.palette.text.primary });
+const titleStyle = { display: { xs: 'none', sm: 'block' } };
+const profileIconStyle = { display: { xs: 'none', md: 'flex' } };
+
+function Topbar({ isAdmin, toggleTheme }) {
   const [open, setOpen] = React.useState(false); // 사이드바 상태 관리
+  const navigate = useNavigate();
 
-  const isMenuOpen = Boolean(anchorEl);
-
-  // 프로필 메뉴 열기 핸들러
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+  // 테마 변경
+  const theme = useTheme();
+  const handleToggleClick = () => {
+    const newPaletteType = theme.palette.mode === 'light' ? 'dark' : 'light';
+    toggleTheme(newPaletteType);
   };
 
-  // 메뉴 닫기 핸들러
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+  const appBarStyle = abStyle(theme);
+
+  React.useEffect(() => {
+    // 컴포넌트가 마운트될 때 사이드바를 닫기 상태로 초기화
+    setOpen(false);
+  }, []);
 
   // 사이드바 열기 핸들러
   const handleDrawerOpen = () => {
@@ -36,32 +46,14 @@ function Topbar({ isAdmin }) {
     setOpen(false);
   };
 
-  const menuId = 'primary-search-account-menu';
-  // 프로필 메뉴 렌더링
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
+  // 페이지 이동 핸들러
+  const handleProfileClick = () => {
+    navigate('/profile');
+  };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+    <Box sx={barBoxStyle}>
+      <AppBar position="static" style={appBarStyle}>
         <Toolbar>
           {/* 사이드바 열기 버튼 */}
           <IconButton
@@ -70,7 +62,7 @@ function Topbar({ isAdmin }) {
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen} // 사이드바 열기 클릭 핸들러
-            sx={{ mr: 2 }}
+            sx={menuIconStyle(theme)}
           >
             <MenuIcon />
           </IconButton>
@@ -79,28 +71,29 @@ function Topbar({ isAdmin }) {
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
+            sx={titleStyle}
           >
             MilGam
           </Typography>
-          <Box sx={{ flexGrow: 1 }} />
+          <Box sx={barBoxStyle} />
+          <IconButton sx={{color: theme.palette.text.primary}} onClick={handleToggleClick}>
+            {theme.palette.mode === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
+          </IconButton>
           {/* 데스크탑 화면에서 프로필 아이콘 */}
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={profileIconStyle}>
             <IconButton
               size="large"
-              aria-label="account of current user"
-              aria-controls={menuId}
+              aria-label="go to profile page"
               aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
               color="inherit"
+              onClick={handleProfileClick} // 클릭 시 /profile 경로로 이동
+              sx={{color: theme.palette.text.primary}}
             >
               <AccountCircle />
             </IconButton>
           </Box>
         </Toolbar>
       </AppBar>
-      {/* 프로필 메뉴 렌더링 */}
-      {renderMenu}
       {/* 사이드바 컴포넌트 */}
       <Sidebar open={open} handleDrawerClose={handleDrawerClose} isAdmin={isAdmin} />
     </Box>

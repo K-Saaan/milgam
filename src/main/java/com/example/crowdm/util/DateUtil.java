@@ -1,4 +1,4 @@
-package common.util;
+package com.example.crowdm.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

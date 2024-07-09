@@ -1,4 +1,4 @@
-package config;
+package com.example.crowdm.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +20,6 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         HttpSession session = request.getSession(true);
         session.removeAttribute("sessionUser");
         session.setAttribute("sessionUser", authentication.getPrincipal());
-        response.sendRedirect("/home");
+        response.sendRedirect("/dashboards");
     }
 }

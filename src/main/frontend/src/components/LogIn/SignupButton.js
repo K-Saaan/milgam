@@ -1,9 +1,11 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '@mui/material/styles';
 
 // 회원가입 버튼
 const SignupButton = () => {
+    const theme = useTheme();
     const navigate = useNavigate();
     //클릭 시 이동 처리
     const onSignupClick = () => {
@@ -11,7 +13,7 @@ const SignupButton = () => {
     }
     // 버튼 스타일
     const signupButtonStyle = {
-        color: "#B6B6B6",
+        color:  theme.palette.text.secondary,
     };
     // 정렬, 마진 설정
     const signupDivStyle = {
