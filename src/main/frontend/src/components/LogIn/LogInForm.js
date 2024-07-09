@@ -23,7 +23,7 @@ const LogInForm = ({ marginBottom }) => {
         alignItems: 'center',
         justifyContent: 'center',
         margin: 'auto',
-        height: '75vh',
+        height: '65vh',
     };
 
     //회원가입 이동
@@ -36,12 +36,14 @@ const LogInForm = ({ marginBottom }) => {
 
     const onLogIn = async (data) => {
         const { id, pw } = data;
-        console.log(data);
+
         if (id && pw) {
             try {
-                const res = await axios.post("https://745d0e3c-ba8c-4122-a3db-c14acf0ed554.mock.pstmn.io/diff", data);
+                console.log("data : ", data)
+                const res = await axios.post("http://localhost:8080/login/loginAction", data);
                 console.log(res.data);
-                if (res.data === "success") {
+                if (res.data.RESULT === "GO_MAIN") {
+                    console.log("go dashboasr")
                     navigate('/dashboard');
                 } else if (res.data === "diff") {
                     setPasswordError("비밀번호가 틀렸습니다.");
@@ -52,6 +54,7 @@ const LogInForm = ({ marginBottom }) => {
                 }
             } catch (error) {
                 console.error("오류가 발생하였습니다:", error);
+                setPasswordError("오류가 발생하였습니다.");
             }
         }
     };

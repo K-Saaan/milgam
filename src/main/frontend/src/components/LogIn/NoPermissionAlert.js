@@ -45,26 +45,26 @@ const NoPermissionAlert = ({ alertOpen, handleClose }) => {
             open={alertOpen}
             onClose={handleClose}
             PaperProps={{
-                style: { background: '#273142', width: "350px",}
+                style: { background: theme.palette.background.paper, width: "350px",}
             }}
         >
             <DialogTitle id="alert-dialog-title" style={titleStyle}>
                 {"알림"}
                 <DialogActions style={actionStyle}>
                     {/* 부모에 있는 함수 실행하여 닫음 */}
-                    <IconButton onClick={handleClose} style={{color: "white"}}>
+                    <IconButton onClick={handleClose} style={{color: theme.palette.text.primary}}>
                         <CloseIcon/>
                     </IconButton>
                 </DialogActions>
             </DialogTitle>
-            <Divider style={{background: "#9797973D", marginLeft: '40px', marginRight: '40px',}} />
+            <Divider style={{background: theme.palette.divider, marginLeft: '40px', marginRight: '40px',}} />
             <DialogContent style={{margin: "20px", marginBottom: "30px",}}>
                 <DialogContentText id="alert-dialog-slide-description" style={textStyle} >
                     관리자 승인 전입니다.
                 </DialogContentText>
                 <DialogContentText
                     id="alert-dialog-slide-description"
-                    style={{color: "#979797", textAlign: "center", fontSize: "12px", marginTop: "10px"}}
+                    style={{color: theme.palette.text.secondary, textAlign: "center", fontSize: "12px", marginTop: "10px"}}
                 >
                     추후 다시 시도해주세요.
                 </DialogContentText>

@@ -56,16 +56,16 @@ const Logout = ({ alertOpen, handleClose, handleLogout }) => {
             <DialogTitle id="alert-dialog-title" style={titleStyle}>
                 로그아웃
             </DialogTitle>
-            <Divider style={{background: "#9797973D", marginLeft: '40px', marginRight: '40px',}} />
+            <Divider style={{background: theme.palette.divider, marginLeft: '40px', marginRight: '40px',}} />
             <DialogContent style={{margin: "20px", marginBottom: "10px",}}>
                 <DialogContentText id="alert-dialog-slide-description" style={textStyle} >
                     로그아웃 하시겠습니까?
                 </DialogContentText>
                  <DialogActions style={actionStyle}>
                     {/* 부모에 있는 함수 실행 */}
-                    <Button variant="contained" onClick={handleClose} style={btnStyle}>
-                        취소
-                    </Button>
+                    <Button variant="contained" onClick={handleClose}
+                        sx={{...btnStyle, backgroundColor: theme.palette.cancel, '&:hover': { backgroundColor: 'inherit' } }}
+                    >취소</Button>
                     {/* 부모에 있는 함수 실행 */}
                     <Button variant="contained" onClick={handleLogout} style={btnStyle}>
                         로그아웃

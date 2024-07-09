@@ -1,5 +1,6 @@
 package com.example.crowdm.controller.login;
 
+import com.example.crowdm.dto.login.LoginRequest;
 import com.example.crowdm.entity.user.UserEntity;
 import com.example.crowdm.repository.login.LoginRepository;
 import com.example.crowdm.service.login.LoginService;
@@ -9,16 +10,21 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping; // PostMapping 추가
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam; // RequestParam 추가
+import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/login")
 public class LoginController {
@@ -37,29 +43,16 @@ public class LoginController {
     @GetMapping("/loginPage")
     public String goLoginPage(HttpServletRequest request, HttpServletResponse response, Model model) {
         String errorMessage = request.getParameter("message");
+
         model.addAttribute("errorMessage", errorMessage);
+
         return "login/loginPage";
     }
 
-    /** 0708 이수민
-     * 로그인 처리 메서드 추가
-     */
-    @PostMapping("/loginAction")
-    public String login(@RequestParam String username, @RequestParam String password, Model model) {
-        try {
-            // 로그인 서비스 호출 및 결과 확인
-            boolean success = loginService.login(username, password);
-            if (success) {
-                return "redirect:/home";
-            } else {
-                // 로그인 실패 시 에러 메시지 추가
-                model.addAttribute("error", "Invalid username or password");
-                return "login/loginPage";
-            }
-        } catch (Exception e) {
-            // 예외 발생 시 에러 메시지 추가
-            model.addAttribute("error", e.getMessage());
-            return "login/loginPage";
-        }
+    @PostMapping(value = "/loginAction")
+    public  Object loginAction(@RequestBody LoginRequest loginRequest, Model model, HttpServletRequest request, HttpServletResponse	response) throws InvalidKeyException, UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+        logger.info("userID = {}", loginRequest.getId());
+        logger.info("password = {}", loginRequest.getPw());
+        return loginService.updateLogin(loginRequest.getId(), loginRequest.getPw(), request);
     }
-}// 0708 이수민 최종 수정
+}

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Paper, Typography, IconButton , Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
+import { styled } from '@mui/system';
 
 // 지도 영역 바깥 컨테이너 스타일
 const paperStyle = (theme) => ({
@@ -26,6 +27,23 @@ const headerBoxStyle = {
 const titleStyle = (theme) => ({
   color: theme.palette.text.primary,
 });
+
+// TableHead 스타일
+const CustomTableHead = styled(TableHead)(({ theme }) => ({
+  backgroundColor: theme.palette.background.default,
+}));
+
+// TableCell 스타일
+const CustomTableCell = styled(TableCell)(({ theme }) => ({
+  color: theme.palette.text.primary,
+  borderBottom: `2px solid ${theme.palette.divider}`,
+}));
+
+// TableContainer 스타일
+const CustomTableContainer = styled(TableContainer)(({ theme }) => ({
+  backgroundColor: theme.palette.background.paper,
+  borderRadius: '12px',
+}));
 
 // 테이블 데이터 예시
 const tableData = [
@@ -51,38 +69,38 @@ const LeftContentAreaDetail = () => {
   };
 
   return (
-    <Paper sx={paperStyle(theme)}>
+    <Paper sx={{...paperStyle(theme)}}>
       <Box sx={headerBoxStyle}>
         <Typography variant="h5" sx={titleStyle(theme)}>
           알림 상세 내용
         </Typography>
-        <IconButton onClick={handleCloseClick} color='lightGrey'>
+        <IconButton onClick={handleCloseClick}>
           <CloseIcon />
         </IconButton>
       </Box>
       {/* 테이블 */}
-      <TableContainer>
+      <CustomTableContainer>
         <Table>
-          <TableHead>
-            <TableRow sx={{ bgcolor: '#323D4E' , borderRadius: 2 }}>
-              <TableCell sx={{ color: 'white' }}>시간</TableCell>
-              <TableCell sx={{ color: 'white' }}>상황 및 제안</TableCell>
-              <TableCell sx={{ color: 'white' }}>혼잡도</TableCell>
-              <TableCell sx={{ color: 'white' }}>이상 행동</TableCell>
+          <CustomTableHead>
+            <TableRow>
+              <CustomTableCell>시간</CustomTableCell>
+              <CustomTableCell>상황 및 제안</CustomTableCell>
+              <CustomTableCell>혼잡도</CustomTableCell>
+              <CustomTableCell>이상 행동</CustomTableCell>
             </TableRow>
-          </TableHead>
+          </CustomTableHead>
           <TableBody>
             {tableData.map((row, index) => (
               <TableRow key={index}>
-                <TableCell sx={{ color: 'white' }}>{row.time}</TableCell>
-                <TableCell sx={{ color: 'white' }}>{row.situation}</TableCell>
-                <TableCell sx={{ color: 'white' }}>{row.details}</TableCell>
-                <TableCell sx={{ color: 'white' }}>{row.crowdLevel}</TableCell>
+                <CustomTableCell>{row.time}</CustomTableCell>
+                <CustomTableCell>{row.situation}</CustomTableCell>
+                <CustomTableCell>{row.details}</CustomTableCell>
+                <CustomTableCell>{row.crowdLevel}</CustomTableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
+      </CustomTableContainer>
     </Paper>
   );
 };

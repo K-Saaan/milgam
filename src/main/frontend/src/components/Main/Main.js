@@ -93,7 +93,7 @@ function Background() {
           paddingLeft: 2, 
         }}>
           {/* 메뉴 아이콘 버튼 */}
-          <IconButton onClick={toggleDrawer(true)} sx={{ color: 'white', marginRight: 2 }}>
+          <IconButton onClick={toggleDrawer(true)} sx={{ color: theme.palette.text.primary, marginRight: 2 }}>
             <MenuIcon />
           </IconButton>
           {/* 헤더 텍스트 */}
@@ -128,7 +128,7 @@ function Background() {
           {/* SimpleContainer 컴포넌트 */}
           <React.Fragment>
             <CssBaseline />
-            <Container maxWidth={false} sx={{ width: '95%', bgcolor: '#313D4F', borderRadius: '12px', padding: '16px', marginTop: '10px', marginBottom: '50px' }}>
+            <Container maxWidth={false} sx={{ width: '95%', bgcolor: theme.palette.secondary.main, borderRadius: '12px', padding: '16px', marginTop: '10px', marginBottom: '50px' }}>
               <Outlet/>
             </Container>
           </React.Fragment>
