@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping; // PostMapping 추가
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam; // RequestParam 추가
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,20 +37,29 @@ public class LoginController {
     @GetMapping("/loginPage")
     public String goLoginPage(HttpServletRequest request, HttpServletResponse response, Model model) {
         String errorMessage = request.getParameter("message");
-
         model.addAttribute("errorMessage", errorMessage);
-
-        // 예시 코드
-        List<UserEntity> userList = loginService.findAllUser();
-        System.out.println("Users : " + userList.size());
-        System.out.println("UserList : " + userList);
-
-        loginService.deleteUser(userList.get(0).getUser_index());
-
-        List<UserEntity> userList2 = loginService.findAllUser();
-        System.out.println("Users : " + userList2.size());
-        System.out.println("UserList : " + userList2);
-
         return "login/loginPage";
     }
-}
+
+    /** 0708 이수민
+     * 로그인 처리 메서드 추가
+     */
+    @PostMapping("/loginAction")
+    public String login(@RequestParam String username, @RequestParam String password, Model model) {
+        try {
+            // 로그인 서비스 호출 및 결과 확인
+            boolean success = loginService.login(username, password);
+            if (success) {
+                return "redirect:/home";
+            } else {
+                // 로그인 실패 시 에러 메시지 추가
+                model.addAttribute("error", "Invalid username or password");
+                return "login/loginPage";
+            }
+        } catch (Exception e) {
+            // 예외 발생 시 에러 메시지 추가
+            model.addAttribute("error", e.getMessage());
+            return "login/loginPage";
+        }
+    }
+}// 0708 이수민 최종 수정
