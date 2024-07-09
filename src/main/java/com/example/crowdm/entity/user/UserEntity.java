@@ -65,13 +65,10 @@ public class UserEntity {
     @Column(name = "temppw")
     private String temppw;
 
-
     @Transactional
     public void updatePermissionYn(Timestamp permission_date){
         this.permission_yn = true;
-        this.permission_date=permission_date;
-        //this.admin_index=1; 나중에 세션값으로 바꿔야함
-
+        this.permission_date = permission_date;
     }
     @Transactional
     public void updateUnlock(String temppw){
@@ -80,9 +77,16 @@ public class UserEntity {
         this.fail_cnt=0;
     }
 
+    // 필요한 경우 getter 메서드 추가
+    public Timestamp getStartDate() {
+        return start_date;
+    }
+
+    public Timestamp getEndDate() {
+        return end_date;
+    }
 
     public UserEntity(String id, String pw, String name, String email) {
         this.id = id;
     }
 }
-

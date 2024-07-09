@@ -22,6 +22,13 @@ public class FaqController {
     private final FaqRepository faqRepository;
     private final FaqService faqService;
 
+    /**
+     * 1. MethodName: question
+     * 2. ClassName : FaqController
+     * 3. Comment   : faq 질문-답변 목록 출력
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 09
+     **/
     @GetMapping("/question")
     public ResponseEntity<List<FaqEntity>> qlist(HttpServletRequest request, HttpServletResponse response, Model model) {
         System.out.println("faq select  : ");
@@ -34,19 +41,5 @@ public class FaqController {
         return ResponseEntity.ok(faqList);
     }
 
-/*
-    @GetMapping("/answer")
-    public String answer(@RequestParam("id") int id, Model model) {
-        System.out.println("faq select  : ");
 
-        // findAnswer 메서드 호출
-        String an = faqService.findAnswer(id);
-
-        System.out.println("answer : " + an);
-
-        // 모델에 추가하여 View에서 접근 가능하도록 설정 (필요 시)
-        model.addAttribute("answer", an);
-
-        return "faqAnswer";  // 실제 뷰 이름으로 변경 필요
-    }*/
 }
