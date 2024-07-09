@@ -13,7 +13,7 @@ const paperStyle = (theme) => ({
   color: theme.palette.text.primary,
   borderRadius: 2,
   marginLeft: 2,
-  height: '65vh',
+  minHeight: '65vh',
 });
 
 // 시간 텍스트의 스타일

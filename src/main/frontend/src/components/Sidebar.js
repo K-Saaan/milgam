@@ -62,7 +62,7 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
       setLogoutModalOpen(false);
       setIsLogined(false);
       localStorage.removeItem("key");
-      navigate('/login');
+      navigate('/login/loginPage');
   };
 
   // admin 메뉴
@@ -77,7 +77,7 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
     { path: '/inquiry', text: '문의 게시판', icon: <QuestionAnswerIcon /> },
     { path: '/logout', text: '로그아웃', icon: <LogoutIcon />, action: handleLogoutClick },
   ] : [
-    { path: '/login', text: '로그인', icon: <LoginIcon /> },
+    { path: '/login/loginPage', text: '로그인', icon: <LoginIcon /> },
     { path: '/signup', text: '회원가입', icon: <InboxIcon /> },
   ];
 

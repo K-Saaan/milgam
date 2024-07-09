@@ -13,7 +13,7 @@ const paperStyle = (theme) => ({
   color: theme.palette.text.primary,
   borderRadius: 2,
   marginRight: 2,
-  height: '65vh',
+  minHeight: '65vh',
 });
 
 const contStyle = (theme) => ({

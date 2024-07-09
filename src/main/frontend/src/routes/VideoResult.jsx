@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import VideoContentArea from "../components/UploadVideo/VideoContentArea.js";
 import VideoCardListArea from "../components/UploadVideo/VideoCardListArea.js";
 import DashBackground from "../components/DashBackground.js";
+
 
 const containerStyle = {
   display: 'grid',
@@ -21,12 +22,29 @@ const rightSectionStyle = {
   minWidth: '300px',
 };
 
-function UploadVideo(){
-    // 알림 목록 더미 데이터
-    const alerts = [
-        { id: 1, time: '00:15', title: 'Lv.1 이상 행동 감지', details: '이상 행동이 감지되었습니다. 자세한 내용은 여기 있습니다.' },
-        { id: 2, time: '00:03', title: '혼잡 (Lv.3)', details: '혼잡이 발생했습니다. 자세한 내용은 여기 있습니다.' },
-    ];
+function VideoResult(){
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    // 서버로부터 데이터 가져오기
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('/getData');
+
+                // 받아온 데이터를 상태에 저장합니다.
+                setData(response.data);
+                setLoading(false); // 로딩 상태를 false로 변경하여 로딩 완료를 표시합니다.
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setError("오류가 발생하여 데이터를 불러오지 못했습니다. ")
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     // 분석 결과 리스트를 선택하면 내용이 바뀌도록 전달하는 역할
     const [selectedItem, setSelectedItem] = useState(null);
@@ -45,9 +63,11 @@ function UploadVideo(){
                     {/* 결과 목록이 나타나는 오른쪽 부분 */}
                     <div style={rightSectionStyle}>
                         <VideoCardListArea
-                            alerts={alerts}
+                            alerts={data}
                             onSelect={handleSelect}
                             selectedItem={selectedItem}
+                            isLoading={loading}
+                            error={error}
                         />
                     </div>
                 </div>
@@ -56,4 +76,4 @@ function UploadVideo(){
       );
 }
 
-export default UploadVideo;
+export default VideoResult;
