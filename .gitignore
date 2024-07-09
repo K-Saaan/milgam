@@ -39,4 +39,5 @@ out/
 /src/main/resources/static/application-secret.yml
 /src/main/resources/application-secret.yml
 venv3/
+/.venv/
 /src/main/resources/static/application.properties

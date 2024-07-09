@@ -73,8 +73,11 @@ dependencies {
     
     //sse
     implementation 'io.projectreactor:reactor-core:3.4.11'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
+    implementation 'org.slf4j:slf4j-api:1.7.32'
+    implementation 'ch.qos.logback:logback-classic:1.2.6'
 
-     // Etc
+    // Etc
     implementation 'commons-io:commons-io:2.8.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
 
