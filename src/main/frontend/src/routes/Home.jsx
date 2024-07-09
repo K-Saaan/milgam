@@ -19,7 +19,7 @@ const cPageStyle = (theme) => ({
 const cContentStyle = (theme) => ({
   scrollSnapAlign: 'start',
   height: '100%',
-  width: '70vh',
+  maxWidth: '1000px',
   display:'flex',
   justifyContent:'center',
   alignItems:'center',

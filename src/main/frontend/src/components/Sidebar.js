@@ -18,7 +18,6 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import { Link, useNavigate } from 'react-router-dom';
 import Logout from "./Logout.js";
 import useStore from "../store";

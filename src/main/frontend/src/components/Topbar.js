@@ -77,8 +77,7 @@ function Topbar({ isAdmin, toggleTheme }) {
           {/* 앱 타이틀 */}
 
 {/* ####################################################################################### */}
-{/* "text-decoration= none" 부탁~~~~ */}
-          <Link to="home">
+          <Link to="home" style={{textDecoration:'none'}}>
             <Typography
               variant="h6"
               noWrap
