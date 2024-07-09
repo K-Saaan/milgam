@@ -1,4 +1,4 @@
-package config;
+package com.example.crowdm.config;
 
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;

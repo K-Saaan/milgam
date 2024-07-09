@@ -39,9 +39,11 @@ const LogInForm = ({ marginBottom }) => {
 
         if (id && pw) {
             try {
-                const res = await axios.post("Endpoint", data);
+                console.log("data : ", data)
+                const res = await axios.post("http://localhost:8080/login/loginAction", data);
                 console.log(res.data);
-                if (res.data === "success") {
+                if (res.data.RESULT === "GO_MAIN") {
+                    console.log("go dashboasr")
                     navigate('/dashboard');
                 } else if (res.data === "diff") {
                     setPasswordError("비밀번호가 틀렸습니다.");

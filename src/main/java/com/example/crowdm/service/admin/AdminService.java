@@ -33,18 +33,11 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class AdminService {
-    //private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     //private static final Logger logger2 = Logger.getLogger(AdminService.class.getName());
     private final LoginRepository loginRepository;
     private final MyqRepository myqRepository;
 
-    public List<UserEntity> showAllUser(){
-    private EmailService emailService;
-    private MailDto email;
-    private JavaMailSender mailSender;
-    private static final String FROM_ADDRESS = "aivleteam12@gmail.com";
-
-    private static final Logger logger = LoggerFactory.getLogger(AdminService.class);
     public List<UserEntity> showAllUser() {
         List<UserEntity> userList = loginRepository.findAll();
         return userList;
