@@ -1,6 +1,6 @@
 import { useTheme } from "@emotion/react";
 import { motion, useScroll, useTransform} from "framer-motion";
-import pic from "./pic.jpg"
+import pic from "./pic2.jpg"
 import { useRef } from "react";
 
 // conatiner
@@ -16,7 +16,7 @@ const cPage1Style = (theme) => ({
 // span
 const cSpanStyle = (theme) => ({
   margin: '0',
-  color: 'red',
+  color: theme.palette.primary.main,
   left: '10%',
   fontSize: '56px',
   fontWeight: '700',
@@ -75,7 +75,7 @@ function Page2(){
               <div style={{...textStyle, y}}>
                
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac
-                  rhoncus quam.
+                  rhoncus quam. 짜쟌~ 우리 밀감이는요
                   Fringilla quam urna. Cras turpis elit, euismod eget ligula quis,
                   imperdiet sagittis justo. In viverra fermentum ex ac vestibulum.
                   Aliquam eleifend nunc a luctus porta. Mauris laoreet augue ut felis

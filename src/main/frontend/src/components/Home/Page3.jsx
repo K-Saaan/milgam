@@ -16,7 +16,7 @@ const cPage1Style = (theme) => ({
 // span
 const cSpanStyle = (theme) => ({
   margin: '0',
-  color: 'red',
+  color: theme.palette.primary.main,
   left: '10%',
   fontSize: '56px',
   fontWeight: '700',
@@ -75,7 +75,7 @@ function Page3(){
               <div style={{...textStyle, y}}>
                
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac
-                  rhoncus quam.
+                  rhoncus quam. 밀감이를 쓰면 이럴 수 있답니다 지금 바로 사용하러 고고
                   Fringilla quam urna. Cras turpis elit, euismod eget ligula quis,
                   imperdiet sagittis justo. In viverra fermentum ex ac vestibulum.
                   Aliquam eleifend nunc a luctus porta. Mauris laoreet augue ut felis

@@ -27,7 +27,6 @@ const ReplyInquiry = () => {
         question_date: "2024-06-25",
         name: "이민정",
         answer_date: null,
-        end_date: null
         },
         {
         id: 2,
@@ -36,7 +35,6 @@ const ReplyInquiry = () => {
         question_date: "2024-06-20",
         name: "김철수",
         answer_date: "2024-06-21",
-        end_date: "2024-06-21"
         },
         {
         id: 3,
@@ -45,7 +43,6 @@ const ReplyInquiry = () => {
         question_date: "2024-06-15",
         name: "박영희",
         answer_date: null,
-        end_date: null
         },
     ];
 
@@ -102,7 +99,7 @@ const ReplyInquiry = () => {
 
     return (
         <div>
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} sx={{width: '100vh'}}>
                 <Table>
                     <TableHead>
                         <TableRow>
