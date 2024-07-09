@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Paper, Typography, IconButton , Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
@@ -53,16 +53,8 @@ const tableData = [
 ];
 
 const LeftContentAreaDetail = () => {
-  const { id } = useParams();
   const navigate = useNavigate();
   const theme = useTheme();
-
-  // 여기에 id에 따른 내용을 설정합니다.
-  // 예시로 간단한 데이터를 설정하였습니다.
-  const alertDetails = {
-    1: '2구역에서 Lv.1 이상 행동이 감지되었습니다. 자세한 내용은 ...',
-    2: '5구역에서 Lv.3 혼잡이 발생했습니다. 자세한 내용은 ...',
-  };
 
   const handleCloseClick = () => {
     navigate('/dashboard');
