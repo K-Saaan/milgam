@@ -6,12 +6,13 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 
 function Topbar({ isAdmin }) {
   const [open, setOpen] = React.useState(false); // 사이드바 상태 관리
   const navigate = useNavigate();
+  const location = useLocation();
 
   React.useEffect(() => {
     // 컴포넌트가 마운트될 때 사이드바를 닫기 상태로 초기화
@@ -30,7 +31,7 @@ function Topbar({ isAdmin }) {
 
   // 페이지 이동 핸들러
   const handleProfileClick = () => {
-    navigate('/profile');
+    navigate('/profile', { state: { from: location.pathname } });
   };
 
   return (
