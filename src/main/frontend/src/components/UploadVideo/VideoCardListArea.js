@@ -45,7 +45,7 @@ const VideoCardListArea = ({ alerts, onSelect, selectedItem }) => {
                 <CustomChip label="원활" sx={{backgroundColor:"#00B69B"}}/>
             </div>
             <div>이벤트 발생 로그</div>
-            <Divider style={{background: "#9797973D", marginTop:"5px",marginBottom:"20px"}}/>
+            <Divider style={{background: theme.palette.divider, marginTop:"5px",marginBottom:"20px"}}/>
             {/* 분석 결과 목록 */}
             <List sx={{ height: 'calc(100% - 52px)', overflow: 'auto' }}>
                 {alerts.map(alert => (
