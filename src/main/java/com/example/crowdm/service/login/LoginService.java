@@ -1,61 +1,65 @@
 package com.example.crowdm.service.login;
 
-
 import com.example.crowdm.entity.user.UserEntity;
 import com.example.crowdm.repository.login.LoginRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class LoginService {
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final LoginRepository loginRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public Map<String, Object> updateLogin(String userId, String password, HttpServletRequest request) {
-        Map<String,Object> resultMap= new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<>();
 
         // Null 체크
-        if ("".equals(userId) || "".equals(password)) {
+        if (userId == null || password == null || userId.isEmpty() || password.isEmpty()) {
             resultMap.put("RESULT", "INPUT_NULL");
-            resultMap.put("URL", "");
             return resultMap;
         }
 
-        UserEntity user = loginRepository.findByUser(userId, password);
+        UserEntity user = loginRepository.findByUser(userId);
 
         logger.info("user :: " + user);
         if(user != null) {
             logger.info("login success >>>>>>>");
 
-            // 계정잠김 여부 확인
-            if(user.getAccount_lock()) {
-                resultMap.put("RESULT", "LOCK_ACCOUNT");
-                resultMap.put("URL", "");
-                return resultMap;
+            // 비밀번호 검증
+            if (passwordEncoder.matches(password, user.getPw())) {
+                logger.info("Login success for user: {}", user.getId());
+
+                // 계정 잠김 여부 확인
+                if (user.getAccount_lock()) {
+                    resultMap.put("RESULT", "LOCK_ACCOUNT");
+                    return resultMap;
+                }
+
+                // 로그인 성공
+                resultMap.put("RESULT", "GO_MAIN");
+                resultMap.put("URL", "/dashboards");
+
+                // 세션에 userId 저장
+                HttpSession session = request.getSession(true);
+                session.setAttribute("userId", userId);
+            } else {
+                logger.info("Login failed for user: {}", user.getId());
+                resultMap.put("RESULT", "INVALID_PASSWORD");
             }
-
-
-            // 메인으로 이동
-            resultMap.put("RESULT", "GO_MAIN");
-            resultMap.put("URL", "/dashboards");
-
+        } else {
+            logger.info("User not found for userId: {}", userId);
+            resultMap.put("RESULT", "USER_NOT_FOUND");
         }
-
-        HttpSession session = request.getSession(true);
-        session.removeAttribute("userId");
-        session.setAttribute("userId", userId);
 
         return resultMap;
     }

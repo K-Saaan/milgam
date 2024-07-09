@@ -7,11 +7,11 @@ public class UnlockList {
     private String id;
     private String email;
     private Timestamp applyDate;
-    private String role_index;
+    private int role_index;
 
     public UnlockList() {}
 
-    public UnlockList(String id, String email, Timestamp applyDate, String role_index) {
+    public UnlockList(String id, String email, Timestamp applyDate, int role_index) {
         this.id = id;
         this.email = email;
         this.applyDate = applyDate;
@@ -42,11 +42,11 @@ public class UnlockList {
         this.applyDate = applyDate;
     }
 
-    public String getRole_index() {
+    public int getRole_index() {
         return role_index;
     }
 
-    public void setRole_index(String role_index) {
+    public void setRole_index(int role_index) {
         this.role_index = role_index;
     }
 }

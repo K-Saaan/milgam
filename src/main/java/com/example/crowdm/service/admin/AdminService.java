@@ -92,11 +92,11 @@ public class AdminService {
             //Integer user_index= user.getUser_index();
             String id = user.getId();
             String email = user.getEmail();
-            String roleIndex = user.getRole_index();
+            int roleIndex = user.getRole_index();
             Timestamp applyDate = user.getApply_date();
             Boolean permissionYn = user.getPermission_yn();
 
-            String role = "1".equals(roleIndex) ? "host" : "director";
+            String role = 1 == roleIndex ? "host" : "director";
             String status;
             if (permissionYn == null) {
                 status = "processing";
@@ -235,7 +235,7 @@ public class AdminService {
 
             String id = user.getId();
             String email = user.getEmail();
-            String roleIndex = user.getRole_index();
+            int roleIndex = user.getRole_index();
             Timestamp applyDate = user.getApply_date();
             Boolean account_lock = user.getAccount_lock();
 
