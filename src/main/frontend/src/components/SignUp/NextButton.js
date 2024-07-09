@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { styled } from '@mui/system';
+import { useTheme } from '@mui/material/styles';
 
 const ButtonStyle = {   // 버튼 스타일
     marginTop: "20px",

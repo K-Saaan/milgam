@@ -8,8 +8,20 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import CustomTextField from '../Styles/CustomTextField';
+import { useTheme } from '@mui/material/styles';
+import Divider from '@mui/material/Divider';
+
+
+// 내용 정렬
+const actionStyle = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: "20px",
+}
 
 function RegisterAlert({ open, handleClose }) {
+  const theme = useTheme();
   // useForm 훅으로 폼 관리 기능
   const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -25,11 +37,12 @@ function RegisterAlert({ open, handleClose }) {
       open={open}
       onClose={handleClose}
       PaperProps={{
-        sx: { background: '#273142',
+        sx: { background: theme.palette.background.paper,
             borderRadius: "12px" },
       }}
     >
       <DialogTitle>문의</DialogTitle>
+      <Divider style={{background: theme.palette.divider}} />
       <DialogContent>
         <DialogContentText>제목</DialogContentText>
         <CustomTextField
@@ -38,30 +51,12 @@ function RegisterAlert({ open, handleClose }) {
           margin="dense"
           id="title"
           name="title"
-          label="문의 제목"
+          placeholder="문의 제목"
           type="text"
           fullWidth
           {...register('title', { required: true })}
           error={!!errors.title}
           helperText={errors.title ? 'This field is required' : ''}
-          sx={{
-            // 입력 필드 배경색
-            '& .MuiOutlinedInput-root': {
-              backgroundColor: '#323D4E',
-            // 필드 셋의 테두리 색
-              '& fieldset': {
-                borderColor: '#CFCFCF1D',
-              },
-            // 호버 시 테두리 색
-              '&:hover fieldset': {
-                borderColor: '#CFCFCF1D',
-              },
-            // 포커스 시 테두리 색
-              '&.Mui-focused fieldset': {
-                borderColor: '#FFFFFF1D',
-              },
-            },
-          }}
         />
         <DialogContentText>내용</DialogContentText>
         <CustomTextField
@@ -69,32 +64,19 @@ function RegisterAlert({ open, handleClose }) {
           margin="dense"
           id="content"
           name="content"
-          label="문의 내용"
+          placeholder="문의 내용"
           type="text"
           fullWidth
+          rows={8}
           multiline // 여러줄 입력 가능
           {...register('content', { required: true })}
           error={!!errors.content}
           helperText={errors.content ? 'This field is required' : ''}
-          sx={{
-            '& .MuiOutlinedInput-root': {
-              backgroundColor: '#323D4E',
-              '& fieldset': {
-                borderColor: '#CFCFCF1D',
-              },
-              '&:hover fieldset': {
-                borderColor: '#CFCFCF1D',
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: '#FFFFFF1D',
-              },
-            },
-          }}
         />
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>취소</Button>
-        <Button type="submit" onClick={handleSubmit(onSubmit)}>등록</Button>
+      <DialogActions style={actionStyle}>
+        <Button variant="contained" onClick={handleClose}>취소</Button>
+        <Button variant="contained" type="submit" onClick={handleSubmit(onSubmit)}>등록</Button>
       </DialogActions>
     </Dialog>
   );
