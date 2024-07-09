@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 
@@ -22,15 +23,26 @@ public class DashboardController {
         return dashboardService.findAllDashboards();
     }
 
-    @GetMapping("/add")
+    @PostMapping
     public DashboardEntity addDashboard(@RequestBody DashboardEntity dashboardEntity) {
         logger.info("Adding dashboard: {}", dashboardEntity);
         return dashboardService.addDashboard(dashboardEntity);
     }
 
-    @GetMapping("/delete/{id}")
-    public int deleteDashboard(@RequestParam("id") int id ){
+    @PutMapping("/{id}/update-entity-only")
+    public DashboardEntity updateDashboardEntityOnly(@PathVariable("id") int id, @RequestBody DashboardEntity dashboardEntity) {
+        logger.info("Updating dashboard entity only with id {}", id);
+        return dashboardService.updateDashboardEntityOnly(id, dashboardEntity);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public int deleteDashboard(@PathVariable("id") int id ){
         logger.info("Deleting dashboard with id {}", id);
         return dashboardService.deleteDashboard(id);
+    }
+
+    @GetMapping("/noti")
+    public SseEmitter getDashboards() {
+        return dashboardService.subscribe();
     }
 }
