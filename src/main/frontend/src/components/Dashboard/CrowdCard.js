@@ -51,8 +51,8 @@ const CrowdCard = ({ region }) => {
         </Box>
       ) : (
         <>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Typography variant="subtitle2">
+          <Box sx={{ textAlign: 'center' }}> {/* 가운데 정렬을 위해 Box 추가 */}
+            <Typography variant="subtitle2" gutterBottom>
               혼잡도
             </Typography>
             <Typography
@@ -60,22 +60,27 @@ const CrowdCard = ({ region }) => {
               sx={{
                 backgroundColor: getBackgroundColor(crowdData.areaCongestLvl, theme),
                 color: theme.palette.getContrastText(getBackgroundColor(crowdData.areaCongestLvl, theme)),
-                padding: '3px',
+                padding: '4px',
+                paddingLeft: '20px', // 왼쪽 패딩을 키웁니다
+                paddingRight: '20px', // 오른쪽 패딩을 키웁니다
                 borderRadius: '4px',
-                margin: '2px'
+                margin: '4px 0', // 위아래 margin 조정
+                display: 'inline-block' // 아랫줄로 내려쓰기 위해 display 변경
               }}
             >
               {crowdData.areaCongestLvl}
             </Typography>
           </Box>
-          <Typography 
-            sx={{
-              color: theme.palette.text.primary,
-              fontSize: '0.75rem',        
-            }}
-          >
-            {crowdData.areaCongestMsg}
-          </Typography>
+          <Box sx={{ marginTop: '8px' }}>
+            <Typography 
+              sx={{
+                color: theme.palette.text.primary,
+                fontSize: '0.75rem',        
+              }}
+            >
+              {crowdData.areaCongestMsg}
+            </Typography>
+          </Box>
         </>
       )}
     </Paper>

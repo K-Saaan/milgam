@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, Typography } from '@mui/material';
+import { Paper, Typography, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Bar } from 'react-chartjs-2';
 import { getBarChartOptions, barChartData } from './charts/BarChartContainer';
@@ -12,9 +12,11 @@ const AbnormalBehaviorCard = () => {
 
   return (
     <Paper sx={CustomPaper(theme)}>
-      <Typography variant="subtitle2">
-        이상 행동(임시)
-      </Typography>
+      <Box sx={{ textAlign: 'center' }}>
+        <Typography variant="subtitle2" gutterBottom>
+          이상 행동(임시)
+        </Typography>
+      </Box>
       <div style={{ height: '85%' }}> {/* 높이 조정 */}
         <Bar data={barChartData} options={options} />
       </div>

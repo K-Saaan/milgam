@@ -83,7 +83,7 @@ const MapCard = () => {
 
   
   // React Query를 사용하여 selectedRegion이 변경될 때마다 데이터를 가져옴
-  const { data, error, isLoading, refetch } = useQuery(['fetchData', selectedRegion], () => fetchData(selectedRegion), {
+  const { error, isLoading } = useQuery(['fetchData', selectedRegion], () => fetchData(selectedRegion), {
     refetchInterval: 300000, // 5분마다 갱신
     enabled: !!selectedRegion, // selectedRegion이 있을 때만 쿼리를 실행
   });

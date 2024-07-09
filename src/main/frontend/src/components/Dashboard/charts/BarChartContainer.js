@@ -1,7 +1,4 @@
-// BarChartContainer.js
-
 import { Chart, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
-
 Chart.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 // 바 차트 옵션 지정

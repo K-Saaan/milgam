@@ -71,10 +71,12 @@ const CrowdRatioCard = ({ region }) => {
         </Box>
       ) : (
         <>
-          <Typography variant="subtitle2">
-            인구 비율
-          </Typography>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '75px', width: '100%' }}>
+          <Box sx={{ textAlign: 'center' }}>
+            <Typography variant="subtitle2" gutterBottom>
+              나이대별 비율
+            </Typography>
+          </Box>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '80%', width: '100%' }}>
             <Pie data={data} options={pieChartOptions(theme)} style={{ position: 'relative', height: '75px', width: '75px' }} />
           </div>
         </>
