@@ -2,7 +2,7 @@ import { ListItem } from '@mui/material';
 import { styled } from '@mui/system';
 
 const CustomListItem = styled(ListItem)(({ theme }) => ({
-    backgroundColor: '#2B3B5B',
+    backgroundColor: theme.palette.background.item,
     borderRadius: '5px',
     marginBottom: '10px',
     padding: '10px',

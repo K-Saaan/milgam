@@ -1,6 +1,5 @@
 import React, { useRef, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
-import "./VideoContentArea.css";
 import VideoCard from "./VideoCard.js";
 
 import { useTheme } from '@mui/material/styles';
@@ -15,6 +14,10 @@ const paperStyle = (theme) => ({
   borderRadius: 2,
   marginRight: 2,
   minHeight: '75vh',
+});
+
+const contStyle = (theme) => ({
+  margin: '20px',
 });
 
 // 영상 분석 결과 좌측 영역
@@ -40,7 +43,7 @@ const VideoContentArea = ({ selectedItem }) => {
 
     return (
         <Container sx={paperStyle(theme)}>
-            <div className="v-cont">
+            <div sx={contStyle(theme)}>
                 {/* 파일명, 영상 출력 부분 */}
                 <VideoCard video={state.video} playerRef={playerRef}/>
                 {/* 기입한 영상 내용 */}
@@ -48,7 +51,7 @@ const VideoContentArea = ({ selectedItem }) => {
                 {/* 선택한 항목이 있을 때 그 내용 출력 */}
                 {selectedItem &&
                     <div>
-                        <Divider style={{background: "#9797973D", marginTop:"20px",marginBottom:"20px"}}/>
+                        <Divider style={{background: theme.palette.divider, marginTop:"20px",marginBottom:"20px"}}/>
                         <div>{selectedItem.details}</div>
                     </div>
                 }
