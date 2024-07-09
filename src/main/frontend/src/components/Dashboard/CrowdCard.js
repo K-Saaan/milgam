@@ -23,19 +23,17 @@ const getBackgroundColor = (level, theme) => {
 };
 
 // 혼잡도 카드
-const CrowdCard = () => {
+const CrowdCard = ({ region }) => {
   const theme = useTheme();
   const [crowdData, setCrowdData] = useState({ areaNm: '', areaCongestLvl: '', areaCongestMsg: '' });
   
-  const { data: xmlData, error, isLoading } = useQuery('fetchData', fetchData, {
+  const { data: xmlData, error, isLoading } = useQuery(['fetchData', region], () => fetchData(region), {
     refetchInterval: 300000, // 5분마다 갱신
   });
 
   useEffect(() => {
     if (xmlData) {
-      console.log('Fetched XML Data:', xmlData);
       const extractedData = extractCrowdData(xmlData);
-      console.log('Extracted Data:', extractedData);
       setCrowdData(extractedData);
     }
   }, [xmlData]);

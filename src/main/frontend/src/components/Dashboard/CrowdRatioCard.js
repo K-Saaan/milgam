@@ -7,18 +7,20 @@ import { extractPopulationRates } from '../../api/dataExtractor';
 import { Pie } from 'react-chartjs-2';
 import CustomPaper from './styles/CustomPaper'
 import { pieChartDatasetOptions, pieChartOptions } from './charts/PieChartContainer';
+import useStore from '../../store'
 
 // Chart.js 요소 등록
 import { Chart, ArcElement, Legend, Tooltip } from 'chart.js';
 Chart.register(ArcElement, Legend, Tooltip);
 
 // 혼잡비율 카드
-const CrowdRatioCard = () => {
+const CrowdRatioCard = ({ region }) => {
   const theme = useTheme();
-  const { data: xmlData, error, isLoading } = useQuery('fetchData', fetchData, {
+  const { selectedRegion } = useStore(); // 선택된 지역을 Zustand 스토어에서 가져옵니다.
+  const { data: xmlData, error, isLoading } = useQuery(['fetchData', selectedRegion], () => fetchData(selectedRegion), {
     refetchInterval: 300000, // 5분마다 갱신
   });
-
+  
   const [populationRates, setPopulationRates] = useState({
     ppltnRate10: 0,
     ppltnRate20: 0,
@@ -31,9 +33,7 @@ const CrowdRatioCard = () => {
 
   useEffect(() => {
     if (xmlData) {
-      console.log('Fetched XML Data:', xmlData);
       const extractedData = extractPopulationRates(xmlData);
-      console.log('Extracted Data:', extractedData);
       setPopulationRates(extractedData);
     }
   }, [xmlData]);
