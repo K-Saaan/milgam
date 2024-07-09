@@ -11,6 +11,7 @@ const Background = (props) => {
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
+        flex: 0.7,
       }}
     >
       {/* 헤더 부분 */}

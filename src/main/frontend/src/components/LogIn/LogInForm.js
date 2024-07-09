@@ -7,9 +7,8 @@ import NoPermissionAlert from "./NoPermissionAlert.js";
 import LongButton from "../Styles/LongButton.js";
 import SignupButton from "./SignupButton.js";
 import CustomTextField from '../Styles/CustomTextField.js';
-
-
 import Stack from '@mui/material/Stack';
+import useStore from "../../store";
 
 const LogInForm = ({ marginBottom }) => {
     const navigate = useNavigate();
@@ -29,11 +28,12 @@ const LogInForm = ({ marginBottom }) => {
     //회원가입 이동
     const onSignupClick = () => { navigate('/signup'); };
     //알림 팝업창 열고 닫기
-    const alHandleClickOpen = () => { alAlertOpen(true); };
+    const alHandleClickOpen = () => { alSetOpen(true); };
     const alHandleClose = () => { alSetOpen(false); };
-    const npHandleClickOpen = () => { npAlertOpen(true); };
+    const npHandleClickOpen = () => { npSetOpen(true); };
     const npHandleClose = () => { npSetOpen(false); };
 
+    const {setIsLogined} = useStore(state => state);
     const onLogIn = async (data) => {
         const { id, pw } = data;
 
@@ -41,9 +41,11 @@ const LogInForm = ({ marginBottom }) => {
             try {
                 console.log("data : ", data)
                 const res = await axios.post("http://localhost:8080/login/loginAction", data);
-                console.log(res.data);
+                //console.log(res.data);
                 if (res.data.RESULT === "GO_MAIN") {
-                    console.log("go dashboasr")
+                    console.log("go dashboard")
+                    localStorage.setItem("key", data.id);
+                    setIsLogined(true);
                     navigate('/dashboard');
                 } else if (res.data === "diff") {
                     setPasswordError("비밀번호가 틀렸습니다.");
