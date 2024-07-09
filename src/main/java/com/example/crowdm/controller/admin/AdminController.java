@@ -80,13 +80,12 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating permission");
         }
     }
-/*
     @GetMapping("/userdetail")
     public ResponseEntity<List<UserDetail>> userdetail(@RequestParam("user_index") int user_index) {
         List<UserDetail> result=adminService.userdetail(user_index);
         return ResponseEntity.ok(result);
 
-    }*/
+    }
     /**
      * 1. MethodName: userlist
      * 2. ClassName : AdminController
@@ -94,7 +93,7 @@ public class AdminController {
      * 4. 작성자    : boyeong
      * 5. 작성일    : 2024. 07. 09
      **/
-    @GetMapping("/usrelist")
+    @GetMapping("/userlist")
     public ResponseEntity<List<PermissionList>> permissionList() {
         List<PermissionList> result = adminService.permissionList();
         return ResponseEntity.ok(result);

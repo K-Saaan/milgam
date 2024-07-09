@@ -3,7 +3,7 @@ package com.example.crowdm.service.admin;
 import com.example.crowdm.dto.faq.MailDto;
 import com.example.crowdm.dto.faq.MyqList;
 import com.example.crowdm.dto.user.UserDetail;
-import com.example.crowdm.repository.User.UserRepository;
+//import com.example.crowdm.repository.User.UserRepository;
 import com.example.crowdm.service.mail.MailSender;
 import com.example.crowdm.dto.faq.UnlockList;
 import com.example.crowdm.dto.user.PermissionList;
@@ -39,7 +39,7 @@ public class AdminService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     //private static final Logger logger2 = Logger.getLogger(AdminService.class.getName());
     private final LoginRepository loginRepository;
-    private final UserRepository userRepository;
+    //private final UserRepository userRepository;
     private final MyqRepository myqRepository;
     private final MailSender mailSender;
     public List<UserEntity> showAllUser() {
@@ -90,13 +90,60 @@ public class AdminService {
         }
 
     }
-/*
+    /*public List<UserDetail> userdetail(int user_index) {
+
+        List<UserEntity> userList = loginRepository.findById(user_index);
+        List<UserDetail> answer = new ArrayList<>();
+        for (UserEntity user : userList) {
+            if (user == null) {
+                // Handle case where user is not found, for example, return an empty list or throw an exception
+                return List.of();
+            }
+
+            // Determine role based on role_index
+            String role;
+            if (user.getRole_index() == "1") {
+                role = "director";
+            } else {
+                role = "host";
+            }
+
+            // Determine status based on permissionyn
+            String status;
+            if (user.getPermissionyn() == false) {
+                status = "거절"; // Waiting
+            } else if (user.getPermissionyn() == true) {
+                status = "승인"; // Approved
+            } else {
+                status = "대기"; // Rejected
+            }
+
+
+            String id = user.getId();
+            String email = user.getEmail();
+            String name = user.getName();
+            String phone = user.getPhone();
+
+            Timestamp start_date = user.getStart_date();
+            Timestamp end_date = user.getEnd_date();
+            String org = user.getOrg();
+            String org_phone = user.getOrg_phone();
+
+
+            UserDetail userdetail = new UserDetail(user_index, id, email, name, phone, start_date, end_date, org, org_phone);
+            answer.add(userdetail);
+        }
+        return answer;
+    }*/
+
     public List<UserDetail> userdetail(int user_index) {
-        UserEntity user = userRepository.findByUserIndex(user_index);
-        if (user == null) {
+        Optional<UserEntity> userOptional = loginRepository.findById(user_index);
+        if (!userOptional.isPresent()) {
             // Handle case where user is not found, for example, return an empty list or throw an exception
             return List.of();
         }
+
+        UserEntity user = userOptional.get();
 
         // Determine role based on role_index
         String role;
@@ -116,22 +163,30 @@ public class AdminService {
             status = "대기"; // Rejected
         }
 
+        String id = user.getId();
+        String email = user.getEmail();
+        String name = user.getName();
+        String phone = user.getPhone();
+        Timestamp start_date = user.getStart_date();
+        Timestamp end_date = user.getEnd_date();
+        String org = user.getOrg();
+        String org_phone = user.getOrg_phone();
+
         UserDetail userDetail = new UserDetail();
-        userDetail.setUser_index(user.getUser_index());
-        userDetail.setId(user.getId());
-        userDetail.setEmail(user.getEmail());
-        userDetail.setName(user.getName());
-        userDetail.setPhone(user.getPhone());
+        userDetail.setUser_index(user_index);
+        userDetail.setId(id);
+        userDetail.setEmail(email);
+        userDetail.setName(name);
+        userDetail.setPhone(phone);
         userDetail.setRole(role);
-        userDetail.setStart_date(user.getStart_date());
-        userDetail.setEnd_date(user.getEnd_date());
-        userDetail.setOrg(user.getOrg());
-        userDetail.setOrg_phone(user.getOrg_phone());
+        userDetail.setStart_date(start_date);
+        userDetail.setEnd_date(end_date);
+        userDetail.setOrg(org);
+        userDetail.setOrg_phone(org_phone);
         userDetail.setStatus(status);
 
         return List.of(userDetail);
-    }*/
-
+    }
 
     public List<PermissionList> permissionList() {
         List<UserEntity> userList = loginRepository.findAll();
