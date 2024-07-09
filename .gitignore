@@ -40,3 +40,4 @@ out/
 /src/main/resources/application-secret.yml
 venv3/
 /.venv/
+.env
