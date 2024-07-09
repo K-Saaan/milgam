@@ -36,4 +36,7 @@ public interface LoginRepository extends JpaRepository<UserEntity, Integer>, Jpa
     @Transactional
     @Query("UPDATE UserEntity u SET u.admin_index = :admin_index WHERE u.user_index = :user_index")
     int updateAdminIndexById(@Param("user_index") int user_index, @Param("admin_index") int admin_index);*/
+
+    @Query(value = "select * from users where id = :userId and pw = :password", nativeQuery=true)
+    UserEntity findByUser(@Param("userId") String userId, @Param("password") String password);
 }
