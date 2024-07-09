@@ -5,7 +5,7 @@ import { Box } from '@mui/material';
 import { Outlet, useLocation } from "react-router-dom";
 import Topbar from "./components/Topbar"
 import { darkTheme, lightTheme } from './Theme.js';
-
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const sectionStyle = {
   width: '100%',
@@ -19,6 +19,9 @@ const contentBoxStyle = {
   flex: 1,
 };
 
+// Create a client
+const queryClient = new QueryClient();
+
 function App() {
   // 어드민 페이지일 때 사이드바를 변경하기 위한 코드
   const location = useLocation();
@@ -31,17 +34,19 @@ function App() {
   };
 
   return (
-    <ThemeProvider theme={currentTheme}>
-      <CssBaseline />
-      <Box component="section" sx={sectionStyle}>
-        <div>
-          <Topbar isAdmin={isAdmin} toggleTheme={toggleTheme}/>
-        </div>
-        <Box sx={contentBoxStyle}>
-          <Outlet />
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={currentTheme}>
+        <CssBaseline />
+        <Box component="section" sx={sectionStyle}>
+          <div>
+            <Topbar isAdmin={isAdmin} toggleTheme={toggleTheme}/>
+          </div>
+          <Box sx={contentBoxStyle}>
+            <Outlet />
+          </Box>
         </Box>
-      </Box>
-    </ThemeProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 
