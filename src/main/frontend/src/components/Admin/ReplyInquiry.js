@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, styled  } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, styled, TablePagination } from '@mui/material';
 import ReplyInquiryAlert from './ReplyInquiryAlert';
 
 // 행 스타일
@@ -27,7 +27,6 @@ const ReplyInquiry = () => {
         question_date: "2024-06-25",
         name: "이민정",
         answer_date: null,
-        end_date: null
         },
         {
         id: 2,
@@ -36,7 +35,6 @@ const ReplyInquiry = () => {
         question_date: "2024-06-20",
         name: "김철수",
         answer_date: "2024-06-21",
-        end_date: "2024-06-21"
         },
         {
         id: 3,
@@ -45,7 +43,6 @@ const ReplyInquiry = () => {
         question_date: "2024-06-15",
         name: "박영희",
         answer_date: null,
-        end_date: null
         },
     ];
 
@@ -53,6 +50,19 @@ const ReplyInquiry = () => {
     const [questions, setQuestions] = useState(initialQuestions);
     const [selectedQuestion, setSelectedQuestion] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // 페이지네이션
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+    };
 
     // 처음 렌더링될 때 실행
     useEffect(() => {
@@ -102,7 +112,7 @@ const ReplyInquiry = () => {
 
     return (
         <div>
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} sx={{width: '100vh'}}>
                 <Table>
                     <TableHead>
                         <TableRow>
@@ -115,18 +125,26 @@ const ReplyInquiry = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {questions.map((question, index) => (
-                            <CustomTableRow  key={question.id} onClick={() => openModal(question)}>
+                        {questions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((question, index) => (
+                            <CustomTableRow key={question.id} onClick={() => openModal(question)}>
                                 <CustomTableCell>{index + 1}</CustomTableCell>
                                 <CustomTableCell>{question.question_title}</CustomTableCell>
                                 <CustomTableCell>{question.name}</CustomTableCell>
-                                <CustomTableCell>{question.end_date ? '완료' : '대기'}</CustomTableCell>
+                                <CustomTableCell>{question.answer_date ? '완료' : '대기'}</CustomTableCell>
                                 <CustomTableCell>{question.question_date}</CustomTableCell>
                                 <CustomTableCell>{question.answer_date || '-'}</CustomTableCell>
                             </CustomTableRow >
                         ))}
                     </TableBody>
                 </Table>
+                {questions && <TablePagination
+                    component="div"
+                    count={questions.length}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    rowsPerPage={rowsPerPage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />}
             </TableContainer>
             <ReplyInquiryAlert 
                 open={isModalOpen} 

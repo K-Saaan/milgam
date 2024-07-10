@@ -70,7 +70,7 @@ const VideoCardListArea = ({ alerts, onSelect, selectedItem, isLoading, error })
             {/* 분석 결과 목록 */}
             <List sx={listStyle}>
                 {/* 알림 있을 때만 띄움 */}
-                {alerts && alerts.map(alert => (
+                {alerts && alerts.map((result, index) => (
                     //선택 항목 정보를 부모로 전달함
                     <CustomListItem key={alert.id} onClick={() => onSelect(alert)} selected={selectedItem?.id === alert.id} button>
                         <Typography variant="body2" sx={timeTextStyle(theme, selectedItem?.id === alert.id)}>

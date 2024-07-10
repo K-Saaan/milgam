@@ -34,7 +34,7 @@ export const getLineChartOptions = (theme) => ({
       ticks: {
         color: theme.palette.text.primary,
         font: {
-          size: 6
+          size: 8
         }
       },
       grid: {
@@ -50,7 +50,7 @@ export const getLineChartOptions = (theme) => ({
       ticks: {
         color: theme.palette.text.primary,
         font: {
-          size: 6
+          size: 8
         }
       },
       grid: {

@@ -20,7 +20,7 @@ const DashBackground = (props) => {
             backgroundColor: 'transparent', margin: 0,
             padding: "16px", paddingTop: "32px", paddingBottom: "32px"
         }}>
-        <h1 style={{margin: "0px", paddingLeft:"16px"}}>{props.name}</h1>
+        <h1 style={{margin: "0px" }}>{props.name}</h1>
       </Container>
       {/* 내용 부분 */}
       <Container
