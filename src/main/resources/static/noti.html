@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSE Dashboard Notifications</title>
+</head>
+<body>
+<h1>Dashboard Notifications</h1>
+<div id="notifications"></div>
+
+<script>
+    function connect() {
+        const eventSource = new EventSource('/dashboards/noti');
+
+        eventSource.onmessage = function(event) {
+            const notificationsDiv = document.getElementById('notifications');
+            const newNotification = document.createElement('p');
+            newNotification.textContent = 'New message: ' + event.data;
+            notificationsDiv.appendChild(newNotification);
+        };
+
+        eventSource.onerror = function() {
+            console.log('Connection lost, attempting to reconnect...');
+            eventSource.close();
+            setTimeout(connect, 3000); // 3초 후 다시 연결 시도
+        };
+    }
+
+    connect();
+</script>
+</body>
+</html>

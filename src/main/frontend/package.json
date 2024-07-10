@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "framer-motion": "^11.2.13",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",
@@ -27,9 +28,9 @@
     "react-query": "^3.39.3",
     "react-router-dom": "^6.24.0",
     "react-scripts": "5.0.1",
-    "react-xml-parser": "^1.1.8",
     "styled-components": "^6.1.11",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "zustand": "^4.5.4"
   },
   "scripts": {
     "start": "react-scripts start",

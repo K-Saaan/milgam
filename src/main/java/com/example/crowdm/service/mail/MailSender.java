@@ -33,4 +33,20 @@ public class MailSender {
             logger.error("MailException : {}", e.getMessage());
         }
     }
+
+    public void sendMailTemppw(String to,String subject,  String text){
+        logger.info("MailSender Start >>>>>>>>>>>>>>>>>>>>>>>> ");
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(to);
+            message.setFrom(from);
+            message.setSubject( subject);
+            message.setText( text);
+            mailSender.send(message);
+            logger.info("MailSender Success >>>>>>>>>>>>>>>>>>>>>>>> ");
+        } catch (MailException e) {
+            logger.info("MailSender Fail >>>>>>>>>>>>>>>>>>>>>>>> ");
+            logger.error("MailException : {}", e.getMessage());
+        }
+    }
 }

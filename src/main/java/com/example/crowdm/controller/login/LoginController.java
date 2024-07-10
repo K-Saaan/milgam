@@ -1,14 +1,11 @@
 package com.example.crowdm.controller.login;
 
 import com.example.crowdm.dto.login.LoginRequest;
-import com.example.crowdm.entity.user.UserEntity;
 import com.example.crowdm.repository.login.LoginRepository;
 import com.example.crowdm.service.login.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +14,10 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
