@@ -1,22 +1,25 @@
 package com.example.crowdm.controller.login;
 
-import com.example.crowdm.entity.user.UserEntity;
+import com.example.crowdm.dto.login.LoginRequest;
 import com.example.crowdm.repository.login.LoginRepository;
 import com.example.crowdm.service.login.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/login")
 public class LoginController {
@@ -38,17 +41,13 @@ public class LoginController {
 
         model.addAttribute("errorMessage", errorMessage);
 
-        // 예시 코드
-        List<UserEntity> userList = loginService.findAllUser();
-        System.out.println("Users : " + userList.size());
-        System.out.println("UserList : " + userList);
-
-        loginService.deleteUser(userList.get(0).getUser_index());
-
-        List<UserEntity> userList2 = loginService.findAllUser();
-        System.out.println("Users : " + userList2.size());
-        System.out.println("UserList : " + userList2);
-
         return "login/loginPage";
+    }
+
+    @PostMapping(value = "/loginAction")
+    public  Object loginAction(@RequestBody LoginRequest loginRequest, Model model, HttpServletRequest request, HttpServletResponse	response) throws InvalidKeyException, UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+        logger.info("userID = {}", loginRequest.getId());
+        logger.info("password = {}", loginRequest.getPw());
+        return loginService.updateLogin(loginRequest.getId(), loginRequest.getPw(), request);
     }
 }

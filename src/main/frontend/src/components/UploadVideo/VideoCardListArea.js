@@ -4,6 +4,7 @@ import { Box, Typography, List, Divider, useTheme, Container } from '@mui/materi
 import CustomChip from "./CustomChip.js";
 import CustomListItem from "../Styles/CustomListItem.js";
 import MailIcon from '@mui/icons-material/Mail';
+import CircularProgress from '@mui/material/CircularProgress';
 
 // 배경 스타일
 const paperStyle = (theme) => ({
@@ -12,7 +13,7 @@ const paperStyle = (theme) => ({
   color: theme.palette.text.primary,
   borderRadius: 2,
   marginLeft: 2,
-  minHeight: '75vh',
+  minHeight: '65vh',
 });
 
 // 시간 텍스트의 스타일
@@ -32,7 +33,27 @@ const titleTextStyle = (theme, selected) => ({
   color: selected ? 'white' : theme.palette.primary.main,
 });
 
-const VideoCardListArea = ({ alerts, onSelect, selectedItem }) => {
+const noScrollbarStyles = {
+  '&::-webkit-scrollbar': {
+      display: 'none', // Chrome, Safari, and Opera
+  },
+  '-ms-overflow-style': 'none',  // Internet Explorer 10+
+  'scrollbar-width': 'none'  // Firefox
+};
+
+const listStyle = {
+  height: 'calc(100% - 100px)',
+  overflow: 'auto',
+  ...noScrollbarStyles
+};
+
+const progressStyle = {
+  margin: "20px",
+  justifyContent: "center",
+  display: 'flex',
+};
+
+const VideoCardListArea = ({ alerts, onSelect, selectedItem, isLoading, error }) => {
     const theme = useTheme();
 
     return (
@@ -47,8 +68,9 @@ const VideoCardListArea = ({ alerts, onSelect, selectedItem }) => {
             <div>이벤트 발생 로그</div>
             <Divider style={{background: theme.palette.divider, marginTop:"5px",marginBottom:"20px"}}/>
             {/* 분석 결과 목록 */}
-            <List sx={{ height: 'calc(100% - 52px)', overflow: 'auto' }}>
-                {alerts.map(alert => (
+            <List sx={listStyle}>
+                {/* 알림 있을 때만 띄움 */}
+                {alerts && alerts.map((result, index) => (
                     //선택 항목 정보를 부모로 전달함
                     <CustomListItem key={alert.id} onClick={() => onSelect(alert)} selected={selectedItem?.id === alert.id} button>
                         <Typography variant="body2" sx={timeTextStyle(theme, selectedItem?.id === alert.id)}>
@@ -62,6 +84,20 @@ const VideoCardListArea = ({ alerts, onSelect, selectedItem }) => {
                         </Box>
                     </CustomListItem>
                 ))}
+
+                {/* 로딩 중일 때 표시 */}
+                {isLoading &&
+                    <div style={progressStyle}>
+                        <CircularProgress sx={{color:theme.palette.primary.main}} />
+                    </div>
+                }
+
+                {/* 로딩도 끝났고 알림도 없을 때 */}
+                {!isLoading && !alerts &&
+                    <CustomListItem>
+                        {error}이벤트가 없습니다.
+                    </CustomListItem>
+                }
             </List>
         </Container>
     );

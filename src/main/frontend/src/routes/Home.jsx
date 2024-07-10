@@ -19,7 +19,7 @@ const cPageStyle = (theme) => ({
 const cContentStyle = (theme) => ({
   scrollSnapAlign: 'start',
   height: '100%',
-  width: '70vh',
+  maxWidth: '1000px',
   display:'flex',
   justifyContent:'center',
   alignItems:'center',
@@ -34,7 +34,7 @@ const cPBarStyle = (theme) => ({
   height: '20px',
   background: theme.palette.text.primary,
   transformOrigin: '0%',
-  
+
 });
 
 
@@ -44,9 +44,9 @@ function Home(){
   const pageStyle = cPageStyle(theme);
   const contentStyle = cContentStyle(theme);
   const pBarStyle = cPBarStyle(theme);
-  
+
   const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ container: ref });
+  const { scrollYProgress } = useScroll({ container: ref, layoutEffect: false });
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,

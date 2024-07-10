@@ -1,35 +1,66 @@
 package com.example.crowdm.service.login;
 
-
 import com.example.crowdm.entity.user.UserEntity;
 import com.example.crowdm.repository.login.LoginRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class LoginService {
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final LoginRepository loginRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public List<UserEntity> findAllUser(){
-        List<UserEntity> userList = loginRepository.findAll();
-        return userList;
-    }
+    public Map<String, Object> updateLogin(String userId, String password, HttpServletRequest request) {
+        Map<String, Object> resultMap = new HashMap<>();
 
-    @Transactional
-    public int deleteUser(int user_index) {
-        try {
-            loginRepository.deleteById(user_index);
-            return 1;
-        }catch (Exception e){
-            logger.error("error : ", e.getMessage());
-            return 0;
+        // Null 체크
+        if (userId == null || password == null || userId.isEmpty() || password.isEmpty()) {
+            resultMap.put("RESULT", "INPUT_NULL");
+            return resultMap;
         }
+
+        UserEntity user = loginRepository.findByUser(userId);
+
+        logger.info("user :: " + user);
+        if(user != null) {
+            logger.info("login success >>>>>>>");
+
+            // 비밀번호 검증
+            if (passwordEncoder.matches(password, user.getPw())) {
+                logger.info("Login success for user: {}", user.getId());
+
+                // 계정 잠김 여부 확인
+                if (user.getAccount_lock()) {
+                    resultMap.put("RESULT", "LOCK_ACCOUNT");
+                    return resultMap;
+                }
+
+                // 로그인 성공
+                resultMap.put("RESULT", "GO_MAIN");
+                resultMap.put("URL", "/dashboards");
+
+                // 세션에 userId 저장
+                HttpSession session = request.getSession(true);
+                session.setAttribute("userId", userId);
+            } else {
+                logger.info("Login failed for user: {}", user.getId());
+                resultMap.put("RESULT", "INVALID_PASSWORD");
+            }
+        } else {
+            logger.info("User not found for userId: {}", userId);
+            resultMap.put("RESULT", "USER_NOT_FOUND");
+        }
+
+        return resultMap;
     }
 }
