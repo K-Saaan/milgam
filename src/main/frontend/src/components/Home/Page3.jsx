@@ -1,7 +1,8 @@
 import { useTheme } from "@emotion/react";
 import { motion, useScroll, useTransform} from "framer-motion";
-import pic from "./pic.jpg"
 import { useRef } from "react";
+import pic from "./pic.jpg"
+import { useForm } from "react-hook-form";
 
 // conatiner
 const cPage1Style = (theme) => ({
@@ -9,44 +10,48 @@ const cPage1Style = (theme) => ({
   hegiht:'100%',
   // background: theme.palette.comp,
   color : theme.palette.text.primary,
-  display:'flex',
   
 });
 
-// span
-const cSpanStyle = (theme) => ({
-  margin: '0',
-  color: 'red',
-  left: '10%',
-  fontSize: '56px',
-  fontWeight: '700',
-  letterSpacing: '-3px',
-  lineHeight: '1.2',
-  position: 'relative',
-});
 
-// text
-const cTextStyle = (theme) => ({
-  paddingRight:'12px',
-  display:'flex',
-  flexDirection:'column',
-  justifyContent:'center',
-});
 
-// picture
-const cPicStyle = (theme) => ({
-  width: '250px',
-  height: '250px',
-  borderRadius: '10px',
-});
 
 function Page3(){
 
+  const { register, handleSubmit, formState: { errors }, formState } = useForm();
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+  
+  const onSubmit = async data => {
+    await sleep(2000);
+    if (data.username === "bill") {
+      alert(JSON.stringify(data));
+    } else {
+      alert("There is an error");
+    }
+  };
+
+
+  const Row1 = ({ columns }) => {
+    return (
+      <>
+        {columns.map((column) => (
+            <div>
+              <span key={column}>{column}</span>
+              <input {...register("username", { required: true })} />
+            </div>
+        ))}
+      </>  
+    );
+  };
+
+  // ############################################################################################
+
+  const columns = ['id', 'pw', 'name', 'email', 'phone', 'role_index', 'apply_date', 'account_lock', 'last_login', 'start_date', 'end_date']; 
+
   const theme = useTheme();
   const pageStyle = cPage1Style(theme);
-  const spanStyle = cSpanStyle(theme);
-  const picStyle = cPicStyle(theme);
-  const textStyle = cTextStyle(theme);
+
+  
 
   function useParallax(value, distance) {
     return useTransform(value, [0, 1], [-distance, distance]);
@@ -69,23 +74,10 @@ function Page3(){
             }}
             style={pageStyle}
             >
+              <form onSubmit={handleSubmit(onSubmit)}>
 
-              <span style={spanStyle}>#003</span>
-
-              <div style={{...textStyle, y}}>
-               
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac
-                  rhoncus quam.
-                  Fringilla quam urna. Cras turpis elit, euismod eget ligula quis,
-                  imperdiet sagittis justo. In viverra fermentum ex ac vestibulum.
-                  Aliquam eleifend nunc a luctus porta. Mauris laoreet augue ut felis
-                  blandit, at iaculis odio ultrices. Nulla facilisi. Vestibulum cursus
-                  ipsum tellus, eu tincidunt neque tincidunt a.
-            
-              </div>
-
-              <img style={picStyle} src={pic} alt="giyomi" />
-
+                <Row1 columns={columns} />
+              </form>
 
             </motion.div>
           </>

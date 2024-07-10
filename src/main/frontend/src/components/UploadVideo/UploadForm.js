@@ -148,7 +148,28 @@ const UploadBG = styled('div')({
     const onHSubmit = async (data) => {
       if (selectedFile) {
         try {
-          await axios.post('/uploadVideo', { video: selectedFile, detail: data.detail });
+          // 파일 자르기
+          const chunkSize = 1024 * 1024; // 1MB
+          const totalChunks = Math.ceil(selectedFile.size / chunkSize);
+
+          //선택한 영상을 chunk 단위로 잘라서 하나씩 서버로 보냄
+          for (let i = 0; i < totalChunks; i++) {
+            const start = i * chunkSize;
+            const end = Math.min(selectedFile.size, start + chunkSize);
+            const chunk = selectedFile.slice(start, end);
+
+            const formData = new FormData();
+            formData.append('chunk', chunk);
+            formData.append('chunkNumber', i);
+            formData.append('totalChunks', totalChunks);
+
+            await axios.post('/api/upload', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
+          }
+
           navigate("/videoresult", { state: { video: selectedFile, detail: data.detail } });
         } catch (error) {
           console.error('업로드 실패. 에러가 발생하였습니다.', error);
