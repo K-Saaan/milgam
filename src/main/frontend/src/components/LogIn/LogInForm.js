@@ -39,7 +39,7 @@ const LogInForm = ({ marginBottom }) => {
 
         if (id && pw) {
             try {
-                console.log("data : ", data)
+                //console.log("data : ", data)
                 const res = await axios.post("http://localhost:8080/login/loginAction", data);
                 //console.log(res.data);
                 if (res.data.RESULT === "GO_MAIN") {
