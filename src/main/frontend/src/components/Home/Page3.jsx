@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform} from "framer-motion";
 import { useRef } from "react";
 import pic from "./pic.jpg"
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 // conatiner
 const cPage1Style = (theme) => ({
@@ -18,26 +19,29 @@ const cPage1Style = (theme) => ({
 
 function Page3(){
 
-  const { register, handleSubmit, formState: { errors }, formState } = useForm();
-  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-  
-  const onSubmit = async data => {
-    await sleep(2000);
-    if (data.username === "bill") {
-      alert(JSON.stringify(data));
-    } else {
-      alert("There is an error");
-    }
-  };
+  const { register, handleSubmit } = useForm()
+  const onError = (errors, e) => console.log(errors, e)
+  const onSubmit = (data, e) =>{
+    
+    console.log(data, e)
+
+    const req = axios.post("http://localhost:8080/signup", data);  
+
+    console.log(req)
+    
+}
+
+    
+    
 
 
   const Row1 = ({ columns }) => {
     return (
       <>
         {columns.map((column) => (
-            <div>
-              <span key={column}>{column}</span>
-              <input {...register("username", { required: true })} />
+            <div key={column}>
+              <span>{column}</span>
+              <input {...register(column, { required: true })} />
             </div>
         ))}
       </>  
@@ -74,14 +78,15 @@ function Page3(){
             }}
             style={pageStyle}
             >
-              <form onSubmit={handleSubmit(onSubmit)}>
-
+              <form onSubmit={handleSubmit(onSubmit, onError)}>
                 <Row1 columns={columns} />
+                <button type="submit">Submit</button>
               </form>
 
             </motion.div>
           </>
         );
   }
+
   
   export default Page3;
