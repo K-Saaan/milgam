@@ -1,6 +1,8 @@
 package com.example.crowdm.service.login;
 
 import com.example.crowdm.entity.user.UserEntity;
+import com.example.crowdm.entity.LoginLog.LoginLogEntity;
+import com.example.crowdm.repository.login.LoginLogRepository;
 import com.example.crowdm.repository.login.LoginRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +22,7 @@ import java.util.Map;
 public class LoginService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final LoginRepository loginRepository;
+    private final LoginLogRepository loginLogRepository;
     private final PasswordEncoder passwordEncoder;
 
     public Map<String, Object> updateLogin(String userId, String password, HttpServletRequest request) {
@@ -32,7 +37,7 @@ public class LoginService {
         UserEntity user = loginRepository.findByUser(userId);
 
         logger.info("user :: " + user);
-        if(user != null) {
+        if (user != null) {
             logger.info("login success >>>>>>>");
 
             // 비밀번호 검증
@@ -51,7 +56,15 @@ public class LoginService {
 
                 // 세션에 userId 저장
                 HttpSession session = request.getSession(true);
-                session.setAttribute("userId", userId);
+                session.setAttribute("userIndex", user.getUser_index());
+
+                // 로그인 로그 저장 -> LoginLog table
+                LoginLogEntity loginLog = LoginLogEntity.builder()
+                        .userIndex(user.getUser_index())
+                        .loginDate(Timestamp.valueOf(LocalDateTime.now()))
+                        .build();
+                loginLogRepository.save(loginLog);
+
             } else {
                 logger.info("Login failed for user: {}", user.getId());
                 resultMap.put("RESULT", "INVALID_PASSWORD");
