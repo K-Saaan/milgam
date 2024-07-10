@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box, TablePagination } from '@mui/material';
 import { styled } from '@mui/system';
 import ApprovalAlert from './ApprovalAlert';
 import { useTheme } from '@mui/material/styles';
@@ -9,7 +9,7 @@ import { useTheme } from '@mui/material/styles';
 const CustomTableContainer = styled(TableContainer)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   borderRadius: '12px',
-  minWidth: '700px'
+  minWidth: '800px'
 }));
 
 // TableHead 스타일
@@ -46,20 +46,31 @@ const CustomTableRow = styled(TableRow)(({ theme }) => ({
 const ReplyInquiry = () => {
   const theme = useTheme();
 
-    // 임시 데이터 설정
-    const initialData = [
-      { id: 'id01', name: 'Christine', email: 'Christine@email.com', phone: '010-1234-5678', role: '관공서', start_date: '2024-01-01', end_date: '2024-12-31', applyDate: '2023-12-01', status: null, org: 'Company A', org_phone: '02-123-4567' },
-      { id: 'sfvtt', name: 'John', email: 'john@email.com', phone: '010-2345-6789', role: '행사 담당자', start_date: '2024-02-01', end_date: '2024-12-31', applyDate: '2023-12-02', status: null, org: 'Company B', org_phone: '02-234-5678' },
-      { id: 'aaaaaaa', name: 'Sarah', email: 'sarah@email.com', phone: '010-3456-7890', role: '행사 담당자', start_date: '2024-03-01', end_date: '2024-12-31', applyDate: '2023-12-03', status: 'rejected', org: 'Company C', org_phone: '02-345-6789' },
-      { id: 'wertgfd', name: 'Michael', email: 'michael@email.com', phone: '010-4567-8901', role: '행사 담당자', start_date: '2024-04-01', end_date: '2024-12-31', applyDate: '2023-12-04', status: 'completed', org: 'Company D', org_phone: '02-456-7890' },
-      { id: 'qerqfgf', name: 'Alice', email: 'alice@email.com', phone: '010-5678-9012', role: '관공서', start_date: '2024-05-01', end_date: '2024-12-31', applyDate: '2023-12-05', status: null, org: 'Company E', org_phone: '02-567-8901' },
-      { id: 'asdfww', name: 'Bob', email: 'bob@email.com', phone: '010-6789-0123', role: '관공서', start_date: '2024-06-01', end_date: '2024-12-31', applyDate: '2023-12-06', status: 'completed', org: 'Company F', org_phone: '02-678-9012' },
-    ];
+  // 임시 데이터 설정
+  const initialData = [
+    { user_index: 1, id: 'id01', email: 'Christine@email.com', role: '관공서', applyDate: '2023-12-01', status: null },
+    { user_index: 2, id: 'aaaaaaa', email: 'sarah@email.com', role: '행사 담당자', applyDate: '2023-12-03', status: 'rejected' },
+    { user_index: 3, id: 'wertgfd', email: 'michael@email.com', role: '행사 담당자', applyDate: '2023-12-04', status: 'completed' },
+  ];
 
   // 상태 관리 변수
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState(null);
   const [openApproval, setOpenApproval] = useState(false);
   const [selectedInquiry, setSelectedInquiry] = useState(null);
+  const [error, setError] = useState(null);
+
+  // 페이지네이션
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   useEffect(() => {
     // 데이터를 가져오는 비동기 함수
@@ -70,6 +81,7 @@ const ReplyInquiry = () => {
         setData(response.data);
       } catch (error) {
         console.error('데이터를 가져오는 중 오류가 발생했습니다:', error);
+        setError('데이터를 가져오는 중 오류가 발생했습니다. ')
       }
     };
     fetchReq();
@@ -96,7 +108,7 @@ const ReplyInquiry = () => {
   const handleApprovalOrRejection = (status) => {
     // 승인일 때 서버에 요청
     if (status === 'completed') {
-      axios.get('/admin/permission', { user_index: selectedInquiry.id })
+      axios.get(`/admin/permission?user_index=${selectedInquiry.id}`)
       .then(response => {
         // 성공 시 변경
         setData(data.map((row) =>
@@ -108,13 +120,19 @@ const ReplyInquiry = () => {
         console.error('에러가 발생했습니다:', error);
         alert('처리에 실패했습니다. 다시 시도해 주세요.');
       });
-    } else {
-      // 거절은 상태만 업데이트
-      setData(data.map((row) =>
-        row.id === selectedInquiry.id ? { ...row, permission_yn: status } : row
-      ));
-      handleCloseApproval();
-    }
+    } else if (status === 'rejected') {
+      axios.get(`/admin/deny?user_index=${selectedInquiry.id}`)
+      .then(response => {
+        setData(data.map((row) =>
+          row.id === selectedInquiry.id ? { ...row, permission_yn: status } : row
+        ));
+        handleCloseApproval();
+      })
+      .catch(error => {
+        console.error('에러가 발생했습니다:', error);
+        alert('처리에 실패했습니다. 다시 시도해 주세요.');
+      });
+    } else { handleCloseApproval(); };
   };
 
 
@@ -133,7 +151,7 @@ const ReplyInquiry = () => {
             </TableRow>
             </CustomTableHead>
             <TableBody>
-            {data && ( data.map((row) => (
+            {data && ( data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
               <CustomTableRow key={row.id} onClick={() => handleOpenApproval(row)}>
                 <CustomTableCell>{row.id}</CustomTableCell>
                 <CustomTableCell>{row.email}</CustomTableCell>
@@ -152,8 +170,16 @@ const ReplyInquiry = () => {
             )))}
             </TableBody>
         </Table>
+        {data && <TablePagination
+            component="div"
+            count={data.length}
+            page={page}
+            onPageChange={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+        />}
         {!data && (
-            <div style={{textAlign:'center', margin:'10px'}}>목록이 없습니다.</div>
+            <div style={{textAlign:'center', margin:'10px', color:theme.palette.text.secondary}}>{error}목록이 없습니다.</div>
         )}
         </CustomTableContainer>
         {selectedInquiry && <ApprovalAlert open={openApproval} handleClose={handleCloseApproval} handleApprovalOrRejection={handleApprovalOrRejection} inquiry={selectedInquiry} />}

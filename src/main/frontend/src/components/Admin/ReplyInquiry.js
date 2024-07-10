@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, styled  } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, styled, TablePagination  } from '@mui/material';
 import ReplyInquiryAlert from './ReplyInquiryAlert';
+import { useTheme } from '@mui/material/styles';
+
 
 // 행 스타일
 const CustomTableRow = styled(TableRow)(({ theme }) => ({
@@ -34,33 +35,22 @@ const ReplyInquiry = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null)
-    // 임시 데이터 설정
-    // const initialQuestions = [
-    //     {
-    //     id: 1,
-    //     question_title: "메이크업 관련 문의",
-    //     question: "어떤 제품을 사용하나요?",
-    //     question_date: "2024-06-25",
-    //     name: "이민정",
-    //     answer_date: null,
-    //     },
-    //     {
-    //     id: 2,
-    //     question_title: "Asus Laptop 관련 문의",
-    //     question: "노트북 배터리 교체 가능한가요?",
-    //     question_date: "2024-06-20",
-    //     name: "김철수",
-    //     answer_date: "2024-06-21",
-    //     },
-    //     {
-    //     id: 3,
-    //     question_title: "Iphone X 관련 문의",
-    //     question: "액정 수리 비용이 얼마인가요?",
-    //     question_date: "2024-06-15",
-    //     name: "박영희",
-    //     answer_date: null,
-    //     },
-    // ];
+
+    
+    // 페이지네이션
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+    };
+
+    // 처음 렌더링될 때 실행
     useEffect(() => {
         // 데이터를 가져오는 비동기 함수
         const fetchQuestions = async () => {
@@ -128,8 +118,8 @@ const ReplyInquiry = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {questions && questions.map((question, index) => (
-                            <CustomTableRow  key={question.myq_index} onClick={() => openModal(question)}>
+                        {questions && questions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((question, index) => (
+                            <CustomTableRow key={question.myq_index} onClick={() => openModal(question)}>
                                 <CustomTableCell>{index + 1}</CustomTableCell>
                                 <CustomTableCell>{question.question_title}</CustomTableCell>
                                 <CustomTableCell>{question.name}</CustomTableCell>
@@ -143,6 +133,14 @@ const ReplyInquiry = () => {
                 {!questions && (
                     <div style={{textAlign:'center', margin:'10px', color:theme.palette.text.secondary}}>{error}목록이 없습니다.</div>
                 )}
+                {questions && <TablePagination
+                    component="div"
+                    count={questions.length}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    rowsPerPage={rowsPerPage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />}
             </TableContainer>
             <ReplyInquiryAlert 
                 open={isModalOpen} 
