@@ -72,7 +72,7 @@ const CrowdRatioCard = ({ region }) => {
       ) : (
         <>
           <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="subtitle2" gutterBottom>
+            <Typography variant="subtitle1" gutterBottom>
               나이대별 비율
             </Typography>
           </Box>

@@ -3,15 +3,15 @@ export const pieChartOptions = (theme) => ({
     maintainAspectRatio: false, // 비율을 유지하지 않고 원하는 크기로 조정
     plugins: {
       legend: {
-        display: false,
-        position: 'bottom',
+        display: true,
+        position: 'right',
         labels: {
           color: theme.palette.text.primary,
           font: {
-            size: 8, // 범례의 글자 크기
+            size: 10, // 범례의 글자 크기
           },
-          boxWidth: 5, // 범례 상자의 너비
-          boxHeight: 5, // 범례 상자의 높이
+          boxWidth: 7, // 범례 상자의 너비
+          boxHeight: 7, // 범례 상자의 높이
         },
         maxWidth: 50, // 레전드의 최대 너비 설정
         maxHeight: 50, // 레전드의 최대 높이 설정

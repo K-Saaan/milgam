@@ -64,7 +64,7 @@ const CrowdTrendCard = () => {
       ) : (
         <>
           <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="subtitle2" gutterBottom>
+            <Typography variant="subtitle1" gutterBottom>
               인구 예측 추이
             </Typography>
           </Box>
