@@ -1,7 +1,7 @@
 import { useTheme } from "@emotion/react";
 import { motion, useScroll, useTransform} from "framer-motion";
-import pic from "./pic.jpg"
 import { useRef } from "react";
+import pic from "./pic.jpg"
 
 // conatiner
 const cPage1Style = (theme) => ({
@@ -9,14 +9,32 @@ const cPage1Style = (theme) => ({
   hegiht:'100%',
   // background: theme.palette.comp,
   color : theme.palette.text.primary,
-  display:'flex',
-  
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)', // 6열 그리드
+  gridTemplateRows: 'repeat(3, auto)',  // 각 열의 높이는 자동으로
+  gridGap: '10px',
+  gridTemplateAreas: `
+    "a . . "
+    ". b . "
+    ". . c "
+  `,
 });
+
+const cDivAStyle =(theme) => ({ 
+  gridArea: 'a',
+  width: '100px',
+  height: '100px',
+  borderRadius: '10px',
+  border: '4px solid red',
+  overflow: 'hidden',
+  display:'flex',
+  justifyContent:'center'
+ });
 
 // span
 const cSpanStyle = (theme) => ({
   margin: '0',
-  color: theme.palette.primary.main,
+  color: 'red',
   left: '10%',
   fontSize: '56px',
   fontWeight: '700',
@@ -29,24 +47,37 @@ const cSpanStyle = (theme) => ({
 const cTextStyle = (theme) => ({
   paddingRight:'12px',
   display:'flex',
-  flexDirection:'column',
-  justifyContent:'center',
+  justifyContent:'center'
+ });
+ 
+const cDivCStyle = (theme) => ({
+  gridArea: 'c',
+  width: '100px',
+  height: '100px',
+  borderRadius: '10px',
+  background: 'red',
+  border: '4px solid red',
+  overflow: 'hidden',
+  display:'flex',
+  justifyContent:'center'
+ });
+
+const cImgStyle = (theme) => ({
+ width: '100px',
+ height: '100px',
 });
 
-// picture
-const cPicStyle = (theme) => ({
-  width: '250px',
-  height: '250px',
-  borderRadius: '10px',
-});
+
 
 function Page3(){
 
   const theme = useTheme();
   const pageStyle = cPage1Style(theme);
-  const spanStyle = cSpanStyle(theme);
-  const picStyle = cPicStyle(theme);
-  const textStyle = cTextStyle(theme);
+  const divAStyle = cDivAStyle(theme);
+  const divBStyle = cDivBStyle(theme);
+  const divCStyle = cDivCStyle(theme);
+  const imgCStyle = cImgStyle(theme);
+  
 
   function useParallax(value, distance) {
     return useTransform(value, [0, 1], [-distance, distance]);
@@ -75,7 +106,7 @@ function Page3(){
               <div style={{...textStyle, y}}>
                
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac
-                  rhoncus quam. 밀감이를 쓰면 이럴 수 있답니다 지금 바로 사용하러 고고
+                  rhoncus quam.
                   Fringilla quam urna. Cras turpis elit, euismod eget ligula quis,
                   imperdiet sagittis justo. In viverra fermentum ex ac vestibulum.
                   Aliquam eleifend nunc a luctus porta. Mauris laoreet augue ut felis
