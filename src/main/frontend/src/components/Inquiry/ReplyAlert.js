@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -9,6 +10,7 @@ import { Box, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import DialogContentText from '@mui/material/DialogContentText';
 import Divider from '@mui/material/Divider';
+import axios from 'axios';
 
 // 제목 스타일
 const titleStyle = (theme) => ({
@@ -44,14 +46,35 @@ const boxStyle = (theme) => ({
   alignItems: 'center',
 });
 
-const ReplyAlert = ({ open, handleClose, inquiry }) => {
+const ReplyAlert = ({ open, handleClose, inquiryId }) => {
   const theme = useTheme();
+  const [inquiry, setInquiry] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (open && inquiryId) {
+      const fetchInquiry = async () => {
+        try {
+          setLoading(true);
+          // -------------------- url 수정 ------------------------------
+          const response = await axios.get(`/api/inquiries/${inquiryId}`);
+          setInquiry(response.data);
+          setLoading(false);
+        } catch (err) {
+          setError(err);
+          setLoading(false);
+        }
+      };
+
+      fetchInquiry();
+    }
+  }, [open, inquiryId]);
 
   return (
     <Dialog
       open={open}
       onClose={handleClose}
-      // 다이얼로그 스타일
       PaperProps={{
         sx: { borderRadius: "12px", background: theme.palette.background.paper, width: '600px' }
       }}
@@ -65,21 +88,18 @@ const ReplyAlert = ({ open, handleClose, inquiry }) => {
       <Divider style={{background: theme.palette.divider}} />
       <DialogContent sx={contentStyle}>
         <Box>
-          {/* <Typography variant="caption" sx={{ color: theme.palette.text.primary, marginBottom: '8px' }}>제목</Typography> */}
           <DialogContentText sx={{ marginBottom: '8px' }}>제목</DialogContentText>
           <Typography sx={boxStyle(theme)}>
             {inquiry.title}
           </Typography>
         </Box>
         <Box>
-          {/* <Typography variant="caption" sx={{ color: theme.palette.text.primary, marginBottom: '8px' }}>내용</Typography> */}
           <DialogContentText sx={{ marginBottom: '8px' }}>내용</DialogContentText>
           <Typography sx={boxStyle(theme)}>
             {inquiry.content}
           </Typography>
         </Box>
         <Box>
-          {/* <Typography variant="caption" sx={{ color: theme.palette.text.primary, marginBottom: '8px' }}>답변</Typography> */}
           <DialogContentText sx={{ marginBottom: '8px' }}>답변</DialogContentText>
           <Typography sx={boxStyle(theme)}>
             {inquiry.reply}

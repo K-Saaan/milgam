@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import RightContentArea from '../components/Dashboard/RightContentArea';
 import { Outlet, useLocation } from 'react-router-dom';
 import DashBackground from "../components/DashBackground.js";
+import MapCard from '../components/Dashboard/MapCard'; // MapCard import
 
 const containerStyle = {
   display: 'grid',
@@ -19,6 +20,10 @@ const rightContentStyle = {
   display: 'grid',
   gap: '20px',
   minWidth: '300px',
+};
+
+const fullWidthStyle = {
+  gridColumn: 'span 2',
 };
 
 const Dashboard = () => {
@@ -55,6 +60,10 @@ const Dashboard = () => {
             {/* 우측 알림 리스트 */}
             <div style={rightContentStyle}>
               <RightContentArea alerts={alerts} handleAlertClick={handleAlertClick} selectedAlert={selectedAlert} />
+            </div>
+            {/* 지도 카드 */}
+            <div style={fullWidthStyle}>
+              <MapCard />
             </div>
           </div>
         </>
