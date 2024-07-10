@@ -4,19 +4,17 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Grid, Select, MenuItem, FormControl, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { styled } from '@mui/system';
 import { CustomTypographyWrapper, CustomTypography } from './CustomTypo';
 import NewEvent from './NewEvent';
-import { CustomButton, NextButton } from "../SignUp/NextButton.js";
+import LongButton from "../Styles/LongButton.js";
+
 
 const ProfileForm = ({ marginBottom }) => {
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    // 페이지 이동 부분 const
-    const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수
-    const location = useLocation(); // 현재 페이지 위치를 가져오기 위한 useLocation 함수
-
-    // 이전 페이지로 이동하기 위해 이전 위치를 저장합니다.
-    const from = location.state?.from || "/dashboard";
-
+    const from = location.state?.from || "/dashboard"; // 이전 위치 저장
     const onNextClick = () => {    // 이전 페이지로 이동하도록
         navigate(from);
     };
@@ -41,12 +39,12 @@ const ProfileForm = ({ marginBottom }) => {
         ...noScrollbarStyles // 스크롤 바 숨기기 스타일 추가
     };
 
-    // 이벤트 부분 const
+    // 이벤트
     const [event, setEvent] = useState('');
     const [customEvents, setCustomEvents] = useState([]);
     const [dialogOpen, setDialogOpen] = useState(false);
 
-    const handleEventChange = (event) => {
+    const handleEventChange = (event) => { // 이벤트 선택
         const value = event.target.value;
         if (value === 'add-new') {
             setDialogOpen(true);
@@ -70,23 +68,24 @@ const ProfileForm = ({ marginBottom }) => {
         }
     };
 
-    const selectStyles = {
-        backgroundColor : "#323D4E",
-        '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-                borderColor: '#CFCFCF1D', // 기본 테두리 색상
-            },
-            '&:hover fieldset': {
-                borderColor: '#CFCFCF1D', // 호버 시 테두리 색상
-            },
-            '&.Mui-focused fieldset': {
-                borderColor: '#CFCFCF1D', // 포커스 시 테두리 색상
-                borderWidth: '2px', // 포커스 시 테두리 두께
-            },
-        },
+    // 행사 선택 select box 스타일
+    const EventControl = styled(FormControl)(({ theme }) => ({
         width: '370px',
         height: '56px',
-    }
+        backgroundColor: theme.palette.secondary.main,
+        '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+                borderColor: theme.palette.border.primary,
+            },
+            '&:hover fieldset': {
+                borderColor: theme.palette.border.primary,
+            },
+            '&.Mui-focused fieldset': {
+                borderColor: theme.palette.border.secondary,
+                borderWidth: '2px',
+            },
+        },
+    }));
 
 
     return (
@@ -162,9 +161,10 @@ const ProfileForm = ({ marginBottom }) => {
                 <div style={{ marginBottom: '4px' }}>
                     행사
                 </div>
-                <FormControl 
+                <EventControl 
                     fullWidth
-                    sx={selectStyles}>
+                    // sx={selectStyles}
+                >
                     <Select
                         value={event}
                         onChange={handleEventChange}
@@ -201,10 +201,10 @@ const ProfileForm = ({ marginBottom }) => {
                         ))}
                         <MenuItem value="add-new">직접 입력</MenuItem>
                     </Select>
-                </FormControl>
+                </EventControl>
             </Grid>
             <Grid item xs={12} display={{ md: 'flex' }} justifyContent={{ md: 'center' }}>
-                <NextButton type="submit" onClick={onNextClick} text="완료"/> {/* 기존 페이지로 돌아감 */}
+                <LongButton type="submit" variant="contained" onClick={onNextClick}>완료</LongButton> {/* 기존 페이지로 돌아감 */}
             </Grid>
             <NewEvent open={dialogOpen} onClose={() => setDialogOpen(false)} onAddEvent={handleAddEvent} /> {/* NewEvent 팝업창 열림 */}
         </Grid>

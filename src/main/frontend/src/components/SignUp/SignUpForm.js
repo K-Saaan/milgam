@@ -10,28 +10,28 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { CustomButton, NextButton } from "./NextButton.js";
 import CustomTextField from '../Styles/CustomTextField.js';
+import CustomDatePicker from '../Styles/CustomDatePicker.js';
 import EmailAlert from './EmailAlert';
-import { useTheme } from '@mui/material/styles';
+import LongButton from "../Styles/LongButton.js";
 
 const SignUpForm = ({ marginBottom }) => {
-
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors, isValid }, setValue, watch, control, trigger } = useForm({
         mode: 'onChange',
     });
 
     // 페이지 이동
-    const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수
     const onSubmit = async (data) => {
-        const isFormValid = await trigger(); // 모든 필드의 유효성 검사를 트리거
-        if (!isFormValid) {
-            console.log("모든 필드를 올바르게 입력해주세요.");
-            return;
-        }
-        if (!startdate || !enddate) {
-            alert("시작 날짜와 종료 날짜를 모두 선택해주세요.");
-            return;
-        }
-        navigate('/login');
+        // const isFormValid = await trigger(); // 모든 필드의 유효성 검사를 트리거
+        // if (!isFormValid) {
+        //     console.log("모든 필드를 올바르게 입력해주세요.");
+        //     return;
+        // }
+        // if (!startdate || !enddate) {
+        //     alert("시작 날짜와 종료 날짜를 모두 선택해주세요.");
+        //     return;
+        // }
+        navigate('/login/loginPage');
     };
     
     const onError = (errors) => {
@@ -39,9 +39,13 @@ const SignUpForm = ({ marginBottom }) => {
         console.log(errors);
     };
 
+    const onNextClick = () => {    // 이전 페이지로 이동하도록
+        navigate('/login/loginPage');
+    };
+
     // 이미 가입 되어있다면, 로그인해주세요 <- 유효성 확인 X
     const handleLoginClick = () => {
-        navigate('/login');
+        navigate('/login/loginPage');
     };
 
     // 역할 부분 const
@@ -132,26 +136,6 @@ const SignUpForm = ({ marginBottom }) => {
 
     const pw = watch("pw"); // 재입력한 비밀번호가 일치하는지 확인
 
-    // Date Picker 스타일 적용
-    const dateStyles = {
-        backgroundColor : "#323D4E",
-        '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-                borderColor: '#CFCFCF1D', // 기본 테두리 색상
-            },
-            '&:hover fieldset': {
-                borderColor: '#CFCFCF1D', // 호버 시 테두리 색상
-            },
-            '&.Mui-focused fieldset': {
-                borderColor: '#CFCFCF1D', // 포커스 시 테두리 색상
-                borderWidth: '2px', // 포커스 시 테두리 두께
-            },
-        },
-        width: '370px',
-        height: '56px',
-    }
-    
-
 
     return (
             <Grid
@@ -160,9 +144,10 @@ const SignUpForm = ({ marginBottom }) => {
                 spacing={3}
                 noValidate
                 autoComplete="off"
-                onSubmit={handleSubmit(onSubmit, onError)}
+                // onSubmit={handleSubmit(onSubmit, onError)}
                 sx={formSx}
             >
+                <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/*이름*/}
                     <div>
                         <CustomTextField
@@ -351,11 +336,10 @@ const SignUpForm = ({ marginBottom }) => {
                 <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/*시작날짜*/}
                     <div>
                         <LocalizationProvider dateAdapter={AdapterDayjs} dateFormats={{monthShort:'M'}}>
-                            <DatePicker
+                            <CustomDatePicker
                                 label="시작 날짜"
                                 value={startdate}
                                 onChange={(newValue) => setStartdate(newValue)}
-                                sx = {dateStyles}
                                 format="YYYY-MM-DD"
                                 views={['year', 'month', 'day']}
                                 renderInput={(params) => <CustomTextField {...params} />} 
@@ -366,11 +350,10 @@ const SignUpForm = ({ marginBottom }) => {
                 <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/*종료날짜*/}
                     <div>
                     <LocalizationProvider dateAdapter={AdapterDayjs} dateFormats={{monthShort:'M'}}>
-                            <DatePicker
+                            <CustomDatePicker
                                 label="종료 날짜"
                                 value={enddate}
                                 onChange={(newValue) => setEnddate(newValue)}
-                                sx = {dateStyles}
                                 format="YYYY-MM-DD"
                                 views={['year', 'month', 'day']}
                                 renderInput={(params) => <CustomTextField {...params} />} 
@@ -434,7 +417,8 @@ const SignUpForm = ({ marginBottom }) => {
                 </Grid>
                 <Grid item xs={12} display={{ md: 'flex' }} justifyContent={{ md: 'center' }}>
                     <div>
-                        <CustomButton type="submit" disabled={!isValid}>완료</CustomButton>
+                        {/* <CustomButton type="submit" disabled={!isValid}>완료</CustomButton> */}
+                        <Button type="submit" variant="contained">완료</Button>
                     </div>
                 </Grid>
                 <Grid>
@@ -444,6 +428,7 @@ const SignUpForm = ({ marginBottom }) => {
                         </Button>
                     </DialogActions>
                 </Grid>
+                </form>
             </Grid>
     );
 };
