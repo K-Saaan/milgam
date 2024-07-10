@@ -8,7 +8,7 @@ export const pieChartOptions = (theme) => ({
         labels: {
           color: theme.palette.text.primary,
           font: {
-            size: 10, // 범례의 글자 크기
+            size: 12, // 범례의 글자 크기
           },
           boxWidth: 7, // 범례 상자의 너비
           boxHeight: 7, // 범례 상자의 높이
