@@ -30,7 +30,7 @@ public class UserEntity {
     @Column(name = "phone")
     private String phone;
     @Column(name = "role_index")
-    private String role_index;
+    private int role_index;
     @Column(name = "apply_date")
     private Timestamp apply_date;
     @Column(name = "account_lock")

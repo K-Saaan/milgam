@@ -15,8 +15,12 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import HelpCenterIcon from '@mui/icons-material/HelpCenter';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { Link, useNavigate } from 'react-router-dom';
 import Logout from "./Logout.js";
+import useStore from "../store";
 
 const drawerWidth = 240;
 
@@ -40,6 +44,8 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
   const [logoutModalOpen, setLogoutModalOpen] = React.useState(false);
   const navigate = useNavigate();
 
+  const {isLogined, setIsLogined} = useStore(state => state);
+
   // 로그아웃 팝업 열기
   const handleLogoutClick = () => {
       setLogoutModalOpen(true);
@@ -54,8 +60,9 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
   // 로그아웃 처리
   const handleLogout = () => {
       setLogoutModalOpen(false);
-      //처리 코드가 들어갈 부분
-      navigate('/login');
+      setIsLogined(false);
+      localStorage.removeItem("key");
+      navigate('/login/loginPage');
   };
 
   // admin 메뉴
@@ -65,11 +72,13 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
   ];
 
   // user 하단 메뉴
-  const userBottomMenuItems = [
-    { path: '/faq', text: 'FAQ', icon: <InboxIcon /> },
-    { path: '/login', text: '로그인', icon: <InboxIcon /> },
-    { path: '/inquiry', text: '문의 게시판', icon: <InboxIcon /> }, 
-    { path: '/logout', text: '로그아웃', icon: <InboxIcon />, action: handleLogoutClick },
+  const userBottomMenuItems = isLogined? [
+    { path: '/faq', text: 'FAQ', icon: <HelpCenterIcon /> },
+    { path: '/inquiry', text: '문의 게시판', icon: <QuestionAnswerIcon /> },
+    { path: '/logout', text: '로그아웃', icon: <LogoutIcon />, action: handleLogoutClick },
+  ] : [
+    { path: '/login/loginPage', text: '로그인', icon: <LoginIcon /> },
+    { path: '/signup', text: '회원가입', icon: <InboxIcon /> },
   ];
 
   // user 상단 메뉴
@@ -101,23 +110,27 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
       </DrawerHeader>
 
       {/* 메뉴 목록 */}
-      <Divider />
-      <List>
-        {/* 대시보드와 영상업로드 메뉴 */}
-        {topMenuItems.map((item) => (
-          <ListItem key={item.text} disablePadding >
-            <ListItemButton component={Link} to={item.path} onClick={handleDrawerClose}>
-              <ListItemIcon>
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      {!isAdmin && (
+      { isLogined && (
         <>
           <Divider />
+          <List>
+            {/* 대시보드와 영상업로드 메뉴 */}
+            {topMenuItems.map((item) => (
+              <ListItem key={item.text} disablePadding >
+                <ListItemButton component={Link} to={item.path} onClick={handleDrawerClose}>
+                  <ListItemIcon>
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+        </>
+      )}
+      {!isAdmin && (
+        <>
           <List sx={{ position: 'absolute', bottom: '0', width: '100%' }}>
             {userBottomMenuItems.map((item) => (
               <ListItem key={item.text} disablePadding style={{ marginTop: '8px' }}>

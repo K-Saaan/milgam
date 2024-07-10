@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Paper, Typography, IconButton , Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
@@ -45,16 +45,11 @@ const CustomTableContainer = styled(TableContainer)(({ theme }) => ({
   borderRadius: '12px',
 }));
 
-// 테이블 데이터 예시
-const tableData = [
-  { time: '11:03', situation: '2구역 혼잡도 주의', details: '주의', behavior: '이상 행동 감지' },
-  { time: '12:45', situation: '2구역 혼잡', details: '혼잡', behavior: '이상 행동 감지' },
-  { time: '12:53', situation: '2구역 Lv.1 이상 행동 감지', details: '혼잡', crowdLevel: 'Lv.1', behavior: '이상 행동 감지' },
-];
-
 const LeftContentAreaDetail = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const theme = useTheme();
+
 
   const handleCloseClick = () => {
     navigate('/dashboard');
@@ -82,14 +77,22 @@ const LeftContentAreaDetail = () => {
             </TableRow>
           </CustomTableHead>
           <TableBody>
-            {tableData.map((row, index) => (
-              <TableRow key={index}>
-                <CustomTableCell>{row.time}</CustomTableCell>
-                <CustomTableCell>{row.situation}</CustomTableCell>
-                <CustomTableCell>{row.details}</CustomTableCell>
-                <CustomTableCell>{row.crowdLevel}</CustomTableCell>
+            {location.state && location.state.alert ? (
+              location.state.alert.map((row, index) => (
+                <TableRow key={index}>
+                  <CustomTableCell>{row.date}</CustomTableCell>
+                  <CustomTableCell>{row.context}</CustomTableCell>
+                  <CustomTableCell>{row.contextTitle}</CustomTableCell>
+                  <CustomTableCell>{row.crowdLevel}</CustomTableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <CustomTableCell colSpan={4} align="center">
+                  No data available
+                </CustomTableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </CustomTableContainer>

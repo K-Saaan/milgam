@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {  useState } from 'react';
 import { Box, Paper, Typography, List } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import MailIcon from '@mui/icons-material/Mail'; 
 import CustomListItem from '../Styles/CustomListItem';
+import AlertManager from './AlertManager';
 
 // 컨테이너의 flex 속성을 설정하여 레이아웃을 조정
 const containerStyle = {
@@ -53,17 +54,20 @@ const titleTextStyle = (theme, selected) => ({
   color: selected ? theme.palette.text.primary : theme.palette.primary.main,
 });
 
-const RightContentArea = ({ alerts, handleAlertClick, selectedAlert }) => {
+const RightContentArea = ({ handleAlertClick, selectedAlert }) => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const [alerts, setAlerts] = useState([]);
 
-  const onAlertClick = (alert) => {
+  const onAlertClick = (alertKey, alert) => {
+    console.log('전달할 데이터', alert);
     handleAlertClick(alert);
-    navigate(`/dashboard/detail/${alert.id}`);
+    navigate(`/dashboard/detail/${alertKey}`, { state: { alert } });
   };
 
   return (
     <Box sx={containerStyle}>
+      <AlertManager setAlerts={setAlerts} />
       <Paper sx={paperStyle(theme)}>
         <Box sx={headerStyle(theme)}>
           <Typography variant="subtitle1" sx={{ color: theme.palette.text.primary, fontWeight: 600, fontSize: '1rem' }}>
@@ -71,20 +75,21 @@ const RightContentArea = ({ alerts, handleAlertClick, selectedAlert }) => {
           </Typography>
         </Box>
         <List sx={listStyle}>
-          {alerts.map(alert => (
+          {Object.keys(alerts).map((key, index) => (
+            
             <CustomListItem
-              key={alert.id}
+              key={index}
               button
-              onClick={() => onAlertClick(alert)}
-              selected={selectedAlert?.id === alert.id}
+              onClick={() => onAlertClick(key, alerts[key])}
+              selected={selectedAlert?.id === alerts[key][alerts[key].length - 1].id}
             >
-              <Typography variant="body2" sx={timeTextStyle(theme, selectedAlert?.id === alert.id)}>
-                {alert.time}
+              <Typography variant="body2" sx={timeTextStyle(theme, selectedAlert?.id === alerts[key].id)}>
+                {alerts[key][alerts[key].length-1].date}
               </Typography>
               <Box sx={titleBoxStyle}>
-                <MailIcon sx={{ color: selectedAlert?.id === alert.id ? theme.palette.text.primary : theme.palette.primary.main, marginRight: 1 }} />
-                <Typography variant="body2" sx={titleTextStyle(theme, selectedAlert?.id === alert.id)}>
-                  {alert.title}
+                <MailIcon sx={{ color: selectedAlert?.id === alerts[key].id ? theme.palette.text.primary : theme.palette.primary.main, marginRight: 1 }} />
+                <Typography variant="body2" sx={titleTextStyle(theme, selectedAlert?.id === alerts[key].id)}>
+                  {alerts[key][alerts[key].length-1].context}
                 </Typography>
               </Box>
             </CustomListItem>
