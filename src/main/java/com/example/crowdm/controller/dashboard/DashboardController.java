@@ -2,6 +2,7 @@ package com.example.crowdm.controller.dashboard;
 
 import com.example.crowdm.entity.dashboard.DashboardEntity;
 import com.example.crowdm.service.dashboard.DashboardService;
+import org.springframework.http.ResponseEntity;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,16 +25,10 @@ public class DashboardController {
     }
 
 
-    @GetMapping("/add")
-    public DashboardEntity addDashboard(@RequestBody DashboardEntity dashboardEntity) {
+    @PostMapping()
+    public ResponseEntity<DashboardEntity> addDashboard(@RequestBody DashboardEntity dashboardEntity) {
         logger.info("Adding dashboard: {}", dashboardEntity);
-        return dashboardService.addDashboard(dashboardEntity);
-    }
-
-    @PutMapping("/{id}/update-entity-only")
-    public DashboardEntity updateDashboardEntityOnly(@PathVariable("id") int id, @RequestBody DashboardEntity dashboardEntity) {
-        logger.info("Updating dashboard entity only with id {}", id);
-        return dashboardService.updateDashboardEntityOnly(id, dashboardEntity);
+        return ResponseEntity.ok(dashboardService.addDashboard(dashboardEntity));
     }
 
     @DeleteMapping("/delete/{id}")

@@ -1,5 +1,8 @@
 package com.example.crowdm.controller.event;
 
+import com.example.crowdm.dto.event.EventRequest;
+import com.example.crowdm.dto.login.LoginRequest;
+import com.example.crowdm.entity.dashboard.DashboardEntity;
 import com.example.crowdm.entity.event.EventEntity;
 import com.example.crowdm.repository.event.EventRepository;
 import com.example.crowdm.service.event.EventService;
@@ -9,13 +12,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -49,7 +59,19 @@ public class EventController {
         // 모델에 이벤트 목록 추가
         model.addAttribute("eventList", eventList);
 
-
         return ResponseEntity.ok(eventList);
+    }
+
+    @PostMapping(value = "/eventadd")
+    public  ResponseEntity addEvent(@RequestBody EventEntity eventEntity) {
+        logger.info("Adding Event: {}", eventEntity);
+
+        return ResponseEntity.ok(eventService.addEvent(eventEntity));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity deleteEvent(@PathVariable("id") int id ){
+        logger.info("Deleting event with id {}", id);
+        return ResponseEntity.ok(eventService.deleteEvent(id));
     }
 }
