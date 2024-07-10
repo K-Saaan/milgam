@@ -8,6 +8,9 @@ const useStore = create(
       isLogined: false,
       setIsLogined: (value) => set({ isLogined: value }),
 
+      adminLogined: false,
+      setAdminLogined: (value) => set({ adminLogined: value }),
+
       // 새로운 상태 및 액션
       selectedRegion: '광화문·덕수궁',
       setSelectedRegion: (region) => set({ selectedRegion: region }),

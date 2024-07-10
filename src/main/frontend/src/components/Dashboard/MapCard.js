@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Paper, Typography, TextField, Autocomplete, Skeleton } from '@mui/material';
+import { Box, Paper, Typography, Skeleton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import NaverMap from './NaverMap';
 import { fetchData } from '../../api/fetchData';
 import { extractCrowdDataToMap } from '../../api/dataExtractor';
@@ -57,7 +57,6 @@ const getCrowdColor = (level, theme) => {
 const MapCard = () => {
   const theme = useTheme();
   const { selectedRegion, setSelectedRegion } = useStore();
-  const queryClient = useQueryClient();
   const [crowdLevel, setCrowdLevel] = useState(''); // 혼잡도 레벨 상태 추가
 
   useEffect(() => {

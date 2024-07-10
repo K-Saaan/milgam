@@ -4,12 +4,12 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { styled } from '@mui/system';
 import ApprovalAlert from './ApprovalAlert';
 import { useTheme } from '@mui/material/styles';
+import CircularProgress from '@mui/material/CircularProgress';
 
 // TableContainer 스타일
 const CustomTableContainer = styled(TableContainer)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   borderRadius: '12px',
-  minWidth: '800px'
 }));
 
 // TableHead 스타일
@@ -43,21 +43,21 @@ const CustomTableRow = styled(TableRow)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
 }));
 
+const progressStyle = {
+  margin: "20px",
+  justifyContent: "center",
+  display: 'flex',
+};
+
 const ReplyInquiry = () => {
   const theme = useTheme();
-
-  // 임시 데이터 설정
-  const initialData = [
-    { user_index: 1, id: 'id01', email: 'Christine@email.com', role: '관공서', applyDate: '2023-12-01', status: null },
-    { user_index: 2, id: 'aaaaaaa', email: 'sarah@email.com', role: '행사 담당자', applyDate: '2023-12-03', status: 'rejected' },
-    { user_index: 3, id: 'wertgfd', email: 'michael@email.com', role: '행사 담당자', applyDate: '2023-12-04', status: 'completed' },
-  ];
 
   // 상태 관리 변수
   const [data, setData] = useState(null);
   const [openApproval, setOpenApproval] = useState(false);
   const [selectedInquiry, setSelectedInquiry] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // 페이지네이션
   const [page, setPage] = React.useState(0);
@@ -82,6 +82,8 @@ const ReplyInquiry = () => {
       } catch (error) {
         console.error('데이터를 가져오는 중 오류가 발생했습니다:', error);
         setError('데이터를 가져오는 중 오류가 발생했습니다. ')
+      }  finally {
+        setLoading(false);
       }
     };
     fetchReq();
@@ -178,6 +180,12 @@ const ReplyInquiry = () => {
             rowsPerPage={rowsPerPage}
             onRowsPerPageChange={handleChangeRowsPerPage}
         />}
+        {/* 로딩 중일 때 표시 */}
+        {loading &&
+            <div style={progressStyle}>
+                <CircularProgress sx={{color:theme.palette.primary.main}} />
+            </div>
+        }
         {!data && (
             <div style={{textAlign:'center', margin:'10px', color:theme.palette.text.secondary}}>{error}목록이 없습니다.</div>
         )}

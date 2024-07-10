@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, styled, TablePagination  } from '@mui/material';
 import ReplyInquiryAlert from './ReplyInquiryAlert';
 import { useTheme } from '@mui/material/styles';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 // 행 스타일
@@ -18,6 +19,12 @@ const CustomTableCell = styled(TableCell)(({ theme }) => ({
   color: theme.palette.text.primary,
   borderBottom: `2px solid ${theme.palette.divider}`,
 }));
+
+const progressStyle = {
+  margin: "20px",
+  justifyContent: "center",
+  display: 'flex',
+};
 
 // /admin/questionlist 경로
 // myq_index: 질의응답 고유번호
@@ -97,15 +104,17 @@ const ReplyInquiry = () => {
                         q.myq_index === selectedQuestion.myq_index ? { ...q, ...answerData, status: '완료' } : q
                     )
                 );
+                alert('답변을 보냈습니다.');
             })
             .catch(error => {
                 console.error('답변 제출 중 오류가 발생했습니다!', error);
+                alert('오류가 발생하여 답변을 제출하지 못했습니다.');
             });
     };
 
     return (
         <div>
-            <TableContainer component={Paper} sx={{width: '100vh'}}>
+            <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
                         <TableRow>
@@ -130,6 +139,12 @@ const ReplyInquiry = () => {
                         ))}
                     </TableBody>
                 </Table>
+                {/* 로딩 중일 때 표시 */}
+                {loading &&
+                    <div style={progressStyle}>
+                        <CircularProgress sx={{color:theme.palette.primary.main}} />
+                    </div>
+                }
                 {!questions && (
                     <div style={{textAlign:'center', margin:'10px', color:theme.palette.text.secondary}}>{error}목록이 없습니다.</div>
                 )}

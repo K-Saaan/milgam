@@ -40,7 +40,7 @@ const LogInForm = ({ marginBottom }) => {
         if (id && pw) {
             try {
                 //console.log("data : ", data)
-                const res = await axios.post("http://localhost:8080/login/loginAction", data);
+                const res = await axios.post("/login/loginAction", data);
                 //console.log(res.data);
                 if (res.data.RESULT === "GO_MAIN") {
                     console.log("go dashboard")
