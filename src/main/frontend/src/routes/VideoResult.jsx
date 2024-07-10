@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import VideoContentArea from "../components/UploadVideo/VideoContentArea.js";
 import VideoCardListArea from "../components/UploadVideo/VideoCardListArea.js";
 import DashBackground from "../components/DashBackground.js";
