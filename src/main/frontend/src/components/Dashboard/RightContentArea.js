@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { Box, Paper, Typography, List } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
@@ -59,9 +59,10 @@ const RightContentArea = ({ handleAlertClick, selectedAlert }) => {
   const navigate = useNavigate();
   const [alerts, setAlerts] = useState([]);
 
-  const onAlertClick = (alert) => {
+  const onAlertClick = (alertKey, alert) => {
+    console.log('전달할 데이터', alert);
     handleAlertClick(alert);
-    navigate(`/dashboard/detail/${alert.id}`);
+    navigate(`/dashboard/detail/${alertKey}`, { state: { alert } });
   };
 
   return (
@@ -75,19 +76,20 @@ const RightContentArea = ({ handleAlertClick, selectedAlert }) => {
         </Box>
         <List sx={listStyle}>
           {Object.keys(alerts).map((key, index) => (
+            
             <CustomListItem
               key={index}
               button
-              onClick={() => onAlertClick(alerts[key])}
-              selected={selectedAlert?.id === alerts[key].id}
+              onClick={() => onAlertClick(key, alerts[key])}
+              selected={selectedAlert?.id === alerts[key][alerts[key].length - 1].id}
             >
               <Typography variant="body2" sx={timeTextStyle(theme, selectedAlert?.id === alerts[key].id)}>
-                {alerts[key].time}
+                {alerts[key][alerts[key].length-1].date}
               </Typography>
               <Box sx={titleBoxStyle}>
                 <MailIcon sx={{ color: selectedAlert?.id === alerts[key].id ? theme.palette.text.primary : theme.palette.primary.main, marginRight: 1 }} />
                 <Typography variant="body2" sx={titleTextStyle(theme, selectedAlert?.id === alerts[key].id)}>
-                  {alerts[key].title}
+                  {alerts[key][alerts[key].length-1].context}
                 </Typography>
               </Box>
             </CustomListItem>

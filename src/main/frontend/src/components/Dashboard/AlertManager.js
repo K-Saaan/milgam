@@ -16,7 +16,7 @@ const AlertManager = ({ setAlerts }) => {
           newAlerts[index].push(alert);
         });
 
-        // console.log('Processed Alerts Array:', newAlerts);
+        console.log('Processed Alerts Array:', newAlerts);
         
         setAlerts(newAlerts);
       } catch (error) {
