@@ -1,9 +1,10 @@
-import React, { useEffect  } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Paper, Typography, TextField, Autocomplete, Skeleton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useQuery, useQueryClient } from 'react-query';
 import NaverMap from './NaverMap';
 import { fetchData } from '../../api/fetchData';
+import { extractCrowdData } from '../../api/dataExtractor';
 import regions from './data/regions'
 import useStore from '../../store'
 
@@ -81,7 +82,7 @@ const MapCard = () => {
     }
   }, [selectedRegion, setSelectedRegion]);
 
-  
+
   // React Query를 사용하여 selectedRegion이 변경될 때마다 데이터를 가져옴
   const { error, isLoading } = useQuery(['fetchData', selectedRegion], () => fetchData(selectedRegion), {
     refetchInterval: 300000, // 5분마다 갱신
@@ -96,6 +97,8 @@ const MapCard = () => {
   };
 
   if (error) return <div>Error fetching data</div>;
+
+  const selectedRegionData = regions.find(region => region.value === selectedRegion) || {};
 
   return (
     <Paper sx={paperStyle(theme)}>
@@ -118,16 +121,17 @@ const MapCard = () => {
           onChange={handleRegionChange}
           sx={autocompleteStyle(theme)}
           renderInput={(params) => (
-            <TextField 
-              {...params} 
-              label="지역 선택" 
+            <TextField
+              {...params}
+              label="지역 선택"
               placeholder="지역을 검색하세요." // placeholder 추가
             />
           )}
         />
       </Box>
       <Box sx={boxStyle(theme)}>
-        <NaverMap />
+        {/* selectedRegion의 위도, 경도와 혼잡도로 변경 */}
+        <NaverMap region={{ lat: selectedRegionData.lat, lng: selectedRegionData.lng }} color='red'/>
       </Box>
     </Paper>
   );
