@@ -33,19 +33,7 @@ public class DashboardService {
         return dashboardRepository.save(dashboardEntity);
     }
 
-    public DashboardEntity updateDashboardEntityOnly(int id, DashboardEntity dashboardEntity) {
-        Optional<DashboardEntity> optionalDashboard = dashboardRepository.findById(id);
-        if (optionalDashboard.isPresent()) {
-            DashboardEntity existingDashboard = optionalDashboard.get();
-            existingDashboard.setDate(dashboardEntity.getDate());
-            existingDashboard.setContext(dashboardEntity.getContext());
-            existingDashboard.setContextTitle(dashboardEntity.getContextTitle());
-            existingDashboard.setAnalysis_index(dashboardEntity.getAnalysis_index());
-            return existingDashboard;
-        } else {
-            throw new RuntimeException("Dashboard not found with id " + id);
-        }
-    }
+
 
     @Transactional
     public int deleteDashboard(Integer log_index){
