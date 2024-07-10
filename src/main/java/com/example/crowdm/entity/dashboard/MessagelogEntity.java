@@ -3,6 +3,7 @@ package com.example.crowdm.entity.dashboard;
 import lombok.*;
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Set;
 import com.example.crowdm.listener.dashboard.DashboardListener;
 
 @Getter
@@ -13,7 +14,7 @@ import com.example.crowdm.listener.dashboard.DashboardListener;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "message_log", schema = "public")
-public class DashboardEntity {
+public class MessagelogEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +32,14 @@ public class DashboardEntity {
 
     @Column(name = "analysis_index")
     private int analysis_index;
+
+    @ManyToMany
+    @JoinTable(
+            name = "message_log_management",
+            joinColumns = @JoinColumn(name = "log_index"),
+            inverseJoinColumns = @JoinColumn(name = "user_index")
+    )
+    private Set<MessageManageEntity> messageManageEntities;
 }
+
+

@@ -1,6 +1,6 @@
 package com.example.crowdm.service.dashboard;
 
-import com.example.crowdm.entity.dashboard.DashboardEntity;
+import com.example.crowdm.entity.dashboard.MessagelogEntity;
 import com.example.crowdm.repository.dashboard.DashboardRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -9,11 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.sql.Timestamp;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,13 +22,13 @@ public class DashboardService {
     private final DashboardRepository dashboardRepository;
     //final 변수: 초기화한 후 값을 변경될 수 없음
 
-    public List<DashboardEntity> findAllDashboards(){
+    public List<MessagelogEntity> findAllDashboards(){
         return dashboardRepository.findAll();
     }
 
     @Transactional
-    public DashboardEntity addDashboard(DashboardEntity dashboardEntity) {
-        return dashboardRepository.save(dashboardEntity);
+    public MessagelogEntity addDashboard(MessagelogEntity messagelogEntity) {
+        return dashboardRepository.save(messagelogEntity);
     }
 
 
