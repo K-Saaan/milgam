@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, styled  } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import ReplyInquiryAlert from './ReplyInquiryAlert';
 
 // 행 스타일
@@ -17,50 +18,66 @@ const CustomTableCell = styled(TableCell)(({ theme }) => ({
   borderBottom: `2px solid ${theme.palette.divider}`,
 }));
 
-const ReplyInquiry = () => {
-    // 임시 데이터 설정
-    const initialQuestions = [
-        {
-        id: 1,
-        question_title: "메이크업 관련 문의",
-        question: "어떤 제품을 사용하나요?",
-        question_date: "2024-06-25",
-        name: "이민정",
-        answer_date: null,
-        },
-        {
-        id: 2,
-        question_title: "Asus Laptop 관련 문의",
-        question: "노트북 배터리 교체 가능한가요?",
-        question_date: "2024-06-20",
-        name: "김철수",
-        answer_date: "2024-06-21",
-        },
-        {
-        id: 3,
-        question_title: "Iphone X 관련 문의",
-        question: "액정 수리 비용이 얼마인가요?",
-        question_date: "2024-06-15",
-        name: "박영희",
-        answer_date: null,
-        },
-    ];
+// /admin/questionlist 경로
+// myq_index: 질의응답 고유번호
+// question_title: 질문 제목
+// user_index: 질문한 유저 번호
+// question_date: 질문한 날짜
+// answer_date: 답변한 날짜
+// status: 상태
 
+const ReplyInquiry = () => {
     // 상태관리 변수들
-    const [questions, setQuestions] = useState(initialQuestions);
+    const theme = useTheme();
+    const [questions, setQuestions] = useState();
     const [selectedQuestion, setSelectedQuestion] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    // 처음 렌더링될 때 실행
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null)
+    // 임시 데이터 설정
+    // const initialQuestions = [
+    //     {
+    //     id: 1,
+    //     question_title: "메이크업 관련 문의",
+    //     question: "어떤 제품을 사용하나요?",
+    //     question_date: "2024-06-25",
+    //     name: "이민정",
+    //     answer_date: null,
+    //     },
+    //     {
+    //     id: 2,
+    //     question_title: "Asus Laptop 관련 문의",
+    //     question: "노트북 배터리 교체 가능한가요?",
+    //     question_date: "2024-06-20",
+    //     name: "김철수",
+    //     answer_date: "2024-06-21",
+    //     },
+    //     {
+    //     id: 3,
+    //     question_title: "Iphone X 관련 문의",
+    //     question: "액정 수리 비용이 얼마인가요?",
+    //     question_date: "2024-06-15",
+    //     name: "박영희",
+    //     answer_date: null,
+    //     },
+    // ];
     useEffect(() => {
-        axios.get('/api/questions')
-            .then(response => {
-                setQuestions(response.data);
-            })
-            .catch(error => {
-                console.error('질문을 가져오는 중 오류가 발생했습니다!', error);
-            });
-    }, []);
+        // 데이터를 가져오는 비동기 함수
+        const fetchQuestions = async () => {
+          try {
+            const response = await axios.get('/admin/questionlist'); // 실제 API URL로 대체해야 합니다.
+            console.log('Questions 데이터:', response.data); // 데이터 확인을 위한 로그
+            setQuestions(response.data);
+          } catch (error) {
+            console.error('Questions 데이터를 가져오는 중 오류 발생:', error);
+            setError('데이터를 가져오는 중 오류가 발생했습니다. ')
+          } finally {
+            setLoading(false);
+          }
+        };
+    
+        fetchQuestions();
+      }, []);
 
     // 모달 여는 함수
     const openModal = (question) => {
@@ -77,18 +94,17 @@ const ReplyInquiry = () => {
     // 답변 제출 처리 함수
     const handleAnswerSubmit = (answer) => {
         const answerData = {
+            myq_index: selectedQuestion.myq_index, // myq_index 추가
             answer,
-            answer_date: new Date().toISOString().split('T')[0], // YYYY-MM-DD 형식
-            end_date: new Date().toISOString().split('T')[0]
         };
 
-        axios.post(`/api/questions/${selectedQuestion.id}/answer`, answerData)
+        axios.post(`/admin/answer`, answerData)
             .then(response => {
                 closeModal();
                 // 질문 목록을 업데이트하여 답변 상태 반영
                 setQuestions(prevQuestions => 
                     prevQuestions.map(q => 
-                        q.id === selectedQuestion.id ? { ...q, ...answerData, status: '완료' } : q
+                        q.myq_index === selectedQuestion.myq_index ? { ...q, ...answerData, status: '완료' } : q
                     )
                 );
             })
@@ -112,18 +128,21 @@ const ReplyInquiry = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {questions.map((question, index) => (
-                            <CustomTableRow  key={question.id} onClick={() => openModal(question)}>
+                        {questions && questions.map((question, index) => (
+                            <CustomTableRow  key={question.myq_index} onClick={() => openModal(question)}>
                                 <CustomTableCell>{index + 1}</CustomTableCell>
                                 <CustomTableCell>{question.question_title}</CustomTableCell>
                                 <CustomTableCell>{question.name}</CustomTableCell>
-                                <CustomTableCell>{question.end_date ? '완료' : '대기'}</CustomTableCell>
+                                <CustomTableCell>{question.answer_date ? '완료' : '대기'}</CustomTableCell>
                                 <CustomTableCell>{question.question_date}</CustomTableCell>
                                 <CustomTableCell>{question.answer_date || '-'}</CustomTableCell>
                             </CustomTableRow >
                         ))}
                     </TableBody>
                 </Table>
+                {!questions && (
+                    <div style={{textAlign:'center', margin:'10px', color:theme.palette.text.secondary}}>{error}목록이 없습니다.</div>
+                )}
             </TableContainer>
             <ReplyInquiryAlert 
                 open={isModalOpen} 
