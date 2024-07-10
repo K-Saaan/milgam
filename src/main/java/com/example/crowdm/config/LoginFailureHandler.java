@@ -1,3 +1,4 @@
+/*
 package com.example.crowdm.config;
 
 import com.example.crowdm.entity.user.UserEntity;
@@ -33,3 +34,4 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
         super.onAuthenticationFailure(request, response, exception);
     }
 }
+*/
