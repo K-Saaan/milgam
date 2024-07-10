@@ -1,11 +1,8 @@
 package com.example.crowdm.entity.dashboard;
 
-
 import lombok.*;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
-
 import com.example.crowdm.listener.dashboard.DashboardListener;
 
 @Getter
@@ -15,8 +12,7 @@ import com.example.crowdm.listener.dashboard.DashboardListener;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "message_log", schema="public")
-
+@Table(name = "message_log", schema = "public")
 public class DashboardEntity {
 
     @Id
@@ -35,6 +31,4 @@ public class DashboardEntity {
 
     @Column(name = "analysis_index")
     private int analysis_index;
-
-
 }

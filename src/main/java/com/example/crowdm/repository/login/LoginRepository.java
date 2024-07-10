@@ -8,16 +8,17 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import com.example.crowdm.entity.user.UserEntity;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Optional;
+
 
 @Repository
-public interface LoginRepository extends JpaRepository<UserEntity, String>, JpaSpecificationExecutor<UserEntity> {
-    Optional<UserEntity> findById(int userIndex); // 제네릭 타입을 String으로 변경
+public interface LoginRepository extends JpaRepository<UserEntity, Integer>, JpaSpecificationExecutor<UserEntity> {
     /*
     @Modifying
     @Transactional
@@ -35,4 +36,11 @@ public interface LoginRepository extends JpaRepository<UserEntity, String>, JpaS
     @Transactional
     @Query("UPDATE UserEntity u SET u.admin_index = :admin_index WHERE u.user_index = :user_index")
     int updateAdminIndexById(@Param("user_index") int user_index, @Param("admin_index") int admin_index);*/
+
+    @Query("SELECT u FROM UserEntity u WHERE u.id = :userId")
+    UserEntity findByUser(@Param("userId") String userId);
+
+    // 비밀번호 검증을 위한 메서드 추가
+    @Query("SELECT u FROM UserEntity u WHERE u.id = :userId and u.pw = :password")
+    UserEntity findByUserIdAndPassword(@Param("userId") String userId, @Param("password") String password);
 }
