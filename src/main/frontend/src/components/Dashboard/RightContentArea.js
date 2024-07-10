@@ -9,7 +9,7 @@ import AlertManager from './AlertManager';
 // 컨테이너의 flex 속성을 설정하여 레이아웃을 조정
 const containerStyle = {
   flex: 3,
-  height: '520px',
+  height: '545px',
 };
 
 // Paper 스타일
@@ -27,8 +27,10 @@ const headerStyle = (theme) => ({
   padding: 1,
   borderRadius: 1,
   textAlign: 'center',
-  marginBottom: 2,
   height: '40px', 
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
 });
 
 // 알림 리스트의 스타일

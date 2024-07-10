@@ -1,28 +1,26 @@
-import React, {useState} from 'react';
-import {useForm} from "react-hook-form";
-import {useNavigate} from "react-router-dom";
+import React, { useState } from 'react';
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {
-    Grid, MenuItem, Button, FormControl, DialogActions,
-    FormHelperText, InputLabel, Select, IconButton, InputAdornment
-} from '@mui/material';
-import {Visibility, VisibilityOff} from '@mui/icons-material';
-import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
-import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
-import {DatePicker} from '@mui/x-date-pickers/DatePicker';
-import {CustomButton, NextButton} from "./NextButton.js";
+import { Grid, MenuItem, Button, FormControl, DialogActions,
+    FormHelperText, InputLabel, Select, IconButton, InputAdornment } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { CustomButton, NextButton } from "./NextButton.js";
 import CustomTextField from '../Styles/CustomTextField.js';
+import CustomDatePicker from '../Styles/CustomDatePicker.js';
 import EmailAlert from './EmailAlert';
-import {useTheme} from '@mui/material/styles';
+import LongButton from "../Styles/LongButton.js";
 
-const SignUpForm = ({marginBottom}) => {
-
-    const {register, handleSubmit, formState: {errors, isValid}, setValue, watch, control, trigger} = useForm({
+const SignUpForm = ({ marginBottom }) => {
+    const navigate = useNavigate();
+    const { register, handleSubmit, formState: { errors, isValid }, setValue, watch, control, trigger } = useForm({
         mode: 'onChange',
     });
 
     // 페이지 이동
-    const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수
     const onSubmit = async (data) => {
         console.log(1);
         const isFormValid = await trigger(); // 모든 필드의 유효성 검사를 트리거
@@ -36,10 +34,14 @@ const SignUpForm = ({marginBottom}) => {
         }
         navigate('/login');
     };
-
+    
     const onError = (errors) => {
         // 에러가 있는 경우 적절한 메시지를 출력하거나 처리합니다.
         console.log(errors);
+    };
+
+    const onNextClick = () => {    // 이전 페이지로 이동하도록
+        navigate('/login/loginPage');
     };
 
     // 이미 가입 되어있다면, 로그인해주세요 <- 유효성 확인 X
@@ -49,7 +51,7 @@ const SignUpForm = ({marginBottom}) => {
 
     // 역할 부분 const
     const [category, setCategory] = useState('');
-
+    
     // 소속 부분 const
     const [org, setOrg] = useState('');
     const [customOrg, setCustomOrg] = useState('');  // 별도의 직접 입력 값을 위한 상태
@@ -128,7 +130,7 @@ const SignUpForm = ({marginBottom}) => {
         backgroundColor: "#4880FF",
         color: "white",
     }
-
+    
     // 비밀번호
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);

@@ -1,5 +1,5 @@
 import React from "react";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "./App";
 import Admin from "./routes/Admin";
 import Dashboard from "./routes/Dashboard";
@@ -18,11 +18,16 @@ import AdminApproval from "./routes/AdminApproval";
 import AdminReply from './routes/AdminReply';
 import Profile from './routes/Profile';
 
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
+      {
+        index: true,
+        element: <Navigate to="home" replace />,
+      },
       {
         path: "home",
         element: <Home />,
