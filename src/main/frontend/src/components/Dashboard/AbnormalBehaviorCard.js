@@ -13,7 +13,7 @@ const AbnormalBehaviorCard = () => {
   return (
     <Paper sx={CustomPaper(theme)}>
       <Box sx={{ textAlign: 'center' }}>
-        <Typography variant="subtitle2" gutterBottom>
+        <Typography variant="subtitle1" gutterBottom>
           이상 행동(임시)
         </Typography>
       </Box>

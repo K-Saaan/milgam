@@ -17,18 +17,18 @@ Chart.register(LineElement, CategoryScale, LinearScale, PointElement);
 const CrowdTrendCard = () => {
   const theme = useTheme();
   const { selectedRegion } = useStore(); // 선택된 지역을 Zustand 스토어에서 가져옵니다.
-  const { data: xmlData, error, isLoading } = useQuery(['fetchData', selectedRegion], () => fetchData(selectedRegion), {
+  const { data: jsonData, error, isLoading } = useQuery(['fetchData', selectedRegion], () => fetchData(selectedRegion), {
     refetchInterval: 300000, // 5분마다 갱신
   });
 
   const [forecastData, setForecastData] = useState([]);
 
   useEffect(() => {
-    if (xmlData) {
-      const extractedData = extractForecastData(xmlData);
+    if (jsonData) {
+      const extractedData = extractForecastData(jsonData);
       setForecastData(extractedData);
     }
-  }, [xmlData]);
+  }, [jsonData]);
 
   // if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error fetching data</div>;
@@ -64,7 +64,7 @@ const CrowdTrendCard = () => {
       ) : (
         <>
           <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="subtitle2" gutterBottom>
+            <Typography variant="subtitle1" gutterBottom>
               인구 예측 추이
             </Typography>
           </Box>

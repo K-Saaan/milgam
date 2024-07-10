@@ -4,7 +4,7 @@ import regions from '../data/regions'
 /* global naver */
 
 // NaverMap 컴포넌트
-const NaverMap = ({ region, color }) => {
+const NaverMap = ({ region, color, crowdLevel }) => {
   const mapElement = useRef(null);
 
   useEffect(() => {
@@ -16,8 +16,8 @@ const NaverMap = ({ region, color }) => {
     script.async = true;
     script.onload = () => {
       const mapOptions = {
-        center: new naver.maps.LatLng(region.lat, region.lng), // 지도 초기 중심 좌표
-        zoom: 15
+        center: new naver.maps.LatLng(37.5265, 126.9780), // 지도 초기 중심 좌표
+        zoom: 11.5
       };
 
       const map = new naver.maps.Map(mapElement.current, mapOptions);
