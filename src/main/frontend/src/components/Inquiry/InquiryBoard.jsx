@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { styled, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
+import { styled, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, TablePagination } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RegisterAlert from './RegisterAlert';
 import ReplyAlert from './ReplyAlert';
@@ -78,6 +78,19 @@ const tableCellStyle = (theme) => ({
 const InquiryBoard = () => {
   const theme = useTheme();
 
+  // 페이지네이션
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   // 등록 다이얼로그 열림 상태 관리
   const [openRegister, setOpenRegister] = useState(false);
   // 답변 다이얼로그 열림 상태 관리
@@ -129,7 +142,7 @@ const InquiryBoard = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {inquiries.map((inquiry) => (
+              {inquiries.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((inquiry) => (
                 // 각 문의 항목을 클릭하면 답변 다이얼로그 열기
                 <CustomTableRow key={inquiry.id} onClick={() => handleClickOpenReply(inquiry)} sx={{ cursor: 'pointer' }}>
                   <TableCell sx={tableCellStyle(theme)}>{inquiry.id}</TableCell>
@@ -141,6 +154,14 @@ const InquiryBoard = () => {
               ))}
             </TableBody>
           </Table>
+          {inquiries && <TablePagination
+            component="div"
+            count={inquiries.length}
+            page={page}
+            onPageChange={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />}
         </TableContainer>
       {/* 등록 다이얼로그 */}
       <RegisterAlert open={openRegister} handleClose={handleCloseRegister} />

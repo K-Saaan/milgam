@@ -51,16 +51,3 @@ export const extractPopulationRates = (jsonData) => {
 
     return { ppltnRate10, ppltnRate20, ppltnRate30, ppltnRate40, ppltnRate50, ppltnRate60, ppltnRate70 };
 };
-
-
-// MapCard.js - 지역명 추출하는 함수
-export const extractLocationName = (jsonData) => {
-    if (!jsonData || !jsonData['SeoulRtd.citydata_ppltn'] || !jsonData['SeoulRtd.citydata_ppltn'][0]) {
-        console.error('Invalid JSON data:', jsonData);
-        return 'Unknown Location';
-    }
-
-    const cityData = jsonData['SeoulRtd.citydata_ppltn'][0];
-    const areaNm = cityData.AREA_NM;
-    return areaNm || 'Unknown Location';
-};
