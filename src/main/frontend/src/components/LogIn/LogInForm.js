@@ -35,6 +35,7 @@ const LogInForm = ({ marginBottom }) => {
 
     const {setIsLogined} = useStore(state => state);
     const onLogIn = async (data) => {
+
         const { id, pw } = data;
 
         if (id && pw) {
@@ -85,6 +86,7 @@ const LogInForm = ({ marginBottom }) => {
                 <CustomTextField
                     label="비밀번호"
                     id="pw"
+
                     type="password"
                     {...register("pw", { required: "비밀번호를 입력해주세요." })}
                     inputProps={{ maxLength: 30 }}

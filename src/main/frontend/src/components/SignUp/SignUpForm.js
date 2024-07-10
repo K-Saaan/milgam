@@ -1,27 +1,30 @@
-import React, { useState } from 'react';
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import React, {useState} from 'react';
+import {useForm} from "react-hook-form";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import { Grid, MenuItem, Button, FormControl, DialogActions,
-    FormHelperText, InputLabel, Select, IconButton, InputAdornment } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { CustomButton, NextButton } from "./NextButton.js";
+import {
+    Grid, MenuItem, Button, FormControl, DialogActions,
+    FormHelperText, InputLabel, Select, IconButton, InputAdornment
+} from '@mui/material';
+import {Visibility, VisibilityOff} from '@mui/icons-material';
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {DatePicker} from '@mui/x-date-pickers/DatePicker';
+import {CustomButton, NextButton} from "./NextButton.js";
 import CustomTextField from '../Styles/CustomTextField.js';
 import EmailAlert from './EmailAlert';
-import { useTheme } from '@mui/material/styles';
+import {useTheme} from '@mui/material/styles';
 
-const SignUpForm = ({ marginBottom }) => {
+const SignUpForm = ({marginBottom}) => {
 
-    const { register, handleSubmit, formState: { errors, isValid }, setValue, watch, control, trigger } = useForm({
+    const {register, handleSubmit, formState: {errors, isValid}, setValue, watch, control, trigger} = useForm({
         mode: 'onChange',
     });
 
     // 페이지 이동
     const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수
     const onSubmit = async (data) => {
+        console.log(1);
         const isFormValid = await trigger(); // 모든 필드의 유효성 검사를 트리거
         if (!isFormValid) {
             console.log("모든 필드를 올바르게 입력해주세요.");
@@ -33,7 +36,7 @@ const SignUpForm = ({ marginBottom }) => {
         }
         navigate('/login');
     };
-    
+
     const onError = (errors) => {
         // 에러가 있는 경우 적절한 메시지를 출력하거나 처리합니다.
         console.log(errors);
@@ -46,7 +49,7 @@ const SignUpForm = ({ marginBottom }) => {
 
     // 역할 부분 const
     const [category, setCategory] = useState('');
-    
+
     // 소속 부분 const
     const [org, setOrg] = useState('');
     const [customOrg, setCustomOrg] = useState('');  // 별도의 직접 입력 값을 위한 상태
@@ -75,6 +78,8 @@ const SignUpForm = ({ marginBottom }) => {
 
     // 이메일 상태 관리
     const [isEmailValid, setIsEmailValid] = useState(false);
+    // 회원가입 에러 메시지를 관리하는 상태
+    const [signupError, setSignupError] = useState('');
 
     // 화면
     const paperStyle = {
@@ -87,19 +92,19 @@ const SignUpForm = ({ marginBottom }) => {
         display: 'flex', // flex 컨테이너로 설정
         flexDirection: 'column', // 자식 요소들을 수직으로 배치
         alignItems: 'center' // 자식 요소들을 중앙에 정렬
-      };
-      const titleStyle = {
+    };
+    const titleStyle = {
         mb: 4,
         color: 'white',
-      };
+    };
 
     // 스크롤 안 보이게
     const noScrollbarStyles = {
         '&::-webkit-scrollbar': {
             display: 'none', // Chrome, Safari, and Opera
         },
-        '-ms-overflow-style': 'none',  // Internet Explorer 10+
-        'scrollbar-width': 'none'  // Firefox
+        'msOverflowStyle': 'none',  // Internet Explorer 10+
+        'scrollbarWidth': 'none'  // Firefox
     };
 
     // 페이지 디자인 const
@@ -123,7 +128,7 @@ const SignUpForm = ({ marginBottom }) => {
         backgroundColor: "#4880FF",
         color: "white",
     }
-    
+
     // 비밀번호
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -134,7 +139,7 @@ const SignUpForm = ({ marginBottom }) => {
 
     // Date Picker 스타일 적용
     const dateStyles = {
-        backgroundColor : "#323D4E",
+        backgroundColor: "#323D4E",
         '& .MuiOutlinedInput-root': {
             '& fieldset': {
                 borderColor: '#CFCFCF1D', // 기본 테두리 색상
@@ -150,301 +155,380 @@ const SignUpForm = ({ marginBottom }) => {
         width: '370px',
         height: '56px',
     }
-    
 
+    const onSignup = async (data) => {
+        console.log("data : ", data);
+        console.log(1);
+        const currentTime = new Date().toISOString();
+        const {
+            name,
+            id,
+            email,
+            pw,
+            phone,
+            role_index,
+            start_date,
+            end_date,
+            org,
+            org_phone,
+            account_lock = false,
+            admin_index = null,
+            apply_date = currentTime,
+            event_index = null,
+            fail_cnt = 0,
+            last_login = currentTime,
+            permission_date = null,
+            permission_yn = false,
+            pw_duedate = null,
+            temppw = null
+        } = data;
+
+        if (name && id && email && pw && phone && role_index && start_date && end_date && org && org_phone) {
+            try {
+                console.log("data : ", data);
+                const API = "http://localhost:8080/signup";
+
+                axios.post(API,
+                    {
+                        "name": name,
+                        "id": id,
+                        "email": email,
+                        "pw": pw,
+                        "phone": phone,
+                        "role_index": role_index,
+                        "start_date": start_date,
+                        "end_date": end_date,
+                        "org": org,
+                        "org_phone": org_phone,
+                        "account_lock": false,
+                        "admin_index": null,
+                        "apply_date": currentTime,
+                        "event_index": null,
+                        "fail_cnt": 0,
+                        "last_login": currentTime,
+                        "permission_date": null,
+                        "permission_yn": false,
+                        "pw_duedate": null,
+                        "temppw": null
+                    },
+                    {
+                        headers:{
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                    .then((response) => {
+                        window.alert('회원가입 되었습니다. 로그인해주세요.')
+                        navigate('/login');
+                    }).catch((error) => {
+                        console.log(error);
+                        window.alert(error);
+                })
+
+
+            } catch (error) {
+                console.error("오류가 발생하였습니다:", error);
+                setSignupError("오류가 발생하였습니다.");
+            }
+        } else {
+            setSignupError("모든 필드를 입력해주세요.");
+        }
+    };
 
     return (
-            <Grid
-                container
-                component="form"
-                spacing={3}
-                noValidate
-                autoComplete="off"
-                onSubmit={handleSubmit(onSubmit, onError)}
-                sx={formSx}
-            >
-                <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/*이름*/}
-                    <div>
-                        <CustomTextField
-                            label="이름"
-                            id="name"
-                            {...register("name", { required: "이름을 입력해주세요." })}
-                            inputProps={{ maxLength: 30 }}
-                            error={!!errors.name}
-                            helperText={errors.name?.message}
-                            style={{ marginBottom: errors.name ? '0px' : '23px' }}
-                        />
-                    </div>
-                </Grid>
-                <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/*아이디*/}
-                    <div>
-                        <CustomTextField
-                            label="아이디"
-                            id="id"
-                            {...register("id", {
-                                required: "아이디를 입력해주세요.",
-                                pattern: {
-                                    value: /^[A-Za-z0-9]+$/,
-                                    message: "영어 또는 숫자로만 입력해주세요.",
-                                },
-                                minLength: {
-                                    value: 4,
-                                    message: "아이디는 4글자 이상이어야 합니다.",
-                                },
-                                maxLength: {
-                                    value: 12,
-                                    message: "아이디는 12글자 이하이어야 합니다.",
-                                },
-                            })}
-                            // inputProps={{ maxLength: 30 }}
-                            error={!!errors.id}
-                            helperText={errors.id?.message}
-                            style={{ marginBottom: errors.id ? '0px' : '23px' }}
-                        />
-                    </div>
-                </Grid>
-                <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/*이메일*/}
-                    <div>
+        <Grid
+            container
+            component="form"
+            spacing={3}
+            noValidate
+            autoComplete="off"
+            onSubmit={handleSubmit(onSubmit,onError)}
+            sx={formSx}
+        >
+            <Grid item xs={12} md={6} sx={{mb: 2}}> {/*이름*/}
+                <div>
                     <CustomTextField
-                            label="이메일"
-                            id="email"
-                            {...register("email", {
-                                required: "이메일을 입력해주세요.",
-                                pattern: {
-                                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                                    message: "올바른 이메일 형식으로 입력해주세요."
-                                },
-                                onChange: (e) => {
-                                    const value = e.target.value;
-                                    setIsEmailValid(
-                                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)
-                                    );
-                                },
-                            })}
-                            inputProps={{ maxLength: 30 }}
-                            error={!!errors.email}
-                            helperText={errors.email?.message}
-                            style={{ marginBottom: errors.email ? '0px' : '23px' }}
-                        /> 
-                    </div>
-                </Grid>
-                <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/*이메일 인증버튼*/}
-                    <div>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={handleClickOpenRegister}
-                            sx={buttonstyle}
-                            disabled={!isEmailValid} // 유효성 검사 통과하면 버튼 활성화
-                        >
-                            인증번호 받기
-                        </Button>
-                        <EmailAlert open={openRegister} handleClose={handleCloseRegister} />
-                    </div>
-                </Grid>
-                <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/*비밀번호*/}
-                    <div>
-                    <CustomTextField
-                            label="비밀번호"
-                            id="pw"
-                            type={showPassword ? 'text' : 'password'}
-                            {...register("pw", {
-                                required: "비밀번호를 입력해주세요.",
-                                minLength: {
-                                  value: 8,
-                                  message: "비밀번호는 8글자 이상이어야 합니다."
-                                },
-                                maxLength: {
-                                  value: 30,
-                                  message: "비밀번호는 30글자 이하이어야 합니다."
-                                },
-                                pattern: {
-                                  value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,30}$/,
-                                  message: "비밀번호는 영어, 숫자, 특수문자를 포함해야 합니다."
-                                }
-                            })}
-                            InputProps={{  // 비밀번호 비가시화
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={(e) => e.preventDefault()}
-                                            edge="end"
-                                        >
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            }}
-                            inputProps={{ maxLength: 30 }}
-                            error={!!errors.pw}
-                            helperText={errors.pw?.message}
-                            style={{ marginBottom: errors.pw ? '0px' : '23px' }}
-                        /> 
-                    </div>
-                </Grid>
-                <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/*비밀번호 재확인*/}
-                    <div>
-                        <CustomTextField
-                            label="비밀번호 재확인"
-                            id="repw"
-                            type={showConfirmPassword ? 'text' : 'password'}
-                            {...register("repw", {
-                                required: "비밀번호를 다시 입력해주세요.",
-                                validate: value => value === pw || "입력한 비밀번호와 일치하지 않습니다."
-                            })}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            onClick={handleClickShowConfirmPassword}
-                                            onMouseDown={(e) => e.preventDefault()}
-                                            edge="end"
-                                        >
-                                            {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            }}
-                            inputProps={{ maxLength: 30 }}
-                            error={!!errors.repw}
-                            helperText={errors.repw?.message}
-                            style={{ marginBottom: errors.repw ? '0px' : '23px' }}
-                        />
-                    </div>
-                </Grid>
-                <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/*전화번호*/}
-                    <div>
-                        <CustomTextField
-                            label="전화번호"
-                            id="phone"
-                            {...register("phone", {
-                                required: "전화번호를 입력해주세요.",
-                                pattern: {
-                                  value: /^0\d{1,2}-\d{3,4}-\d{4}$/,
-                                  message: "올바른 전화번호 형식으로 입력해주세요. 예: 010-0000-0000"
-                                }
-                            })}
-                            inputProps={{ maxLength: 30 }}
-                            error={!!errors.phone}
-                            helperText={errors.phone?.message}
-                            style={{ marginBottom: errors.phone ? '0px' : '23px' }}
-                        />
-                    </div>
-                </Grid>
-                <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/*회원유형*/}
-                    <div>
-                        <CustomTextField
-                            margin="normal"
-                            fullWidth
-                            select // drop down 메뉴로 사용하기 위해 select 속성 추가
-                            label="회원유형"
-                            value={category}
-                            onChange={(e) => 
-                                setCategory(e.target.value)}
-                        >
-                            <MenuItem value="director">관공서</MenuItem>
-                            <MenuItem value="host">행사 관리자</MenuItem>
-                        </CustomTextField>
-                    </div>
-                </Grid>
-                <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/*시작날짜*/}
-                    <div>
-                        <LocalizationProvider dateAdapter={AdapterDayjs} dateFormats={{monthShort:'M'}}>
-                            <DatePicker
-                                label="시작 날짜"
-                                value={startdate}
-                                onChange={(newValue) => setStartdate(newValue)}
-                                sx = {dateStyles}
-                                format="YYYY-MM-DD"
-                                views={['year', 'month', 'day']}
-                                renderInput={(params) => <CustomTextField {...params} />} 
-                            />
-                        </LocalizationProvider>
-                    </div>
-                </Grid>
-                <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/*종료날짜*/}
-                    <div>
-                    <LocalizationProvider dateAdapter={AdapterDayjs} dateFormats={{monthShort:'M'}}>
-                            <DatePicker
-                                label="종료 날짜"
-                                value={enddate}
-                                onChange={(newValue) => setEnddate(newValue)}
-                                sx = {dateStyles}
-                                format="YYYY-MM-DD"
-                                views={['year', 'month', 'day']}
-                                renderInput={(params) => <CustomTextField {...params} />} 
-                            />
-                        </LocalizationProvider>
-                    </div>
-                </Grid>
-                <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/*소속*/}
-                    <div>
-                        <CustomTextField
-                            margin="normal"
-                            fullWidth
-                            select
-                            label="소속"
-                            value={org}
-                            onChange={handleOrgChange}
-                        >
-                            <MenuItem value="custom">직접 입력</MenuItem>
-                            <MenuItem value="3">청와대</MenuItem>
-                            <MenuItem value="4">도청</MenuItem>
-                            <MenuItem value="5">구청</MenuItem>
-                            <MenuItem value="6">시청</MenuItem>
-                            <MenuItem value="7">군청</MenuItem>
-                            <MenuItem value="8">동사무소</MenuItem>
-                            <MenuItem value="9">소방본부</MenuItem>
-                            <MenuItem value="10">소방서</MenuItem>
-                            <MenuItem value="11">경찰청</MenuItem>
-                            <MenuItem value="12">지방해양경찰청</MenuItem>
-                            <MenuItem value="13">경찰소</MenuItem>
-                            <MenuItem value="14">지역 병원 응급실</MenuItem>
-                        </CustomTextField>
-                        {isCustomInput && (
-                            <CustomTextField
-                                fullWidth
-                                label="직접 입력"
-                                value={customOrg}
-                                onChange={(e) => setCustomOrg(e.target.value)}
-                                margin="normal"
-                            />
-                        )}
-                    </div>
-                </Grid>
-                <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/*소속 전화번호*/}
-                    <div>
-                        <CustomTextField
-                            label="소속 전화번호"
-                            id="org_phone"
-                            {...register("org_phone", {
-                                required: "소속 전화번호를 입력해주세요.",
-                                pattern: {
-                                  value: /^0\d{1,2}-\d{3,4}-\d{4}$/,
-                                  message: "올바른 전화번호 형식으로 입력해주세요. 예: 02-0000-0000"
-                                }
-                            })}
-                            inputProps={{ maxLength: 30 }}
-                            error={!!errors.org_phone}
-                            helperText={errors.org_phone?.message}
-                            style={{ marginBottom: errors.org_phone ? '0px' : '23px' }}
-                        />
-                    </div>
-                </Grid>
-                <Grid item xs={12} display={{ md: 'flex' }} justifyContent={{ md: 'center' }}>
-                    <div>
-                        <CustomButton type="submit" disabled={!isValid}>완료</CustomButton>
-                    </div>
-                </Grid>
-                <Grid>
-                    <DialogActions>
-                        <Button onClick={handleLoginClick} color="primary">
-                            이미 가입하셨다면, 로그인해 주세요!
-                        </Button>
-                    </DialogActions>
-                </Grid>
+                        label="이름"
+                        id="name"
+                        {...register("name", {required: "이름을 입력해주세요."})}
+                        inputProps={{maxLength: 30}}
+                        error={!!errors.name}
+                        helperText={errors.name?.message}
+                        style={{marginBottom: errors.name ? '0px' : '23px'}}
+                    />
+                </div>
             </Grid>
+            <Grid item xs={12} md={6} sx={{mb: 2}}> {/*아이디*/}
+                <div>
+                    <CustomTextField
+                        label="아이디"
+                        id="id"
+                        {...register("id", {
+                            required: "아이디를 입력해주세요.",
+                            pattern: {
+                                value: /^[A-Za-z0-9]+$/,
+                                message: "영어 또는 숫자로만 입력해주세요.",
+                            },
+                            minLength: {
+                                value: 4,
+                                message: "아이디는 4글자 이상이어야 합니다.",
+                            },
+                            maxLength: {
+                                value: 12,
+                                message: "아이디는 12글자 이하이어야 합니다.",
+                            },
+                        })}
+                        // inputProps={{ maxLength: 30 }}
+                        error={!!errors.id}
+                        helperText={errors.id?.message}
+                        style={{marginBottom: errors.id ? '0px' : '23px'}}
+                    />
+                </div>
+            </Grid>
+            <Grid item xs={12} md={6} sx={{mb: 2}}> {/*이메일*/}
+                <div>
+                    <CustomTextField
+                        label="이메일"
+                        id="email"
+                        {...register("email", {
+                            required: "이메일을 입력해주세요.",
+                            pattern: {
+                                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                message: "올바른 이메일 형식으로 입력해주세요."
+                            },
+                            onChange: (e) => {
+                                const value = e.target.value;
+                                setIsEmailValid(
+                                    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)
+                                );
+                            },
+                        })}
+                        inputProps={{maxLength: 30}}
+                        error={!!errors.email}
+                        helperText={errors.email?.message}
+                        style={{marginBottom: errors.email ? '0px' : '23px'}}
+                    />
+                </div>
+            </Grid>
+            <Grid item xs={12} md={6} sx={{mb: 2}}> {/*이메일 인증버튼*/}
+                <div>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleClickOpenRegister}
+                        sx={buttonstyle}
+                        disabled={!isEmailValid} // 유효성 검사 통과하면 버튼 활성화
+                    >
+                        인증번호 받기
+                    </Button>
+                    <EmailAlert open={openRegister} handleClose={handleCloseRegister}/>
+                </div>
+            </Grid>
+            <Grid item xs={12} md={6} sx={{mb: 2}}> {/*비밀번호*/}
+                <div>
+                    <CustomTextField
+                        label="비밀번호"
+                        id="pw"
+                        type={showPassword ? 'text' : 'password'}
+                        {...register("pw", {
+                            required: "비밀번호를 입력해주세요.",
+                            minLength: {
+                                value: 8,
+                                message: "비밀번호는 8글자 이상이어야 합니다."
+                            },
+                            maxLength: {
+                                value: 30,
+                                message: "비밀번호는 30글자 이하이어야 합니다."
+                            },
+                            pattern: {
+                                value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,30}$/,
+                                message: "비밀번호는 영어, 숫자, 특수문자를 포함해야 합니다."
+                            }
+                        })}
+                        InputProps={{  // 비밀번호 비가시화
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={(e) => e.preventDefault()}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                        inputProps={{maxLength: 30}}
+                        error={!!errors.pw}
+                        helperText={errors.pw?.message}
+                        style={{marginBottom: errors.pw ? '0px' : '23px'}}
+                    />
+                </div>
+            </Grid>
+            <Grid item xs={12} md={6} sx={{mb: 2}}> {/*비밀번호 재확인*/}
+                <div>
+                    <CustomTextField
+                        label="비밀번호 재확인"
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        {...register("repw", {
+                            required: "비밀번호를 다시 입력해주세요.",
+                            validate: value => value === pw || "입력한 비밀번호와 일치하지 않습니다."
+                        })}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={handleClickShowConfirmPassword}
+                                        onMouseDown={(e) => e.preventDefault()}
+                                        edge="end"
+                                    >
+                                        {showConfirmPassword ? <VisibilityOff/> : <Visibility/>}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                        inputProps={{maxLength: 30}}
+                        error={!!errors.repw}
+                        helperText={errors.repw?.message}
+                        style={{marginBottom: errors.repw ? '0px' : '23px'}}
+                    />
+                </div>
+            </Grid>
+            <Grid item xs={12} md={6} sx={{mb: 2}}> {/*전화번호*/}
+                <div>
+                    <CustomTextField
+                        label="전화번호"
+                        id="phone"
+                        {...register("phone", {
+                            required: "전화번호를 입력해주세요.",
+                            pattern: {
+                                value: /^0\d{1,2}-\d{3,4}-\d{4}$/,
+                                message: "올바른 전화번호 형식으로 입력해주세요. 예: 010-0000-0000"
+                            }
+                        })}
+                        inputProps={{maxLength: 30}}
+                        error={!!errors.phone}
+                        helperText={errors.phone?.message}
+                        style={{marginBottom: errors.phone ? '0px' : '23px'}}
+                    />
+                </div>
+            </Grid>
+            <Grid item xs={12} md={6} sx={{mb: 2}}> {/*회원유형*/}
+                <div>
+                    <CustomTextField
+                        margin="normal"
+                        fullWidth
+                        select // drop down 메뉴로 사용하기 위해 select 속성 추가
+                        label="회원유형"
+                        value={category}
+                        id="role_index"
+                        onChange={(e) =>
+                            setCategory(e.target.value)}
+                    >
+                        <MenuItem value="director">관공서</MenuItem>
+                        <MenuItem value="host">행사 관리자</MenuItem>
+                    </CustomTextField>
+                </div>
+            </Grid>
+            <Grid item xs={12} md={6} sx={{mb: 2}}> {/*시작날짜*/}
+                <div>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} dateFormats={{monthShort: 'M'}}>
+                        <DatePicker
+                            label="시작 날짜"
+                            id="start_date"
+                            value={startdate}
+                            onChange={(newValue) => setStartdate(newValue)}
+                            sx={dateStyles}
+                            format="YYYY-MM-DD"
+                            views={['year', 'month', 'day']}
+                            renderInput={(params) => <CustomTextField {...params} />}
+                        />
+                    </LocalizationProvider>
+                </div>
+            </Grid>
+            <Grid item xs={12} md={6} sx={{mb: 2}}> {/*종료날짜*/}
+                <div>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} dateFormats={{monthShort: 'M'}}>
+                        <DatePicker
+                            label="종료 날짜"
+                            id="end_date"
+                            value={enddate}
+                            onChange={(newValue) => setEnddate(newValue)}
+                            sx={dateStyles}
+                            format="YYYY-MM-DD"
+                            views={['year', 'month', 'day']}
+                            renderInput={(params) => <CustomTextField {...params} />}
+                        />
+                    </LocalizationProvider>
+                </div>
+            </Grid>
+            <Grid item xs={12} md={6} sx={{mb: 2}}> {/*소속*/}
+                <div>
+                    <CustomTextField
+                        margin="normal"
+                        fullWidth
+                        select
+                        label="소속"
+                        id="org"
+                        value={org}
+                        onChange={handleOrgChange}
+                    >
+                        <MenuItem value="custom">직접 입력</MenuItem>
+                        <MenuItem value="3">청와대</MenuItem>
+                        <MenuItem value="4">도청</MenuItem>
+                        <MenuItem value="5">구청</MenuItem>
+                        <MenuItem value="6">시청</MenuItem>
+                        <MenuItem value="7">군청</MenuItem>
+                        <MenuItem value="8">동사무소</MenuItem>
+                        <MenuItem value="9">소방본부</MenuItem>
+                        <MenuItem value="10">소방서</MenuItem>
+                        <MenuItem value="11">경찰청</MenuItem>
+                        <MenuItem value="12">지방해양경찰청</MenuItem>
+                        <MenuItem value="13">경찰소</MenuItem>
+                        <MenuItem value="14">지역 병원 응급실</MenuItem>
+                    </CustomTextField>
+                    {isCustomInput && (
+                        <CustomTextField
+                            fullWidth
+                            label="직접 입력"
+                            value={customOrg}
+                            onChange={(e) => setCustomOrg(e.target.value)}
+                            margin="normal"
+                        />
+                    )}
+                </div>
+            </Grid>
+            <Grid item xs={12} md={6} sx={{mb: 2}}> {/*소속 전화번호*/}
+                <div>
+                    <CustomTextField
+                        label="소속 전화번호"
+                        id="org_phone"
+                        {...register("org_phone", {
+                            required: "소속 전화번호를 입력해주세요.",
+                            pattern: {
+                                value: /^0\d{1,2}-\d{3,4}-\d{4}$/,
+                                message: "올바른 전화번호 형식으로 입력해주세요. 예: 02-0000-0000"
+                            }
+                        })}
+                        inputProps={{maxLength: 30}}
+                        error={!!errors.org_phone}
+                        helperText={errors.org_phone?.message}
+                        style={{marginBottom: errors.org_phone ? '0px' : '23px'}}
+                    />
+                </div>
+            </Grid>
+            <Grid item xs={12} display={{md: 'flex'}} justifyContent={{md: 'center'}}>
+                <div>
+                    <CustomButton type="submit" disabled={!isValid}>완료</CustomButton>
+                </div>
+            </Grid>
+            <Grid>
+                <DialogActions>
+                    <Button onClick={handleLoginClick} color="primary">
+                        이미 가입하셨다면, 로그인해 주세요!
+                    </Button>
+                </DialogActions>
+            </Grid>
+        </Grid>
     );
 };
 
