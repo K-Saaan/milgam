@@ -4,7 +4,7 @@ export const pieChartOptions = (theme) => ({
     plugins: {
       legend: {
         display: true,
-        position: 'right',
+        position: 'chartArea',
         labels: {
           color: theme.palette.text.primary,
           font: {

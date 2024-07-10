@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 /* global naver */
 
 // NaverMap 컴포넌트
-const NaverMap = () => {
+const NaverMap = (crowdLevel ) => {
   const mapElement = useRef(null);
 
   useEffect(() => {
@@ -15,8 +15,8 @@ const NaverMap = () => {
     script.async = true;
     script.onload = () => {
       const mapOptions = {
-        center: new naver.maps.LatLng(37.5759, 126.9769), // 지도 초기 중심 좌표
-        zoom: 15
+        center: new naver.maps.LatLng(37.5265, 126.9780), // 지도 초기 중심 좌표
+        zoom: 11.5
       };
 
       new naver.maps.Map(mapElement.current, mapOptions);

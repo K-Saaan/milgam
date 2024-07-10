@@ -17,7 +17,7 @@ Chart.register(ArcElement, Legend, Tooltip);
 const CrowdRatioCard = ({ region }) => {
   const theme = useTheme();
   const { selectedRegion } = useStore(); // 선택된 지역을 Zustand 스토어에서 가져옵니다.
-  const { data: xmlData, error, isLoading } = useQuery(['fetchData', selectedRegion], () => fetchData(selectedRegion), {
+  const { data: jsonData, error, isLoading } = useQuery(['fetchData', selectedRegion], () => fetchData(selectedRegion), {
     refetchInterval: 300000, // 5분마다 갱신
   });
   
@@ -32,11 +32,11 @@ const CrowdRatioCard = ({ region }) => {
   });
 
   useEffect(() => {
-    if (xmlData) {
-      const extractedData = extractPopulationRates(xmlData);
+    if (jsonData) {
+      const extractedData = extractPopulationRates(jsonData);
       setPopulationRates(extractedData);
     }
-  }, [xmlData]);
+  }, [jsonData]);
 
   // if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error fetching data</div>;

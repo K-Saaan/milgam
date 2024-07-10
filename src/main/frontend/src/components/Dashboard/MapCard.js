@@ -1,12 +1,12 @@
-import React, { useEffect  } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Paper, Typography, TextField, Autocomplete, Skeleton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useQuery, useQueryClient } from 'react-query';
 import NaverMap from './NaverMap';
 import { fetchData } from '../../api/fetchData';
 // import regions from './data/regions'
+import { extractCrowdDataToMap } from '../../api/dataExtractor';
 import useStore from '../../store'
-
 
 // 지도 영역 바깥 컨테이너 스타일
 const paperStyle = (theme) => ({
@@ -42,6 +42,7 @@ const MapCard = () => {
   const theme = useTheme();
   const { selectedRegion, setSelectedRegion } = useStore();
   const queryClient = useQueryClient();
+  const [crowdLevel, setCrowdLevel] = useState(''); // 혼잡도 레벨 상태 추가
 
   useEffect(() => {
     if (!selectedRegion) {
@@ -50,10 +51,17 @@ const MapCard = () => {
   }, [selectedRegion, setSelectedRegion]);
 
   // React Query를 사용하여 selectedRegion이 변경될 때마다 데이터를 가져옴
-  const { error, isLoading } = useQuery(['fetchData', selectedRegion], () => fetchData(selectedRegion), {
+  const { data: jsonData, error, isLoading } = useQuery(['fetchData', selectedRegion], () => fetchData(selectedRegion), {
     refetchInterval: 300000, // 5분마다 갱신
     enabled: !!selectedRegion, // selectedRegion이 있을 때만 쿼리를 실행
   });
+
+  useEffect(() => {
+    if (jsonData) {
+      const { areaCongestLvl } = extractCrowdDataToMap(jsonData);
+      setCrowdLevel(areaCongestLvl); // 혼잡도 레벨 설정
+    }
+  }, [jsonData]);
 
   if (error) return <div>Error fetching data</div>;
 
@@ -70,7 +78,7 @@ const MapCard = () => {
         )}
       </Box>
       <Box sx={boxStyle(theme)}>
-        <NaverMap />
+        <NaverMap crowdLevel={crowdLevel} /> {/* 혼잡도 레벨을 NaverMap 컴포넌트에 전달 */}
       </Box>
     </Paper>
   );
