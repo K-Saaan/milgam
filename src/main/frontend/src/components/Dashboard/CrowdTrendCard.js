@@ -7,6 +7,7 @@ import { fetchData } from '../../api/fetchData';
 import { extractForecastData } from '../../api/dataExtractor';
 import CustomPaper from './styles/CustomPaper'
 import { getLineChartOptions, lineChartDatasetOptions } from './charts/LineChartContainer';
+import useStore from '../../store'
 
 // Chart.js 요소 등록
 import { Chart, LineElement, CategoryScale, LinearScale, PointElement } from 'chart.js';
@@ -15,7 +16,8 @@ Chart.register(LineElement, CategoryScale, LinearScale, PointElement);
 // 혼잡 추이 카드
 const CrowdTrendCard = () => {
   const theme = useTheme();
-  const { data: xmlData, error, isLoading } = useQuery('fetchData', fetchData, {
+  const { selectedRegion } = useStore(); // 선택된 지역을 Zustand 스토어에서 가져옵니다.
+  const { data: xmlData, error, isLoading } = useQuery(['fetchData', selectedRegion], () => fetchData(selectedRegion), {
     refetchInterval: 300000, // 5분마다 갱신
   });
 
@@ -23,9 +25,7 @@ const CrowdTrendCard = () => {
 
   useEffect(() => {
     if (xmlData) {
-      console.log('Fetched XML Data:', xmlData);
       const extractedData = extractForecastData(xmlData);
-      console.log('Extracted Forecast Data:', extractedData);
       setForecastData(extractedData);
     }
   }, [xmlData]);
@@ -63,10 +63,14 @@ const CrowdTrendCard = () => {
         </Box>
       ) : (
         <>
-          <Typography variant="subtitle2">
-            인구 예측 추이
-          </Typography>
-          <Line data={data} options={options}/>
+          <Box sx={{ textAlign: 'center' }}>
+            <Typography variant="subtitle2" gutterBottom>
+              인구 예측 추이
+            </Typography>
+          </Box>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '85%', width: '100%' }}>
+            <Line data={data} options={options}/>
+          </div>
         </>
       )}
     </Paper>

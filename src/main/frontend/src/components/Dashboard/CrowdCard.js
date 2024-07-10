@@ -23,19 +23,17 @@ const getBackgroundColor = (level, theme) => {
 };
 
 // 혼잡도 카드
-const CrowdCard = () => {
+const CrowdCard = ({ region }) => {
   const theme = useTheme();
   const [crowdData, setCrowdData] = useState({ areaNm: '', areaCongestLvl: '', areaCongestMsg: '' });
   
-  const { data: xmlData, error, isLoading } = useQuery('fetchData', fetchData, {
+  const { data: xmlData, error, isLoading } = useQuery(['fetchData', region], () => fetchData(region), {
     refetchInterval: 300000, // 5분마다 갱신
   });
 
   useEffect(() => {
     if (xmlData) {
-      console.log('Fetched XML Data:', xmlData);
       const extractedData = extractCrowdData(xmlData);
-      console.log('Extracted Data:', extractedData);
       setCrowdData(extractedData);
     }
   }, [xmlData]);
@@ -53,8 +51,8 @@ const CrowdCard = () => {
         </Box>
       ) : (
         <>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Typography variant="subtitle2">
+          <Box sx={{ textAlign: 'center' }}> {/* 가운데 정렬을 위해 Box 추가 */}
+            <Typography variant="subtitle2" gutterBottom>
               혼잡도
             </Typography>
             <Typography
@@ -62,22 +60,27 @@ const CrowdCard = () => {
               sx={{
                 backgroundColor: getBackgroundColor(crowdData.areaCongestLvl, theme),
                 color: theme.palette.getContrastText(getBackgroundColor(crowdData.areaCongestLvl, theme)),
-                padding: '3px',
+                padding: '4px',
+                paddingLeft: '20px', // 왼쪽 패딩을 키웁니다
+                paddingRight: '20px', // 오른쪽 패딩을 키웁니다
                 borderRadius: '4px',
-                margin: '2px'
+                margin: '4px 0', // 위아래 margin 조정
+                display: 'inline-block' // 아랫줄로 내려쓰기 위해 display 변경
               }}
             >
               {crowdData.areaCongestLvl}
             </Typography>
           </Box>
-          <Typography 
-            sx={{
-              color: theme.palette.text.primary,
-              fontSize: '0.75rem',        
-            }}
-          >
-            {crowdData.areaCongestMsg}
-          </Typography>
+          <Box sx={{ marginTop: '8px' }}>
+            <Typography 
+              sx={{
+                color: theme.palette.text.primary,
+                fontSize: '0.75rem',        
+              }}
+            >
+              {crowdData.areaCongestMsg}
+            </Typography>
+          </Box>
         </>
       )}
     </Paper>
