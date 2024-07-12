@@ -58,7 +58,7 @@ const ReplyAlert = ({ open, handleClose, inquiryId }) => {
         try {
           setLoading(true);
           // -------------------- url 수정 ------------------------------
-          const response = await axios.get(`/api/inquiries/${inquiryId}`);
+          const response = await axios.get(`/myq/questionlist`);
           setInquiry(response.data);
           setLoading(false);
         } catch (err) {
@@ -90,19 +90,19 @@ const ReplyAlert = ({ open, handleClose, inquiryId }) => {
         <Box>
           <DialogContentText sx={{ marginBottom: '8px' }}>제목</DialogContentText>
           <Typography sx={boxStyle(theme)}>
-            {inquiry.title}
+            {inquiry.question_title}
           </Typography>
         </Box>
         <Box>
           <DialogContentText sx={{ marginBottom: '8px' }}>내용</DialogContentText>
           <Typography sx={boxStyle(theme)}>
-            {inquiry.content}
+            {inquiry.question}
           </Typography>
         </Box>
         <Box>
           <DialogContentText sx={{ marginBottom: '8px' }}>답변</DialogContentText>
           <Typography sx={boxStyle(theme)}>
-            {inquiry.reply}
+            {inquiry.answer}
           </Typography>
         </Box>
       </DialogContent>
