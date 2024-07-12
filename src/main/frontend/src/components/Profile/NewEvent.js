@@ -51,7 +51,7 @@ const NewEvent = ({ open, onClose, onAddEvent }) => {
             onClose();
         }
 
-        
+
         try{
 
             setValue('start_date', makeTimeStamp(startdate));
@@ -59,9 +59,9 @@ const NewEvent = ({ open, onClose, onAddEvent }) => {
             console.log(data)
             console.log('start', startdate)
             console.log('end', enddate)
-    
-            const req = axios.post("http://localhost:8080/event/eventadd", data);  
-    
+
+            const req = axios.post("http://localhost:8080/event/eventadd", data);
+
             console.log(req)
         }
         catch(e){

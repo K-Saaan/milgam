@@ -31,8 +31,7 @@ function Page3(){
     
 }
 
-    
-    
+  const columns = ['id', 'pw', 'name', 'email', 'phone', 'role_index', 'apply_date', 'last_login', 'start_date', 'end_date'];
 
 
   const Row1 = ({ columns }) => {
@@ -49,8 +48,6 @@ function Page3(){
   };
 
   // ############################################################################################
-
-  const columns = ['id', 'pw', 'name', 'email', 'phone', 'role_index', 'apply_date', 'account_lock', 'last_login', 'start_date', 'end_date']; 
 
   const theme = useTheme();
   const pageStyle = cPage1Style(theme);
