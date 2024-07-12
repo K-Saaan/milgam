@@ -11,13 +11,13 @@ import useStore from '../../store'
 const getBackgroundColor = (level, theme) => {
   switch (level) {
     case '붐빔':
-      return theme.palette.error.main; // 빨강
+      return theme.palette.crowd.busy; // 빨강
     case '약간 붐빔':
-      return theme.palette.warning.main; // 주황
+      return theme.palette.crowd.slightlyBusy; // 주황
     case '보통':
-      return theme.palette.info.main; // 노랑
+      return theme.palette.crowd.normal; // 노랑
     case '여유':
-      return theme.palette.success.main; // 초록
+      return theme.palette.crowd.relaxed; // 초록
     default:
       return theme.palette.background.paper; // 기본 배경색
   }
