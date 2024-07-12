@@ -2,26 +2,27 @@ package com.example.crowdm.dto.faq;
 
 import java.sql.Timestamp;
 
-public class MyqList {
+
+public class MyqListTwo {
     private Integer myq_index;
     private String question_title;
     private String question;
     private Integer user_index;
     private Timestamp question_date;
     private Timestamp answer_date;
-    private String name;
+    private String answer;
     private String status;
 
 
-    public MyqList() {}
-    public MyqList(Integer myq_index, String question_title, String question, Integer user_index, Timestamp question_date, Timestamp answer_date, String name, String status) {
+    public MyqListTwo() {}
+    public MyqListTwo(Integer myq_index, String question_title, String question, Integer user_index, Timestamp question_date, Timestamp answer_date,  String answer, String status) {
         this.myq_index=myq_index;
         this.question_title=question_title;
         this.question=question;
         this.user_index=user_index;
         this.question_date=question_date;
         this.answer_date=answer_date;
-        this.name=name;
+        this.answer=answer;
         this.status=status;
 
 
@@ -76,11 +77,11 @@ public class MyqList {
         this.answer_date = answer_date;
     }
 
-    public String getName() {
-        return name;
+    public String getAnswer() {
+        return answer;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     public String getStatus() {
