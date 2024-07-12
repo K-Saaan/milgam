@@ -19,9 +19,27 @@ const ProfileForm = ({ marginBottom }) => {
         navigate(from);
     };
 
+    // delete하기
+    const deleteData = async(id) => {
+        const del = axios.delete(`http://localhost:8080/event/delete/${id}`)
+        console.log(del)
+    }
+
+    //event 받아오기
+    const getData = async()=>{
+        const res = await axios.get('http://localhost:8080/event/eventlist')
+        console.log(res)
+
+
+        // deleteData(23)
+
+    }
+
+    
+
     // 스크롤 안 보이게
     const noScrollbarStyles = {
-        '&::-webkit-scrollbar': {
+        '&::WebkitScrollbar': {
             display: 'none', // Chrome, Safari, and Opera
         },
         '-ms-overflow-style': 'none',  // Internet Explorer 10+
@@ -35,6 +53,7 @@ const ProfileForm = ({ marginBottom }) => {
         justifyContent: 'center',
         margin: 'auto',
         height: '75vh',
+
         overflow: 'auto', // 스크롤 활성화
         ...noScrollbarStyles // 스크롤 바 숨기기 스타일 추가
     };
@@ -207,6 +226,7 @@ const ProfileForm = ({ marginBottom }) => {
                 <LongButton type="submit" variant="contained" onClick={onNextClick}>완료</LongButton> {/* 기존 페이지로 돌아감 */}
             </Grid>
             <NewEvent open={dialogOpen} onClose={() => setDialogOpen(false)} onAddEvent={handleAddEvent} /> {/* NewEvent 팝업창 열림 */}
+                <button onClick={getData()}>나 눌러봐라~!</button>
         </Grid>
     );
 };
