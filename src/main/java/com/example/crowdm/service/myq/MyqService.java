@@ -25,10 +25,11 @@ public class MyqService {
     private final MyqRepository myqRepository;
 
     public List<MyqList> findAllQuestions(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            String userIndex = (String) session.getAttribute("userIndex");
-            if (userIndex != null) {
+        //HttpSession session = request.getSession(false);
+        //if (session != null) {
+            //String userIndex = (String) session.getAttribute("userIndex");
+            //if (userIndex != null) {
+                Integer userIndex=11;
                 List<MyqEntity> myqlist =myqRepository.findByUser(userIndex);
                 List<MyqList> answer = new ArrayList<>();
                 for (MyqEntity myq : myqlist) {
@@ -52,10 +53,10 @@ public class MyqService {
 
                 return answer;
             }
-        }
+
         // 세션이 없거나 userId가 null인 경우 빈 리스트 반환
-        return Collections.emptyList();
-    }
+        //return Collections.emptyList();
+
 
     @Transactional
     public MyqEntity addquestion(String question_title, String question, HttpServletRequest request) {
