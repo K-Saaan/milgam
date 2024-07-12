@@ -34,10 +34,10 @@
     "zustand": "^4.5.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "node --max-old-space-size=4096 ./node_modules/react-scripts/bin/react-scripts.js start",
+    "build": "node --max-old-space-size=4096 ./node_modules/react-scripts/bin/react-scripts.js build",
+    "test": "node --max-old-space-size=4096 ./node_modules/react-scripts/bin/react-scripts.js test",
+    "eject": "node --max-old-space-size=4096 ./node_modules/react-scripts/bin/react-scripts.js eject"
   },
   "proxy": "http://localhost:8080",
   "eslintConfig": {
