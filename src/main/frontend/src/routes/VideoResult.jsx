@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import VideoContentArea from "../components/UploadVideo/VideoContentArea.js";
 import VideoCardListArea from "../components/UploadVideo/VideoCardListArea.js";
 import DashBackground from "../components/DashBackground.js";
-
+import { Stomp } from '@stomp/stompjs';
 
 const containerStyle = {
   display: 'grid',
@@ -29,21 +28,23 @@ function VideoResult(){
 
     // 서버로부터 데이터 가져오기
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('/getData');
+        const client = Stomp.client('ws://localhost:8080/ws');
 
-                // 받아온 데이터를 상태에 저장합니다.
-                setData(response.data);
-                setLoading(false); // 로딩 상태를 false로 변경하여 로딩 완료를 표시합니다.
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                setError("오류가 발생하여 데이터를 불러오지 못했습니다. ")
-                setLoading(false);
-            }
+        // 받아온 데이터를 상태에 저장합니다.
+        client.connect({}, () => {
+            client.subscribe('/topic/analysis', (message) => {
+                setData(prevResults => [...prevResults, message.body]);
+            });
+        }, (error) => {
+            console.error('Connection error:', error);
+            setError("서버에 연결할 수 없습니다.");
+            setLoading(false);
+        });
+
+        return () => {
+            client.disconnect();
+            setLoading(false);
         };
-
-        fetchData();
     }, []);
 
     // 분석 결과 리스트를 선택하면 내용이 바뀌도록 전달하는 역할

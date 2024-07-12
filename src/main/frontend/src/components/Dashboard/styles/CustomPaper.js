@@ -4,7 +4,7 @@ const paperStyle = (theme) => ({
     padding: 1,
     backgroundColor: theme.palette.background.paper,
     color: theme.palette.text.primary,
-    height: '120px', // 높이를 120px로 설정
+    height: '150px', // 높이를 120px로 설정
     borderRadius: 2,
   });
   
