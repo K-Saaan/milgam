@@ -27,15 +27,15 @@ public class MyqService {
     public List<MyqList> findAllQuestions(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            String userId = (String) session.getAttribute("userId");
-            if (userId != null) {
-                List<MyqEntity> myqlist =myqRepository.findByUser(userId);
+            String userIndex = (String) session.getAttribute("userIndex");
+            if (userIndex != null) {
+                List<MyqEntity> myqlist =myqRepository.findByUser(userIndex);
                 List<MyqList> answer = new ArrayList<>();
                 for (MyqEntity myq : myqlist) {
                     Integer myq_index = myq.getMyq_index();
                     String question_title = myq.getQuestion_title();
                     String question=myq.getQuestion();
-                    Integer user_index = Integer.valueOf(userId);
+                    Integer user_index = Integer.valueOf(userIndex);
                     Timestamp question_date = myq.getQuestion_date();
                     Timestamp answer_date = myq.getAnswer_date();
                     String name= "no";
@@ -59,22 +59,28 @@ public class MyqService {
 
     @Transactional
     public MyqEntity addquestion(String question_title, String question, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            String userId = (String) session.getAttribute("userId");
-            if (userId != null) {
+        //HttpSession session = request.getSession(false);
+        //if (session != null) {
+            //String userIndex = (String) session.getAttribute("userIndex");
+            //if (userIndex!= null) {
                 MyqEntity newQuestion = new MyqEntity();
-                newQuestion.setUserId(userId);
+                newQuestion.setUserId(11);
                 newQuestion.setQuestionTitle(question_title);
                 newQuestion.setQuestion(question);
-
+                Timestamp date = new Timestamp(System.currentTimeMillis());
+                newQuestion.setQuestionDate(date);
+                newQuestion.setAnswer(null);
+                newQuestion.setAnswerDate(null);
+                newQuestion.setAdminIndex(null);
                 return myqRepository.save(newQuestion);
-            }
+
+
+           //}
         }
         // 세션이 없거나 userId가 null인 경우 예외를 던짐
-        throw new IllegalStateException("User not logged in or session expired");
+        //throw new IllegalStateException("User not logged in or session expired");
     }
 
 
-    }
+    //}
 

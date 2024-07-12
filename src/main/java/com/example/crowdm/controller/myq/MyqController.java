@@ -35,11 +35,10 @@ public class MyqController {
 //        MyqEntity result=myqService.addquestion(addmyq.getQuestion_title(), addmyq.getQuestion());
 //        return ResponseEntity.ok(result);
 //    }
-    @PostMapping
-    public ResponseEntity<MyqEntity> addQuestion(@RequestParam String question_title,
-                                             @RequestParam String question,
+    @PostMapping("/addquestion")
+    public ResponseEntity<MyqEntity> addQuestion(@RequestBody RequestAddMyq addmyq,
                                              HttpServletRequest request) {
-        MyqEntity newQuestion = myqService.addquestion(question_title, question, request);
+        MyqEntity newQuestion = myqService.addquestion(addmyq.getQuestion_title(), addmyq.getQuestion(),request);
         return ResponseEntity.ok(newQuestion);
 }
 }
