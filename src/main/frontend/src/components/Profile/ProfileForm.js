@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -9,60 +9,60 @@ import { CustomTypographyWrapper, CustomTypography } from './CustomTypo';
 import NewEvent from './NewEvent';
 import LongButton from "../Styles/LongButton.js";
 
-// 스크롤 안 보이게
-const noScrollbarStyles = {
-    '&::-webkit-scrollbar': {
-        display: 'none', // Chrome, Safari, and Opera
-    },
-    '-ms-overflow-style': 'none',  // Internet Explorer 10+
-    'scrollbar-width': 'none'  // Firefox
-};
-
-// 페이지 디자인
-const formSx = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 'auto',
-    height: '75vh',
-    overflow: 'auto', // 스크롤 활성화
-    ...noScrollbarStyles // 스크롤 바 숨기기 스타일 추가
-};
-
-// 행사 선택 select box 스타일
-const EventControl = styled(FormControl)(({ theme }) => ({
-    width: '370px',
-    height: '56px',
-    backgroundColor: theme.palette.secondary.main,
-    '& .MuiOutlinedInput-root': {
-        '& fieldset': {
-            borderColor: theme.palette.border.primary,
-        },
-        '&:hover fieldset': {
-            borderColor: theme.palette.border.primary,
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: theme.palette.border.secondary,
-            borderWidth: '2px',
-        },
-    },
-}));
 
 const ProfileForm = ({ marginBottom }) => {
     const navigate = useNavigate();
     const location = useLocation();
-    const [loadedEvents, setLoadedEvents] = useState([]); // 불러온 데이터 상태
-    const [customEvents, setCustomEvents] = useState([]);
-    const [event, setEvent] = useState('');
-    const [dialogOpen, setDialogOpen] = useState(false);
-    
+
     const from = location.state?.from || "/dashboard"; // 이전 위치 저장
-    
     const onNextClick = () => {    // 이전 페이지로 이동하도록
         navigate(from);
     };
 
+    // delete하기
+    const deleteData = async(id) => {
+        const del = axios.delete(`http://localhost:8080/event/delete/${id}`)
+        console.log(del)
+    }
+
+    //event 받아오기
+    const getData = async()=>{
+        const res = await axios.get('http://localhost:8080/event/eventlist')
+        console.log(res)
+
+
+        // deleteData(23)
+
+    }
+
+
+
+    // 스크롤 안 보이게
+    const noScrollbarStyles = {
+        '&::WebkitScrollbar': {
+            display: 'none', // Chrome, Safari, and Opera
+        },
+        '-ms-overflow-style': 'none',  // Internet Explorer 10+
+        'scrollbar-width': 'none'  // Firefox
+    };
+
+    // 페이지 디자인
+    const formSx = {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: 'auto',
+        height: '75vh',
+
+        overflow: 'auto', // 스크롤 활성화
+        ...noScrollbarStyles // 스크롤 바 숨기기 스타일 추가
+    };
+
     // 이벤트
+    const [event, setEvent] = useState('');
+    const [customEvents, setCustomEvents] = useState([]);
+    const [dialogOpen, setDialogOpen] = useState(false);
+
     const handleEventChange = (event) => { // 이벤트 선택
         const value = event.target.value;
         if (value === 'add-new') {
@@ -80,39 +80,32 @@ const ProfileForm = ({ marginBottom }) => {
         setDialogOpen(false);
     };
 
-    // const handleDeleteEvent = (eventToDelete) => { // 직접 입력 후 생성된 이벤트 삭제
-    //     setCustomEvents(customEvents.filter(event => event !== eventToDelete));
-    //     if (event === eventToDelete) {
-    //         setEvent('');
-    //     }
-    // };
-    // 사용자 추가 데이터 삭제 핸들러
-    const handleDeleteCustomEvent = async (eventToDelete) => {
-        try {
-            await axios.delete(`/event/delete/${eventToDelete.id}`);
-            setCustomEvents(customEvents.filter(event => event.id !== eventToDelete.id));
-            if (event === eventToDelete.title) {
-                setEvent('');
-            }
-        } catch (error) {
-            console.error('이벤트 삭제 중 오류 발생:', error);
+    const handleDeleteEvent = (eventToDelete) => { // 직접 입력 후 생성된 이벤트 삭제
+        setCustomEvents(customEvents.filter(event => event !== eventToDelete));
+        if (event === eventToDelete) {
+            setEvent('');
         }
     };
 
-    useEffect(() => {
-        // 데이터를 가져오는 비동기 함수
-        const fetchEvents  = async () => {
-          try {
-            const response = await axios.get("/event/eventlist"); // 실제 API URL로 대체해야 합니다.
-            console.log('event 데이터:', response.data); // 데이터 확인을 위한 로그
-            setLoadedEvents(response.data);
-          } catch (error) {
-            console.error('event 데이터를 가져오는 중 오류 발생:', error);
-          }
-        };
-    
-        fetchEvents ();
-      }, []);
+    // 행사 선택 select box 스타일
+    const EventControl = styled(FormControl)(({ theme }) => ({
+        width: '370px',
+        height: '56px',
+        backgroundColor: theme.palette.secondary.main,
+        '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+                borderColor: theme.palette.border.primary,
+            },
+            '&:hover fieldset': {
+                borderColor: theme.palette.border.primary,
+            },
+            '&.Mui-focused fieldset': {
+                borderColor: theme.palette.border.secondary,
+                borderWidth: '2px',
+            },
+        },
+    }));
+
 
     return (
         <Grid
@@ -187,7 +180,10 @@ const ProfileForm = ({ marginBottom }) => {
                 <div style={{ marginBottom: '4px' }}>
                     행사
                 </div>
-                <EventControl fullWidth>
+                <EventControl
+                    fullWidth
+                    // sx={selectStyles}
+                >
                     <Select
                         value={event}
                         onChange={handleEventChange}
@@ -202,26 +198,20 @@ const ProfileForm = ({ marginBottom }) => {
                         <MenuItem value="" disabled>
                             <em>선택</em>
                         </MenuItem>
-                        {loadedEvents.map((loadedEvent, index) => (
-                            <MenuItem
-                                key={index}
-                                value={loadedEvent.title}
-                            >
-                                {loadedEvent.title}
-                            </MenuItem>
-                        ))}
+                        <MenuItem value="event1">Event 1</MenuItem>
+                        <MenuItem value="event2">Event 2</MenuItem>
                         {customEvents.map((customEvent, index) => ( // 직접 입력된 행사명 생성 및 삭제
                             <MenuItem
                                 key={index}
-                                value={customEvent.title}
+                                value={customEvent}
                                 sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                             >
-                                {customEvent.title}
+                                {customEvent}
                                 <IconButton
                                     size="small"
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        handleDeleteCustomEvent(customEvent);
+                                        handleDeleteEvent(customEvent);
                                     }}
                                 >
                                     <CloseIcon fontSize="small" />
@@ -236,6 +226,7 @@ const ProfileForm = ({ marginBottom }) => {
                 <LongButton type="submit" variant="contained" onClick={onNextClick}>완료</LongButton> {/* 기존 페이지로 돌아감 */}
             </Grid>
             <NewEvent open={dialogOpen} onClose={() => setDialogOpen(false)} onAddEvent={handleAddEvent} /> {/* NewEvent 팝업창 열림 */}
+                <button onClick={getData()}>나 눌러봐라~!</button>
         </Grid>
     );
 };

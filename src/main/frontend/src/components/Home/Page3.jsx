@@ -19,7 +19,7 @@ const cPage1Style = (theme) => ({
 
 function Page3(){
 
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit } = useForm() 
   const onError = (errors, e) => console.log(errors, e)
   const onSubmit = (data, e) =>{
     
