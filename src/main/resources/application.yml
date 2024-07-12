@@ -41,3 +41,7 @@ login:
 # 파일 경로
 file_path:
   video_path: /video/upload
+
+
+url:
+  gcp_upload: http://35.201.196.181/upload
