@@ -1,34 +1,38 @@
-import React, { useState } from 'react';
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import React, {useState} from 'react';
+import {useForm} from "react-hook-form";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import { Grid, MenuItem, Button, FormControl, DialogActions,
-    FormHelperText, InputLabel, Select, IconButton, InputAdornment } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { CustomButton, NextButton } from "./NextButton.js";
+import {
+    Grid, MenuItem, Button, FormControl, DialogActions,
+    FormHelperText, InputLabel, Select, IconButton, InputAdornment
+} from '@mui/material';
+import {Visibility, VisibilityOff} from '@mui/icons-material';
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {DatePicker} from '@mui/x-date-pickers/DatePicker';
+import {CustomButton, NextButton} from "./NextButton.js";
 import CustomTextField from '../Styles/CustomTextField.js';
 import CustomDatePicker from '../Styles/CustomDatePicker.js';
 import EmailAlert from './EmailAlert';
 import LongButton from "../Styles/LongButton.js";
 
-const SignUpForm = ({ marginBottom }) => {
+const SignUpForm = ({marginBottom}) => {
     const navigate = useNavigate();
-    const { register, handleSubmit, formState: { errors, isValid }, setValue, watch, control, trigger } = useForm({
+    const {register, handleSubmit, formState: {errors, isValid}, setValue, watch, control, trigger} = useForm({
         mode: 'onChange',
     });
 
+
     // 페이지 이동
     const onSubmit = async (data) => {
-        console.log(data);
+        // Clone the data object and remove the repw property
+        const {repw, ...dataWithoutRepw} = data;
 
         // Declare additional variables
         const currentTime = new Date().toISOString();
         const additionalData = {
             account_lock: false,
-            admin_index: null,
+            admin_index: 3,
             apply_date: currentTime,
             event_index: null,
             fail_cnt: 0,
@@ -36,11 +40,16 @@ const SignUpForm = ({ marginBottom }) => {
             permission_date: null,
             permission_yn: false,
             pw_duedate: null,
-            temppw: null
+            temppw: null,
+            start_date: start_date ? start_date.toISOString() : null,
+            end_date: end_date ? end_date.toISOString() : null,
+            role_index: data.role_index === 'director' ? 1 : data.role_index === 'host' ? 2 : null,
         };
 
         // Merge additional variables with existing data
-        const mergedData = { ...data, ...additionalData };
+        const mergedData = {...dataWithoutRepw, ...additionalData};
+
+        console.log(mergedData);
 
         // Send the merged object using axios.post
         try {
@@ -67,8 +76,8 @@ const SignUpForm = ({ marginBottom }) => {
     };
 
     // 역할 부분 const
-    const [category, setCategory] = useState('');
-    
+    const [role_index, setRoleIndex] = useState('');
+
     // 소속 부분 const
     const [org, setOrg] = useState('');
     const [customOrg, setCustomOrg] = useState('');  // 별도의 직접 입력 값을 위한 상태
@@ -83,8 +92,8 @@ const SignUpForm = ({ marginBottom }) => {
     };
 
     // 날짜 선택 부분 const
-    const [startdate, setStartdate] = React.useState(null);
-    const [enddate, setEnddate] = useState(null);
+    const [start_date, setStartdate] = React.useState(null);
+    const [end_date, setEnddate] = useState(null);
 
     // 이메일 인증 부분 const
     const [openRegister, setOpenRegister] = useState(false);
@@ -147,7 +156,7 @@ const SignUpForm = ({ marginBottom }) => {
         backgroundColor: "#4880FF",
         color: "white",
     }
-    
+
     // 비밀번호
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -182,7 +191,7 @@ const SignUpForm = ({ marginBottom }) => {
             spacing={3}
             noValidate
             autoComplete="off"
-            onSubmit={handleSubmit(onSubmit,onError)}
+            onSubmit={handleSubmit(onSubmit, onError)}
             sx={formSx}
         >
             <Grid item xs={12} md={6} sx={{mb: 2}}> {/*이름*/}
@@ -360,10 +369,11 @@ const SignUpForm = ({ marginBottom }) => {
                         fullWidth
                         select // drop down 메뉴로 사용하기 위해 select 속성 추가
                         label="회원유형"
-                        value={category}
                         id="role_index"
+                        {...register("role_index", {required: "회원유형을 선택해주세요."})}
+                        value={role_index}
                         onChange={(e) =>
-                            setCategory(e.target.value)}
+                            setRoleIndex(e.target.value)}
                     >
                         <MenuItem value="director">관공서</MenuItem>
                         <MenuItem value="host">행사 관리자</MenuItem>
@@ -376,12 +386,16 @@ const SignUpForm = ({ marginBottom }) => {
                         <DatePicker
                             label="시작 날짜"
                             id="start_date"
-                            value={startdate}
+                            value={start_date}
+                            // onChange={(newValue) => {
+                            //     setStartdate(newValue);
+                            //     setValue('start_date', newValue, { shouldValidate: true });
+                            // }}
                             onChange={(newValue) => setStartdate(newValue)}
                             sx={dateStyles}
                             format="YYYY-MM-DD"
                             views={['year', 'month', 'day']}
-                            renderInput={(params) => <CustomTextField {...params} />}
+                            renderInput={(params) => <CustomTextField {...params}{...register("start_date")} />}
                         />
                     </LocalizationProvider>
                 </div>
@@ -392,12 +406,16 @@ const SignUpForm = ({ marginBottom }) => {
                         <DatePicker
                             label="종료 날짜"
                             id="end_date"
-                            value={enddate}
+                            value={end_date}
+                            // onChange={(newValue) => {
+                            //     setEnddate(newValue);
+                            //     setValue('end_date', newValue, { shouldValidate: true });
+                            // }}
                             onChange={(newValue) => setEnddate(newValue)}
                             sx={dateStyles}
                             format="YYYY-MM-DD"
                             views={['year', 'month', 'day']}
-                            renderInput={(params) => <CustomTextField {...params} />}
+                            renderInput={(params) => <CustomTextField {...params}{...register("end_date")} />}
                         />
                     </LocalizationProvider>
                 </div>
@@ -409,7 +427,6 @@ const SignUpForm = ({ marginBottom }) => {
                         fullWidth
                         select
                         label="소속"
-                        id="org"
                         value={org}
                         onChange={handleOrgChange}
                     >
