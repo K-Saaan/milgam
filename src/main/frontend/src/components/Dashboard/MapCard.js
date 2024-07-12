@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Paper, Typography, Skeleton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useQuery } from 'react-query';
+import { useQueries } from 'react-query';
 import NaverMap from './NaverMap';
 import { fetchData } from '../../api/fetchData';
 import { extractCrowdDataToMap } from '../../api/dataExtractor';
-import regions from './data/regions'
-import useStore from '../../store'
+import regions from './data/regions';
+import useStore from '../../store';
+import Legend from './styles/LegendStyle'
 
 // 지도 영역 바깥 컨테이너 스타일
 const paperStyle = (theme) => ({
@@ -14,7 +15,7 @@ const paperStyle = (theme) => ({
   padding: 2,
   bgcolor: theme.palette.background.paper,
   color: theme.palette.text.primary,
-  height: '500px',
+  height: '600px',
   borderRadius: 2,
   position: 'relative',
   top: '-80px', // 원하는 만큼 높이 조정
@@ -41,65 +42,95 @@ const boxStyle = (theme) => ({
 const getCrowdColor = (level, theme) => {
   switch (level) {
     case '붐빔':
-      return theme.palette.error.main; // 빨강
+      return theme.palette.crowd.busy; // 빨강
     case '약간 붐빔':
-      return theme.palette.warning.main; // 주황
+      return theme.palette.crowd.slightlyBusy; // 주황
     case '보통':
-      return theme.palette.info.main; // 노랑
+      return theme.palette.crowd.normal; // 노랑
     case '여유':
-      return theme.palette.success.main; // 초록
+      return theme.palette.crowd.relaxed; // 초록
     default:
       return theme.palette.background.paper; // 기본 배경색
   }
 };
 
+// 선택한 장소의 주변 장소를 계산하는 함수
+const getNearbyRegionsByCenter = (center, regions, radius = 0.02) => {
+  if (!center) return [];
+
+  return regions.filter(region => {
+    const distance = Math.sqrt(
+      Math.pow(region.lat - center.lat, 2) +
+      Math.pow(region.lng - center.lng, 2)
+    );
+    return distance <= radius;
+  });
+};
+
 // MapCard 컴포넌트
 const MapCard = () => {
   const theme = useTheme();
-  const { selectedRegion, setSelectedRegion } = useStore();
-  const [crowdLevel, setCrowdLevel] = useState(''); // 혼잡도 레벨 상태 추가
+  const { selectedRegion, setSelectedRegion, mapCenter, setMapCenter } = useStore();
+
+  const [crowdData, setCrowdData] = useState({});
+  const [isFetching, setIsFetching] = useState(true);
 
   useEffect(() => {
     if (!selectedRegion) {
       setSelectedRegion('광화문·덕수궁');
+      setMapCenter({ lat: 37.5759, lng: 126.9769 }); // 광화문·덕수궁의 중심 좌표
+    } else {
+      const selectedRegionData = regions.find(region => region.value === selectedRegion) || {};
+      setMapCenter({ lat: selectedRegionData.lat, lng: selectedRegionData.lng });
     }
-  }, [selectedRegion, setSelectedRegion]);
+  }, [selectedRegion, setSelectedRegion, setMapCenter]);
 
-  // React Query를 사용하여 selectedRegion이 변경될 때마다 데이터를 가져옴
-  const { data: jsonData, error, isLoading } = useQuery(['fetchData', selectedRegion], () => fetchData(selectedRegion), {
-    refetchInterval: 300000, // 5분마다 갱신
-    enabled: !!selectedRegion, // selectedRegion이 있을 때만 쿼리를 실행
-  });
+  const nearbyRegions = getNearbyRegionsByCenter(mapCenter, regions);
+
+  const queries = nearbyRegions.map(region => ({
+    queryKey: ['fetchData', region.value],
+    queryFn: () => fetchData(region.value),
+    staleTime: 300000,
+  }));
+
+  const results = useQueries(queries);
 
   useEffect(() => {
-    if (jsonData) {
-      const { areaCongestLvl } = extractCrowdDataToMap(jsonData);
-      setCrowdLevel(areaCongestLvl); // 혼잡도 레벨 설정
+    if (results.every(result => !result.isLoading)) {
+      const newCrowdData = {};
+      results.forEach((result, index) => {
+        if (result.data) {
+          const regionName = nearbyRegions[index].value;
+          const { areaCongestLvl } = extractCrowdDataToMap(result.data);
+          newCrowdData[regionName] = areaCongestLvl;
+        }
+      });
+      setCrowdData(newCrowdData);
+      setIsFetching(false);
     }
-  }, [jsonData]);
+  }, [results, nearbyRegions]);
 
-  if (error) return <div>Error fetching data</div>;
-
-  const selectedRegionData = regions.find(region => region.value === selectedRegion) || {};
+  if (isFetching) return <Skeleton variant="rectangular" width="100%" height="100%" />;
 
   return (
     <Paper sx={paperStyle(theme)}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        {/* 로딩중 스켈레톤 적용 */}
-        {isLoading ? (
+        {isFetching ? (
           <Skeleton variant="text" width={100} height={50} />
         ) : (
           <Typography variant="h6" sx={typographyStyle(theme)}>
             {selectedRegion}
           </Typography>
         )}
+        <Legend /> {/* Legend 컴포넌트 추가 */}
       </Box>
       <Box sx={boxStyle(theme)}>
-        {/* selectedRegion의 위도, 경도와 혼잡도로 변경 */}
         <NaverMap 
-        region={{ lat: selectedRegionData.lat, lng: selectedRegionData.lng }} 
-        color={getCrowdColor(crowdLevel, theme)}
-        crowdLevel={crowdLevel} /> {/* 혼잡도 레벨을 NaverMap 컴포넌트에 전달 */}
+          mapCenter={mapCenter}
+          setMapCenter={setMapCenter}
+          crowdData={crowdData}
+          getCrowdColor={(level) => getCrowdColor(level, theme)}
+        />
       </Box>
     </Paper>
   );

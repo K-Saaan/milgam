@@ -1,43 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, TablePagination , Skeleton} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RegisterAlert from './RegisterAlert';
 import ReplyAlert from './ReplyAlert';
 import { useTheme } from '@mui/material/styles';
-import { useQuery } from 'react-query';
+// import { useQuery } from 'react-query';
 import axios from 'axios';
 
 
 // 문의 데이터 예시
 // const inquiries = [
 //   { 
-//     id: 1, 
+//     myq_index: 1, 
 //     category: '[카테고리] 제목', 
-//     title: 'Makeup', 
+//     question_title: 'Makeup', 
 //     status: '대기', 
 //     inquiryDate: '2024-06-26', 
 //     replyDate: '', 
-//     content: '메이크업 제품에 대한 문의 내용입니다.'
+//     question: '메이크업 제품에 대한 문의 내용입니다.'
 //   },
 //   { 
-//     id: 2, 
+//     myq_index: 2, 
 //     category: '', 
-//     title: 'Asus Laptop', 
+//     question_title: 'Asus Laptop', 
 //     status: '완료', 
-//     inquiryDate: '2024-06-20', 
-//     replyDate: '2024-06-25', 
-//     content: 'Asus 노트북에 대한 문의 내용입니다.', 
-//     reply: 'Asus 노트북에 대한 답변 내용입니다.\n\n문제의 원인을 파악한 결과, 드라이버 업데이트가 필요합니다.\n추가로, 배터리 문제는 서비스 센터에서 점검 받으시길 권장드립니다.'
+//     question_date: '2024-06-20', 
+//     answer_date: '2024-06-25', 
+//     question: 'Asus 노트북에 대한 문의 내용입니다.', 
+//     answer: 'Asus 노트북에 대한 답변 내용입니다.\n\n문제의 원인을 파악한 결과, 드라이버 업데이트가 필요합니다.\n추가로, 배터리 문제는 서비스 센터에서 점검 받으시길 권장드립니다.'
 //   },
 //   { 
-//     id: 3, 
+//     myq_index: 3, 
 //     category: '', 
-//     title: 'Iphone X', 
+//     question_title: 'Iphone X', 
 //     status: '완료', 
-//     inquiryDate: '2024-06-15', 
-//     replyDate: '2024-06-25', 
-//     content: 'Iphone X에 대한 문의 내용입니다.', 
-//     reply: 'Iphone X에 대한 답변 내용입니다.\n\n소프트웨어 업데이트 후 문제가 해결되지 않으면, 가까운 애플 스토어를 방문해주세요.\n또한, 배터리 성능 저하 문제는 교체가 필요할 수 있습니다.'
+//     question_date: '2024-06-15', 
+//     answer_date: '2024-06-25', 
+//     question: 'Iphone X에 대한 문의 내용입니다.', 
+//     answer: 'Iphone X에 대한 답변 내용입니다.\n\n소프트웨어 업데이트 후 문제가 해결되지 않으면, 가까운 애플 스토어를 방문해주세요.\n또한, 배터리 성능 저하 문제는 교체가 필요할 수 있습니다.'
 //   },
 // ];
 
@@ -84,6 +84,8 @@ const InquiryBoard = () => {
   // 페이지네이션
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [inquiries, setInquiries] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -123,13 +125,30 @@ const InquiryBoard = () => {
     setSelectedInquiry(null);
   };
 
-  // axios를 사용하여 데이터를 가져오는 함수 ------------------- url 변경
-  const fetchInquiries = async () => {
-  const { data } = await axios.get('/api/inquiries'); // 실제 API URL로 변경
-  return data;
-  };
+  // // axios를 사용하여 데이터를 가져오는 함수 ------------------- url 변경
+  // const fetchInquiries = async () => {
+  //   const { data } = await axios.get('/myq/questionlist'); // 실제 API URL로 변경
+  //   return data;
+  // };
 
-  const { data: inquiries, error, isLoading } = useQuery('inquiries', fetchInquiries);
+  // const { data: inquiries, isLoading } = useQuery('inquiries', fetchInquiries);
+
+  useEffect(() => {
+    // 데이터를 가져오는 비동기 함수
+    const fetchInquiries = async () => {
+      try {
+        const response = await axios.get('/myq/questionlist'); // 실제 API URL로 변경
+        console.log('Inquiry 데이터:', response.data); // 데이터 확인을 위한 로그
+        setInquiries(response.data);
+      } catch (error) {
+        console.error('Inquiry 데이터를 가져오는 중 오류 발생:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchInquiries();
+  }, []);
 
   return (
     <Box sx={containerStyle}>
@@ -166,11 +185,11 @@ const InquiryBoard = () => {
               inquiries.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((inquiry) => (
                 // 각 문의 항목을 클릭하면 답변 다이얼로그 열기
                 <CustomTableRow key={inquiry.id} onClick={() => handleClickOpenReply(inquiry)} sx={{ cursor: 'pointer' }}>
-                  <TableCell sx={tableCellStyle(theme)}>{inquiry.id}</TableCell>
-                  <TableCell sx={tableCellStyle(theme)}>{inquiry.title}</TableCell>
+                  <TableCell sx={tableCellStyle(theme)}>{inquiry.myq_index}</TableCell>
+                  <TableCell sx={tableCellStyle(theme)}>{inquiry.question_title}</TableCell>
                   <TableCell sx={tableCellStyle(theme)}>{inquiry.status}</TableCell>
-                  <TableCell sx={tableCellStyle(theme)}>{inquiry.inquiryDate}</TableCell>
-                  <TableCell sx={tableCellStyle(theme)}>{inquiry.replyDate}</TableCell>
+                  <TableCell sx={tableCellStyle(theme)}>{inquiry.question_date}</TableCell>
+                  <TableCell sx={tableCellStyle(theme)}>{inquiry.answer_date}</TableCell>
                 </CustomTableRow>
               ))
             )}
