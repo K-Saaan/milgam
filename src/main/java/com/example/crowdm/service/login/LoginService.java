@@ -70,6 +70,12 @@ public class LoginService {
                 // 로그인 성공 로그
                 logger.info("Login successful for user: {}", user.getId());
 
+                // 실패 카운트가 1 이상일 때만 0으로 업데이트
+                if (user.getFail_cnt() > 0) {
+                    loginRepository.updateFailCntAndLock(userId, 0, false);
+                    logger.info("Fail count reset to 0 for user: {}", user.getId());
+                }
+
             } else {
                 logger.info("Invalid password for user: {}", user.getId());
 
