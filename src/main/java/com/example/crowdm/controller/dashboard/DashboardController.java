@@ -1,6 +1,7 @@
 package com.example.crowdm.controller.dashboard;
 
-import com.example.crowdm.entity.dashboard.DashboardEntity;
+import com.example.crowdm.entity.dashboard.MessagelogEntity;
+import com.example.crowdm.entity.dashboard.MessageManageEntity;
 import com.example.crowdm.service.dashboard.DashboardService;
 import org.springframework.http.ResponseEntity;
 import lombok.RequiredArgsConstructor;
@@ -19,16 +20,22 @@ public class DashboardController {
     private final DashboardService dashboardService;
 
     @GetMapping
-    public List<DashboardEntity> getAllDashboards() {
+    public List<MessagelogEntity> getAllDashboards() {
         logger.info("Fetching all dashboards");
         return dashboardService.findAllDashboards();
     }
 
+//    @GetMapping
+//    public List<MessageManageEntity> getAllDashboards() {
+//        logger.info("Fetching all dashboards");
+//        return dashboardService.findAllDashboards();
+//    }
+
 
     @PostMapping()
-    public ResponseEntity<DashboardEntity> addDashboard(@RequestBody DashboardEntity dashboardEntity) {
-        logger.info("Adding dashboard: {}", dashboardEntity);
-        return ResponseEntity.ok(dashboardService.addDashboard(dashboardEntity));
+    public ResponseEntity<MessagelogEntity> addDashboard(@RequestBody MessagelogEntity messagelogEntity) {
+        logger.info("Adding dashboard: {}", messagelogEntity);
+        return ResponseEntity.ok(dashboardService.addDashboard(messagelogEntity));
     }
 
     @DeleteMapping("/delete/{id}")

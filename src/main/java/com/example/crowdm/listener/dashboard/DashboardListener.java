@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,4 +66,5 @@ public class DashboardListener implements ApplicationContextAware {
         String entityJson = convertEntityToJson(entity);
         getDashboardService().sendNotification("Dashboard Removed: " + entityJson);
     }
+
 }
