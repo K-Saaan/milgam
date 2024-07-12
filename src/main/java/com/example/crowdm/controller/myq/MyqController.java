@@ -1,6 +1,7 @@
 package com.example.crowdm.controller.myq;
 
 import com.example.crowdm.dto.faq.MyqList;
+import com.example.crowdm.dto.faq.MyqListTwo;
 import com.example.crowdm.dto.faq.RequestAddMyq;
 import com.example.crowdm.entity.admin.MyqEntity;
 import com.example.crowdm.entity.faq.FaqEntity;
@@ -25,8 +26,8 @@ public class MyqController {
     //private final FaqRepository faqRepository;
     private final MyqService myqService;
     @GetMapping("/questionlist")
-    public ResponseEntity<List<MyqList>> myqList(HttpServletRequest request, HttpServletResponse response, Model model) {
-        List<MyqList> result= myqService.findAllQuestions(request);
+    public ResponseEntity<List<MyqListTwo>> myqList(HttpServletRequest request, HttpServletResponse response, Model model) {
+        List<MyqListTwo> result= myqService.findAllQuestions(request);
         return ResponseEntity.ok(result);
     }
 
