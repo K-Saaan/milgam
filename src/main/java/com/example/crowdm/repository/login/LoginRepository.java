@@ -16,50 +16,38 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 
+
 @Repository
 public interface LoginRepository extends JpaRepository<UserEntity, Integer>, JpaSpecificationExecutor<UserEntity> {
-        /*
-         * @Modifying
-         *
-         * @Transactional
-         * // @Query(value =
-         * "UPDATE UserEntity u SET u.permission_yn = :permission_yn WHERE u.user_index = :user_index"
-         * , nativeQuery = true)
-         *
-         * @Query(value =
-         * "UPDATE public.users SET permission_yn = TRUE WHERE user_index =: user_index"
-         * , nativeQuery = true)
-         * // int updatePermissionYnById(@Param("user_index") int
-         * user_index, @Param("permission_yn") boolean permission_yn);
-         * int updatePermissionYnById(@Param("user_index")int user_index);
-         */
-        /*
-         * @Modifying
-         *
-         * @Transactional
-         *
-         * @Query("UPDATE UserEntity u SET u.permission_date = :permission_date WHERE u.user_index = :user_index"
-         * )
-         * int updatePermissionDateById(@Param("user_index") int
-         * user_index, @Param("permission_date") Timestamp permission_date);
-         *
-         * @Modifying
-         *
-         * @Transactional
-         *
-         * @Query("UPDATE UserEntity u SET u.admin_index = :admin_index WHERE u.user_index = :user_index"
-         * )
-         * int updateAdminIndexById(@Param("user_index") int
-         * user_index, @Param("admin_index") int admin_index);
-         */
+    /*
+    @Modifying
+    @Transactional
+    // @Query(value = "UPDATE UserEntity u SET u.permission_yn = :permission_yn WHERE u.user_index = :user_index", nativeQuery = true)
+    @Query(value = "UPDATE public.users SET permission_yn = TRUE WHERE user_index =: user_index", nativeQuery = true)
+    // int updatePermissionYnById(@Param("user_index") int user_index, @Param("permission_yn") boolean permission_yn);
+    int updatePermissionYnById(@Param("user_index")int user_index);
+*/
+    /*@Modifying
+    @Transactional
+    @Query("UPDATE UserEntity u SET u.permission_date = :permission_date WHERE u.user_index = :user_index")
+    int updatePermissionDateById(@Param("user_index") int user_index, @Param("permission_date") Timestamp permission_date);
 
-        @Query(value = "select * from users where id = :userId and pw = :password", nativeQuery = true)
-        UserEntity findByUser(@Param("userId") String userId, @Param("password") String password);
+    @Modifying
+    @Transactional
+    @Query("UPDATE UserEntity u SET u.admin_index = :admin_index WHERE u.user_index = :user_index")
+    int updateAdminIndexById(@Param("user_index") int user_index, @Param("admin_index") int admin_index);*/
 
-        @Query("SELECT u FROM UserEntity u WHERE u.id = :userId")
-        UserEntity findByUser(@Param("userId") String userId);
+    @Query("SELECT u FROM UserEntity u WHERE u.id = :userId")
+    UserEntity findByUser(@Param("userId") String userId);
 
-        // 비밀번호 검증을 위한 메서드 추가
-        @Query("SELECT u FROM UserEntity u WHERE u.id = :userId and u.pw = :password")
-        UserEntity findByUserIdAndPassword(@Param("userId") String userId, @Param("password") String password);
+    // 비밀번호 검증을 위한 메서드 추가
+    @Query("SELECT u FROM UserEntity u WHERE u.id = :userId and u.pw = :password")
+    UserEntity findByUserIdAndPassword(@Param("userId") String userId, @Param("password") String password);
+
+    // 실패 카운트와 계정 잠금을 업데이트하는 메서드
+    @Modifying
+    @Transactional
+    @Query("UPDATE UserEntity u SET u.fail_cnt = :failCnt, u.account_lock = :lock WHERE u.id = :userId")
+    void updateFailCntAndLock(@Param("userId") String userId, @Param("failCnt") int failCnt, @Param("lock") boolean lock);
 }
+

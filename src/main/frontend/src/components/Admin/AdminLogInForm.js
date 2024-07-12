@@ -20,17 +20,6 @@ const AdminLogInForm = ({ marginBottom }) => {
 
     const onLogIn = async (data) => {
         const { userId, password } = data;
-        /*if (userId && password) {
-            try {
-                const res = await axiosInstance.post(`/com/logIn`, { userId, password });
-                if (res.status === 200) {
-                    navigate('/dashboard');
-                }
-            } catch (error) {
-                console.log(error);
-                setOpen(true); // 에러 처리를 위한 코드 추가 필요
-            }
-        }*/
         navigate('/admin');
     };
 
