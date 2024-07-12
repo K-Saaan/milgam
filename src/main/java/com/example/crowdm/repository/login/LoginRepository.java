@@ -49,5 +49,7 @@ public interface LoginRepository extends JpaRepository<UserEntity, Integer>, Jpa
     @Transactional
     @Query("UPDATE UserEntity u SET u.fail_cnt = :failCnt, u.account_lock = :lock WHERE u.id = :userId")
     void updateFailCntAndLock(@Param("userId") String userId, @Param("failCnt") int failCnt, @Param("lock") boolean lock);
+
+
 }
 
