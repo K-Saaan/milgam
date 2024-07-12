@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Paper, Typography, Skeleton, Container } from '@mui/material';
+import { Box, Paper, Typography, Skeleton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useQueries, useQueryClient } from 'react-query';
+import { useQueries } from 'react-query';
 import NaverMap from './NaverMap';
 import { fetchData } from '../../api/fetchData';
 import { extractCrowdDataToMap } from '../../api/dataExtractor';
@@ -15,7 +15,7 @@ const paperStyle = (theme) => ({
   padding: 2,
   bgcolor: theme.palette.background.paper,
   color: theme.palette.text.primary,
-  height: '500px',
+  height: '600px',
   borderRadius: 2,
   position: 'relative',
   top: '-80px', // 원하는 만큼 높이 조정
@@ -71,7 +71,6 @@ const getNearbyRegionsByCenter = (center, regions, radius = 0.02) => {
 const MapCard = () => {
   const theme = useTheme();
   const { selectedRegion, setSelectedRegion, mapCenter, setMapCenter } = useStore();
-  const queryClient = useQueryClient();
 
   const [crowdData, setCrowdData] = useState({});
   const [isFetching, setIsFetching] = useState(true);
