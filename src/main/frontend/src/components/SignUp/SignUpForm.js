@@ -22,19 +22,36 @@ const SignUpForm = ({ marginBottom }) => {
 
     // 페이지 이동
     const onSubmit = async (data) => {
-        console.log(1);
-        const isFormValid = await trigger(); // 모든 필드의 유효성 검사를 트리거
-        if (!isFormValid) {
-            console.log("모든 필드를 올바르게 입력해주세요.");
-            return;
+        console.log(data);
+
+        // Declare additional variables
+        const currentTime = new Date().toISOString();
+        const additionalData = {
+            account_lock: false,
+            admin_index: null,
+            apply_date: currentTime,
+            event_index: null,
+            fail_cnt: 0,
+            last_login: currentTime,
+            permission_date: null,
+            permission_yn: false,
+            pw_duedate: null,
+            temppw: null
+        };
+
+        // Merge additional variables with existing data
+        const mergedData = { ...data, ...additionalData };
+
+        // Send the merged object using axios.post
+        try {
+            const response = await axios.post("http://localhost:8080/signup", mergedData);
+            console.log('Response:', response.data);
+        } catch (error) {
+            console.error('Error:', error);
         }
-        if (!startdate || !enddate) {
-            alert("시작 날짜와 종료 날짜를 모두 선택해주세요.");
-            return;
-        }
-        navigate('/login');
     };
-    
+
+
     const onError = (errors) => {
         // 에러가 있는 경우 적절한 메시지를 출력하거나 처리합니다.
         console.log(errors);
@@ -157,84 +174,6 @@ const SignUpForm = ({ marginBottom }) => {
         width: '370px',
         height: '56px',
     }
-
-    const onSignup = async (data) => {
-        console.log("data : ", data);
-        console.log(1);
-        const currentTime = new Date().toISOString();
-        const {
-            name,
-            id,
-            email,
-            pw,
-            phone,
-            role_index,
-            start_date,
-            end_date,
-            org,
-            org_phone,
-            account_lock = false,
-            admin_index = null,
-            apply_date = currentTime,
-            event_index = null,
-            fail_cnt = 0,
-            last_login = currentTime,
-            permission_date = null,
-            permission_yn = false,
-            pw_duedate = null,
-            temppw = null
-        } = data;
-
-        if (name && id && email && pw && phone && role_index && start_date && end_date && org && org_phone) {
-            try {
-                console.log("data : ", data);
-                const API = "http://localhost:8080/signup";
-
-                axios.post(API,
-                    {
-                        "name": name,
-                        "id": id,
-                        "email": email,
-                        "pw": pw,
-                        "phone": phone,
-                        "role_index": role_index,
-                        "start_date": start_date,
-                        "end_date": end_date,
-                        "org": org,
-                        "org_phone": org_phone,
-                        "account_lock": false,
-                        "admin_index": null,
-                        "apply_date": currentTime,
-                        "event_index": null,
-                        "fail_cnt": 0,
-                        "last_login": currentTime,
-                        "permission_date": null,
-                        "permission_yn": false,
-                        "pw_duedate": null,
-                        "temppw": null
-                    },
-                    {
-                        headers:{
-                            'Content-Type': 'application/json',
-                        }
-                    })
-                    .then((response) => {
-                        window.alert('회원가입 되었습니다. 로그인해주세요.')
-                        navigate('/login');
-                    }).catch((error) => {
-                        console.log(error);
-                        window.alert(error);
-                })
-
-
-            } catch (error) {
-                console.error("오류가 발생하였습니다:", error);
-                setSignupError("오류가 발생하였습니다.");
-            }
-        } else {
-            setSignupError("모든 필드를 입력해주세요.");
-        }
-    };
 
     return (
         <Grid
@@ -520,7 +459,7 @@ const SignUpForm = ({ marginBottom }) => {
             </Grid>
             <Grid item xs={12} display={{md: 'flex'}} justifyContent={{md: 'center'}}>
                 <div>
-                    <CustomButton type="submit" disabled={!isValid}>완료</CustomButton>
+                    <button type="submit" disabled={!isValid}>완료</button>
                 </div>
             </Grid>
             <Grid>
