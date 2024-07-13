@@ -2,43 +2,9 @@ import { useTheme } from "@emotion/react";
 import { motion, useScroll, useTransform} from "framer-motion";
 import pic from "./pic2.jpg"
 import { useRef } from "react";
+import { cPage1Style, cPicStyle, cSpanStyle, cTextStyle } from "./Page1";
 
-// conatiner
-const cPage1Style = (theme) => ({
-  widht:'100%',
-  hegiht:'100%',
-  // background: theme.palette.comp,
-  color : theme.palette.text.primary,
-  display:'flex',
-  padding:'4px'
-});
 
-// span
-const cSpanStyle = (theme) => ({
-  margin: '0',
-  color: theme.palette.primary.main,
-  left: '10%',
-  fontSize: '56px',
-  fontWeight: '700',
-  letterSpacing: '-3px',
-  lineHeight: '1.2',
-  position: 'relative',
-});
-
-// text
-const cTextStyle = (theme) => ({
-  paddingRight:'12px',
-  display:'flex',
-  flexDirection:'column',
-  justifyContent:'center',
-});
-
-// picture
-const cPicStyle = (theme) => ({
-  width: '250px',
-  height: '250px',
-  borderRadius: '10px',
-});
 
 function Page2(){
 
