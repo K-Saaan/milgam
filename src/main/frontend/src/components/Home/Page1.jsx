@@ -4,7 +4,7 @@ import pic from "./pic.jpg"
 import { useRef } from "react";
 
 // conatiner
-const cPage1Style = (theme) => ({
+export const cPage1Style = (theme) => ({
   widht:'100%',
   hegiht:'100%',
   // background: theme.palette.comp,
@@ -14,7 +14,7 @@ const cPage1Style = (theme) => ({
 });
 
 // span
-const cSpanStyle = (theme) => ({
+export const cSpanStyle = (theme) => ({
   margin: '0',
   color: theme.palette.primary.main,
   left: '10%',
@@ -26,7 +26,7 @@ const cSpanStyle = (theme) => ({
 });
 
 // text
-const cTextStyle = (theme) => ({
+export const cTextStyle = (theme) => ({
   paddingRight:'12px',
   display:'flex',
   flexDirection:'column',
@@ -34,7 +34,7 @@ const cTextStyle = (theme) => ({
 });
 
 // picture
-const cPicStyle = (theme) => ({
+export const cPicStyle = (theme) => ({
   width: '250px',
   height: '250px',
   borderRadius: '10px',

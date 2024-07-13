@@ -1,65 +1,21 @@
 import { useTheme } from "@emotion/react";
 import { motion, useScroll, useTransform} from "framer-motion";
 import { useRef } from "react";
-import pic from "./pic.jpg"
-import { useForm } from "react-hook-form";
+import { cPage1Style, cSpanStyle } from "./Page1";
 
-// conatiner
-const cPage1Style = (theme) => ({
-  widht:'100%',
-  hegiht:'100%',
-  // background: theme.palette.comp,
-  color : theme.palette.text.primary,
-  
-});
 
 
 
 
 function Page3(){
 
-  const { register, handleSubmit, formState: { errors }, formState } = useForm();
-  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-  
-  const onSubmit = async data => {
-    await sleep(2000);
-    if (data.username === "bill") {
-      alert(JSON.stringify(data));
-    } else {
-      alert("There is an error");
-    }
-  };
-
-
-  const Row1 = ({ columns }) => {
-    return (
-      <>
-        {columns.map((column) => (
-            <div>
-              <span key={column}>{column}</span>
-              <input {...register("username", { required: true })} />
-            </div>
-        ))}
-      </>  
-    );
-  };
-
-  // ############################################################################################
-
-  const columns = ['id', 'pw', 'name', 'email', 'phone', 'role_index', 'apply_date', 'account_lock', 'last_login', 'start_date', 'end_date']; 
-
   const theme = useTheme();
   const pageStyle = cPage1Style(theme);
+  const spanStyle = cSpanStyle(theme);
 
-  
-
-  function useParallax(value, distance) {
-    return useTransform(value, [0, 1], [-distance, distance]);
   }
 
   const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref });
-  const y = useParallax(scrollYProgress, 300);
   
       return (
           <>
@@ -74,10 +30,17 @@ function Page3(){
             }}
             style={pageStyle}
             >
-              <form onSubmit={handleSubmit(onSubmit)}>
+              <div>
 
-                <Row1 columns={columns} />
-              </form>
+
+                <span style={spanStyle}>#004</span>
+
+                <video autoPlay muted controls width="600">
+                  <source src="https://assets.planet.com/web/videos/home/homepage-hero.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                
+              </div>
 
             </motion.div>
           </>
