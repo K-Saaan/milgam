@@ -4,7 +4,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Set;
 import com.example.crowdm.listener.dashboard.DashboardListener;
-
+import com.example.crowdm.entity.user.UserEntity;
+import com.example.crowdm.entity.dashboard.MessageLogEntity;
 @Getter
 @Setter
 @Entity
@@ -29,7 +30,10 @@ public class MessageManageEntity {
     private int video_index;
 
     @ManyToMany(mappedBy = "messageManageEntities")
-    private Set<MessagelogEntity> dashboardEntities;
+    private Set<UserEntity> userEntities;
+
+    @ManyToMany(mappedBy = "messageManageEntities")
+    private Set<MessageLogEntity> dashboardEntities;
 
     public static MessageManageEntity create(int logIndex, boolean confirm) {
         MessageManageEntity entity = new MessageManageEntity();

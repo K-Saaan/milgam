@@ -1,8 +1,8 @@
 package com.example.crowdm.service.dashboard;
 
-import com.example.crowdm.entity.dashboard.MessagelogEntity;
+import com.example.crowdm.entity.dashboard.MessageLogEntity;
 import com.example.crowdm.entity.dashboard.MessageManageEntity;
-import com.example.crowdm.repository.dashboard.MessagelogRepository;
+import com.example.crowdm.repository.dashboard.MessageLogRepository;
 import com.example.crowdm.repository.dashboard.MessageManageRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -21,17 +21,17 @@ public class DashboardService {
 
     //데이터 변경 요청
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final MessagelogRepository messagelogRepository;
+    private final MessageLogRepository messageLogRepository;
     private final MessageManageRepository messageManageRepository;
     //final 변수: 초기화한 후 값을 변경될 수 없음
 
-    public List<MessagelogEntity> findAllDashboards(){
-        return messagelogRepository.findAll();
+    public List<MessageLogEntity> findAllDashboards(){
+        return messageLogRepository.findAll();
     }
 
     @Transactional
-    public MessagelogEntity addDashboard(MessagelogEntity messagelogEntity) {
-        MessagelogEntity savedEntity = messagelogRepository.save(messagelogEntity);
+    public MessageLogEntity addDashboard(MessageLogEntity messagelogEntity) {
+        MessageLogEntity savedEntity = messageLogRepository.save(messagelogEntity);
 
         // MessageManageEntity 생성 및 저장
         MessageManageEntity messageManageEntity = MessageManageEntity.create(savedEntity.getLog_index(), false);
@@ -44,7 +44,7 @@ public class DashboardService {
     @Transactional
     public int deleteDashboard(Integer log_index){
         try{
-            messagelogRepository.deleteById(log_index);
+            messageLogRepository.deleteById(log_index);
             return 1;
         }catch (Exception e){
             logger.error("Error: {}", e.getMessage());

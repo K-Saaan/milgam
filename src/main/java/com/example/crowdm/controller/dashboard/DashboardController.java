@@ -1,7 +1,6 @@
 package com.example.crowdm.controller.dashboard;
 
-import com.example.crowdm.entity.dashboard.MessagelogEntity;
-import com.example.crowdm.entity.dashboard.MessageManageEntity;
+import com.example.crowdm.entity.dashboard.MessageLogEntity;
 import com.example.crowdm.service.dashboard.DashboardService;
 import org.springframework.http.ResponseEntity;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,7 @@ public class DashboardController {
     private final DashboardService dashboardService;
 
     @GetMapping
-    public List<MessagelogEntity> getAllDashboards() {
+    public List<MessageLogEntity> getAllDashboards() {
         logger.info("Fetching all dashboards");
         return dashboardService.findAllDashboards();
     }
@@ -33,7 +32,7 @@ public class DashboardController {
 
 
     @PostMapping()
-    public ResponseEntity<MessagelogEntity> addDashboard(@RequestBody MessagelogEntity messagelogEntity) {
+    public ResponseEntity<MessageLogEntity> addDashboard(@RequestBody MessageLogEntity messagelogEntity) {
         logger.info("Adding dashboard: {}", messagelogEntity);
         return ResponseEntity.ok(dashboardService.addDashboard(messagelogEntity));
     }

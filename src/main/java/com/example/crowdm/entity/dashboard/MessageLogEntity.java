@@ -5,6 +5,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Set;
 import com.example.crowdm.listener.dashboard.DashboardListener;
+import com.example.crowdm.entity.user.UserEntity;
 
 @Getter
 @Setter
@@ -14,7 +15,7 @@ import com.example.crowdm.listener.dashboard.DashboardListener;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "message_log", schema = "public")
-public class MessagelogEntity {
+public class MessageLogEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,9 +34,12 @@ public class MessagelogEntity {
     @Column(name = "analysis_index")
     private int analysis_index;
 
+    @ManyToMany(mappedBy = "messageManageEntities")
+    private Set<UserEntity> userEntities;
+
     @ManyToMany
     @JoinTable(
-            name = "message_log_management",
+            name = "message_management",
             joinColumns = @JoinColumn(name = "log_index"),
             inverseJoinColumns = @JoinColumn(name = "user_index")
     )
