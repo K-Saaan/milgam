@@ -1,6 +1,6 @@
-package com.example.crowdm.repository.dashboard;
+package com.example.crowdm.repository.message;
 
-import com.example.crowdm.entity.dashboard.MessageLogEntity;
+import com.example.crowdm.entity.message.MessageLogEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

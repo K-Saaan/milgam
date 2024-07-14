@@ -1,15 +1,13 @@
-package com.example.crowdm.entity.dashboard;
+package com.example.crowdm.entity.message;
 
 import lombok.*;
 import javax.persistence.*;
 import java.util.Set;
-import com.example.crowdm.listener.dashboard.DashboardListener;
 import com.example.crowdm.entity.user.UserEntity;
-import com.example.crowdm.entity.dashboard.MessageLogEntity;
+
 @Getter
 @Setter
 @Entity
-@EntityListeners(DashboardListener.class)
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

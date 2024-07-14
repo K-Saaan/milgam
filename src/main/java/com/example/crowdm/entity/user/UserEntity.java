@@ -3,9 +3,7 @@ package com.example.crowdm.entity.user;
 
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import com.example.crowdm.entity.dashboard.MessageManageEntity;
+import com.example.crowdm.entity.message.MessageManageEntity;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
