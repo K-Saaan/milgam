@@ -1,7 +1,9 @@
 package com.example.crowdm.service.dashboard;
 
 import com.example.crowdm.entity.dashboard.MessagelogEntity;
-import com.example.crowdm.repository.dashboard.DashboardRepository;
+import com.example.crowdm.entity.dashboard.MessageManageEntity;
+import com.example.crowdm.repository.dashboard.MessagelogRepository;
+import com.example.crowdm.repository.dashboard.MessageManageRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,30 +21,38 @@ public class DashboardService {
 
     //데이터 변경 요청
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final DashboardRepository dashboardRepository;
+    private final MessagelogRepository messagelogRepository;
+    private final MessageManageRepository messageManageRepository;
     //final 변수: 초기화한 후 값을 변경될 수 없음
 
     public List<MessagelogEntity> findAllDashboards(){
-        return dashboardRepository.findAll();
+        return messagelogRepository.findAll();
     }
 
     @Transactional
     public MessagelogEntity addDashboard(MessagelogEntity messagelogEntity) {
-        return dashboardRepository.save(messagelogEntity);
+        MessagelogEntity savedEntity = messagelogRepository.save(messagelogEntity);
+
+        // MessageManageEntity 생성 및 저장
+        MessageManageEntity messageManageEntity = MessageManageEntity.create(savedEntity.getLog_index(), false);
+        messageManageRepository.save(messageManageEntity);
+
+        return savedEntity;
+
     }
-
-
 
     @Transactional
     public int deleteDashboard(Integer log_index){
         try{
-            dashboardRepository.deleteById(log_index);
+            messagelogRepository.deleteById(log_index);
             return 1;
         }catch (Exception e){
             logger.error("Error: {}", e.getMessage());
             return 0;
         }
     }
+
+
 
     //sse알림
     private final List<SseEmitter> emitters = new ArrayList<>();

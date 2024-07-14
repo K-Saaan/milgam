@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DashboardRepository extends JpaRepository<MessagelogEntity, Integer>, JpaSpecificationExecutor<MessagelogEntity> {
+public interface MessagelogRepository extends JpaRepository<MessagelogEntity, Integer>, JpaSpecificationExecutor<MessagelogEntity> {
 }

@@ -40,6 +40,7 @@ public class MessagelogEntity {
             inverseJoinColumns = @JoinColumn(name = "user_index")
     )
     private Set<MessageManageEntity> messageManageEntities;
+
 }
 
 

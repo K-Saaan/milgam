@@ -30,4 +30,11 @@ public class MessageManageEntity {
 
     @ManyToMany(mappedBy = "messageManageEntities")
     private Set<MessagelogEntity> dashboardEntities;
+
+    public static MessageManageEntity create(int logIndex, boolean confirm) {
+        MessageManageEntity entity = new MessageManageEntity();
+        entity.setLog_index(logIndex);
+        entity.setConfirm(confirm);
+        return entity;
+    }
 }
