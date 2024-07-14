@@ -2,8 +2,8 @@ package com.example.crowdm.entity.message;
 
 import lombok.*;
 import javax.persistence.*;
-import java.util.Set;
 import com.example.crowdm.entity.user.UserEntity;
+import com.example.crowdm.entity.id.MessageManageId;
 
 @Getter
 @Setter
@@ -13,30 +13,23 @@ import com.example.crowdm.entity.user.UserEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "message_management", schema = "public")
 public class MessageManageEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_index")
-    private int user_index;
+    @EmbeddedId
+    private MessageManageId id;
 
-    @Column(name = "confirm")
+    @ManyToOne
+    @MapsId("userIndex")
+    @JoinColumn(name = "user_index", nullable = false)
+    private UserEntity user;
+
+    @ManyToOne
+    @MapsId("logIndex")
+    @JoinColumn(name = "log_index", nullable = false)
+    private MessageLogEntity messageLog;
+
+    @Column(name = "confirm", nullable = false)
     private boolean confirm;
 
-    @Column(name = "log_index")
-    private int log_index;
-
-    @Column(name = "video_index")
-    private int video_index;
-
-    @ManyToMany(mappedBy = "messageManageEntities")
-    private Set<UserEntity> userEntities;
-
-    @ManyToMany(mappedBy = "messageManageEntities")
-    private Set<MessageLogEntity> dashboardEntities;
-
-    public static MessageManageEntity create(int logIndex, boolean confirm) {
-        MessageManageEntity entity = new MessageManageEntity();
-        entity.setLog_index(logIndex);
-        entity.setConfirm(confirm);
-        return entity;
-    }
+    @Column(name = "video_index", nullable = false)
+    private int videoIndex;
 }
+

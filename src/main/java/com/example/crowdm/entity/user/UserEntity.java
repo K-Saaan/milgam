@@ -84,15 +84,9 @@ public class UserEntity {
     @Column(name = "temppw", length = 30)
     private String temppw;
 
-
     //상빈수정
-    @ManyToMany
-    @JoinTable(
-            name = "message_management",
-            joinColumns = @JoinColumn(name = "user_index"),
-            inverseJoinColumns = @JoinColumn(name = "log_index")
-    )
-    private Set<MessageManageEntity> messageManageEntities;
+    @OneToMany(mappedBy = "user")
+    private Set<MessageManageEntity> messageManageEntity;
 
     @Transactional
     public void updatePermissionYn(Timestamp permission_date) {

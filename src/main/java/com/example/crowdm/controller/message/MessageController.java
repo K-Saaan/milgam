@@ -1,9 +1,8 @@
 package com.example.crowdm.controller.message;
 
-import com.example.crowdm.entity.message.MessageLogEntity;
+import com.example.crowdm.dto.message.MessageDto;
 import com.example.crowdm.entity.message.MessageManageEntity;
 import com.example.crowdm.service.message.MessageService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -17,21 +16,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/dashboards")
 public class MessageController {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
 
-    @Autowired
     private final MessageService messageService;
 
-
     @GetMapping("/all")
-    public ResponseEntity<List<MessageManageEntity>> getAllMessageManageEntities() {
-        List<MessageManageEntity> messageManageEntities = messageService.getAllMessageManageEntities();
+    public ResponseEntity<List<MessageDto>> getAllMessageManageEntities() {
+        List<MessageDto> messageManageEntities = messageService.getAllMessageManageEntities();
         return ResponseEntity.ok(messageManageEntities);
     }
-
-
-
-
-
-
 }
