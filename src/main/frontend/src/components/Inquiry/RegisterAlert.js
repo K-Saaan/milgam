@@ -1,4 +1,3 @@
-// RegisterAlert.js
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
@@ -20,18 +19,20 @@ const actionStyle = {
     marginBottom: "20px",
 }
 
-function RegisterAlert({ open, handleClose }) {
+function RegisterAlert({ open, handleClose, onSubmit }) {
   const theme = useTheme();
   // useForm 훅으로 폼 관리 기능
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
-  // 폼이 제출될 때 호출되는 함수 -------------------- 나중에 수정
-  const onSubmit = async (data) => {
+  // 폼이 제출될 때 호출되는 함수 
+  const handleFormSubmit = async (data) => {
     try {
-      console.log(data)
-      await axios.post('/api/inquiries', data); // 실제 API URL로 변경
+      console.log(data);
+      await axios.post('/myq/addquestion', data);
       console.log('문의가 성공적으로 등록되었습니다.');
       handleClose();
+      onSubmit();
+      reset(); // 폼 초기화
     } catch (error) {
       console.error('문의 등록에 실패했습니다.', error);
     }
@@ -42,42 +43,41 @@ function RegisterAlert({ open, handleClose }) {
       open={open}
       onClose={handleClose}
       PaperProps={{
-        sx: { background: theme.palette.background.paper,
-            borderRadius: "12px" },
+        sx: { background: theme.palette.background.paper, borderRadius: "12px" },
       }}
     >
       <DialogTitle>문의</DialogTitle>
       <Divider style={{background: theme.palette.divider}} />
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(handleFormSubmit)}>
         <DialogContent>
           <DialogContentText>제목</DialogContentText>
           <CustomTextField
             autoFocus
             required
             margin="dense"
-            id="title"
-            name="title"
+            id="question_title"
+            name="question_title"
             placeholder="문의 제목"
             type="text"
             fullWidth
-            {...register('title', { required: true })}
-            error={!!errors.title}
-            helperText={errors.title ? 'This field is required' : ''}
+            {...register('question_title', { required: true })}
+            error={!!errors.question_title}
+            helperText={errors.question_title ? 'This field is required' : ''}
           />
           <DialogContentText>내용</DialogContentText>
           <CustomTextField
             required
             margin="dense"
-            id="content"
-            name="content"
+            id="question"
+            name="question"
             placeholder="문의 내용"
             type="text"
             fullWidth
             rows={8}
             multiline // 여러줄 입력 가능
-            {...register('content', { required: true })}
-            error={!!errors.content}
-            helperText={errors.content ? 'This field is required' : ''}
+            {...register('question', { required: true })}
+            error={!!errors.question}
+            helperText={errors.question ? 'This field is required' : ''}
           />
         </DialogContent>
         <DialogActions style={actionStyle}>
