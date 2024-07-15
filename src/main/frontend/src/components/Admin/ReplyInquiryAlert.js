@@ -41,7 +41,7 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
 }));
 
 const ReplyInquiryAlert = ({ open, handleClose, question, onSubmit }) => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, reset  } = useForm();
 
     // 답변 내용을 저장하는 상태 변수
     const [answer, setAnswer] = useState('');
@@ -54,8 +54,11 @@ const ReplyInquiryAlert = ({ open, handleClose, question, onSubmit }) => {
         }
     }, [open, question]);
 
+    // 폼이 제출될 때 호출되는 함수 
     const handleFormSubmit = (data) => {
-        onSubmit({ myq_index: question.myq_index, answer: answer });
+        onSubmit(data); // onSubmit을 호출하여 부모 컴포넌트에서 처리
+        handleClose();
+        reset(); // 폼 초기화
     };
 
     return (

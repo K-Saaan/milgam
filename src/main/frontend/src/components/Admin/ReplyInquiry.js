@@ -26,6 +26,16 @@ const progressStyle = {
   display: 'flex',
 };
 
+// 날짜 형식을 yyyy-mm-dd로 변환하는 함수
+const formatDate = (dateString) => {
+    if (!dateString) return '-';
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+};
+
 // /admin/questionlist 경로
 // myq_index: 질의응답 고유번호
 // question_title: 질문 제목
@@ -89,27 +99,26 @@ const ReplyInquiry = () => {
     };
 
     // 답변 제출 처리 함수
-    const handleAnswerSubmit = (answer) => {
+    const handleAnswerSubmit = async (data) => {
         const answerData = {
-            myq_index: selectedQuestion.myq_index, // myq_index 추가
-            answer,
+        myq_index: selectedQuestion.myq_index, // myq_index 추가
+        answer: data.answer,
         };
-
-        axios.post(`/admin/answer`, answerData)
-            .then(response => {
-                closeModal();
-                // 질문 목록을 업데이트하여 답변 상태 반영
-                setQuestions(prevQuestions => 
-                    prevQuestions.map(q => 
-                        q.myq_index === selectedQuestion.myq_index ? { ...q, ...answerData, status: '완료' } : q
-                    )
-                );
-                alert('답변을 보냈습니다.');
-            })
-            .catch(error => {
-                console.error('답변 제출 중 오류가 발생했습니다!', error);
-                alert('오류가 발생하여 답변을 제출하지 못했습니다.');
-            });
+    
+        try {
+        await axios.post(`/admin/answer`, answerData);
+        closeModal();
+        // 질문 목록을 업데이트하여 답변 상태 반영
+        setQuestions(prevQuestions =>
+            prevQuestions.map(q =>
+            q.myq_index === selectedQuestion.myq_index ? { ...q, ...answerData, status: '완료' } : q
+            )
+        );
+        alert('답변을 보냈습니다.');
+        } catch (error) {
+        console.error('답변 제출 중 오류가 발생했습니다!', error);
+        alert('오류가 발생하여 답변을 제출하지 못했습니다.');
+        }
     };
 
     return (
@@ -133,8 +142,8 @@ const ReplyInquiry = () => {
                                 <CustomTableCell>{question.question_title}</CustomTableCell>
                                 <CustomTableCell>{question.name}</CustomTableCell>
                                 <CustomTableCell>{question.answer_date ? '완료' : '대기'}</CustomTableCell>
-                                <CustomTableCell>{question.question_date}</CustomTableCell>
-                                <CustomTableCell>{question.answer_date || '-'}</CustomTableCell>
+                                <CustomTableCell>{formatDate(question.question_date)}</CustomTableCell>
+                                <CustomTableCell>{formatDate(question.answer_date) || '-'}</CustomTableCell>
                             </CustomTableRow >
                         ))}
                     </TableBody>
@@ -157,11 +166,11 @@ const ReplyInquiry = () => {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />}
             </TableContainer>
-            <ReplyInquiryAlert 
-                open={isModalOpen} 
-                handleClose={closeModal} 
-                question={selectedQuestion} 
-                onSubmit={handleAnswerSubmit} 
+            <ReplyInquiryAlert
+                open={isModalOpen}
+                handleClose={closeModal}
+                question={selectedQuestion}
+                onSubmit={handleAnswerSubmit}
             />
         </div>
     );
