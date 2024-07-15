@@ -45,6 +45,7 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
   const navigate = useNavigate();
 
   const {isLogined, setIsLogined} = useStore(state => state);
+  const {adminLogined, setAdminLogined} = useStore(state => state);
 
   // 로그아웃 팝업 열기
   const handleLogoutClick = () => {
@@ -59,16 +60,24 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
   
   // 로그아웃 처리
   const handleLogout = () => {
-      setLogoutModalOpen(false);
+    setLogoutModalOpen(false);
+    if (isAdmin) {
+      setAdminLogined(false);
+      navigate('/admin/login');
+    } else {
       setIsLogined(false);
-      localStorage.removeItem("key");
       navigate('/login/loginPage');
+    }
+    localStorage.removeItem("key");
   };
 
   // admin 메뉴
-  const adminMenuItems = [
+  const adminMenuItems = adminLogined? [
     { path: '/admin/approval', text: '회원가입 승인', icon: <PersonAddIcon /> },
     { path: '/admin/replyinquiry', text: '문의 답변', icon: <QuestionAnswerIcon /> },
+    { path: '/logout', text: '로그아웃', icon: <LogoutIcon />, action: handleLogoutClick },
+  ] : [
+    { path: '/admin/login', text: '로그인', icon: <LoginIcon /> },
   ];
 
   // user 하단 메뉴
@@ -144,6 +153,27 @@ const Sidebar = ({ open, handleDrawerClose, isAdmin }) => {
                     {item.icon}
                   </ListItemIcon>
                   <ListItemText primary={item.text} sx={{ marginLeft: '16px' }}/>
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </>
+      )}
+      {isAdmin && (
+        <>
+          <List>
+            {adminMenuItems.map((item) => (
+              <ListItem key={item.text} disablePadding >
+                <ListItemButton
+                    //로그아웃 선택 시 Link 로 이동하는 대신 팝업을 띄우도록 조건 설정
+                    component={item.path !== '/logout' ? Link : 'button'}
+                    to={item.path !== '/logout' ? item.path : undefined}
+                    onClick={item.action || handleDrawerClose}
+                >
+                  <ListItemIcon>
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={item.text} />
                 </ListItemButton>
               </ListItem>
             ))}

@@ -40,8 +40,8 @@ public class MailSender {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(to);
             message.setFrom(from);
-            message.setSubject( subject);
-            message.setText( text);
+            message.setSubject(subject);
+            message.setText(text);
             mailSender.send(message);
             logger.info("MailSender Success >>>>>>>>>>>>>>>>>>>>>>>> ");
         } catch (MailException e) {

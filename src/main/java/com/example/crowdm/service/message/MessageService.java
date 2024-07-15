@@ -24,13 +24,7 @@ public class MessageService {
         return entities.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    public List<MessageDto> getMessageManageEntitiesByUserIndex(Long user_index) {
-        List<MessageManageEntity> entities = messageManageRepository.findByUser_user_index(user_index);  // Use correct method
-        if (entities.isEmpty()) {
-            return Collections.emptyList();
-        }
-        return entities.stream().map(this::convertToDto).collect(Collectors.toList());
-    }
+
 
     private MessageDto convertToDto(MessageManageEntity entity) {
         MessageDto dto = new MessageDto();

@@ -1,10 +1,11 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-// import axios from "axios";
+import axios from "axios";
 import LongButton from "../Styles/LongButton.js";
 import CustomTextField from '../Styles/CustomTextField.js';
 import Stack from '@mui/material/Stack';
+import useStore from "../../store";
 
 const AdminLogInForm = ({ marginBottom }) => {
     const navigate = useNavigate();
@@ -18,9 +19,21 @@ const AdminLogInForm = ({ marginBottom }) => {
         height: '75vh',
     };
 
+    const {setAdminLogined} = useStore(state => state);
     const onLogIn = async (data) => {
-        const { userId, password } = data;
-        navigate('/admin');
+        try {
+            //console.log("data : ", data)
+            const res = await axios.post("/admin/loginAction", data);
+            //console.log(res.data);
+            if (res.data.RESULT === "GO_MAIN") {
+                localStorage.setItem("key", data.id);
+                setAdminLogined(true);
+                navigate('/admin');
+            }
+        } catch (error) {
+            console.error("오류가 발생하였습니다:", error);
+            alert(error);
+        }
     };
 
     return (
