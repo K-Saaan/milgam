@@ -1,6 +1,8 @@
 package com.example.crowdm.controller.message;
 
 import com.example.crowdm.dto.message.MessageDto;
+import com.example.crowdm.dto.message.MessageLogDto;
+import com.example.crowdm.entity.message.MessageLogEntity;
 import com.example.crowdm.entity.message.MessageManageEntity;
 import com.example.crowdm.service.message.MessageService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -26,5 +29,38 @@ public class MessageController {
     public ResponseEntity<List<MessageDto>> getAllMessageManageEntities() {
         List<MessageDto> messageManageEntities = messageService.getAllMessageManageEntities();
         return ResponseEntity.ok(messageManageEntities);
+    }
+    @GetMapping("/{userIndex}")
+    public  ResponseEntity<List<MessageDto>> getMessagesByUserIndex(@PathVariable long userIndex){
+        List<MessageDto> allMessages = messageService.getAllMessageManageEntities();
+        List<MessageDto> fillteredMessages = allMessages.stream()
+                .filter(message -> message.getUserIndex() == userIndex)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(fillteredMessages);
+    }
+    @GetMapping("/{userIndex}/log-indices")
+    public ResponseEntity<List<Integer>> getLogIndicesByUserIndex(@PathVariable long userIndex) {
+        List<MessageDto> allMessages = messageService.getAllMessageManageEntities();
+        List<Integer> logIndices = allMessages.stream()
+                .filter(message -> message.getUserIndex() == userIndex)
+                .map(MessageDto::getLogIndex) // Assuming getLogIndex() returns Integer
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(logIndices);
+    }
+
+    @GetMapping("/log-all")
+    public ResponseEntity<List<MessageLogDto>> getAllMessageLogEntities() {
+        List<MessageLogDto> messageLogEntities = messageService.getAllMessageLogEntities();
+        return ResponseEntity.ok(messageLogEntities);
+    }
+    @GetMapping("/{userIndex}/message-logs")
+    public ResponseEntity<List<MessageLogDto>> getMessageLogsByUserIndex(@PathVariable long userIndex) {
+        List<MessageDto> allMessages = messageService.getAllMessageManageEntities();
+        List<Integer> logIndices = allMessages.stream()
+                .filter(message -> message.getUserIndex() == userIndex)
+                .map(MessageDto::getLogIndex)
+                .collect(Collectors.toList());
+        List<MessageLogDto> messageLogs = messageService.getMessageLogsByLogIndices(logIndices);
+        return ResponseEntity.ok(messageLogs);
     }
 }
