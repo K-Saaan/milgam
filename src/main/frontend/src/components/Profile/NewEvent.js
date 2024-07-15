@@ -11,6 +11,31 @@ import CustomTextField from '../Styles/CustomTextField.js';
 import CustomDatePicker from '../Styles/CustomDatePicker.js';
 import axios from 'axios';
 
+// 스크롤 안 보이게
+const noScrollbarStyles = {
+    '&::WebkitScrollbar': {
+        display: 'none', // Chrome, Safari, and Opera
+    },
+    'msOverflowStyle': 'none',  // Internet Explorer 10+
+    'scrollbarWidth': 'none'  // Firefox
+};
+
+const dialogContentSx = {
+    ...noScrollbarStyles, // 스크롤 바 숨기기 스타일 추가
+    maxHeight: '1200px', // 필요에 따라 최대 높이 설정
+    overflowY: 'auto', // 세로 스크롤 활성화
+};
+
+// inputProps 스타일 지정
+const inputPropsStyles = {
+    overflow: 'hidden',
+    resize: 'none',
+    '&::WebkitScrollbar': {
+        display: 'none',
+    },
+    'msOverflowStyle': 'none',
+    'scrollbarWidth': 'none'
+};
 
 const NewEvent = ({ open, onClose, onAddEvent }) => {
     const theme = useTheme();
@@ -68,32 +93,6 @@ const NewEvent = ({ open, onClose, onAddEvent }) => {
             console.log("Retry!")
         }
 
-    };
-
-    // 스크롤 안 보이게
-    const noScrollbarStyles = {
-        '&::WebkitScrollbar': {
-            display: 'none', // Chrome, Safari, and Opera
-        },
-        'msOverflowStyle': 'none',  // Internet Explorer 10+
-        'scrollbar-width': 'none'  // Firefox
-    };
-
-    const dialogContentSx = {
-        ...noScrollbarStyles, // 스크롤 바 숨기기 스타일 추가
-        maxHeight: '1200px', // 필요에 따라 최대 높이 설정
-        overflowY: 'auto', // 세로 스크롤 활성화
-    };
-
-    // inputProps 스타일 지정
-    const inputPropsStyles = {
-        overflow: 'hidden',
-        resize: 'none',
-        '&::WebkitScrollbar': {
-            display: 'none',
-        },
-        'msOverflowStyle': 'none',
-        'scrollbarWidth': 'none'
     };
 
 

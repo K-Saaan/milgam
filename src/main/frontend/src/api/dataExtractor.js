@@ -51,3 +51,16 @@ export const extractPopulationRates = (jsonData) => {
 
     return { ppltnRate10, ppltnRate20, ppltnRate30, ppltnRate40, ppltnRate50, ppltnRate60, ppltnRate70 };
 };
+
+// MapCard.js - 혼잡도 추출 함수
+export const extractCrowdDataToMap = (jsonData) => {
+    if (!jsonData || !jsonData['SeoulRtd.citydata_ppltn'] || !jsonData['SeoulRtd.citydata_ppltn'][0]) {
+        console.error('Invalid JSON data:', jsonData);
+        return { areaNm: '', areaCongestLvl: '', areaCongestMsg: '' };
+    }
+
+    const cityData = jsonData['SeoulRtd.citydata_ppltn'][0];
+    const areaCongestLvl = cityData.AREA_CONGEST_LVL;
+
+    return { areaCongestLvl };
+};

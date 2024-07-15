@@ -44,14 +44,17 @@ const boxStyle = (theme) => ({
   alignItems: 'center',
 });
 
-const ReplyAlert = ({ open, handleClose, inquiry }) => {
+const ReplyAlert = ({ open, handleClose, inquiry  }) => {
   const theme = useTheme();
+
+  if (!inquiry) {
+    return null;
+  }
 
   return (
     <Dialog
       open={open}
       onClose={handleClose}
-      // 다이얼로그 스타일
       PaperProps={{
         sx: { borderRadius: "12px", background: theme.palette.background.paper, width: '600px' }
       }}
@@ -65,24 +68,21 @@ const ReplyAlert = ({ open, handleClose, inquiry }) => {
       <Divider style={{background: theme.palette.divider}} />
       <DialogContent sx={contentStyle}>
         <Box>
-          {/* <Typography variant="caption" sx={{ color: theme.palette.text.primary, marginBottom: '8px' }}>제목</Typography> */}
           <DialogContentText sx={{ marginBottom: '8px' }}>제목</DialogContentText>
           <Typography sx={boxStyle(theme)}>
-            {inquiry.title}
+            {inquiry.question_title}
           </Typography>
         </Box>
         <Box>
-          {/* <Typography variant="caption" sx={{ color: theme.palette.text.primary, marginBottom: '8px' }}>내용</Typography> */}
           <DialogContentText sx={{ marginBottom: '8px' }}>내용</DialogContentText>
           <Typography sx={boxStyle(theme)}>
-            {inquiry.content}
+            {inquiry.question}
           </Typography>
         </Box>
         <Box>
-          {/* <Typography variant="caption" sx={{ color: theme.palette.text.primary, marginBottom: '8px' }}>답변</Typography> */}
           <DialogContentText sx={{ marginBottom: '8px' }}>답변</DialogContentText>
           <Typography sx={boxStyle(theme)}>
-            {inquiry.reply}
+            {inquiry.answer}
           </Typography>
         </Box>
       </DialogContent>

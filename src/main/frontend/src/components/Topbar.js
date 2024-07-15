@@ -13,9 +13,7 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import useStore from "../store";
 
-
-
-const barBoxStyle = { flexGrow: 1 };
+// , display:'flex', alignContent:'center',justifyContent:'center'
 const abStyle = (theme) => ({backgroundColor: theme.palette.background.paper});
 const menuIconStyle = (theme) => ({ mr: 2, color: theme.palette.text.primary });
 const titleStyle = { display: {  sm: 'block' } };
@@ -60,40 +58,42 @@ function Topbar({ isAdmin, toggleTheme }) {
     navigate('/profile', { state: { from: location.pathname } });
   };
 
+  // 홈 이동 핸들러
+  const handleHomeClick = () => {
+    navigate('/home', { state: { from: location.pathname } });
+  };
+
   return (
-    <Box sx={barBoxStyle}>
+    <Box>
       <AppBar position="static" style={appBarStyle}>
-        <Toolbar>
+        <Toolbar sx={{display:'flex', justifyContent:'space-between', alignContent:'center' }}>
+        <div style={{ display: 'flex' }}>
           {/* 사이드바 열기 버튼 */}
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen} // 사이드바 열기 클릭 핸들러
-            sx={menuIconStyle(theme)}
-          >
-            <MenuIcon />
-          </IconButton>
-          {/* 앱 타이틀 */}
-
-{/* ####################################################################################### */}
-          <Link to="home" style={{textDecoration:'none'}}>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={titleStyle}
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen} // 사이드바 열기 클릭 핸들러
+              sx={menuIconStyle(theme)}
             >
-              MilGam
-            </Typography>
-          </Link>
-{/* ####################################################################################### */}
-
-          <Box sx={barBoxStyle} />
-          <IconButton sx={{color: theme.palette.text.primary}} onClick={handleToggleClick}>
-            {theme.palette.mode === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
-          </IconButton>
+              <MenuIcon />
+            </IconButton>
+            {/* 앱 타이틀 */}
+              <Typography
+                  variant="h6"
+                  noWrap
+                  component="div"
+                  sx={titleStyle}
+              >
+                <Link to="home" style={{textDecoration:'none'}}>
+                  MilGam
+                </Link>
+              </Typography>
+              <IconButton sx={{color: theme.palette.text.primary}} onClick={handleToggleClick}>
+                {theme.palette.mode === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
+              </IconButton>
+            </div>
           {/* 데스크탑 화면에서 프로필 아이콘 */}
           { isLogined && (
             <Box sx={profileIconStyle}>

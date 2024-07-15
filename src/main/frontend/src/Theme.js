@@ -34,6 +34,12 @@ const darkTheme = createTheme({
       primary: '#CFCFCF1D',
       secondary: "#FFFFFF1D",
     },
+    crowd: {
+      busy: '#EF3826', // 매우 혼잡
+      slightlyBusy: '#FFA756', // 혼잡
+      normal: '#E9C157', // 보통
+      relaxed: '#00B69B', // 여유
+    },
   },
 
   typography: {
@@ -103,6 +109,12 @@ const lightTheme = createTheme({
     border: {
       primary: '#4d4d4d3D',
       secondary: "#524e4a1D",
+    },
+    crowd: {
+      busy: '#EF3826', // 매우 혼잡
+      slightlyBusy: '#FFA756', // 혼잡
+      normal: '#E9C157', // 보통
+      relaxed: '#00B69B', // 여유
     },
   },
   typography: {
