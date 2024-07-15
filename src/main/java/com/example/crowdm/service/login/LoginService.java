@@ -89,16 +89,16 @@ public class LoginService {
                 } else {
                     logger.info("Session created successfully for user: {}", user.getId());
                     session.setAttribute("userIndex", user.getUser_index());
-                    Long userIndex = (Long) session.getAttribute("userIndex");
+                    Integer userIndex = (Integer) session.getAttribute("userIndex");
                     logger.info("userIndex: {}", userIndex);
                 }
 
                 // 로그인 로그 저장 -> LoginLog 테이블에 로그인 기록 저장
-                LoginLogEntity loginLog = LoginLogEntity.builder()
-                        .userIndex(user.getUser_index())
-                        .loginDate(Timestamp.valueOf(LocalDateTime.now()))
-                        .build();
-                loginLogRepository.save(loginLog);
+//                LoginLogEntity loginLog = LoginLogEntity.builder()
+//                        .userIndex(user.getUser_index())
+//                        .loginDate(Timestamp.valueOf(LocalDateTime.now()))
+//                        .build();
+//                loginLogRepository.save(loginLog);
 
                 // 로그인 성공 로그
                 logger.info("Login successful for user: {}", user.getId());

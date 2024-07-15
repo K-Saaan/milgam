@@ -34,4 +34,9 @@ public class MessageService {
         dto.setVideoIndex(entity.getVideoIndex());
         return dto;
     }
+    public List<MessageDto> getMessagesByUserIndex(List<MessageDto> messages, long userIndex) {
+        return messages.stream()
+                .filter(message -> message.getUserIndex() == userIndex)
+                .collect(Collectors.toList());
+    }
 }
