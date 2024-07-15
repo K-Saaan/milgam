@@ -80,6 +80,7 @@ const NewEvent = ({ open, onClose, onAddEvent }) => {
         } else {
             clearErrors('enddate');
         }
+
         return valid;
     };
 

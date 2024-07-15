@@ -12,7 +12,7 @@ const Background = (props) => {
         justifyContent: 'center',
         flexDirection: 'column',
         flex: 0.7,
-        marginTop: '5%',
+        marginTop:'5%',
       }}
     >
       {/* 헤더 부분 */}

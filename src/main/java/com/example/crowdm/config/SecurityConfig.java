@@ -25,14 +25,14 @@ import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig  extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception { // 특정 Http 요청에 대해 웹 기반 보안 구성. 인증/인가 및 로그아웃을 설정
         http
                 .csrf().disable() //csrf토큰 비활성화(테스트시 걸어두는게 좋음)
                 .authorizeRequests()
-                .antMatchers("/login/loginPage","/login/loginAction", "/**", "/signup").permitAll()
+                .antMatchers("/login/loginPage", "/login/loginAction", "/**", "/signup", "/signup/email", "/signup/tempw").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .logout()
@@ -41,7 +41,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
         http.sessionManagement() //중복로그인 제어
                 .maximumSessions(1) //세션 최대 허용 수
                 .maxSessionsPreventsLogin(false); // false: 중복 로그인하면 이전 로그인이 풀림
-        }
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

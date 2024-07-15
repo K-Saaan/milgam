@@ -35,13 +35,19 @@ const LogInForm = ({ marginBottom }) => {
 
     const {setIsLogined} = useStore(state => state);
     const onLogIn = async (data) => {
+
         const { id, pw } = data;
 
         if (id && pw) {
             try {
-                //console.log("data : ", data)
-                const res = await axios.post("/login/loginAction", data);
-                //console.log(res.data);
+                console.log("data : ", data)
+                const res = await axios.post("/login/loginAction", data, {
+                    withCredentials: true, // 쿠키를 포함한 요청
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                console.log("response data", res.data);
                 if (res.data.RESULT === "GO_MAIN") {
                     console.log("go dashboard")
                     localStorage.setItem("key", data.id);
@@ -85,6 +91,7 @@ const LogInForm = ({ marginBottom }) => {
                 <CustomTextField
                     label="비밀번호"
                     id="pw"
+
                     type="password"
                     {...register("pw", { required: "비밀번호를 입력해주세요." })}
                     inputProps={{ maxLength: 30 }}
