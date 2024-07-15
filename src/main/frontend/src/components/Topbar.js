@@ -15,6 +15,7 @@ import useStore from "../store";
 
 import Character from "../components/Home/new_cha.png"
 import LoginAlert from './LoginAlert';
+import ModeSwitch from './Styles/ModalSwitch';
 
 
 
@@ -94,19 +95,21 @@ function Topbar({ isAdmin, toggleTheme }) {
             </Link>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', }}>
-          <button onClick={()=>isloginCheck('dashboard')} style={{cursor: 'pointer', color: 'white', background: 'none', border: 'none', textAlign: 'center', fontSize: '18px' }}>대시보드</button>
-          <button onClick={()=>isloginCheck('uploadvideo')} id='uploadvideo' style={{cursor: 'pointer', color: 'white', background: 'none', border: 'none', textAlign: 'center', fontSize: '18px' }}>영상업로드</button>
-          <button onClick={()=>isloginCheck('inquiry')} id='inquiry' style={{cursor: 'pointer', color: 'white', background: 'none', border: 'none', textAlign: 'center', fontSize: '18px' }}>1:1문의</button>
-          <button onClick={()=>isloginCheck('faq')} id='faq' style={{cursor: 'pointer', color: 'white', background: 'none', border: 'none', textAlign: 'center', fontSize: '18px' }}>FAQ</button>
+          <button onClick={()=>isloginCheck('dashboard')} style={{cursor: 'pointer', color: theme.palette.text.primary, background: 'none', border: 'none', textAlign: 'center', fontSize: '18px' }}>대시보드</button>
+          <button onClick={()=>isloginCheck('uploadvideo')} id='uploadvideo' style={{cursor: 'pointer', color: theme.palette.text.primary, background: 'none', border: 'none', textAlign: 'center', fontSize: '18px' }}>영상업로드</button>
+          <button onClick={()=>isloginCheck('inquiry')} id='inquiry' style={{cursor: 'pointer', color: theme.palette.text.primary, background: 'none', border: 'none', textAlign: 'center', fontSize: '18px' }}>1:1문의</button>
+          <button onClick={()=>isloginCheck('faq')} id='faq' style={{cursor: 'pointer', color: theme.palette.text.primary, background: 'none', border: 'none', textAlign: 'center', fontSize: '18px' }}>FAQ</button>
         </div>
 
       
         
-        <div style={{display:'flex'}}>
+        <div style={{display:'flex', alignItems:'center'}}>
 
-          <IconButton sx={{color: theme.palette.text.primary}} onClick={handleToggleClick}>
-              {theme.palette.mode === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
-          </IconButton>
+        <ModeSwitch
+          checked={theme.palette.mode === 'dark'}
+          onChange={handleToggleClick}
+          inputProps={{ 'aria-label': 'theme switch' }}
+          />
 
           {/* 데스크탑 화면에서 프로필 아이콘 */}
           { isLogined || (
