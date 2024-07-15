@@ -23,9 +23,7 @@ public class MessageService {
         List<MessageManageEntity> entities = messageManageRepository.findAll();
         return entities.stream().map(this::convertToDto).collect(Collectors.toList());
     }
-
-
-
+    
     private MessageDto convertToDto(MessageManageEntity entity) {
         MessageDto dto = new MessageDto();
         dto.setUserIndex(entity.getId().getUserIndex());
@@ -34,6 +32,7 @@ public class MessageService {
         dto.setVideoIndex(entity.getVideoIndex());
         return dto;
     }
+
     public List<MessageDto> getMessagesByUserIndex(List<MessageDto> messages, long userIndex) {
         return messages.stream()
                 .filter(message -> message.getUserIndex() == userIndex)
