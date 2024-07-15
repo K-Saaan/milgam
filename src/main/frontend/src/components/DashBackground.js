@@ -12,7 +12,7 @@ const DashBackground = (props) => {
         justifyContent: 'center',
         flexDirection: 'column',
         flex: 1,
-        marginTop: '5%',
+        marginTop:'5%',
       }}
     >
       {/* 헤더 부분 */}
