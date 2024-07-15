@@ -30,14 +30,25 @@ public class MessageController {
         List<MessageDto> messageManageEntities = messageService.getAllMessageManageEntities();
         return ResponseEntity.ok(messageManageEntities);
     }
-    @GetMapping("/{userIndex}")
-    public  ResponseEntity<List<MessageDto>> getMessagesByUserIndex(@PathVariable long userIndex){
+    @GetMapping("/user/messages")
+    public  ResponseEntity<List<MessageDto>> getMessagesByUserIndex(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        if(session.getAttribute("userIndex") != null) {
+            logger.info("session null");
+        }
+        Integer userIndexInt = (Integer) session.getAttribute("userIndex");
+        logger.info("user_indexint", userIndexInt);
+
+        Long userIndex = userIndexInt != null ? userIndexInt.longValue() : null;
+        logger.info("user_index", userIndex);
+
         List<MessageDto> allMessages = messageService.getAllMessageManageEntities();
         List<MessageDto> fillteredMessages = allMessages.stream()
                 .filter(message -> message.getUserIndex() == userIndex)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(fillteredMessages);
     }
+
     @GetMapping("/{userIndex}/log-indices")
     public ResponseEntity<List<Integer>> getLogIndicesByUserIndex(@PathVariable long userIndex) {
         List<MessageDto> allMessages = messageService.getAllMessageManageEntities();
