@@ -13,6 +13,7 @@ function Page3(){
   const pageStyle = cPage1Style(theme);
   const spanStyle = cSpanStyle(theme);
 
+  
 
   const ref = useRef(null);
   
@@ -38,12 +39,12 @@ function Page3(){
                   <source src="https://assets.planet.com/web/videos/home/homepage-hero.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
-
+                
               </div>
 
             </motion.div>
           </>
-      );
-  }
+        );
+      }
   
   export default Page3;

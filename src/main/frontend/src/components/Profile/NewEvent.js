@@ -59,6 +59,7 @@ const NewEvent = ({ open, onClose, onAddEvent }) => {
         } else {
             clearErrors('enddate');
         }
+
         return valid;
     };
 
@@ -74,6 +75,8 @@ const NewEvent = ({ open, onClose, onAddEvent }) => {
             onAddEvent(data.title); // 'title' 필드의 값을 전달
             onClose();
         }
+
+
         try{
 
             setValue('start_date', makeTimeStamp(startdate));
@@ -133,10 +136,10 @@ const NewEvent = ({ open, onClose, onAddEvent }) => {
                                 format="YYYY-MM-DD"
                                 views={['year', 'month', 'day']}
                                 renderInput={(params) =>
-                                    <CustomTextField 
-                                            {...params} 
+                                    <CustomTextField
+                                            {...params}
                                             error={!!errors.startdate}
-                                            helperText={errors.startdate?.message} 
+                                            helperText={errors.startdate?.message}
                                         />
                                 }
                             />
@@ -157,10 +160,10 @@ const NewEvent = ({ open, onClose, onAddEvent }) => {
                                 format="YYYY-MM-DD"
                                 views={['year', 'month', 'day']}
                                 renderInput={(params) =>
-                                    <CustomTextField 
-                                            {...params} 
+                                    <CustomTextField
+                                            {...params}
                                             error={!!errors.enddate}
-                                            helperText={errors.enddate?.message} 
+                                            helperText={errors.enddate?.message}
                                         />
                                 }
                             />

@@ -41,7 +41,7 @@ function App() {
       <ThemeProvider theme={currentTheme}>
         <CssBaseline />
         <Box component="section" sx={sectionStyle}>
-            <Topbar isAdmin={isAdmin} toggleTheme={toggleTheme}/>
+          <Topbar isAdmin={isAdmin} toggleTheme={toggleTheme}/>
 
           <Box sx={contentBoxStyle}>
             <Outlet />

@@ -1,8 +1,5 @@
 package com.example.crowdm.controller.event;
 
-import com.example.crowdm.dto.event.EventRequest;
-import com.example.crowdm.dto.login.LoginRequest;
-import com.example.crowdm.entity.dashboard.DashboardEntity;
 import com.example.crowdm.entity.event.EventEntity;
 import com.example.crowdm.repository.event.EventRepository;
 import com.example.crowdm.service.event.EventService;
@@ -14,18 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor

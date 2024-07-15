@@ -2,27 +2,20 @@ import React, {useState} from 'react';
 import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import {
-    Grid, MenuItem, Button, FormControl, DialogActions,
-    FormHelperText, InputLabel, Select, IconButton, InputAdornment
-} from '@mui/material';
+import {Button, DialogActions, Grid, IconButton, InputAdornment, MenuItem} from '@mui/material';
 import {Visibility, VisibilityOff} from '@mui/icons-material';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
-import {CustomButton, NextButton} from "./NextButton.js";
 import CustomTextField from '../Styles/CustomTextField.js';
-import CustomDatePicker from '../Styles/CustomDatePicker.js';
 import EmailAlert from './EmailAlert';
-import LongButton from "../Styles/LongButton.js";
 
 const SignUpForm = ({marginBottom}) => {
     const navigate = useNavigate();
     const {register, handleSubmit, formState: {errors, isValid}, setValue, watch, control, trigger} = useForm({
         mode: 'onChange',
     });
-
-
+    const email = watch('email');
     // 페이지 이동
     const onSubmit = async (data) => {
         // Clone the data object and remove the repw property
@@ -60,6 +53,40 @@ const SignUpForm = ({marginBottom}) => {
         }
     };
 
+    function generateRandomString(length) {
+        const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        const charactersLength = CHARACTERS.length;
+        for (let i = 0; i < length; i++) {
+            result += CHARACTERS.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+
+    const handleClickOpenRegister = async (data) => {
+        const password = generateRandomString(12); // 12자 랜덤 문자열 생성
+        console.log(data)
+        try {
+            const response = await axios.post("http://localhost:8080/signup/email", {
+                email: email,
+                email_status: false,
+                password: password
+            });
+            console.log('Response:', response.data);
+
+            if (response.status === 200) {
+                console.log('인증번호가 발송되었습니다.');
+            } else {
+                console.log('인증번호 발송에 실패했습니다. 다시 시도해 주세요.');
+            }
+
+            setOpenRegister(true);
+        } catch (error) {
+            console.error('Error sending verification code:', error);
+            console.log('오류가 발생했습니다. 다시 시도해 주세요.');
+            setOpenRegister(true);
+        }
+    };
 
     const onError = (errors) => {
         // 에러가 있는 경우 적절한 메시지를 출력하거나 처리합니다.
@@ -97,9 +124,9 @@ const SignUpForm = ({marginBottom}) => {
 
     // 이메일 인증 부분 const
     const [openRegister, setOpenRegister] = useState(false);
-    const handleClickOpenRegister = () => {
-        setOpenRegister(true);
-    };
+    // const handleClickOpenRegister = () => {
+    //     setOpenRegister(true);
+    // };
     const handleCloseRegister = () => {
         setOpenRegister(false);
     };
