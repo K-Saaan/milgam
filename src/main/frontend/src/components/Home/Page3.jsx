@@ -45,6 +45,6 @@ function Page3(){
             </motion.div>
           </>
         );
-  
+      }
   
   export default Page3;
