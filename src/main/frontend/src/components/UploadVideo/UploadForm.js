@@ -172,21 +172,14 @@ const UploadBG = styled('div')({
             formData.append('chunkFile', chunk);
             formData.append('chunkIndex', i);
             formData.append('totalChunks', totalChunks);
-            if (data.sector !== null && data.sector !== undefined) {
-              formData.append('sector', data.sector);
-            }
-            if (data.camera !== null && data.camera !== undefined) {
-              formData.append('camera_num', data.camera);
-            }
-            if (data.detail !== null && data.detail !== undefined) {
-              formData.append('content', data.detail);
-            }
-
+            formData.append('sector', data.sector);
+            formData.append('camera_num', data.camera);
+            formData.append('content', data.detail);
             formData.append('length', selectedFile.size);
 
-            for (let key of formData.keys()) {
-              console.log(key, ":", formData.get(key));
-            }
+            //formData 확인
+            //for (let key of formData.keys()) { console.log(key, ":", formData.get(key));}
+
             await axios.post('/api/videoUpload', formData, {
               headers: {
                 'Content-Type': 'multipart/form-data',

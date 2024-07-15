@@ -24,15 +24,15 @@ const formSx = {
     alignItems: 'center',
     justifyContent: 'center',
     margin: 'auto',
-    height: '75vh',
-
+    height: '65vh',
+    width: '95%',
     overflow: 'auto', // 스크롤 활성화
     ...noScrollbarStyles // 스크롤 바 숨기기 스타일 추가
 };
 
 // 행사 선택 select box 스타일
 const EventControl = styled(FormControl)(({ theme }) => ({
-    width: '370px',
+    width: '100%',
     height: '56px',
     backgroundColor: theme.palette.secondary.main,
     '& .MuiOutlinedInput-root': {
@@ -138,12 +138,11 @@ const ProfileForm = () => {
         <Grid
             container
             component="form"
-            spacing={3}
             noValidate
             autoComplete="off"
             sx={formSx}
         >
-            <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/* 이름 */}
+            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, }}> {/* 이름 */}
                 <div>
                     <div style={{ marginBottom: '4px' }}>
                         이름
@@ -155,7 +154,7 @@ const ProfileForm = () => {
                     </CustomTypographyWrapper>
                 </div>
             </Grid>
-            <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/* 아이디 */}
+            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, }}> {/* 아이디 */}
                 <div>
                     <div style={{ marginBottom: '4px' }}>
                         아이디
@@ -167,7 +166,7 @@ const ProfileForm = () => {
                     </CustomTypographyWrapper>
                 </div>
             </Grid>
-            <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/* 이메일 */}
+            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, }}> {/* 이메일 */}
                 <div>
                     <div style={{ marginBottom: '4px' }}>
                         이메일
@@ -179,7 +178,7 @@ const ProfileForm = () => {
                     </CustomTypographyWrapper>
                 </div>
             </Grid>
-            <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/* 전화번호 */}
+            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, }}> {/* 전화번호 */}
                 <div>
                     <div style={{ marginBottom: '4px' }}>
                         전화번호
@@ -191,7 +190,7 @@ const ProfileForm = () => {
                     </CustomTypographyWrapper>
                 </div>
             </Grid>
-            <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/* 소속 */}
+            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, }}> {/* 소속 */}
                 <div>
                     <div style={{ marginBottom: '4px' }}>
                         소속
@@ -203,7 +202,7 @@ const ProfileForm = () => {
                     </CustomTypographyWrapper>
                 </div>
             </Grid>
-            <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/* 행사 선택 */}
+            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, }}> {/* 행사 선택 */}
                 <div style={{ marginBottom: '4px' }}>
                     행사
                 </div>
