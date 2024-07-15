@@ -13,7 +13,7 @@ function Page3(){
   const pageStyle = cPage1Style(theme);
   const spanStyle = cSpanStyle(theme);
 
-  }
+  
 
   const ref = useRef(null);
   
