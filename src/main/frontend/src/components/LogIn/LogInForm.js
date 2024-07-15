@@ -41,8 +41,13 @@ const LogInForm = ({ marginBottom }) => {
         if (id && pw) {
             try {
                 console.log("data : ", data)
-                const res = await axios.post("http://localhost:8080/login/loginAction", data);
-                //console.log(res.data);
+                const res = await axios.post("http://localhost:8080/login/loginAction", data, {
+                    withCredentials: true, // 쿠키를 포함한 요청
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                console.log("response data", res.data);
                 if (res.data.RESULT === "GO_MAIN") {
                     console.log("go dashboard")
                     localStorage.setItem("key", data.id);

@@ -1,24 +1,24 @@
-package com.example.crowdm.entity.dashboard;
+package com.example.crowdm.entity.message;
 
 import lombok.*;
 import javax.persistence.*;
 import java.sql.Timestamp;
-import com.example.crowdm.listener.dashboard.DashboardListener;
+import java.util.Set;
+import java.util.HashSet;
 
 @Getter
 @Setter
 @Entity
-@EntityListeners(DashboardListener.class)
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "message_log", schema = "public")
-public class DashboardEntity {
+public class MessageLogEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "log_index")
-    private int log_index;
+    private int logIndex;
 
     @Column(name = "date")
     private Timestamp date;
@@ -30,5 +30,11 @@ public class DashboardEntity {
     private String contextTitle;
 
     @Column(name = "analysis_index")
-    private int analysis_index;
+    private int analysisIndex;
+
+    @OneToMany(mappedBy = "messageLog", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<MessageManageEntity> messageManageEntities = new HashSet<>();
+
 }
+
+

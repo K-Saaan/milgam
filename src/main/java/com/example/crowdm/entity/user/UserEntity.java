@@ -3,12 +3,12 @@ package com.example.crowdm.entity.user;
 
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import com.example.crowdm.entity.message.MessageManageEntity;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -84,6 +84,9 @@ public class UserEntity {
     @Column(name = "temppw", length = 30)
     private String temppw;
 
+    //상빈수정
+    @OneToMany(mappedBy = "user")
+    private Set<MessageManageEntity> messageManageEntity;
 
     @Transactional
     public void updatePermissionYn(Timestamp permission_date) {

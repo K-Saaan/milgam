@@ -1,7 +1,6 @@
 package com.example.crowdm.service.event;
 
 
-import com.example.crowdm.entity.dashboard.DashboardEntity;
 import com.example.crowdm.entity.event.EventEntity;
 import com.example.crowdm.repository.event.EventRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,12 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
