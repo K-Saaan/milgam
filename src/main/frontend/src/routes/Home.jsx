@@ -1,29 +1,43 @@
 import { useTheme } from "@emotion/react";
 import Page1 from "../components/Home/Page1";
-import Page3 from "../components/Home/Page3";
 import Page2 from "../components/Home/Page2";
+import Page3 from "../components/Home/Page3";
 
 import { motion, useScroll, useSpring } from "framer-motion";
 import { useRef } from "react";
 
 
-//container
+
+//page
 const cPageStyle = (theme) => ({
   scrollSnapType: 'y mandatory',
   overflowY: 'scroll',
-  height: '100%',
+  height: '90vh',
+  width: '100vw',
   scrollbarWidth:'none',
+});
+
+//container
+const cCTStyle = (theme) => ({
+  display:'flex',
+  justifyContent:'center',
+  alignItems:'center',
+  flexDirection: 'column',
 });
 
 //content
 const cContentStyle = (theme) => ({
-  scrollSnapAlign: 'start',
-  height: '100%',
+  scrollSnapAlign: 'center',
+  height: '90vh',
+  width:'100%',
   maxWidth: '1000px',
   display:'flex',
   justifyContent:'center',
   alignItems:'center',
+
 });
+
+
 
 //progressBar
 const cPBarStyle = (theme) => ({
@@ -44,6 +58,8 @@ function Home(){
   const pageStyle = cPageStyle(theme);
   const contentStyle = cContentStyle(theme);
   const pBarStyle = cPBarStyle(theme);
+  const containerStyle = cCTStyle(theme);
+  
 
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ container: ref, layoutEffect: false });
@@ -54,19 +70,48 @@ function Home(){
   });
 
 
-
     return (
         <>
+
+
+
           <div style={pageStyle} ref={ref}>
-            <div style={contentStyle}>
-              <Page1/>
+            <div style={containerStyle}>
+
+              <div style={contentStyle}>
+                <Page1 />
+              </div>
+
+              <div style={contentStyle}>
+                <Page2 />
+              </div>
+
+              <div style={contentStyle}>
+                <Page3 />
+              </div>
+
+              <div style={contentStyle}>
+                <Page1 />
+              </div>
+
+              <div style={contentStyle}>
+                <Page1 />
+              </div>
+
+              <div style={contentStyle}>
+                <Page1 />
+              </div>
+
+              <div style={contentStyle}>
+                <Page1 />
+              </div>
+
+              <div style={contentStyle}>
+                <Page1 />
+              </div>
+
             </div>
-            <div style={contentStyle}>
-              <Page2/>
-            </div>
-            <div style={contentStyle}>
-              <Page3/>
-            </div>
+            
             <motion.div  style={{ scaleX, ...pBarStyle }} />
           </div>
         </>

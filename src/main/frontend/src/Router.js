@@ -33,13 +33,10 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "adminlogin",
-        element: <AdminLogIn />,
-      },
-      {
         path: "admin",
         element: <Admin />,
         children: [
+          { path: "login", element: <AdminLogIn /> },
           { path: "approval", element: <AdminApproval /> },
           { path: "replyinquiry", element: <AdminReply /> }
         ]

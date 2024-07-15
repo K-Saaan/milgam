@@ -159,11 +159,11 @@ const UploadBG = styled('div')({
             const chunk = selectedFile.slice(start, end);
 
             const formData = new FormData();
-            formData.append('chunk', chunk);
-            formData.append('chunkNumber', i);
+            formData.append('chunkFile', chunk);
+            formData.append('chunkIndex', i);
             formData.append('totalChunks', totalChunks);
 
-            await axios.post('/api/upload', formData, {
+            await axios.post('/api/videoUpload', formData, {
               headers: {
                 'Content-Type': 'multipart/form-data',
               },
@@ -244,5 +244,5 @@ const UploadBG = styled('div')({
       </UploadBG>
     );
   }
-  
+
   export default UploadForm;

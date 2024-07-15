@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import RightContentArea from '../components/Dashboard/RightContentArea';
 import { Outlet, useLocation } from 'react-router-dom';
 import DashBackground from "../components/DashBackground.js";
+import MapCard from '../components/Dashboard/MapCard'; // MapCard import
 
 const containerStyle = {
   display: 'grid',
@@ -19,6 +20,15 @@ const rightContentStyle = {
   display: 'grid',
   gap: '20px',
   minWidth: '300px',
+};
+
+const fullWidthStyle = {
+  gridColumn: 'span 2',
+  height: '500px', // 지도 높이 유지
+};
+
+const hiddenMapCardStyle = {
+  visibility: 'hidden', // MapCard를 숨기지만, 그 자리를 차지하도록
 };
 
 const Dashboard = () => {
@@ -43,6 +53,8 @@ const Dashboard = () => {
     { id: 2, time: '14:02', title: '5구역 혼잡 (Lv.3)', details: '5구역에서 혼잡이 발생했습니다. 자세한 내용은 여기 있습니다.' },
   ];
 
+  const isMapCardVisible = location.pathname === '/dashboard';
+
   return (
     <DashBackground name={"대시보드"}
       contents={
@@ -55,6 +67,12 @@ const Dashboard = () => {
             {/* 우측 알림 리스트 */}
             <div style={rightContentStyle}>
               <RightContentArea alerts={alerts} handleAlertClick={handleAlertClick} selectedAlert={selectedAlert} />
+            </div>
+            {/* 지도 카드 */}
+            <div style={fullWidthStyle}>
+              <div style={isMapCardVisible ? {} : hiddenMapCardStyle}>
+                <MapCard />
+              </div>
             </div>
           </div>
         </>

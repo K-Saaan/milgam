@@ -1,66 +1,21 @@
 import { useTheme } from "@emotion/react";
 import { motion, useScroll, useTransform} from "framer-motion";
 import { useRef } from "react";
-import pic from "./pic.jpg"
-import { useForm } from "react-hook-form";
-import axios from "axios";
+import { cPage1Style, cSpanStyle } from "./Page1";
 
-// conatiner
-const cPage1Style = (theme) => ({
-  widht:'100%',
-  hegiht:'100%',
-  // background: theme.palette.comp,
-  color : theme.palette.text.primary,
-  
-});
 
 
 
 
 function Page3(){
 
-  const { register, handleSubmit } = useForm() 
-  const onError = (errors, e) => console.log(errors, e)
-  const onSubmit = (data, e) =>{
-    
-    console.log(data, e)
-
-    const req = axios.post("http://localhost:8080/signup", data);  
-
-    console.log(req)
-    
-}
-
-  const columns = ['id', 'pw', 'name', 'email', 'phone', 'role_index', 'apply_date', 'last_login', 'start_date', 'end_date'];
-
-
-  const Row1 = ({ columns }) => {
-    return (
-      <>
-        {columns.map((column) => (
-            <div key={column}>
-              <span>{column}</span>
-              <input {...register(column, { required: true })} />
-            </div>
-        ))}
-      </>  
-    );
-  };
-
-  // ############################################################################################
-
   const theme = useTheme();
   const pageStyle = cPage1Style(theme);
+  const spanStyle = cSpanStyle(theme);
 
-  
-
-  function useParallax(value, distance) {
-    return useTransform(value, [0, 1], [-distance, distance]);
   }
 
   const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref });
-  const y = useParallax(scrollYProgress, 300);
   
       return (
           <>
@@ -75,15 +30,21 @@ function Page3(){
             }}
             style={pageStyle}
             >
-              <form onSubmit={handleSubmit(onSubmit, onError)}>
-                <Row1 columns={columns} />
-                <button type="submit">Submit</button>
-              </form>
+              <div>
+
+
+                <span style={spanStyle}>#004</span>
+
+                <video autoPlay muted controls width="600">
+                  <source src="https://assets.planet.com/web/videos/home/homepage-hero.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                
+              </div>
 
             </motion.div>
           </>
         );
   }
-
   
   export default Page3;
