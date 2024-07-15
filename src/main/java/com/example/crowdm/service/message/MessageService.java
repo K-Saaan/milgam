@@ -26,6 +26,12 @@ public class MessageService {
         List<MessageManageEntity> entities = messageManageRepository.findAll();
         return entities.stream().map(this::convertToDto).collect(Collectors.toList());
     }
+
+//    public List<MessageDto> getMessageManageEntitiesByUserIndex(int userIndex) {
+//        List<MessageManageEntity> entities = messageManageRepository.findByUserIndex(userIndex);
+//        return entities.stream().map(this::convertToDto).collect(Collectors.toList());
+//    }
+
     private MessageDto convertToDto(MessageManageEntity entity) {
         MessageDto dto = new MessageDto();
         dto.setUserIndex(entity.getId().getUserIndex());
