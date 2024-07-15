@@ -45,6 +45,24 @@ public class LoginService {
             if (passwordEncoder.matches(password, user.getPw())) {
                 logger.info("Password matches for user: {}", user.getId());
 
+                // permission_yn 확인       0715 이수민
+                if (!user.getPermission_yn()) {
+                    logger.info("Permission denied for user: {}", user.getId());
+                    resultMap.put("RESULT", "PERMISSION_DENIED");
+                    return resultMap;
+                }
+
+                // 로그인 시도 기간 확인         0715 이수민
+                LocalDateTime now = LocalDateTime.now();
+                LocalDateTime startDate = user.getStart_date().toLocalDateTime();
+                LocalDateTime endDate = user.getEnd_date().toLocalDateTime();
+
+                if (now.isBefore(startDate) || now.isAfter(endDate)) {
+                    logger.info("Login attempt outside of allowed date range for user: {}", user.getId());
+                    resultMap.put("RESULT", "OUTSIDE_DATE_RANGE");
+                    return resultMap;
+                }
+
                 // 계정 잠김 여부 확인
                 if (user.getAccount_lock()) {
                     logger.info("Account locked for user: {}", user.getId());
