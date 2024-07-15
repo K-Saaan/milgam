@@ -12,12 +12,12 @@ import javax.persistence.*;
 @Builder
 @DynamicUpdate
 @AllArgsConstructor
-@Table(name = "email")
+@Table(name = "email", schema = "public")
 public class EmailEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "email_index",unique = true, nullable = false)
-    private Long id;
+    @Column(name = "email_index")
+    private Integer id;
 
     // 이메일 주소
     @Column(name = "email", nullable = false)
