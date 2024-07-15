@@ -19,7 +19,7 @@ const contentBoxStyle = {
   flex: 1,
   display:'flex',
   justifyContent:'center',
-
+  alignItems: 'flex-start'
 };
 
 // Create a client
@@ -41,9 +41,7 @@ function App() {
       <ThemeProvider theme={currentTheme}>
         <CssBaseline />
         <Box component="section" sx={sectionStyle}>
-          <div>
             <Topbar isAdmin={isAdmin} toggleTheme={toggleTheme}/>
-          </div>
           <Box sx={contentBoxStyle}>
             <Outlet />
           </Box>
