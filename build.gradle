@@ -10,7 +10,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(11)
     }
 }
 
@@ -26,8 +26,8 @@ repositories {
 
 dependencies {
     // Spring Environment
-    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-mail' // Spring Mail 라이브러리 추가
     implementation 'org.springframework.boot:spring-boot-starter-web'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
@@ -39,50 +39,33 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter' //추가
+    implementation 'org.springframework.boot:spring-boot-starter-mail' //추가
+    testImplementation 'org.springframework.boot:spring-boot-starter-test' //추가
 
     // Spring Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.security:spring-security-test'
 
     // Csv parsing
-    implementation('com.opencsv:opencsv:5.3')
-
-//    testImplementation 'io.projectreactor:reactor-test'
-//    implementation 'org.springframework.boot:spring-boot-starter-validation'
-//    implementation 'org.apache.commons:commons-lang3:3.12.0'
-//    testImplementation platform('org.junit:junit-bom:5.9.1')
-//    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'com.opencsv:opencsv:5.3'
 
     // postgreSQL
     implementation 'org.postgresql:postgresql'
 
-    // Spring Security
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    testImplementation 'org.springframework.security:spring-security-test'
-
     // Web socket
-//  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket'
-    
-    // Web
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.apache.httpcomponents:httpclient'
 
-   // Google Cloud Storage
-//    implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter', version: '1.2.5.RELEASE'
-    // implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-storage', version: '1.2.5.RELEASE'
-    
+    // Google Cloud Storage
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter', version: '1.2.5.RELEASE'
+
     //sse
     implementation 'io.projectreactor:reactor-core:3.4.11'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
-    implementation 'org.slf4j:slf4j-api:1.7.32'
-    implementation 'ch.qos.logback:logback-classic:1.2.6'
 
     // Etc
     implementation 'commons-io:commons-io:2.8.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
-
-    //email
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 tasks.named('test') {
@@ -105,10 +88,11 @@ task installReact(type: Exec) {
     inputs.dir "$frontendDir"
     group = BasePlugin.BUILD_GROUP
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-        commandLine "npm.cmd", "audit", "fix"
-        commandLine 'npm.cmd', 'install' }
-    else {
-        commandLine "npm", "audit", "fix" commandLine 'npm', 'install'
+        commandLine "C:/Program Files/nodejs/npm.cmd", "audit", "fix"
+        commandLine 'C:/Program Files/nodejs/npm.cmd', 'install'
+    } else {
+        commandLine "/usr/local/bin/npm", "audit", "fix"
+        commandLine '/usr/local/bin/npm', 'install'
     }
 }
 
@@ -118,9 +102,9 @@ task buildReact(type: Exec) {
     inputs.dir "$frontendDir"
     group = BasePlugin.BUILD_GROUP
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-        commandLine "npm.cmd", "run-script", "build"
+        commandLine "C:/Program Files/nodejs/npm.cmd", "run-script", "build"
     } else {
-        commandLine "npm", "run-script", "build"
+        commandLine "/usr/local/bin/npm", "run-script", "build"
     }
 }
 
@@ -128,4 +112,8 @@ task copyReactBuildFiles(type: Copy) {
     dependsOn "buildReact"
     from "$frontendDir/build"
     into "$projectDir/src/main/resources/static"
+}
+
+build {
+    dependsOn copyReactBuildFiles
 }

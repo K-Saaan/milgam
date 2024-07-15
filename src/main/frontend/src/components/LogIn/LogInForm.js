@@ -25,33 +25,34 @@ const LogInForm = ({ marginBottom }) => {
         height: '65vh',
     };
 
-    //회원가입 이동
     const onSignupClick = () => { navigate('/signup'); };
-    //알림 팝업창 열고 닫기
     const alHandleClickOpen = () => { alSetOpen(true); };
     const alHandleClose = () => { alSetOpen(false); };
     const npHandleClickOpen = () => { npSetOpen(true); };
     const npHandleClose = () => { npSetOpen(false); };
 
-    const {setIsLogined} = useStore(state => state);
+    const { setIsLogined } = useStore(state => state);
+
     const onLogIn = async (data) => {
         const { id, pw } = data;
-
         if (id && pw) {
             try {
-                console.log("data : ", data)
                 const res = await axios.post("http://localhost:8080/login/loginAction", data);
-                //console.log(res.data);
-                if (res.data.RESULT === "GO_MAIN") {
-                    console.log("go dashboard")
+
+                // 0715: 서버 응답에 따른 리다이렉션 처리
+                if (res.data.RESULT === "GO_USER_DASHBOARD") {
                     localStorage.setItem("key", data.id);
                     setIsLogined(true);
                     navigate('/dashboard');
-                } else if (res.data === "diff") {
+                } else if (res.data.RESULT === "GO_ADMIN_DASHBOARD") {
+                    localStorage.setItem("key", data.id);
+                    setIsLogined(true);
+                    navigate('/admin');
+                } else if (res.data.RESULT === "diff") {
                     setPasswordError("비밀번호가 틀렸습니다.");
-                } else if (res.data === "lock") {
+                } else if (res.data.RESULT === "lock") {
                     alHandleClickOpen();
-                } else if (res.data === "assign") {
+                } else if (res.data.RESULT === "assign") {
                     npHandleClickOpen();
                 }
             } catch (error) {

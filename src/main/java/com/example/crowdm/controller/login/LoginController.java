@@ -18,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,26 +29,28 @@ public class LoginController {
     private final LoginRepository loginRepository;
     private final LoginService loginService;
 
-    /**
-     * 1. MethodName: goLoginPage
-     * 2. ClassName : LoginController
-     * 3. Comment   : 로그인페이지 이동
-     * 4. 작성자    : san
-     * 5. 작성일    : 2024. 06. 24
-     **/
     @GetMapping("/loginPage")
     public String goLoginPage(HttpServletRequest request, HttpServletResponse response, Model model) {
         String errorMessage = request.getParameter("message");
-
         model.addAttribute("errorMessage", errorMessage);
-
         return "login/loginPage";
     }
 
     @PostMapping(value = "/loginAction")
-    public  Object loginAction(@RequestBody LoginRequest loginRequest, Model model, HttpServletRequest request, HttpServletResponse	response) throws InvalidKeyException, UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+    public Object loginAction(@RequestBody LoginRequest loginRequest, Model model, HttpServletRequest request, HttpServletResponse response) throws InvalidKeyException, UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
         logger.info("userID = {}", loginRequest.getId());
         logger.info("password = {}", loginRequest.getPw());
-        return loginService.updateLogin(loginRequest.getId(), loginRequest.getPw(), request);
+        Map<String, Object> result = loginService.updateLogin(loginRequest.getId(), loginRequest.getPw(), request);
+
+        // 0715 이수민: 사용자 유형에 따라 다른 결과를 반환
+        if ("user".equals(result.get("userType"))) {
+            result.put("RESULT", "GO_USER_DASHBOARD");
+            result.put("URL", "/dashboards");
+        } else if ("admin".equals(result.get("userType"))) {
+            result.put("RESULT", "GO_ADMIN_DASHBOARD");
+            result.put("URL", "/admin");
+        }
+
+        return result;
     }
 }
