@@ -88,9 +88,7 @@ const ReplyInquiry = () => {
       }
     };
 
-    if (!data) {
       fetchReq();
-    }
   }, []);
 
   // 데이터 삭제 함수
