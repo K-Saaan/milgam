@@ -10,5 +10,5 @@ import java.util.List;
 
 @Repository
 public interface MessageManageRepository extends JpaRepository<MessageManageEntity, Integer> , JpaSpecificationExecutor<MessageManageEntity> {
-//    List<MessageManageEntity> findByUserIndex(int userIndex);
+
 }
