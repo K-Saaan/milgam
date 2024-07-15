@@ -53,6 +53,14 @@ public class LoginController {
         return loginService.updateLogin(loginRequest.getId(), loginRequest.getPw(), request);
     }
 
+
+    /**
+     * 1. MethodName: profile
+     * 2. ClassName : LoginController
+     * 3. Comment   : 내 페이지 프로필
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 15
+     **/
     @GetMapping("/profile")
     public ResponseEntity<Profile> goProfile(HttpServletRequest request, HttpServletResponse response) {
         Profile result=loginService.getProfile();
@@ -60,6 +68,12 @@ public class LoginController {
 
     }
 
+    /**
+     * 1. MethodName: updateevent
+     * 2. ClassName : LoginController
+     * 3. Comment   : 이벤트 선택했을때, 선택된 이벤트로 업데이트 시키기
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 15**/
     @GetMapping("updateevent")
     public ResponseEntity<String> updateEvent(@RequestParam("event_index") int event_index) {
         String result=loginService.UpdateEventAtProfile(event_index);
