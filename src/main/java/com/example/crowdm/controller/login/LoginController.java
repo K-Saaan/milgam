@@ -1,11 +1,13 @@
 package com.example.crowdm.controller.login;
 
 import com.example.crowdm.dto.login.LoginRequest;
+import com.example.crowdm.dto.user.Profile;
 import com.example.crowdm.repository.login.LoginRepository;
 import com.example.crowdm.service.login.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,5 +51,18 @@ public class LoginController {
         logger.info("userID = {}", loginRequest.getId());
         logger.info("password = {}", loginRequest.getPw());
         return loginService.updateLogin(loginRequest.getId(), loginRequest.getPw(), request);
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<Profile> goProfile(HttpServletRequest request, HttpServletResponse response) {
+        Profile result=loginService.getProfile();
+        return ResponseEntity.ok(result);
+
+    }
+
+    @GetMapping("updateevent")
+    public ResponseEntity<String> updateEvent(@RequestParam("event_index") int event_index) {
+        String result=loginService.UpdateEventAtProfile(event_index);
+        return ResponseEntity.ok(result);
     }
 }

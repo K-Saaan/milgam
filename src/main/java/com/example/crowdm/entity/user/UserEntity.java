@@ -110,5 +110,10 @@ public class UserEntity {
         return this.permission_yn;
     }
 
+    @Transactional
+    public void updateEvent(Integer event_index){
+        this.event_index = event_index;
+    }
+
 }
 

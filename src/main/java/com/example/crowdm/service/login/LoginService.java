@@ -1,7 +1,10 @@
 package com.example.crowdm.service.login;
 
+import com.example.crowdm.dto.user.Profile;
+import com.example.crowdm.entity.event.EventEntity;
 import com.example.crowdm.entity.user.UserEntity;
 import com.example.crowdm.entity.LoginLog.LoginLogEntity;
+import com.example.crowdm.repository.event.EventRepository;
 import com.example.crowdm.repository.login.LoginLogRepository;
 import com.example.crowdm.repository.login.LoginRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,12 +20,14 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class LoginService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final LoginRepository loginRepository;
+    private final EventRepository eventRepository;
     private final LoginLogRepository loginLogRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -99,4 +105,37 @@ public class LoginService {
 
         return resultMap;
     }
+
+    public String getEventTitle(Integer event_index){
+        Optional<EventEntity> eventOptional = eventRepository.findById(event_index);
+        EventEntity event = eventOptional.get();
+        return event.getTitle();
+    }
+    public Profile getProfile(){
+        Integer user_index=11;
+        Optional<UserEntity> userOptional = loginRepository.findById(user_index);
+        UserEntity user = userOptional.get();
+        Profile profile = new Profile();
+        profile.setUser_index(user_index);
+        profile.setEmail(user.getEmail());
+        profile.setName(user.getName());
+        profile.setOrg(user.getOrg());  //이름이 달라도 이해해줘라
+        profile.setPhone(user.getPhone());
+        profile.setId(user.getId());
+        profile.setEvent(getEventTitle(user.getEvent_index()));
+
+        return profile;
+
+
+    }
+    @Transactional
+    public String UpdateEventAtProfile(Integer event_index){
+        Integer user_index=11;
+        Optional<UserEntity> userOptional = loginRepository.findById(user_index);
+        UserEntity user = userOptional.get();
+        user.updateEvent(event_index);
+        loginRepository.save(user);
+        return "ok";
+    }
+
 }
