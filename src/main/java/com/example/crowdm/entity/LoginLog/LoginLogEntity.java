@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "login_log", schema="public")
+@Table(name = "loging_log")
 public class LoginLogEntity {
 
     @Id

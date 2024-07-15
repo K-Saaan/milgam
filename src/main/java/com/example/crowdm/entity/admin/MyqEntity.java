@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Entity
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "myq", schema="public")
 public class MyqEntity {
     @Id
@@ -39,7 +39,8 @@ public class MyqEntity {
     @Column(name = "admin_index")
     private Integer admin_index;
 
-
+    public MyqEntity() {
+    }
     @Transactional
     public void updateAnswerDate(Timestamp date, String answercontext){
         this.admin_index=1;
@@ -48,5 +49,66 @@ public class MyqEntity {
         //this.admin_index=1; 나중에 세션값으로 바꿔야함
 
     }
+
+    public Integer getUserId() {
+        return user_index;
+    }
+
+    public void setUserId(int user_index) {
+        this.user_index=user_index;
+    }
+
+    public String getQuestionTitle() {
+        return question_title;
+    }
+
+    public void setQuestionTitle(String question_title) {
+        this.question_title = question_title;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public Timestamp getQuestionDate() {
+        return question_date;
+    }
+    public void setQuestionDate(Timestamp question_date) {
+        this.question_date = question_date;
+    }
+
+    public Integer getUserIndex() {
+        return user_index;
+    }
+    public void setUserIndex(Integer user_index) {
+        this.user_index = user_index;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public Timestamp getAnswerDate() {
+        return answer_date;
+    }
+
+    public void setAnswerDate(Timestamp answer_date) {
+        this.answer_date = answer_date;
+    }
+    public Integer getAdminIndex() {
+        return admin_index;
+    }
+    public void setAdminIndex(Integer admin_index) {
+        this.admin_index = admin_index;
+    }
+
 
 }

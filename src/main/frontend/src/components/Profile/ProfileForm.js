@@ -29,6 +29,33 @@ const formSx = {
     ...noScrollbarStyles // 스크롤 바 숨기기 스타일 추가
 };
 
+const ProfileForm = ({ marginBottom }) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const from = location.state?.from || "/dashboard"; // 이전 위치 저장
+    const onNextClick = () => {    // 이전 페이지로 이동하도록
+        navigate(from);
+    };
+
+    // delete하기
+    const deleteData = async(id) => {
+        const del = axios.delete(`http://localhost:8080/event/delete/${id}`)
+        console.log(del)
+    }
+
+    //event 받아오기
+    const getData = async()=>{
+        const res = await axios.get('http://localhost:8080/event/eventlist')
+        console.log(res)
+
+
+        // deleteData(23)
+
+    }
+
+
+
 // 행사 선택 select box 스타일
 const EventControl = styled(FormControl)(({ theme }) => ({
     width: '370px',
@@ -55,9 +82,9 @@ const ProfileForm = ({ marginBottom }) => {
     const [customEvents, setCustomEvents] = useState([]);
     const [event, setEvent] = useState('');
     const [dialogOpen, setDialogOpen] = useState(false);
-    
+
     const from = location.state?.from || "/dashboard"; // 이전 위치 저장
-    
+
     const onNextClick = () => {    // 이전 페이지로 이동하도록
         navigate(from);
     };
@@ -110,7 +137,7 @@ const ProfileForm = ({ marginBottom }) => {
             console.error('event 데이터를 가져오는 중 오류 발생:', error);
           }
         };
-    
+
         fetchEvents ();
       }, []);
 
@@ -187,6 +214,10 @@ const ProfileForm = ({ marginBottom }) => {
                 <div style={{ marginBottom: '4px' }}>
                     행사
                 </div>
+                <EventControl
+                    fullWidth
+                    // sx={selectStyles}
+                >
                 <EventControl fullWidth>
                     <Select
                         value={event}
@@ -236,6 +267,7 @@ const ProfileForm = ({ marginBottom }) => {
                 <LongButton type="submit" variant="contained" onClick={onNextClick}>완료</LongButton> {/* 기존 페이지로 돌아감 */}
             </Grid>
             <NewEvent open={dialogOpen} onClose={() => setDialogOpen(false)} onAddEvent={handleAddEvent} /> {/* NewEvent 팝업창 열림 */}
+                <button onClick={getData()}>나 눌러봐라~!</button>
         </Grid>
     );
 };

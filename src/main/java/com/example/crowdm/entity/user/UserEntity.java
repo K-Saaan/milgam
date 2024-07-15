@@ -99,5 +99,16 @@ public class UserEntity {
         this.account_lock = false;
         this.fail_cnt = 0;
     }
+
+    @Transactional
+    public void updateDenyYn(){
+        this.permission_yn = false;
+    }
+
+
+    public boolean getPermissionyn() {
+        return this.permission_yn;
+    }
+
 }
 
