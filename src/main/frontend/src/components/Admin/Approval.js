@@ -76,9 +76,10 @@ const ReplyInquiry = () => {
     // 데이터를 가져오는 비동기 함수
     const fetchReq = async () => {
       try {
-        const response = await axios.get('/admin/permissionlist');
-        console.log(response.data);
-        setData(response.data);
+        const response = await axios.get('/admin/userlist');
+        //console.log(response.data);
+        const sortedData = response.data.sort((a, b) => new Date(b.applyDate) - new Date(a.applyDate));
+        setData(sortedData);
       } catch (error) {
         console.error('데이터를 가져오는 중 오류가 발생했습니다:', error);
         setError('데이터를 가져오는 중 오류가 발생했습니다. ')
@@ -86,7 +87,10 @@ const ReplyInquiry = () => {
         setLoading(false);
       }
     };
-    fetchReq();
+
+    if (!data) {
+      fetchReq();
+    }
   }, []);
 
   // 데이터 삭제 함수
@@ -108,35 +112,26 @@ const ReplyInquiry = () => {
 
   // 승인, 거절 처리 함수
   const handleApprovalOrRejection = (status) => {
-    // 승인일 때 서버에 요청
-    if (status === 'completed') {
-      axios.get(`/admin/permission?user_index=${selectedInquiry.id}`)
-      .then(response => {
-        // 성공 시 변경
-        setData(data.map((row) =>
-          row.id === selectedInquiry.id ? { ...row, permission_yn: status } : row
-        ));
-        handleCloseApproval();
-      })
-      .catch(error => {
-        console.error('에러가 발생했습니다:', error);
-        alert('처리에 실패했습니다. 다시 시도해 주세요.');
-      });
-    } else if (status === 'rejected') {
-      axios.get(`/admin/deny?user_index=${selectedInquiry.id}`)
-      .then(response => {
-        setData(data.map((row) =>
-          row.id === selectedInquiry.id ? { ...row, permission_yn: status } : row
-        ));
-        handleCloseApproval();
-      })
-      .catch(error => {
-        console.error('에러가 발생했습니다:', error);
-        alert('처리에 실패했습니다. 다시 시도해 주세요.');
-      });
-    } else { handleCloseApproval(); };
+    const apiEndpoint = status === 'completed' ? `/admin/permission?user_index=${selectedInquiry.user_index}` : `/admin/deny?user_index=${selectedInquiry.user_index}`;
+
+    axios.get(apiEndpoint).then(response => {
+      const updatedData = data.map((row) =>
+        row.id === selectedInquiry.id ? { ...row, status: status === 'completed' ? 'completed' : 'rejected' } : row
+      );
+      setData(updatedData);
+      handleCloseApproval();
+    })
+    .catch(error => {
+      console.error('에러가 발생했습니다:', error);
+      alert('처리에 실패했습니다. 다시 시도해 주세요.');
+    });
   };
 
+  // 날짜 포맷 함수
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return new Date(dateString).toLocaleDateString('en-CA', options);
+  };
 
   return (
     <>
@@ -158,7 +153,7 @@ const ReplyInquiry = () => {
                 <CustomTableCell>{row.id}</CustomTableCell>
                 <CustomTableCell>{row.email}</CustomTableCell>
                 <CustomTableCell>{row.role}</CustomTableCell>
-                <CustomTableCell>{row.applyDate}</CustomTableCell>
+                <CustomTableCell>{formatDate(row.applyDate)}</CustomTableCell>
                 <CustomTableCell>
                     <StatusBox status={row.status}>{row.status === null ? '대기' : row.status === 'completed' ? '승인' : '거절'}</StatusBox>
                 </CustomTableCell>
@@ -186,7 +181,7 @@ const ReplyInquiry = () => {
                 <CircularProgress sx={{color:theme.palette.primary.main}} />
             </div>
         }
-        {!data && (
+        {!data && !loading && (
             <div style={{textAlign:'center', margin:'10px', color:theme.palette.text.secondary}}>{error}목록이 없습니다.</div>
         )}
         </CustomTableContainer>
