@@ -29,7 +29,9 @@ public class WebConfig implements WebMvcConfigurer {
 //    }
 //
 //    public void addResourcesHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/").setCachePeriod(20);
+//        registry.addResourceHandler("/static/**")
+//                .addResourceLocations("classpath:/static/")
+//                .setCachePeriod(20);
 //    }
 
     //POST
@@ -43,7 +45,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:3000")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
-                .allowCredentials(true);;
+                .allowCredentials(true);
     }
 }
 

@@ -22,29 +22,28 @@ public class MessageController {
 
     private final MessageService messageService;
 
-    @GetMapping()
+    @GetMapping("/all")
     public ResponseEntity<List<MessageDto>> getAllMessageManageEntities() {
         List<MessageDto> messageManageEntities = messageService.getAllMessageManageEntities();
         return ResponseEntity.ok(messageManageEntities);
     }
-    @GetMapping("/user-messages")
 
+    @GetMapping("/user-messages")
     public ResponseEntity<List<MessageDto>> getUserMessageManageEntities(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) {
-            logger.error("session is null");
+            logger.error("Session is null");
             return ResponseEntity.status(401).build();
         }
 
-        Integer userIndex = (Integer) session.getAttribute("userIndex");
+        Long userIndex = (Long) session.getAttribute("userIndex");
         if (userIndex == null) {
             logger.error("userIndex is null");
             return ResponseEntity.status(401).build();
         }
-        logger.info("Session found. userIndex: {}", userIndex);
-//        List<MessageDto> messageManageEntities = messageService.getMessageManageEntitiesByUserIndex(userIndex);
-//        return ResponseEntity.ok(messageManageEntities);
-        return ResponseEntity.status(200).build();
 
+        logger.info("Session found. userIndex: {}", userIndex);
+        List<MessageDto> messageManageEntities = messageService.getMessageManageEntitiesByUserIndex(userIndex);
+        return ResponseEntity.ok(messageManageEntities);
     }
 }

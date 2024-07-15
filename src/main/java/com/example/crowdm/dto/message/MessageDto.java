@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class MessageDto {
-    private int userIndex;
+    private long userIndex;
     private int logIndex;
     private boolean confirm;
     private int videoIndex;

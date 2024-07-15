@@ -58,7 +58,16 @@ public class LoginService {
 
                 // 세션에 userId 저장
                 HttpSession session = request.getSession(true);
-                session.setAttribute("userIndex", user.getUser_index());
+                if (session == null) {
+                    logger.error("Failed to create session for user: {}", user.getId());
+                    resultMap.put("RESULT", "SESSION_CREATION_FAILED");
+                    return resultMap;
+                } else {
+                    logger.info("Session created successfully for user: {}", user.getId());
+                    session.setAttribute("userIndex", user.getUser_index());
+                    Long userIndex = (Long) session.getAttribute("userIndex");
+                    logger.info("userIndex: {}", userIndex);
+                }
 
                 // 로그인 로그 저장 -> LoginLog 테이블에 로그인 기록 저장
                 LoginLogEntity loginLog = LoginLogEntity.builder()
