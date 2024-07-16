@@ -23,7 +23,7 @@ const Background = (props) => {
         <h1 style={{margin: "0px"}}>{props.name}</h1>
       </Container>
       {/* 내용 부분 */}
-      <Container sx={{minHeight: '65vh',}}>
+      <Container sx={{minHeight: '65vh', boxShadow: 1}}>
         {props.contents}
       </Container>
     </Box>
