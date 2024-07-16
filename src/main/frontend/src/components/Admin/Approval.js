@@ -61,7 +61,7 @@ const ReplyInquiry = () => {
 
   // 페이지네이션
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -76,6 +76,11 @@ const ReplyInquiry = () => {
     // 데이터를 가져오는 비동기 함수
     const fetchReq = async () => {
       try {
+        /* const instance = axios.create({
+          withCredentials: true, // 쿠키 포함 설정
+        }); */
+
+        //const response = await instance.get('/admin/userlist');
         const response = await axios.get('/admin/userlist');
         //console.log(response.data);
         const sortedData = response.data.sort((a, b) => new Date(b.applyDate) - new Date(a.applyDate));
@@ -92,8 +97,8 @@ const ReplyInquiry = () => {
   }, []);
 
   // 데이터 삭제 함수
-  const handleDelete = (id) => {
-    setData(data.filter((row) => row.id !== id));
+  const handleDelete = (user_index) => {
+    setData(data.filter((row) => row.user_index !== user_index));
   };
 
   // 승인 상태 변경 팝업 열기
@@ -111,10 +116,14 @@ const ReplyInquiry = () => {
   // 승인, 거절 처리 함수
   const handleApprovalOrRejection = (status) => {
     const apiEndpoint = status === 'completed' ? `/admin/permission?user_index=${selectedInquiry.user_index}` : `/admin/deny?user_index=${selectedInquiry.user_index}`;
+    /*const instance = axios.create({
+      withCredentials: true, // 쿠키 포함 설정
+    });
 
+    instance.get(apiEndpoint).then(response => {*/
     axios.get(apiEndpoint).then(response => {
       const updatedData = data.map((row) =>
-        row.id === selectedInquiry.id ? { ...row, status: status === 'completed' ? 'completed' : 'rejected' } : row
+        row.user_index === selectedInquiry.user_index ? { ...row, status: status === 'completed' ? 'completed' : 'rejected' } : row
       );
       setData(updatedData);
       handleCloseApproval();
@@ -147,7 +156,7 @@ const ReplyInquiry = () => {
             </CustomTableHead>
             <TableBody>
             {data && ( data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-              <CustomTableRow key={row.id} onClick={() => handleOpenApproval(row)}>
+              <CustomTableRow key={row.user_index} onClick={() => handleOpenApproval(row)}>
                 <CustomTableCell>{row.id}</CustomTableCell>
                 <CustomTableCell>{row.email}</CustomTableCell>
                 <CustomTableCell>{row.role}</CustomTableCell>
@@ -157,7 +166,7 @@ const ReplyInquiry = () => {
                 </CustomTableCell>
                 <CustomTableCell>
                     <Button sx={{ color: theme.palette.text.primary }}
-                      onClick={(e) => { e.stopPropagation(); handleDelete(row.id); }}
+                      onClick={(e) => { e.stopPropagation(); handleDelete(row.user_index); }}
                       disabled={row.status === null}
                     >✕</Button>
                 </CustomTableCell>
@@ -172,6 +181,8 @@ const ReplyInquiry = () => {
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            rowsPerPageOptions={[5, 10, 15, 20]} // 페이지 네이션 옵션
+            sx={{ mt: 'auto' }} // 페이지네이션을 하단에 고정
         />}
         {/* 로딩 중일 때 표시 */}
         {loading &&

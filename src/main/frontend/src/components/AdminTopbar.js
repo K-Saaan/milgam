@@ -10,6 +10,7 @@ import { styled } from '@mui/system';
 import Character from "../components/Home/new_cha.png"
 import LoginAlert from './LoginAlert';
 import ModeSwitch from './Styles/ModalSwitch';
+import Logout from "./Logout";
 
 const abStyle = (theme) => ({backgroundColor: theme.palette.background.paper});
 const titleStyle = { display: {  sm: 'block' } };
@@ -31,10 +32,11 @@ function AdminTopbar({ isAdmin, toggleTheme }) {
   const location = useLocation();
   const {adminLogined, setAdminLogined} = useStore(state => state);
   const [logoutModalOpen, setLogoutModalOpen] = React.useState(false);
-
+  const [loginAlertOpen, setLoginAlertOpen] = React.useState(false);
 
   const handleModalClose = () => {
     setLogoutModalOpen(false);
+    setLoginAlertOpen(false);
   };
 
   const isloginCheck = (id) => {
@@ -42,9 +44,17 @@ function AdminTopbar({ isAdmin, toggleTheme }) {
       navigate(`/admin/${id}`, { state: { from: location.pathname } });
     }
     else{
-      setLogoutModalOpen(true);
+      setLoginAlertOpen(true);
     }
   }
+
+  // 로그아웃 처리
+  const handleLogout = () => {
+    setLogoutModalOpen(false);
+    setAdminLogined(false);
+    navigate('/home');
+    localStorage.removeItem("key");
+  };
 
   // 테마 변경
   const theme = useTheme();
@@ -97,7 +107,8 @@ function AdminTopbar({ isAdmin, toggleTheme }) {
         </div>
         </Toolbar>
       </AppBar>
-      <LoginAlert alertOpen={logoutModalOpen} handleClose={handleModalClose} isAdmin={isAdmin}/>
+      <LoginAlert alertOpen={loginAlertOpen} handleClose={handleModalClose} isAdmin={isAdmin}/>
+      <Logout alertOpen={logoutModalOpen} handleClose={handleModalClose} handleLogout={handleLogout}/>
     </Box>
   );
 }

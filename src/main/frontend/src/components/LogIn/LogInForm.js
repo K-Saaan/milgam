@@ -53,12 +53,14 @@ const LogInForm = ({ marginBottom }) => {
                     localStorage.setItem("key", data.id);
                     setIsLogined(true);
                     navigate('/dashboard');
-                } else if (res.data.RESULT === "INVALID_PASSWORD") {
-                    setPasswordError("비밀번호가 틀렸습니다.");
+                } else if (res.data.RESULT === "INVALID_PASSWORD" || res.data.RESULT === 'USER_NOT_FOUND') {
+                    setPasswordError("아이디 혹은 비밀번호가 틀렸습니다.");
                 } else if (res.data.RESULT === "LOCK_ACCOUNT") {
                     alHandleClickOpen();
                 } else if (res.data.RESULT === "PERMISSION_DENIED") {
                     npHandleClickOpen();
+                } else if (res.data.RESULT === 'OUTSIDE_DATE_RANGE') {
+                    setPasswordError('사용 기간이 아닙니다.')
                 }
             } catch (error) {
                 console.error("오류가 발생하였습니다:", error);
