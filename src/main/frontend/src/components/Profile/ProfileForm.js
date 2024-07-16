@@ -25,14 +25,14 @@ const formSx = {
     justifyContent: 'center',
     margin: 'auto',
     height: '65vh',
-    width: '95%',
+    width: '70%',
     overflow: 'auto', // 스크롤 활성화
     ...noScrollbarStyles // 스크롤 바 숨기기 스타일 추가
 };
 
 // 행사 선택 select box 스타일
 const EventControl = styled(FormControl)(({ theme }) => ({
-    width: '100%',
+    width: '75%',
     height: '56px',
     backgroundColor: theme.palette.secondary.main,
     '& .MuiOutlinedInput-root': {
@@ -68,19 +68,18 @@ const ProfileForm = () => {
     //     console.log("Full response:", res.data);
     // }
 
-
     // delete하기
-    const deleteData = async (id) => {
-        try {
-            const response = await axios.delete(`http://localhost:8080/event/delete/${id}`);
-            console.log("Deleted successfully:", response);
-            // 여기에서 성공적으로 삭제되었을 때 필요한 추가 작업을 수행할 수 있습니다.
-            // 예를 들어, 상태 업데이트를 통해 UI를 변경할 수 있습니다.
-        } catch (error) {
-            console.error("Failed to delete the event:", error);
-            // 삭제 실패 시 오류 처리 로직
-        }
-    }
+    // const deleteData = async (id) => {
+    //     try {
+    //         const response = await axios.delete(`http://localhost:8080/event/delete/${id}`);
+    //         console.log("Deleted successfully:", response);
+    //         // 여기에서 성공적으로 삭제되었을 때 필요한 추가 작업을 수행할 수 있습니다.
+    //         // 예를 들어, 상태 업데이트를 통해 UI를 변경할 수 있습니다.
+    //     } catch (error) {
+    //         console.error("Failed to delete the event:", error);
+    //         // 삭제 실패 시 오류 처리 로직
+    //     }
+    // }
 
     //event 받아오기
     const [eventTitles, setEventTitles] = useState([]);
@@ -132,18 +131,6 @@ const ProfileForm = () => {
         fetchProfile();
     }, []);  // 프로필 데이터 로드
 
-    // const deleteData = async (id) => {
-    //     try {
-    //         const response = await axios.delete(`http://localhost:8080/event/delete/${id}`);
-    //         console.log("Deleted successfully:", response);
-    //         setEventTitles(prev => prev.filter(event => event.id !== id));
-    //         if (event === id) {
-    //             setEvent('');
-    //         }
-    //     } catch (error) {
-    //         console.error("Failed to delete the event:", error);
-    //     }
-    // };
 
     // 이벤트
     const [event, setEvent] = useState('');
@@ -172,19 +159,17 @@ const ProfileForm = () => {
         }
     };
 
-
     return (
         <Grid
             container
             component="form"
-            spacing={3}
+            spacing={0}
             noValidate
             autoComplete="off"
             sx={formSx}
         >
-            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, }}> {/* 이름 */}
-                <div>
-                    <div style={{ marginBottom: '4px' }}>
+            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop:5 }}> {/* 이름 */}
+                    <div style={{textAlign: 'left', width:'100%', marginBottom: '4px', marginLeft: '93px'}}>
                         이름
                     </div>
                     <CustomTypographyWrapper>
@@ -192,11 +177,9 @@ const ProfileForm = () => {
                             {profile.name || 'null'} {/* 서버에서 받은 이름값이나 기본값 */}
                         </CustomTypography>
                     </CustomTypographyWrapper>
-                </div>
             </Grid>
-            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, }}> {/* 아이디 */}
-                <div>
-                    <div style={{ marginBottom: '4px' }}>
+            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop:5 }}> {/* 아이디 */}
+                    <div style={{textAlign: 'left', width:'100%', marginBottom: '4px', marginLeft: '93px' }}>
                         아이디
                     </div>
                     <CustomTypographyWrapper>
@@ -204,11 +187,9 @@ const ProfileForm = () => {
                         {profile.id || 'null'} {/* 서버에서 받은 아이디값이나 기본값 */}
                         </CustomTypography>
                     </CustomTypographyWrapper>
-                </div>
             </Grid>
-            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, }}> {/* 이메일 */}
-                <div>
-                    <div style={{ marginBottom: '4px' }}>
+            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop:2, paddingBottom:3 }}> {/* 이메일 */}
+                    <div style={{textAlign: 'left', width:'100%', marginBottom: '4px', marginLeft: '93px'}}>
                         이메일
                     </div>
                     <CustomTypographyWrapper>
@@ -216,11 +197,9 @@ const ProfileForm = () => {
                         {profile.email || 'null'} {/* 서버에서 받은 이메일값이나 기본값 */}
                         </CustomTypography>
                     </CustomTypographyWrapper>
-                </div>
             </Grid>
-            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, }}> {/* 전화번호 */}
-                <div>
-                    <div style={{ marginBottom: '4px' }}>
+            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop:2, paddingBottom:3 }}> {/* 전화번호 */}
+                    <div style={{textAlign: 'left', width:'100%', marginBottom: '4px', marginLeft: '93px'}}>
                         전화번호
                     </div>
                     <CustomTypographyWrapper>
@@ -228,11 +207,9 @@ const ProfileForm = () => {
                         {profile.phone || 'null'} {/* 서버에서 받은 전화번호값이나 기본값 */}
                         </CustomTypography>
                     </CustomTypographyWrapper>
-                </div>
             </Grid>
-            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, }}> {/* 소속 */}
-                <div>
-                    <div style={{ marginBottom: '4px' }}>
+            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingBottom:6 }}> {/* 소속 */}
+                    <div style={{textAlign: 'left', width:'100%', marginBottom: '4px', marginLeft: '93px'}}>
                         소속
                     </div>
                     <CustomTypographyWrapper>
@@ -240,10 +217,9 @@ const ProfileForm = () => {
                         {profile.org || 'null'} {/* 서버에서 받은 소속값이나 기본값 */}
                         </CustomTypography>
                     </CustomTypographyWrapper>
-                </div>
             </Grid>
-            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, }}> {/* 행사 선택 */}
-                <div style={{ marginBottom: '4px' }}>
+            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingBottom:6 }}> {/* 행사 선택 */}
+                <div style={{textAlign: 'left', width:'100%', marginBottom: '4px', marginLeft: '93px'}}>
                     행사
                 </div>
                 <EventControl fullWidth>
@@ -251,12 +227,6 @@ const ProfileForm = () => {
                         value={event}
                         onChange={handleEventChange}
                         displayEmpty
-                        // renderValue={(selected) => {
-                        //     if (!selected || selected.length === 0) {
-                        //         return <em>선택</em>;
-                        //     }
-                        //     return selected;
-                        // }}
                         renderValue={(selected) => selected ? selected : <em>선택</em>}
                     >
                         {eventTitles.map((title, index) => (
@@ -289,11 +259,10 @@ const ProfileForm = () => {
                     </Select>
                 </EventControl>
             </Grid>
-            <Grid item xs={12} display={{ md: 'flex' }} justifyContent={{ md: 'center' }}>
-                <LongButton type="submit" variant="contained" onClick={onNextClick}>완료</LongButton> {/* 기존 페이지로 돌아감 */}
+            <Grid item xs={12} display={{ md: 'flex' }} justifyContent={{ md: 'center'}} sx={{paddingBottom:5}}>
+                <LongButton type="submit" variant="contained" onClick={onNextClick} sx={{marginTop: 0}}>완료</LongButton> {/* 기존 페이지로 돌아감 */}
             </Grid>
             <NewEvent open={dialogOpen} onClose={() => setDialogOpen(false)} onAddEvent={handleAddEvent} /> {/* NewEvent 팝업창 열림 */}
-                {/* <button onClick={getData()}>나 눌러봐라~!</button> */}
         </Grid>
     );
 };
