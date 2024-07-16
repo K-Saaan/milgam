@@ -13,6 +13,16 @@ import CustomTextField from "../Styles/CustomTextField.js";
 // mui system을 사용한 코드
 import { styled } from '@mui/system';
 
+const CamInputCont = styled('div')({
+  display:'flex',
+  justifyContent:'space-between',
+  alignItems:'center',
+  width:'370px',
+  paddingLeft:'10px',
+  marginTop:"30px",
+  marginBottom:'10px'
+});
+
 const UploadBG = styled('div')({
     display: 'flex',
     justifyContent: 'center',
@@ -103,7 +113,7 @@ const UploadBG = styled('div')({
     const navigate = useNavigate();
     const inputRef = useRef();
     const [selectedFile, setSelectedFile] = useState(null);
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, reset } = useForm();
 
     const [error, setError] = useState('');
     const [isActive, setActive] = useState(false)
@@ -142,32 +152,61 @@ const UploadBG = styled('div')({
     const removeFile = (e) => {
       e.preventDefault();
       setSelectedFile(null);
+      reset();
     };
 
-    // 파일 전송 처리
+    const uploadFileChunk = async (chunk, index, totalChunks) => {
+      const formData = new FormData();
+      formData.append('chunkFile', chunk);
+      formData.append('chunkIndex', index);
+      formData.append('totalChunks', totalChunks);
+
+      try {
+        await axios.post('http://localhost:8080/api/videoUpload', formData, {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } catch (error) {
+        throw new Error(`Chunk ${index} upload failed.`);
+      }
+    };
+
+    const uploadMetaData = async (data, file, index) => {
+      const vMetaData = new FormData();
+      vMetaData.append('length', file.size);
+      vMetaData.append('sector', data.sector);
+      vMetaData.append('camera_num', data.camera);
+      vMetaData.append('content', data.detail);
+      vMetaData.append('file_name', file.name);
+      vMetaData.append('chunk_index', index);
+
+      try {
+        await axios.post('http://localhost:8080/api/uploadmeta', vMetaData, {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } catch (error) {
+        throw new Error('Meta data upload failed.');
+      }
+    };
+
     const onHSubmit = async (data) => {
       if (selectedFile) {
         try {
-          // 파일 자르기
-          const chunkSize = 1024 * 1024; // 1MB
+          const chunkSize = 1024 * 1024;
           const totalChunks = Math.ceil(selectedFile.size / chunkSize);
 
-          //선택한 영상을 chunk 단위로 잘라서 하나씩 서버로 보냄
           for (let i = 0; i < totalChunks; i++) {
             const start = i * chunkSize;
             const end = Math.min(selectedFile.size, start + chunkSize);
             const chunk = selectedFile.slice(start, end);
 
-            const formData = new FormData();
-            formData.append('chunkFile', chunk);
-            formData.append('chunkIndex', i);
-            formData.append('totalChunks', totalChunks);
-
-            await axios.post('/api/videoUpload', formData, {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            });
+            await uploadFileChunk(chunk, i, totalChunks);
+            //await uploadMetaData(data, selectedFile, i);
           }
 
           navigate("/videoresult", { state: { video: selectedFile, detail: data.detail } });
@@ -185,6 +224,11 @@ const UploadBG = styled('div')({
       if (event.key === 'Enter') {
         handleSubmit(onHSubmit)();
       }
+    };
+    const handleInput = (event) => {
+      const value = event.target.value;
+      // 비숫자 문자를 모두 제거합니다.
+      event.target.value = value.replace(/[^0-9]/g, '');
     };
 
     return (
@@ -216,33 +260,52 @@ const UploadBG = styled('div')({
           )}
           {/* 선택한 파일이 있을 때 나타남 */}
           {selectedFile && (
-            <UploadBG>
-              {/* 파일 명, 선택 취소 */}
-              <SelectedFileContainer>
-                <SelectedFileP>{selectedFile.name}</SelectedFileP>
-                <SelectedFileButton onClick={removeFile}>
-                  <DeleteForeverOutlinedIcon />
-                </SelectedFileButton>
-              </SelectedFileContainer>
-              {/* 영상 내용 선택적 기입란 */}
-              <div>
-                <CustomTextField
-                  id="detail"
-                  placeholder="영상 내용을 기입해주세요(선택)"
-                  {...register("detail")}
-                  onKeyPress={handleKeyPress}
-                />
-              </div>
-              {/* 분석 결과로 이동하는 버튼 */}
-              <LongButton variant="contained" type="submit" style={{ marginTop: "40px" }}>
-                분석
-              </LongButton>
-              <div style={{color: theme.palette.warn}}>{error}</div>
-            </UploadBG>
+              <UploadBG>
+                {/* 파일 명, 선택 취소 */}
+                <SelectedFileContainer>
+                  <SelectedFileP>{selectedFile.name}</SelectedFileP>
+                  <SelectedFileButton onClick={removeFile}>
+                    <DeleteForeverOutlinedIcon/>
+                  </SelectedFileButton>
+                </SelectedFileContainer>
+                {/* 영상 내용 선택적 기입란 */}
+                <CamInputCont>
+                  <div>구역</div>
+                  <CustomTextField
+                      id="sector"
+                      placeholder="구역 번호"
+                      {...register("sector")}
+                      inputProps={{ maxLength: 5 }}
+                      sx={{width:"120px"}}
+                  />
+                  <div>카메라</div>
+                  <CustomTextField
+                      id="camera"
+                      placeholder="카메라 번호"
+                      sx={{width:"120px"}}
+                      {...register("camera")}
+                      inputProps={{ maxLength: 10 }}
+                      onInput={handleInput}
+                  />
+                </CamInputCont>
+                <div>
+                  <CustomTextField
+                      id="detail"
+                      placeholder="영상 내용을 기입해주세요(선택)"
+                      {...register("detail")}
+                      onKeyPress={handleKeyPress}
+                  />
+                </div>
+                {/* 분석 결과로 이동하는 버튼 */}
+                <LongButton variant="contained" type="submit" style={{marginTop: "40px"}}>
+                  분석
+                </LongButton>
+                <div style={{color: theme.palette.warn}}>{error}</div>
+              </UploadBG>
           )}
         </UploadFormContainer>
       </UploadBG>
     );
   }
 
-  export default UploadForm;
+export default UploadForm;

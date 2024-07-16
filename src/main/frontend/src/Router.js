@@ -12,7 +12,6 @@ import VideoResult from "./routes/VideoResult";
 import LeftContentArea from "./components/Dashboard/LeftContentArea";
 import LeftContentAreaDetail from "./components/Dashboard/LeftContentAreaDetail";
 import Inquiry from "./routes/Inquiry";
-import AdminLogIn from "./routes/AdminLogIn";
 import ResetPassword from "./routes/ResetPassword";
 import AdminApproval from "./routes/AdminApproval";
 import AdminReply from './routes/AdminReply';
@@ -36,9 +35,14 @@ const router = createBrowserRouter([
         path: "admin",
         element: <Admin />,
         children: [
-          { path: "login", element: <AdminLogIn /> },
           { path: "approval", element: <AdminApproval /> },
-          { path: "replyinquiry", element: <AdminReply /> }
+          { path: "replyinquiry", element: <AdminReply /> },
+          { path: "dashboard",
+            element: <Dashboard />,
+            children: [
+              { path: "", element: <LeftContentArea /> },
+              { path: "detail/:id", element: <LeftContentAreaDetail /> }
+            ] }
         ]
       },
       {

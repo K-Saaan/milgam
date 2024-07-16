@@ -8,37 +8,52 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import useStore from "../store";
+import { styled } from '@mui/system';
 import Character from "../components/Home/new_cha.png"
 import LoginAlert from './LoginAlert';
 import ModeSwitch from './Styles/ModalSwitch';
+import Logout from './Logout';
 import axios from 'axios';
 
-// const barBoxStyle = { flexGrow: 1 };
 const abStyle = (theme) => ({backgroundColor: theme.palette.background.paper});
 const titleStyle = { display: {  sm: 'block' } };
-// xs: 'none',
 const profileIconStyle = { display: { xs: 'none', md: 'flex' } };
 
-function Topbar({ isAdmin, toggleTheme }) {
+const MenuButton = styled('button')(({ theme, isActive }) => ({
+  cursor: 'pointer',
+  color: isActive ? theme.palette.primary.main : theme.palette.text.primary,
+  background: 'none',
+  border: 'none',
+  textAlign: 'center',
+  fontSize: '18px',
+  '&:hover': {
+    color: theme.palette.primary.main,
+  },
+}));
 
+function Topbar({ isAdmin, toggleTheme }) {
   const navigate = useNavigate();
   const location = useLocation();
   const wapiKey = process.env.REACT_APP_W_API_KEY;
 
   const {isLogined, setIsLogined} = useStore(state => state);
-  // const {adminLogined, setAdminLogined} = useStore(state => state);
   const [logoutModalOpen, setLogoutModalOpen] = React.useState(false);
+  const [loginAlertOpen, setLoginAlertOpen] = React.useState(false);
 
   const handleModalClose = () => {
     setLogoutModalOpen(false);
   };
 
+  const handleLoginAlertClose  = () => {
+    setLoginAlertOpen(false);
+  };
+
   const isloginCheck = (id) => {
-    if (isLogined || id === 'faq'){
+    if (isLogined || id === 'faq' || id === 'login/loginPage'){
       navigate(`/${id}`, { state: { from: location.pathname } });
     }
     else{
-      setLogoutModalOpen(true);
+      setLoginAlertOpen(true);
     }
   }
 
@@ -56,6 +71,17 @@ function Topbar({ isAdmin, toggleTheme }) {
     navigate('/profile', { state: { from: location.pathname } });
   };
 
+  // 로그아웃 처리
+  const handleLogout = () => {
+    setLogoutModalOpen(false);
+    setIsLogined(false);
+    navigate('/home');
+    localStorage.removeItem("key");
+  };
+
+  // 현재 경로와 버튼 ID 비교하여 활성 상태 확인
+  const isActive = (id) => location.pathname.includes(id);
+  
   const [temp, setTemp]= React.useState()
   const [code, setCode]= React.useState()
 
@@ -91,64 +117,72 @@ function Topbar({ isAdmin, toggleTheme }) {
               >
                 MilGam
               </Typography>
-            
               <img src={Character} style={{height:'50px', width:'50px', position: 'relative', top:'-6px', right:'7px'}} alt='giyomi' />
             </Link>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', }}>
-          <button onClick={()=>isloginCheck('dashboard')} style={{cursor: 'pointer', color: theme.palette.text.primary, background: 'none', border: 'none', textAlign: 'center', fontSize: '18px' }}>대시보드</button>
-          <button onClick={()=>isloginCheck('uploadvideo')} id='uploadvideo' style={{cursor: 'pointer', color: theme.palette.text.primary, background: 'none', border: 'none', textAlign: 'center', fontSize: '18px' }}>영상업로드</button>
-          <button onClick={()=>isloginCheck('inquiry')} id='inquiry' style={{cursor: 'pointer', color: theme.palette.text.primary, background: 'none', border: 'none', textAlign: 'center', fontSize: '18px' }}>1:1문의</button>
-          <button onClick={()=>isloginCheck('faq')} id='faq' style={{cursor: 'pointer', color: theme.palette.text.primary, background: 'none', border: 'none', textAlign: 'center', fontSize: '18px' }}>FAQ</button>
+          <MenuButton onClick={()=>isloginCheck('dashboard')} id='dashboard' isActive={isActive('dashboard')}>대시보드</MenuButton>
+          <MenuButton onClick={()=>isloginCheck('uploadvideo')} id='uploadvideo' isActive={isActive('uploadvideo')}>영상업로드</MenuButton>
+          <MenuButton onClick={()=>isloginCheck('inquiry')} id='inquiry' isActive={isActive('inquiry')}>1:1문의</MenuButton>
+          <MenuButton onClick={()=>isloginCheck('faq')} id='faq' isActive={isActive('faq')}>FAQ</MenuButton>
         </div>
 
-      
-        
-          <div style={{display:'flex', alignItems:'center'}}>
+        <div style={{display:'flex', alignItems:'center'}}>
+          {!isLogined ? (
+          <MenuButton onClick={() => isloginCheck('login/loginPage')} id="login/loginPage">
+            로그인
+          </MenuButton>
+          ) : (
+          <MenuButton onClick={() => setLogoutModalOpen(true)} id="logout">
+            로그아웃
+          </MenuButton>
+          )}
 
-            <div>
-              {temp === null ? 
-                <div>데이터를 로딩 중...</div> :
-                <div style={{marginRight:'8px', height: '64px', display:'flex', justifyContent:'center', alignItems:'center'}}>
-                  <img style={{width: '50px', height: '50px', marginRight:'-8px'}} src={`http://openweathermap.org/img/wn/${code}.png`} alt='weather' />
-                  <span style={{textAlign:'center' ,fontSize:'14px', width: '50px', height: 'auto'}}>
-                    {temp} 
-                    <span style={{ position: 'relative', top:'-4px', right:'-2px', fontWeight: 800 }}>
-                      &deg;C
-                    </span>
-                  </span>
-                </div>
-                
-              }
+
+
+        <div>
+          {temp === null ? 
+            <div>데이터를 로딩 중...</div> :
+            <div style={{marginRight:'8px', height: '64px', display:'flex', justifyContent:'center', alignItems:'center'}}>
+              <img style={{width: '50px', height: '50px', marginRight:'-8px'}} src={`http://openweathermap.org/img/wn/${code}.png`} alt='weather' />
+              <span style={{textAlign:'center' ,fontSize:'14px', width: '50px', height: 'auto'}}>
+                {temp} 
+                <span style={{ position: 'relative', top:'-4px', right:'-2px', fontWeight: 800 }}>
+                  &deg;C
+                </span>
+              </span>
             </div>
-
-
-            <ModeSwitch
-              checked={theme.palette.mode === 'dark'}
-              onChange={handleToggleClick}
-              inputProps={{ 'aria-label': 'theme switch' }}
-            />
             
+          }
+        </div>
 
-            {/* 데스크탑 화면에서 프로필 아이콘 */}
-            { isLogined || (
-              <Box sx={profileIconStyle}>
-                <IconButton
-                  size="large"
-                  aria-label="go to profile page"
-                  aria-haspopup="true"
-                  color="inherit"
-                  onClick={handleProfileClick} // 클릭 시 /profile 경로로 이동
-                  sx={{color: theme.palette.text.primary}}
-                >
-                  <AccountCircle />
-                </IconButton>
+
+        <ModeSwitch
+          checked={theme.palette.mode === 'dark'}
+          onChange={handleToggleClick}
+          inputProps={{ 'aria-label': 'theme switch' }}
+          />
+
+          {/* 데스크탑 화면에서 프로필 아이콘 */}
+          { isLogined && (
+            <Box sx={profileIconStyle}>
+                    <IconButton
+                      size="large"
+                      aria-label="go to profile page"
+                      aria-haspopup="true"
+                      color="inherit"
+                      onClick={handleProfileClick} // 클릭 시 /profile 경로로 이동
+                      sx={{color: theme.palette.text.primary}}
+                    >
+                      <AccountCircle sx={{ fontSize: 40 }} />
+                    </IconButton>
               </Box>
-            )}
-          </div>
+          )}
+        </div>
         </Toolbar>
       </AppBar>
-      <LoginAlert alertOpen={logoutModalOpen} handleClose={handleModalClose} />
+      <LoginAlert alertOpen={loginAlertOpen} handleClose={handleLoginAlertClose} isAdmin={isAdmin}/>
+      <Logout alertOpen={logoutModalOpen} handleClose={handleModalClose} handleLogout={handleLogout}/>
     </Box>
   );
 }
