@@ -3,7 +3,7 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import useStore from "../store";
 import { styled } from '@mui/system';
@@ -72,7 +72,7 @@ function AdminTopbar({ isAdmin, toggleTheme }) {
     <Box>
       <AppBar position="static" style={appBarStyle}>
         <Toolbar sx={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-        <div >
+        <div style={{display:'flex', alignItems:'center', textDecoration:'none'}} >
             {/* 앱 타이틀 */}
             <Typography
               variant="h6"
