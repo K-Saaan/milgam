@@ -50,7 +50,7 @@ public class VideoService {
     @Value("${file_path.video_path}")
     String uploadPath;
 
-//    @Value("${server.gcp_upload}")
+    @Value("${url.gcp_upload}")
     String gcpUrl;
 
     public ResponseEntity<String> uploadToGCP(MultipartFile file, int chunkIndex, int totalChunks) {

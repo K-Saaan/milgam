@@ -74,7 +74,7 @@ public class VideoController {
         logger.info("resultContent = {}", resultContent);
         logger.info("chunkIndex = {}", chunkIndex);
         logger.info("totalChunks = {}", totalChunks);
-        messagingTemplate.convertAndSend("/topic/video/", resultContent);
+        messagingTemplate.convertAndSend("/videoresult", resultContent);
         return ResponseEntity.ok("Result to front");
     }
 

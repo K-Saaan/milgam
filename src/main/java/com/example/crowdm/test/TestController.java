@@ -2,6 +2,8 @@ package com.example.crowdm.test;
 
 import com.example.crowdm.service.mail.MailSender;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,5 +36,11 @@ public class TestController {
     public String postTest(@RequestParam String test, Model model) {
         System.out.println("test/post Test : ");
         return test;
+    }
+
+    @GetMapping("/res")
+    public ResponseEntity resTest(@RequestParam String test, Model model) {
+        System.out.println("test/post Test : ");
+        return ResponseEntity.status(HttpStatus.OK).body("Success");
     }
 }
