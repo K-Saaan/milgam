@@ -46,8 +46,16 @@ public class LoginService {
             logger.info("Fetched user with ID: {}", user.getId());
 
             // 비밀번호 검증
-            if (passwordEncoder.matches(password, user.getPw()) || password.equals(user.getPw())) { // 암호화된 비밀번호 또는 평문 비교
+            if (passwordEncoder.matches(password, user.getPw())) { // 평문 비교 제거, 암호화된 비밀번호만 검증
                 logger.info("Password matches for user: {}", user.getId());
+
+                /**
+                 * 1. MethodName: Login
+                 * 2. ClassName : LoginService
+                 * 3. Comment   : 로그인서비스
+                 * 4. 작성자    : 이수민
+                 * 5. 작성일    : 2024. 07. 15
+                 **/
 
                 // permission_yn 확인
                 if (!user.getPermission_yn()) {
@@ -58,8 +66,8 @@ public class LoginService {
 
                 // 로그인 시도 기간 확인
                 LocalDateTime now = LocalDateTime.now();
-                LocalDateTime startDate = user.getStart_date().toLocalDateTime();
-                LocalDateTime endDate = user.getEnd_date().toLocalDateTime();
+                LocalDateTime startDate = user.getStartDate().toLocalDateTime();
+                LocalDateTime endDate = user.getEndDate().toLocalDateTime();
 
                 if (now.isBefore(startDate) || now.isAfter(endDate)) {
                     logger.info("Login attempt outside of allowed date range for user: {}", user.getId());
@@ -123,19 +131,19 @@ public class LoginService {
                 logger.info("Fetched admin with ID: {}", admin.getId());
 
                 // 비밀번호 검증
-                if (passwordEncoder.matches(password, admin.getPw()) || password.equals(admin.getPw())) { // 암호화된 비밀번호 또는 평문 비교
+                if (passwordEncoder.matches(password, admin.getPw())) { // 평문 비교 제거, 암호화된 비밀번호만 검증
                     logger.info("Password matches for admin: {}", admin.getId());
 
                     // 로그인 성공
                     resultMap.put("RESULT", "GO_MAIN");
                     resultMap.put("userType", "admin");
-                    resultMap.put("URL", "/admin");
+                    resultMap.put("URL", "/admin/approval");
 
                     // 세션에 adminId 저장
                     HttpSession session = request.getSession(true);
                     session.setAttribute("adminIndex", admin.getAdmin_index());
 
-                    // 관리자 로그인 성공 로그
+                    // 0715: 관리자 로그인 성공 로그
                     logger.info("Login successful for admin: {}", admin.getId());
                 } else {
                     logger.info("Invalid password for admin: {}", admin.getId());

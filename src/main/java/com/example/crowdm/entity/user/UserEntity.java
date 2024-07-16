@@ -110,5 +110,22 @@ public class UserEntity {
         return this.permission_yn;
     }
 
+    public Timestamp getStartDate() {
+        return start_date;
+    }
+
+    public void setStartDate(Timestamp startDate) {
+        this.start_date = startDate;
+    }
+
+    public Timestamp getEndDate() {
+        return end_date;
+    }
+
+    public void setEndDate(Timestamp endDate) {
+        this.end_date = endDate;
+    }
 }
+
+
 

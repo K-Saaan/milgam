@@ -47,7 +47,7 @@ const LogInForm = ({ marginBottom }) => {
                 } else if (res.data.RESULT === "GO_ADMIN_DASHBOARD") {
                     localStorage.setItem("key", data.id);
                     setIsLogined(true);
-                    navigate('/admin');
+                    navigate('/admin/approval');
                 } else if (res.data.RESULT === "diff") {
                     setPasswordError("비밀번호가 틀렸습니다.");
                 } else if (res.data.RESULT === "lock") {
