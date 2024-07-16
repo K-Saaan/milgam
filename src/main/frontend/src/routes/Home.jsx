@@ -38,7 +38,7 @@ const cContentStyle = (theme) => ({
   display:'flex',
   justifyContent:'center',
   alignItems:'center',
-
+  marginBottom: '75px', 
 });
 
 
@@ -94,17 +94,17 @@ function Home(){
                 <Page3 />
               </div>
 
-              <div style={contentStyle}>
+              {/* <div style={contentStyle}>
                 <Page4 />
-              </div>
+              </div> */}
 
-              <div style={contentStyle}>
+              {/* <div style={contentStyle}>
                 <Page5 />
-              </div>
+              </div> */}
 
-              <div style={contentStyle}>
+              {/* <div style={contentStyle}>
                 <Page6 />
-              </div>
+              </div> */}
 
            
 
