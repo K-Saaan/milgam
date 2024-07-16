@@ -84,10 +84,10 @@ function Topbar({ isAdmin, toggleTheme }) {
   
   const [temp, setTemp]= React.useState()
   const [code, setCode]= React.useState()
-
+  
   const getWeather = async () => {
     try {
-        const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=${wapiKey}&units=metric`);
+        const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=seoul&appid=${wapiKey}&units=metric`);
         setTemp(res.data.main.temp);
         setCode(res.data.weather[0].icon)
     } catch (error) {
@@ -120,7 +120,7 @@ function Topbar({ isAdmin, toggleTheme }) {
               <img src={Character} style={{height:'50px', width:'50px', position: 'relative', top:'-6px', right:'7px'}} alt='giyomi' />
             </Link>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', }}>
+        <div style={{marginLeft:'140px',display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', }}>
           <MenuButton onClick={()=>isloginCheck('dashboard')} id='dashboard' isActive={isActive('dashboard')}>대시보드</MenuButton>
           <MenuButton onClick={()=>isloginCheck('uploadvideo')} id='uploadvideo' isActive={isActive('uploadvideo')}>영상업로드</MenuButton>
           <MenuButton onClick={()=>isloginCheck('inquiry')} id='inquiry' isActive={isActive('inquiry')}>1:1문의</MenuButton>
@@ -143,7 +143,9 @@ function Topbar({ isAdmin, toggleTheme }) {
         <div>
           {temp === null ? 
             <div>데이터를 로딩 중...</div> :
-            <div style={{marginRight:'8px', height: '64px', display:'flex', justifyContent:'center', alignItems:'center'}}>
+            <div style={{
+              background: 'rgb(201,234,255) radial-gradient(circle, rgba(201,234,255,1) 17%, rgba(191,246,255,1) 57%, rgba(255,255,255,1) 100%)',
+              marginRight:'8px', height: '64px', display:'flex', justifyContent:'center', alignItems:'center'}}>
               <img style={{width: '50px', height: '50px', marginRight:'-8px'}} src={`http://openweathermap.org/img/wn/${code}.png`} alt='weather' />
               <span style={{textAlign:'center' ,fontSize:'14px', width: '50px', height: 'auto'}}>
                 {temp} 

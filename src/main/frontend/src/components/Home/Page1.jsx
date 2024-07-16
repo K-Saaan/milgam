@@ -8,8 +8,6 @@ export const cPage1Style = (theme) => ({
   hegiht:'100%',
   // background: theme.palette.comp,
   color : theme.palette.text.primary,
-  display:'flex',
-  
 });
 
 // span
@@ -41,12 +39,6 @@ export const cPicStyle = (theme) => ({
 
 function Page1(){
 
-  const theme = useTheme();
-  const pageStyle = cPage1Style(theme);
-  const spanStyle = cSpanStyle(theme);
-  const picStyle = cPicStyle(theme);
-  const textStyle = cTextStyle(theme);
-
   function useParallax(value, distance) {
     return useTransform(value, [0, 1], [-distance, distance]);
   }
@@ -65,11 +57,6 @@ function Page1(){
                 AI를 활용한 크라우드 매니지먼트<br/>
                 단 하나의 솔루션, 밀감
               </p>
-
-                  
-              
-
-
             </div>
           </>
         );
