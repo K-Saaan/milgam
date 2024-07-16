@@ -16,7 +16,7 @@ const AdminLogInForm = ({ marginBottom }) => {
         alignItems: 'center',
         justifyContent: 'center',
         margin: 'auto',
-        height: '75vh',
+        height: '65vh',
     };
 
     const {setAdminLogined} = useStore(state => state);

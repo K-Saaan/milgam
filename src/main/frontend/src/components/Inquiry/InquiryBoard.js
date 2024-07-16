@@ -5,6 +5,7 @@ import RegisterAlert from './RegisterAlert';
 import ReplyAlert from './ReplyAlert';
 import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
+import { CustomTableRow, tableHeaderStyle, tableCellStyle } from '../Styles/CustomTable'
 
 // 컨테이너 스타일
 const containerStyle = {
@@ -16,15 +17,6 @@ const containerStyle = {
   height: '100%', // 페이지네이션 버튼을 테이블 하단에 고정하기 위한 설정
 };
 
-// 행 스타일
-const CustomTableRow = styled(TableRow)(({ theme }) => ({
-    cursor: 'pointer',
-    backgroundColor: theme.palette.background.paper,
-    '&:hover': {
-      backgroundColor: theme.palette.action.hover,
-    },
-}));
-
 // 헤더 스타일
 const headerStyle = (theme) => ({
   display: 'flex',
@@ -34,26 +26,6 @@ const headerStyle = (theme) => ({
   mb: 5,
 });
 
-// 테이블 헤더 스타일
-const tableHeaderStyle = (theme) => ({
-  color: theme.palette.text.primary,
-  borderBottom: `2px solid ${theme.palette.divider}`,
-  backgroundColor: theme.palette.background.default,
-  position: 'sticky', // 추가
-  top: 0, // 추가
-  zIndex: 1, // 추가
-  minWidth: 120, // 추가
-  width: 150, // 추가: 각 헤더 셀의 고정 너비 설정
-});
-
-// 테이블 셀 스타일
-const tableCellStyle = (theme) => ({
-  color: theme.palette.text.primary,
-  borderBottom: `2px solid ${theme.palette.divider}`,
-  minWidth: 120, // 추가
-  width: 150, // 추가: 각 데이터 셀의 고정 너비 설정
-
-});
 
 // 날짜 형식을 yyyy-mm-dd로 변환하는 함수
 const formatDate = (dateString) => {

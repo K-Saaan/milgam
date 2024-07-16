@@ -4,21 +4,13 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import ReplyInquiryAlert from './ReplyInquiryAlert';
 import { useTheme } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
+import { CustomTableRow, CustomTableCell, tableHeaderStyle  } from '../Styles/CustomTable'
 
-
-// 행 스타일
-const CustomTableRow = styled(TableRow)(({ theme }) => ({
-    cursor: 'pointer',
+// TableContainer 스타일
+const CustomTableContainer = styled(TableContainer)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
-    '&:hover': {
-      backgroundColor: theme.palette.action.hover,
-    },
-}));
-
-const CustomTableCell = styled(TableCell)(({ theme }) => ({
-  color: theme.palette.text.primary,
-  borderBottom: `2px solid ${theme.palette.divider}`,
-}));
+    borderRadius: '12px',
+  }));  
 
 const progressStyle = {
   margin: "20px",
@@ -36,14 +28,6 @@ const formatDate = (dateString) => {
     return `${year}-${month}-${day}`;
 };
 
-// /admin/questionlist 경로
-// myq_index: 질의응답 고유번호
-// question_title: 질문 제목
-// user_index: 질문한 유저 번호
-// question_date: 질문한 날짜
-// answer_date: 답변한 날짜
-// status: 상태
-
 const ReplyInquiry = () => {
     // 상태관리 변수들
     const theme = useTheme();
@@ -56,7 +40,7 @@ const ReplyInquiry = () => {
     
     // 페이지네이션
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
@@ -101,7 +85,7 @@ const ReplyInquiry = () => {
     // 답변 제출 처리 함수
     const handleAnswerSubmit = async (data) => {
         const answerData = {
-        myq_index: selectedQuestion.myq_index, // myq_index 추가
+        myq_index: selectedQuestion.myq_index, 
         answer: data.answer,
         };
     
@@ -123,16 +107,16 @@ const ReplyInquiry = () => {
 
     return (
         <div>
-            <TableContainer component={Paper}>
+            <CustomTableContainer component={Paper}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>번호</TableCell>
-                            <TableCell>제목</TableCell>
-                            <TableCell>작성자</TableCell>
-                            <TableCell>상태</TableCell>
-                            <TableCell>문의 날짜</TableCell>
-                            <TableCell>답변 날짜</TableCell>
+                            <TableCell sx={tableHeaderStyle(theme)}>번호</TableCell>
+                            <TableCell sx={tableHeaderStyle(theme)}>제목</TableCell>
+                            <TableCell sx={tableHeaderStyle(theme)}>작성자</TableCell>
+                            <TableCell sx={tableHeaderStyle(theme)}>상태</TableCell>
+                            <TableCell sx={tableHeaderStyle(theme)}>문의 날짜</TableCell>
+                            <TableCell sx={tableHeaderStyle(theme)}>답변 날짜</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -164,8 +148,10 @@ const ReplyInquiry = () => {
                     onPageChange={handleChangePage}
                     rowsPerPage={rowsPerPage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
+                    rowsPerPageOptions={[5, 10, 15, 20]} // 페이지 네이션 옵션
+                    sx={{ mt: 'auto' }} // 페이지네이션을 하단에 고정
                 />}
-            </TableContainer>
+            </CustomTableContainer>
             <ReplyInquiryAlert
                 open={isModalOpen}
                 handleClose={closeModal}

@@ -4,6 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Box } from '@mui/material';
 import { Outlet, useLocation } from "react-router-dom";
 import Topbar from "./components/Topbar"
+import AdminTopbar from './components/AdminTopbar.js';
 import { darkTheme, lightTheme } from './Theme.js';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
@@ -31,22 +32,24 @@ function App() {
   const isAdmin = location.pathname.startsWith('/admin');
 
   // 테마 변경
-  const [currentTheme, setCurrentTheme] = useState(darkTheme);
+  const [currentTheme, setCurrentTheme] = useState(lightTheme);
   const toggleTheme = (themeType) => {
-    setCurrentTheme(themeType === 'light' ? lightTheme : darkTheme);
+    setCurrentTheme(themeType === 'dark' ? darkTheme :  lightTheme) ;
   };
 
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={currentTheme}>
         <CssBaseline />
-        <Box component="section" sx={sectionStyle}>
-          <Topbar isAdmin={isAdmin} toggleTheme={toggleTheme}/>
-
-          <Box sx={contentBoxStyle}>
-            <Outlet />
-          </Box>
-        </Box>
+          {isAdmin ? (
+            <AdminTopbar isAdmin={isAdmin} toggleTheme={toggleTheme} />
+          ) : (
+            <Topbar isAdmin={isAdmin} toggleTheme={toggleTheme} />
+          )}
+          {/* <Box sx={contentBoxStyle}>
+            
+          </Box> */}
+          <Outlet />
       </ThemeProvider>
     </QueryClientProvider>
   );
