@@ -26,8 +26,7 @@ const Background = (props) => {
       {/* 내용 부분 */}
       <Container
         maxWidth={false}
-        sx={{width: '100%', maxWidth: '1152px', minHeight: '65vh',
-      }}>
+        sx={{width: '100%', maxWidth: '1152px', minHeight: '65vh', boxShadow: 1}}>
         {props.contents}
       </Container>
     </Box>

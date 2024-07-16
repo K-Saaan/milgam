@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ThemeProvider, GlobalStyles  } from '@mui/material';
+// import { ThemeProvider } from '@mui/material';
+import { ThemeProvider, Global } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Box } from '@mui/material';
 import { Outlet, useLocation } from "react-router-dom";
@@ -25,8 +26,8 @@ const contentBoxStyle = {
 
 const globalStyles = {
   body: {
-    minWidth: '1000px', // 원하는 min-width 값으로 설정
-    maxWidth: '1200px', // 원하는 max-width 값으로 설정
+    minWidth: '1920px', // 원하는 min-width 값으로 설정
+    maxWidth: '1920px', // 원하는 max-width 값으로 설정
     margin: '0 auto', // 가운데 정렬을 원할 경우
   },
 };
@@ -49,6 +50,8 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={currentTheme}>
         <CssBaseline />
+        <Global styles={globalStyles} />
+
           {isAdmin ? (
             <AdminTopbar isAdmin={isAdmin} toggleTheme={toggleTheme} />
           ) : (
