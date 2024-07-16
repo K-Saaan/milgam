@@ -13,6 +13,7 @@ import Character from "../components/Home/new_cha.png"
 import LoginAlert from './LoginAlert';
 import ModeSwitch from './Styles/ModalSwitch';
 import Logout from './Logout';
+import axios from 'axios';
 
 const abStyle = (theme) => ({backgroundColor: theme.palette.background.paper});
 const titleStyle = { display: {  sm: 'block' } };
@@ -33,6 +34,8 @@ const MenuButton = styled('button')(({ theme, isActive }) => ({
 function Topbar({ isAdmin, toggleTheme }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const wapiKey = process.env.REACT_APP_W_API_KEY;
+
   const {isLogined, setIsLogined} = useStore(state => state);
   const [logoutModalOpen, setLogoutModalOpen] = React.useState(false);
   const [loginAlertOpen, setLoginAlertOpen] = React.useState(false);
@@ -79,6 +82,27 @@ function Topbar({ isAdmin, toggleTheme }) {
   // 현재 경로와 버튼 ID 비교하여 활성 상태 확인
   const isActive = (id) => location.pathname.includes(id);
   
+  const [temp, setTemp]= React.useState()
+  const [code, setCode]= React.useState()
+
+  const getWeather = async () => {
+    try {
+        const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=${wapiKey}&units=metric`);
+        setTemp(res.data.main.temp);
+        setCode(res.data.weather[0].icon)
+    } catch (error) {
+        console.error("Error fetching weather data:", error);
+    }
+  };
+
+  React.useEffect(() => {
+      getWeather();
+  }, []);
+
+  
+
+
+
   return (
     <Box>
       <AppBar position="static" style={appBarStyle}>
@@ -114,7 +138,26 @@ function Topbar({ isAdmin, toggleTheme }) {
           </MenuButton>
           )}
 
-          <ModeSwitch
+
+
+        <div>
+          {temp === null ? 
+            <div>데이터를 로딩 중...</div> :
+            <div style={{marginRight:'8px', height: '64px', display:'flex', justifyContent:'center', alignItems:'center'}}>
+              <img style={{width: '50px', height: '50px', marginRight:'-8px'}} src={`http://openweathermap.org/img/wn/${code}.png`} alt='weather' />
+              <span style={{textAlign:'center' ,fontSize:'14px', width: '50px', height: 'auto'}}>
+                {temp} 
+                <span style={{ position: 'relative', top:'-4px', right:'-2px', fontWeight: 800 }}>
+                  &deg;C
+                </span>
+              </span>
+            </div>
+            
+          }
+        </div>
+
+
+        <ModeSwitch
           checked={theme.palette.mode === 'dark'}
           onChange={handleToggleClick}
           inputProps={{ 'aria-label': 'theme switch' }}

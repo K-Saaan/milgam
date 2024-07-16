@@ -41,7 +41,9 @@ function App() {
           ) : (
             <Topbar isAdmin={isAdmin} toggleTheme={toggleTheme} />
           )}
-          <Outlet />
+          <div style={{scrollbarWidth:'none', overflowX:'hidden', height:'90vh', width:'100vw'}}>
+            <Outlet />
+          </div>
       </ThemeProvider>
     </QueryClientProvider>
   );
