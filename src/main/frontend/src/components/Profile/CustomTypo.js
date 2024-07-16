@@ -2,7 +2,7 @@ import { styled } from '@mui/system';
 import Typography from '@mui/material/Typography';
 
 const CustomTypographyWrapper = styled('div')(({ theme }) => ({
-    width: '370px',
+    width: '100%',
     height: '56px',
     backgroundColor: theme.palette.secondary.main,
     opacity: 1, // 불투명도
