@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EmailRepository extends JpaRepository<EmailEntity, String> {
-    EmailEntity findByEmail(String email);
+    // EmailEntity findByEmail(String email);
+     EmailEntity findByCode(String code);
 }

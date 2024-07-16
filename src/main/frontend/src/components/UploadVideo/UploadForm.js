@@ -155,50 +155,58 @@ const UploadBG = styled('div')({
       reset();
     };
 
-    // 파일 전송 처리
+    const uploadFileChunk = async (chunk, index, totalChunks) => {
+      const formData = new FormData();
+      formData.append('chunkFile', chunk);
+      formData.append('chunkIndex', index);
+      formData.append('totalChunks', totalChunks);
+
+      try {
+        await axios.post('http://localhost:8080/api/videoUpload', formData, {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } catch (error) {
+        throw new Error(`Chunk ${index} upload failed.`);
+      }
+    };
+
+    const uploadMetaData = async (data, file, index) => {
+      const vMetaData = new FormData();
+      vMetaData.append('length', file.size);
+      vMetaData.append('sector', data.sector);
+      vMetaData.append('camera_num', data.camera);
+      vMetaData.append('content', data.detail);
+      vMetaData.append('file_name', file.name);
+      vMetaData.append('chunk_index', index);
+
+      try {
+        await axios.post('http://localhost:8080/api/uploadmeta', vMetaData, {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } catch (error) {
+        throw new Error('Meta data upload failed.');
+      }
+    };
+
     const onHSubmit = async (data) => {
       if (selectedFile) {
         try {
-          // 파일 자르기
-          const chunkSize = 1024 * 1024; // 1MB
+          const chunkSize = 1024 * 1024;
           const totalChunks = Math.ceil(selectedFile.size / chunkSize);
 
-          //선택한 영상을 chunk 단위로 잘라서 하나씩 서버로 보냄
           for (let i = 0; i < totalChunks; i++) {
             const start = i * chunkSize;
             const end = Math.min(selectedFile.size, start + chunkSize);
             const chunk = selectedFile.slice(start, end);
 
-            const vMetaData = new FormData();
-            vMetaData.append('length', selectedFile.size);
-            vMetaData.append('sector', data.sector);
-            vMetaData.append('camera_num', data.camera);
-            vMetaData.append('content', data.detail);
-            vMetaData.append('file_name', selectedFile.name);
-            vMetaData.append('chunk_index', i);
-
-            const formData = new FormData();
-            formData.append('chunkIndex', i);
-            formData.append('chunkFile', chunk);
-            formData.append('totalChunks', totalChunks);
-
-            //Data 확인
-            //for (let key of formData.keys()) { console.log(key, ":", formData.get(key));}
-            //for (let key of vMetaData.keys()) { console.log(key, ":", vMetaData.get(key));}
-
-            await axios.post('/api/videoUpload', formData, {
-              //withCredentials: true, // 쿠키를 포함한 요청
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            });
-
-            await axios.post('/api/uploadmeta', vMetaData, {
-              //withCredentials: true, // 쿠키를 포함한 요청
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            });
+            await uploadFileChunk(chunk, i, totalChunks);
+            //await uploadMetaData(data, selectedFile, i);
           }
 
           navigate("/videoresult", { state: { video: selectedFile, detail: data.detail } });

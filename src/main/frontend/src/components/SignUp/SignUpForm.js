@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
@@ -48,6 +48,8 @@ const SignUpForm = ({marginBottom}) => {
         try {
             const response = await axios.post("http://localhost:8080/signup", mergedData);
             console.log('Response:', response.data);
+
+            navigate('/login/loginPage');
         } catch (error) {
             console.error('Error:', error);
         }
@@ -63,24 +65,26 @@ const SignUpForm = ({marginBottom}) => {
         return result;
     }
 
-    const handleClickOpenRegister = async (data) => {
-        const password = generateRandomString(12); // 12자 랜덤 문자열 생성
-        console.log(data)
+    const handleClickOpenRegister = async () => {
+        const code = generateRandomString(12); // 12자 랜덤 문자열 생성
+        //const { email } = data;
+        const additionalData = {
+            email_status: false,
+            code: code
+        };
+
+        const mergedData_2 = {
+            email,
+            ...additionalData,
+        };
+
+        console.log(mergedData_2);
+
         try {
-            const response = await axios.post("http://localhost:8080/signup/email", {
-                email: email,
-                email_status: false,
-                password: password
-            });
-            console.log('Response:', response.data);
-
-            if (response.status === 200) {
-                console.log('인증번호가 발송되었습니다.');
-            } else {
-                console.log('인증번호 발송에 실패했습니다. 다시 시도해 주세요.');
-            }
-
+            const response = await axios.post("http://localhost:8080/signup/email", mergedData_2);
+            console.log('Response:', response);
             setOpenRegister(true);
+
         } catch (error) {
             console.error('Error sending verification code:', error);
             console.log('오류가 발생했습니다. 다시 시도해 주세요.');
