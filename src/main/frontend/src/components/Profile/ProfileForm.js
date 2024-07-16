@@ -93,7 +93,8 @@ const ProfileForm = () => {
         id: '',
         email: '',
         phone: '',
-        org: ''
+        org: '',
+        event: '',
     });
     useEffect(() => {
         const fetchProfile = async () => {
@@ -101,10 +102,11 @@ const ProfileForm = () => {
                 const response = await axios.get('http://localhost:8080/login/profile');
                 setProfile({
                     name: response.data.name,
-                    id: response.data.username,
+                    id: response.data.id,
                     email: response.data.email,
                     phone: response.data.phone,
-                    org: response.data.affiliation
+                    org: response.data.org,
+                    event: response.data.event
                 });
                 console.log('Profile fetched:', response.data);
             } catch (error) {
@@ -172,7 +174,7 @@ const ProfileForm = () => {
                     </div>
                     <CustomTypographyWrapper>
                         <CustomTypography variant="h6">
-                            {profile.name || '홍길동'} {/* 서버에서 받은 이름값이나 기본값 */}
+                            {profile.name || 'null'} {/* 서버에서 받은 이름값이나 기본값 */}
                         </CustomTypography>
                     </CustomTypographyWrapper>
                 </div>
@@ -184,7 +186,7 @@ const ProfileForm = () => {
                     </div>
                     <CustomTypographyWrapper>
                         <CustomTypography variant="h6">
-                        {profile.id || 'abcd1234'} {/* 서버에서 받은 아이디값이나 기본값 */}
+                        {profile.id || 'null'} {/* 서버에서 받은 아이디값이나 기본값 */}
                         </CustomTypography>
                     </CustomTypographyWrapper>
                 </div>
@@ -196,7 +198,7 @@ const ProfileForm = () => {
                     </div>
                     <CustomTypographyWrapper>
                         <CustomTypography variant="h6">
-                        {profile.email || 'abcd1234@naver.com'} {/* 서버에서 받은 이메일값이나 기본값 */}
+                        {profile.email || 'null'} {/* 서버에서 받은 이메일값이나 기본값 */}
                         </CustomTypography>
                     </CustomTypographyWrapper>
                 </div>
@@ -208,7 +210,7 @@ const ProfileForm = () => {
                     </div>
                     <CustomTypographyWrapper>
                         <CustomTypography variant="h6">
-                        {profile.phone || '010-0000-0000'} {/* 서버에서 받은 전화번호값이나 기본값 */}
+                        {profile.phone || 'null'} {/* 서버에서 받은 전화번호값이나 기본값 */}
                         </CustomTypography>
                     </CustomTypographyWrapper>
                 </div>
@@ -220,7 +222,7 @@ const ProfileForm = () => {
                     </div>
                     <CustomTypographyWrapper>
                         <CustomTypography variant="h6">
-                        {profile.org || '청와대'} {/* 서버에서 받은 소속값이나 기본값 */}
+                        {profile.org || 'null'} {/* 서버에서 받은 소속값이나 기본값 */}
                         </CustomTypography>
                     </CustomTypographyWrapper>
                 </div>
