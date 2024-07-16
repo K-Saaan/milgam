@@ -10,7 +10,7 @@ import { CustomTableRow, tableHeaderStyle, tableCellStyle } from '../Styles/Cust
 // 컨테이너 스타일
 const containerStyle = {
   width: '100%',
-  padding: 3,
+  //padding: 3,
   overflowX: 'auto',
   display: 'flex',
   flexDirection: 'column',
