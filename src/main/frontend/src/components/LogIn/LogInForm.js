@@ -33,7 +33,7 @@ const LogInForm = ({ marginBottom }) => {
     const npHandleClickOpen = () => { npSetOpen(true); };
     const npHandleClose = () => { npSetOpen(false); };
 
-    const {setIsLogined} = useStore(state => state);
+    const {setIsLogined, setAdminLogined} = useStore(state => state);
     const onLogIn = async (data) => {
 
         const { id, pw } = data;
@@ -49,10 +49,13 @@ const LogInForm = ({ marginBottom }) => {
                 });
                 console.log("response data", res.data);
                 if (res.data.RESULT === "GO_MAIN") {
-                    console.log("go dashboard")
                     localStorage.setItem("key", data.id);
                     setIsLogined(true);
                     navigate('/dashboard');
+                } else if (res.data.RESULT === "GO_ADMIN_DASHBOARD") {
+                    localStorage.setItem("key", data.id);
+                    setAdminLogined(true);
+                    navigate('/admin/approval');
                 } else if (res.data.RESULT === "INVALID_PASSWORD" || res.data.RESULT === 'USER_NOT_FOUND') {
                     setPasswordError("아이디 혹은 비밀번호가 틀렸습니다.");
                 } else if (res.data.RESULT === "LOCK_ACCOUNT") {
