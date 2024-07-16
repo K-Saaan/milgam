@@ -1,5 +1,9 @@
 package com.example.crowdm.controller.video;
 
+import com.example.crowdm.dto.faq.Answerq;
+import com.example.crowdm.dto.faq.Requestq;
+import com.example.crowdm.dto.video.Videoq;
+import com.example.crowdm.entity.video.VideoEntity;
 import com.example.crowdm.service.video.VideoService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -9,10 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -54,7 +55,7 @@ public class VideoController {
     @PostMapping("/videoUpload")
     public void videoUpload(@RequestParam("chunkFile") MultipartFile mFile,
                             @RequestParam("chunkIndex") int chunkIndex,
-                            @RequestParam("totalChunks") int totalChunks) throws IOException{
+                            @RequestParam("totalChunks") int totalChunks) throws IOException {
         videoService.uploadToGCP(mFile, chunkIndex, totalChunks);
     }
 
@@ -68,7 +69,7 @@ public class VideoController {
     @PostMapping("/videoResult")
     public ResponseEntity handleResult(@RequestParam("result") MultipartFile result,
                                        @RequestParam("chunkIndex") int chunkIndex,
-                                       @RequestParam("totalChunks") int totalChunks) throws IOException{
+                                       @RequestParam("totalChunks") int totalChunks) throws IOException {
         String resultContent = new String(result.getBytes(), "UTF-8");
         logger.info("resultContent = {}", resultContent);
         logger.info("chunkIndex = {}", chunkIndex);
@@ -76,4 +77,22 @@ public class VideoController {
         messagingTemplate.convertAndSend("/topic/video/", resultContent);
         return ResponseEntity.ok("Result to front");
     }
+
+
+    /**
+     * 1. MethodName: uploadmeta
+     * 2. ClassName : VideoController
+     * 3. Comment   : 비디오 메타 데이터 저장
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 16
+     **/
+    @PostMapping("/uploadmeta")
+    public ResponseEntity<VideoEntity> uploadMeta(@RequestBody Videoq videoq, HttpServletRequest request) {
+        VideoEntity result = videoService.uploadmeta(videoq.getLength(), videoq.getSector(), videoq.getCamera_num(), videoq.getContent(), videoq.getFile_name(), videoq.getChunk_index(),request);
+
+        return ResponseEntity.ok(result);
+    }
+
+
 }
+
