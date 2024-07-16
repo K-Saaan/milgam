@@ -7,8 +7,6 @@ import Typography from '@mui/material/Typography';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
 import useStore from "../store";
 import { styled } from '@mui/system';
 import Character from "../components/Home/new_cha.png"
@@ -16,17 +14,13 @@ import LoginAlert from './LoginAlert';
 import ModeSwitch from './Styles/ModalSwitch';
 import Logout from './Logout';
 
-
-// const barBoxStyle = { flexGrow: 1 };
 const abStyle = (theme) => ({backgroundColor: theme.palette.background.paper});
-const menuIconStyle = (theme) => ({ mr: 2, color: theme.palette.text.primary });
 const titleStyle = { display: {  sm: 'block' } };
-// xs: 'none',
 const profileIconStyle = { display: { xs: 'none', md: 'flex' } };
 
-const MenuBotton = styled('button')(({ theme }) =>({
+const MenuButton = styled('button')(({ theme, isActive }) => ({
   cursor: 'pointer',
-  color: theme.palette.text.primary,
+  color: isActive ? theme.palette.primary.main : theme.palette.text.primary,
   background: 'none',
   border: 'none',
   textAlign: 'center',
@@ -74,11 +68,6 @@ function Topbar({ isAdmin, toggleTheme }) {
     navigate('/profile', { state: { from: location.pathname } });
   };
 
-  // 홈 이동 핸들러
-  const handleHomeClick = () => {
-    navigate('/home', { state: { from: location.pathname } });
-  };
-
   // 로그아웃 처리
   const handleLogout = () => {
     setLogoutModalOpen(false);
@@ -87,6 +76,9 @@ function Topbar({ isAdmin, toggleTheme }) {
     localStorage.removeItem("key");
   };
 
+  // 현재 경로와 버튼 ID 비교하여 활성 상태 확인
+  const isActive = (id) => location.pathname.includes(id);
+  
   return (
     <Box>
       <AppBar position="static" style={appBarStyle}>
@@ -105,21 +97,21 @@ function Topbar({ isAdmin, toggleTheme }) {
             </Link>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', }}>
-          <MenuBotton onClick={()=>isloginCheck('dashboard')} id='dashboard'>대시보드</MenuBotton>
-          <MenuBotton onClick={()=>isloginCheck('uploadvideo')} id='uploadvideo'>영상업로드</MenuBotton>
-          <MenuBotton onClick={()=>isloginCheck('inquiry')} id='inquiry'>1:1문의</MenuBotton>
-          <MenuBotton onClick={()=>isloginCheck('faq')} id='faq'>FAQ</MenuBotton>
+          <MenuButton onClick={()=>isloginCheck('dashboard')} id='dashboard' isActive={isActive('dashboard')}>대시보드</MenuButton>
+          <MenuButton onClick={()=>isloginCheck('uploadvideo')} id='uploadvideo' isActive={isActive('uploadvideo')}>영상업로드</MenuButton>
+          <MenuButton onClick={()=>isloginCheck('inquiry')} id='inquiry' isActive={isActive('inquiry')}>1:1문의</MenuButton>
+          <MenuButton onClick={()=>isloginCheck('faq')} id='faq' isActive={isActive('faq')}>FAQ</MenuButton>
         </div>
 
         <div style={{display:'flex', alignItems:'center'}}>
           {!isLogined ? (
-          <MenuBotton onClick={() => isloginCheck('login/loginPage')} id="login/loginPage">
+          <MenuButton onClick={() => isloginCheck('login/loginPage')} id="login/loginPage">
             로그인
-          </MenuBotton>
+          </MenuButton>
           ) : (
-          <MenuBotton onClick={() => setLogoutModalOpen(true)} id="logout">
+          <MenuButton onClick={() => setLogoutModalOpen(true)} id="logout">
             로그아웃
-          </MenuBotton>
+          </MenuButton>
           )}
 
           <ModeSwitch

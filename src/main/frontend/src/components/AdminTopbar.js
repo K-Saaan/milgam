@@ -2,10 +2,7 @@ import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import useStore from "../store";
@@ -14,18 +11,12 @@ import Character from "../components/Home/new_cha.png"
 import LoginAlert from './LoginAlert';
 import ModeSwitch from './Styles/ModalSwitch';
 
-
-
-// const barBoxStyle = { flexGrow: 1 };
 const abStyle = (theme) => ({backgroundColor: theme.palette.background.paper});
-const menuIconStyle = (theme) => ({ mr: 2, color: theme.palette.text.primary });
 const titleStyle = { display: {  sm: 'block' } };
-// xs: 'none',
-const profileIconStyle = { display: { xs: 'none', md: 'flex' } };
 
-const MenuBotton = styled('button')(({ theme }) =>({
+const MenuButton = styled('button')(({ theme, isActive }) => ({
   cursor: 'pointer',
-  color: theme.palette.text.primary,
+  color: isActive ? theme.palette.primary.main : theme.palette.text.primary,
   background: 'none',
   border: 'none',
   textAlign: 'center',
@@ -64,6 +55,9 @@ function AdminTopbar({ isAdmin, toggleTheme }) {
 
   const appBarStyle = abStyle(theme);
 
+  // 현재 경로와 버튼 ID 비교하여 활성 상태 확인
+  const isActive = (id) => location.pathname.includes(id);
+
   return (
     <Box>
       <AppBar position="static" style={appBarStyle}>
@@ -83,17 +77,17 @@ function AdminTopbar({ isAdmin, toggleTheme }) {
             </Link>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px', }}>
-          <MenuBotton onClick={()=>isloginCheck('dashboard')} id='dashboard'>대시보드</MenuBotton>
-          <MenuBotton onClick={()=>isloginCheck('approval')} id='approval'>가입 승인</MenuBotton>
-          <MenuBotton onClick={()=>isloginCheck('replyinquiry')} id='replyinquiry'>문의 답변</MenuBotton>
+          <MenuButton onClick={()=>isloginCheck('dashboard')} id='dashboard' isActive={isActive('dashboard')}>대시보드</MenuButton>
+          <MenuButton onClick={()=>isloginCheck('approval')} id='approval' isActive={isActive('approval')}>가입 승인</MenuButton>
+          <MenuButton onClick={()=>isloginCheck('replyinquiry')} id='replyinquiry' isActive={isActive('replyinquiry')}>문의 답변</MenuButton>
         </div>
     
         
         <div style={{display:'flex', alignItems:'center'}}>
         {adminLogined ? (
-        <MenuBotton onClick={() => setLogoutModalOpen(true)} id="logout">
+        <MenuButton onClick={() => setLogoutModalOpen(true)} id="logout">
             로그아웃
-        </MenuBotton>
+        </MenuButton>
         ) : null}
           <ModeSwitch
           checked={theme.palette.mode === 'dark'}
