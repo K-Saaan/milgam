@@ -15,7 +15,17 @@ const SignUpForm = ({marginBottom}) => {
     const {register, handleSubmit, formState: {errors, isValid}, setValue, watch, control, trigger} = useForm({
         mode: 'onChange',
     });
+
     const email = watch('email');
+    function generateRandomString(length) {
+        const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        const charactersLength = CHARACTERS.length;
+        for (let i = 0; i < length; i++) {
+            result += CHARACTERS.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
 
     const handleClickOpenRegister = async () => {
         const code = generateRandomString(12); // 12자 랜덤 문자열 생성
@@ -31,14 +41,19 @@ const SignUpForm = ({marginBottom}) => {
 
         console.log(mergedData_2);
 
-        try {
-            const response = await axios.post("http://localhost:8080/signup/email", mergedData_2);
-            console.log('Response:', response);
-            setOpenRegister(true);
-        } catch (error) {
-            console.error('Error sending verification code:', error);
-            console.log('오류가 발생했습니다. 다시 시도해 주세요.');
-            setOpenRegister(true);
+        while (true) {
+            try {
+                const response = await axios.post("http://localhost:8080/signup/email", mergedData_2);
+                console.log('Response:', response);
+                setOpenRegister(true);
+                break; // 요청이 성공하면 루프를 종료
+            } catch (error) {
+                console.error('Error sending verification code:', error);
+                console.log('오류가 발생했습니다. 다시 시도해 주세요.');
+
+                // 요청 간의 간격을 두고 다시 시도 (예: 2초 후에 재시도)
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
         }
     };
 
@@ -67,26 +82,21 @@ const SignUpForm = ({marginBottom}) => {
 
         console.log(mergedData);
 
-        try {
+        while (true) {
+            try {
+                const response = await axios.post("http://localhost:8080/signup", mergedData);
+                console.log("Response:", response.data);
 
-            const response = await axios.post("http://localhost:8080/signup", mergedData);
-            console.log("Response:", response.data);
+                navigate("/login/loginPage");
+                break; // 요청이 성공하면 루프를 종료
+            } catch (error) {
+                console.error("Error:", error);
 
-            navigate("/login/loginPage");
-        } catch (error) {
-            console.error("Error:", error);
+                // 요청 간의 간격을 두고 다시 시도 (예: 2초 후에 재시도)
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
         }
     };
-
-    function generateRandomString(length) {
-        const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let result = '';
-        const charactersLength = CHARACTERS.length;
-        for (let i = 0; i < length; i++) {
-            result += CHARACTERS.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result;
-    }
 
     const onError = (errors) => {
         // 에러가 있는 경우 적절한 메시지를 출력하거나 처리합니다.
