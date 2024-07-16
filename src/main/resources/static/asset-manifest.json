@@ -19,7 +19,7 @@
     "static/media/pic.jpg": "/static/media/pic.57c9f1e0a58298cc6bba.jpg",
     "static/media/pic2.jpg": "/static/media/pic2.5fa1cd34107f0e6f1bab.jpg",
     "index.html": "/index.html",
-    "main.49c2106d.js.map": "/static/js/main.49c2106d.js.map",
+    "main.9bd0f999.js.map": "/static/js/main.9bd0f999.js.map",
     "reactPlayerYouTube.746231f8.chunk.js.map": "/static/js/reactPlayerYouTube.746231f8.chunk.js.map",
     "reactPlayerSoundCloud.b13d87b6.chunk.js.map": "/static/js/reactPlayerSoundCloud.b13d87b6.chunk.js.map",
     "reactPlayerVimeo.f0f4f3a8.chunk.js.map": "/static/js/reactPlayerVimeo.f0f4f3a8.chunk.js.map",
@@ -36,6 +36,6 @@
     "reactPlayerPreview.bf25e6f7.chunk.js.map": "/static/js/reactPlayerPreview.bf25e6f7.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.49c2106d.js"
+    "static/js/main.9bd0f999.js"
   ]
 }
