@@ -98,7 +98,7 @@ const InquiryBoard = () => {
   return (
     <Box sx={containerStyle}>
       <Box sx={headerStyle(theme)}>
-        <Typography variant="h5">내 문의목록</Typography>
+        <Typography variant="h5"></Typography>
         {/* 새 문의 버튼 */}
         <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleClickOpenRegister}>
           새 문의

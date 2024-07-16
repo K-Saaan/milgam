@@ -19,7 +19,7 @@ const DashBackground = (props) => {
       <Container
         sx={{
             backgroundColor: 'transparent', margin: 0,
-            padding: "16px", paddingTop: "32px", paddingBottom: "32px"
+            padding: "32px", paddingTop: "16px", paddingBottom: "10px"
         }}>
         <h1 style={{margin: "0px" }}>{props.name}</h1>
       </Container>
@@ -29,7 +29,7 @@ const DashBackground = (props) => {
             backgroundColor: 'transparent',
             minHeight: '65vh',
             padding: 0,
-            margin: 0,
+            // margin: 0,
         }}
       >
         {props.contents}

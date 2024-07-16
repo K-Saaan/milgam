@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider, GlobalStyles  } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Box } from '@mui/material';
 import { Outlet, useLocation } from "react-router-dom";
@@ -21,6 +21,14 @@ const contentBoxStyle = {
   display:'flex',
   justifyContent:'center',
   alignItems: 'flex-start'
+};
+
+const globalStyles = {
+  body: {
+    minWidth: '1000px', // 원하는 min-width 값으로 설정
+    maxWidth: '1200px', // 원하는 max-width 값으로 설정
+    margin: '0 auto', // 가운데 정렬을 원할 경우
+  },
 };
 
 // Create a client

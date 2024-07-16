@@ -16,7 +16,10 @@ const Background = (props) => {
       }}
     >
       {/* 헤더 부분 */}
-      <Container sx={{backgroundColor: 'transparent', margin: 0, padding: "32px", paddingTop: "16px", paddingBottom: "10px"}}>
+      <Container
+        sx={{
+            backgroundColor: 'transparent', margin: 0,
+            padding: "32px", paddingTop: "16px", paddingBottom: "10px"}}>
         <h1 style={{margin: "0px"}}>{props.name}</h1>
       </Container>
       {/* 내용 부분 */}
