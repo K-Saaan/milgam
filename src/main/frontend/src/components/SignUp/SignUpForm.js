@@ -16,58 +16,9 @@ const SignUpForm = ({marginBottom}) => {
         mode: 'onChange',
     });
     const email = watch('email');
-    // 페이지 이동
-    const onSubmit = async (data) => {
-        // Clone the data object and remove the repw property
-        const {repw, ...dataWithoutRepw} = data;
-
-        // Declare additional variables
-        const currentTime = new Date().toISOString();
-        const additionalData = {
-            account_lock: false,
-            admin_index: 3,
-            apply_date: currentTime,
-            event_index: null,
-            fail_cnt: 0,
-            last_login: currentTime,
-            permission_date: null,
-            permission_yn: false,
-            pw_duedate: null,
-            temppw: null,
-            start_date: start_date ? start_date.toISOString() : null,
-            end_date: end_date ? end_date.toISOString() : null,
-            role_index: data.role_index === 'director' ? 1 : data.role_index === 'host' ? 2 : null,
-        };
-
-        // Merge additional variables with existing data
-        const mergedData = {...dataWithoutRepw, ...additionalData};
-
-        console.log(mergedData);
-
-        // Send the merged object using axios.post
-        try {
-            const response = await axios.post("http://localhost:8080/signup", mergedData);
-            console.log('Response:', response.data);
-
-            navigate('/login/loginPage');
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
-    function generateRandomString(length) {
-        const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let result = '';
-        const charactersLength = CHARACTERS.length;
-        for (let i = 0; i < length; i++) {
-            result += CHARACTERS.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result;
-    }
 
     const handleClickOpenRegister = async () => {
         const code = generateRandomString(12); // 12자 랜덤 문자열 생성
-        //const { email } = data;
         const additionalData = {
             email_status: false,
             code: code
@@ -84,13 +35,58 @@ const SignUpForm = ({marginBottom}) => {
             const response = await axios.post("http://localhost:8080/signup/email", mergedData_2);
             console.log('Response:', response);
             setOpenRegister(true);
-
         } catch (error) {
             console.error('Error sending verification code:', error);
             console.log('오류가 발생했습니다. 다시 시도해 주세요.');
             setOpenRegister(true);
         }
     };
+
+    // 페이지 이동
+    const onSubmit = async (data) => {
+        const { repw, ...dataWithoutRepw } = data;
+
+        const currentTime = new Date().toISOString();
+        const additionalData = {
+            account_lock: false,
+            admin_index: 3,
+            apply_date: currentTime,
+            event_index: null,
+            fail_cnt: 0,
+            last_login: currentTime,
+            permission_date: null,
+            permission_yn: false,
+            pw_duedate: null,
+            temppw: null,
+            start_date: start_date ? start_date.toISOString() : null,
+            end_date: end_date ? end_date.toISOString() : null,
+            role_index: data.role_index === "director" ? 1 : data.role_index === "host" ? 2 : null,
+        };
+
+        const mergedData = { ...dataWithoutRepw, ...additionalData };
+
+        console.log(mergedData);
+
+        try {
+
+            const response = await axios.post("http://localhost:8080/signup", mergedData);
+            console.log("Response:", response.data);
+
+            navigate("/login/loginPage");
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
+    function generateRandomString(length) {
+        const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        const charactersLength = CHARACTERS.length;
+        for (let i = 0; i < length; i++) {
+            result += CHARACTERS.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
 
     const onError = (errors) => {
         // 에러가 있는 경우 적절한 메시지를 출력하거나 처리합니다.
