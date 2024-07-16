@@ -53,4 +53,5 @@ public class SignUpDto {
                 .temppw(temppw)
                 .build();
     }
+
 }

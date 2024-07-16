@@ -48,24 +48,44 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
 
     // Csv parsing
-    implementation 'com.opencsv:opencsv:5.3'
+    implementation('com.opencsv:opencsv:5.3')
+
+//    testImplementation 'io.projectreactor:reactor-test'
+//    implementation 'org.springframework.boot:spring-boot-starter-validation'
+//    implementation 'org.apache.commons:commons-lang3:3.12.0'
+//    testImplementation platform('org.junit:junit-bom:5.9.1')
+//    testImplementation 'org.junit.jupiter:junit-jupiter'
 
     // postgreSQL
     implementation 'org.postgresql:postgresql'
 
+    // Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
+
     // Web socket
+//  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket'
+    
+    // Web
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.apache.httpcomponents:httpclient'
 
-    // Google Cloud Storage
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter', version: '1.2.5.RELEASE'
-
+   // Google Cloud Storage
+//    implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter', version: '1.2.5.RELEASE'
+    // implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-storage', version: '1.2.5.RELEASE'
+    
     //sse
     implementation 'io.projectreactor:reactor-core:3.4.11'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
+    implementation 'org.slf4j:slf4j-api:1.7.32'
+    implementation 'ch.qos.logback:logback-classic:1.2.6'
 
     // Etc
     implementation 'commons-io:commons-io:2.8.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    //email
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 tasks.named('test') {
@@ -88,11 +108,10 @@ task installReact(type: Exec) {
     inputs.dir "$frontendDir"
     group = BasePlugin.BUILD_GROUP
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-        commandLine "C:/Program Files/nodejs/npm.cmd", "audit", "fix"
-        commandLine 'C:/Program Files/nodejs/npm.cmd', 'install'
-    } else {
-        commandLine "/usr/local/bin/npm", "audit", "fix"
-        commandLine '/usr/local/bin/npm', 'install'
+        commandLine "npm.cmd", "audit", "fix"
+        commandLine 'npm.cmd', 'install' }
+    else {
+        commandLine "npm", "audit", "fix" commandLine 'npm', 'install'
     }
 }
 
@@ -102,9 +121,9 @@ task buildReact(type: Exec) {
     inputs.dir "$frontendDir"
     group = BasePlugin.BUILD_GROUP
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-        commandLine "C:/Program Files/nodejs/npm.cmd", "run-script", "build"
+        commandLine "npm.cmd", "run-script", "build"
     } else {
-        commandLine "/usr/local/bin/npm", "run-script", "build"
+        commandLine "npm", "run-script", "build"
     }
 }
 

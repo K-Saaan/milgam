@@ -1,6 +1,7 @@
 package com.example.crowdm.service.myq;
 
 import com.example.crowdm.dto.faq.MyqList;
+import com.example.crowdm.dto.faq.MyqListTwo;
 import com.example.crowdm.dto.user.PermissionList;
 import com.example.crowdm.entity.admin.MyqEntity;
 import com.example.crowdm.entity.faq.FaqEntity;
@@ -24,38 +25,40 @@ public class MyqService {
 
     private final MyqRepository myqRepository;
 
-    public List<MyqList> findAllQuestions(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            String userIndex = (String) session.getAttribute("userIndex");
-            if (userIndex != null) {
-                List<MyqEntity> myqlist =myqRepository.findByUser(userIndex);
-                List<MyqList> answer = new ArrayList<>();
-                for (MyqEntity myq : myqlist) {
-                    Integer myq_index = myq.getMyq_index();
-                    String question_title = myq.getQuestion_title();
-                    String question=myq.getQuestion();
-                    Integer user_index = Integer.valueOf(userIndex);
-                    Timestamp question_date = myq.getQuestion_date();
-                    Timestamp answer_date = myq.getAnswer_date();
-                    String name= "no";
-                    String status;
-                    if (answer_date == null) {
-                        status = "대기";
-                    } else {
-                        status = "완료";
-                    }
-                    MyqList myqList = new MyqList(myq_index, question_title, question, user_index, question_date, answer_date, name,status);
-                    answer.add(myqList);
+    public List<MyqListTwo> findAllQuestions(HttpServletRequest request) {
+        //HttpSession session = request.getSession(false);
+        //if (session != null) {
+        //String userIndex = (String) session.getAttribute("userIndex");
+        //if (userIndex != null) {
+        Integer userIndex = 11;
+        List<MyqEntity> myqlist = myqRepository.findByUser(userIndex);
+        List<MyqListTwo> answerList = new ArrayList<>();
+        for (MyqEntity myq : myqlist) {
+            Integer myq_index = myq.getMyq_index();
+            String question_title = myq.getQuestion_title();
+            String question = myq.getQuestion();
+            Integer user_index = userIndex;
+            Timestamp question_date = myq.getQuestion_date();
+            Timestamp answer_date = myq.getAnswer_date();
+            String answer = myq.getAnswer();
+            String status;
 
-                }
-
-                return answer;
+            if (answer_date == null) {
+                status = "대기";  // "Pending" in Korean
+            } else {
+                status = "완료"; // "Completed" in Korean
             }
+
+            MyqListTwo myqList = new MyqListTwo(myq_index, question_title, question, user_index, question_date, answer_date, answer, status);
+            answerList.add(myqList);
         }
-        // 세션이 없거나 userId가 null인 경우 빈 리스트 반환
-        return Collections.emptyList();
+
+        return answerList;
     }
+
+        // 세션이 없거나 userId가 null인 경우 빈 리스트 반환
+        //return Collections.emptyList();
+
 
     @Transactional
     public MyqEntity addquestion(String question_title, String question, HttpServletRequest request) {

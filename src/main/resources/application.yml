@@ -42,12 +42,3 @@ login:
 file_path:
   video_path: /video/upload
 
-
-mail:
-  host: smtp.gmail.com
-  port: 587
-  username: aivleteam12@gmail.com
-  password: anxqmbgjzpqtqkog
-  properties:
-  smtp:
-    auth: true

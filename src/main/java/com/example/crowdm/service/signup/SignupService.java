@@ -1,7 +1,12 @@
 package com.example.crowdm.service.signup;
 
+import com.example.crowdm.dto.faq.UnlockList;
 import com.example.crowdm.dto.signup.SignUpDto;
+import com.example.crowdm.entity.user.UserEntity;
 import com.example.crowdm.repository.signup.SignupRepository;
+import com.example.crowdm.service.admin.SimplePasswordGenerator;
+import com.example.crowdm.service.mail.MailSender;
+import com.sun.tools.jconsole.JConsoleContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,4 +32,5 @@ public class SignupService {
         signupRepository.save(signUpDto.toUserEntity());
         return signUpDto.getId();
     }
+
 }

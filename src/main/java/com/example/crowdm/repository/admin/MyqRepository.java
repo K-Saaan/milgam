@@ -16,5 +16,5 @@ public interface MyqRepository extends JpaRepository<MyqEntity, Integer>, JpaSpe
 
 
     @Query("SELECT u FROM MyqEntity u WHERE u.user_index = :userId")
-    List<MyqEntity> findByUser(@Param("userId") String userId);
+    List<MyqEntity> findByUser(@Param("userId") Integer userId);
 }
