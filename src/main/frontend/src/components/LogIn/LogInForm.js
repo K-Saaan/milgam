@@ -25,34 +25,31 @@ const LogInForm = ({ marginBottom }) => {
         height: '65vh',
     };
 
-    //회원가입 이동
+    // 회원가입 이동
     const onSignupClick = () => { navigate('/signup'); };
-    //알림 팝업창 열고 닫기
+    // 알림 팝업창 열고 닫기
     const alHandleClickOpen = () => { alSetOpen(true); };
     const alHandleClose = () => { alSetOpen(false); };
     const npHandleClickOpen = () => { npSetOpen(true); };
     const npHandleClose = () => { npSetOpen(false); };
 
-    const {setIsLogined} = useStore(state => state);
+    const { setIsLogined } = useStore(state => state);
     const onLogIn = async (data) => {
         const { id, pw } = data;
 
         if (id && pw) {
             try {
-                const res = await axios.post("http://localhost:8080/login/loginAction", data);
-
-                // 0715: 서버 응답에 따른 리다이렉션 처리
-                if (res.data.RESULT === "GO_USER_DASHBOARD") {
-                console.log("data : ", data)
-                const res = await axios.post("/login/loginAction", data, {
-                    withCredentials: true, // 쿠키를 포함한 요청
+                const res = await axios.post("http://localhost:8080/login/loginAction", data, {
+                    withCredentials: true,
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 });
+
                 console.log("response data", res.data);
+                // 서버 응답에 따른 리다이렉션 처리
                 if (res.data.RESULT === "GO_MAIN") {
-                    console.log("go dashboard")
+                    console.log("go dashboard");
                     localStorage.setItem("key", data.id);
                     setIsLogined(true);
                     navigate('/dashboard');

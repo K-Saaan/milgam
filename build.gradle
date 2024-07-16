@@ -108,10 +108,11 @@ task installReact(type: Exec) {
     inputs.dir "$frontendDir"
     group = BasePlugin.BUILD_GROUP
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-        commandLine "npm.cmd", "audit", "fix"
-        commandLine 'npm.cmd', 'install' }
-    else {
-        commandLine "npm", "audit", "fix" commandLine 'npm', 'install'
+        commandLine "C:/Program Files/nodejs/npm.cmd", "audit", "fix"
+        commandLine 'C:/Program Files/nodejs/npm.cmd', 'install'
+    } else {
+        commandLine "/usr/local/bin/npm", "audit", "fix"
+        commandLine '/usr/local/bin/npm', 'install'
     }
 }
 
@@ -121,9 +122,9 @@ task buildReact(type: Exec) {
     inputs.dir "$frontendDir"
     group = BasePlugin.BUILD_GROUP
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-        commandLine "npm.cmd", "run-script", "build"
+        commandLine "C:/Program Files/nodejs/npm.cmd", "run-script", "build"
     } else {
-        commandLine "npm", "run-script", "build"
+        commandLine "/usr/local/bin/npm", "run-script", "build"
     }
 }
 
