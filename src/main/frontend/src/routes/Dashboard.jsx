@@ -53,7 +53,7 @@ const Dashboard = () => {
     { id: 2, time: '14:02', title: '5구역 혼잡 (Lv.3)', details: '5구역에서 혼잡이 발생했습니다. 자세한 내용은 여기 있습니다.' },
   ];
 
-  const isMapCardVisible = location.pathname === '/dashboard';
+  const isMapCardVisible = location.pathname === '/dashboard' || location.pathname === '/admin/dashboard';
 
   return (
     <DashBackground name={"대시보드"}
