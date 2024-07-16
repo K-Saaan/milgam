@@ -88,7 +88,7 @@ const ProfileForm = () => {
         const getData = async () => {
             console.log('Fetching event data...');
             try {
-                const res = await axios.get('http://localhost:8080/event/eventlist');
+                const res = await axios.get('/event/eventlist');
                 console.log('Response received:', res);
                 const titles = res.data.map(event => event.title);
                 console.log('Event titles:', titles);
@@ -113,7 +113,7 @@ const ProfileForm = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/login/profile');
+                const response = await axios.get('/login/profile');
                 setProfile({
                     name: response.data.name,
                     id: response.data.id,
@@ -224,10 +224,15 @@ const ProfileForm = () => {
                 </div>
                 <EventControl fullWidth>
                     <Select
-                        value={event}
+                        value={profile.event}
                         onChange={handleEventChange}
                         displayEmpty
-                        renderValue={(selected) => selected ? selected : <em>선택</em>}
+                        renderValue={(selected) => {
+                            if (!selected) {
+                              return <em>선택</em>;
+                            }
+                            return profile.event ? profile.event : selected;
+                          }}
                     >
                         {eventTitles.map((title, index) => (
                             <MenuItem

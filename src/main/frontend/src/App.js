@@ -9,21 +9,6 @@ import AdminTopbar from './components/AdminTopbar.js';
 import { darkTheme, lightTheme } from './Theme.js';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
-const sectionStyle = {
-  width: '100vw',
-  minWidth: "1000px",
-  height: '100vh',
-  display: 'flex',
-  flexDirection: 'column',
-};
-
-const contentBoxStyle = {
-  flex: 1,
-  display:'flex',
-  justifyContent:'center',
-  alignItems: 'flex-start'
-};
-
 const globalStyles = {
   body: {
     minWidth: '1920px', // 원하는 min-width 값으로 설정

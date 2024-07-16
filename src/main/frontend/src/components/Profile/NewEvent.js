@@ -99,7 +99,7 @@ const NewEvent = ({ open, onClose, onAddEvent }) => {
         console.log('Submitting data:', formattedData);
         
         try {
-            const response = await axios.post('http://localhost:8080/event/eventadd', formattedData);
+            const response = await axios.post('/event/eventadd', formattedData);
             console.log('Event added successfully:', response.data);
             onAddEvent(formattedData.title); // 이벤트 목록 업데이트
             onClose(); // 다이얼로그 닫기
