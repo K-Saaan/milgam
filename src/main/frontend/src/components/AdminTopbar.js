@@ -74,7 +74,7 @@ function AdminTopbar({ isAdmin, toggleTheme }) {
         <Toolbar sx={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
         <div >
             {/* 앱 타이틀 */}
-            <Link to="/login/loginPage" style={{display:'flex', alignItems:'center', textDecoration:'none'}}>
+            <div style={{display:'flex', alignItems:'center', textDecoration:'none'}}>
               <Typography
                 variant="h6"
                 noWrap
@@ -84,7 +84,7 @@ function AdminTopbar({ isAdmin, toggleTheme }) {
               </Typography>
             
               <img src={Character} style={{height:'50px', width:'50px', position: 'relative', top:'-6px', right:'7px'}} alt='giyomi' />
-            </Link>
+            </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px', }}>
           <MenuButton onClick={()=>isloginCheck('dashboard')} id='dashboard' isActive={isActive('dashboard')}>대시보드</MenuButton>

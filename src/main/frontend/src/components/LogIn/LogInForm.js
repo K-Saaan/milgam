@@ -48,7 +48,7 @@ const LogInForm = ({ marginBottom }) => {
                     }
                 });
                 console.log("response data", res.data);
-                if (res.data.RESULT === "GO_MAIN") {
+                if (res.data.RESULT === "GO_USER_DASHBOARD") {
                     localStorage.setItem("key", data.id);
                     setIsLogined(true);
                     navigate('/dashboard');
