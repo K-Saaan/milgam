@@ -51,15 +51,11 @@ function App() {
       <ThemeProvider theme={currentTheme}>
         <CssBaseline />
         <Global styles={globalStyles} />
-
           {isAdmin ? (
             <AdminTopbar isAdmin={isAdmin} toggleTheme={toggleTheme} />
           ) : (
             <Topbar isAdmin={isAdmin} toggleTheme={toggleTheme} />
           )}
-          {/* <Box sx={contentBoxStyle}>
-            
-          </Box> */}
           <Outlet />
       </ThemeProvider>
     </QueryClientProvider>

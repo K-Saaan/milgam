@@ -5,6 +5,7 @@ import { styled } from '@mui/system';
 import ApprovalAlert from './ApprovalAlert';
 import { useTheme } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
+import { CustomTableRow, CustomTableCell, tableHeaderStyle  } from '../Styles/CustomTable'
 
 // TableContainer 스타일
 const CustomTableContainer = styled(TableContainer)(({ theme }) => ({
@@ -12,16 +13,16 @@ const CustomTableContainer = styled(TableContainer)(({ theme }) => ({
   borderRadius: '12px',
 }));
 
-// TableHead 스타일
-const CustomTableHead = styled(TableHead)(({ theme }) => ({
-  backgroundColor: theme.palette.secondary,
-}));
+// // TableHead 스타일
+// const CustomTableHead = styled(TableHead)(({ theme }) => ({
+//   backgroundColor: theme.palette.secondary,
+// }));
 
-// TableCell 스타일
-const CustomTableCell = styled(TableCell)(({ theme }) => ({
-  color: theme.palette.text.primary,
-  borderBottom: `2px solid ${theme.palette.divider}`,
-}));
+// // TableCell 스타일
+// const CustomTableCell = styled(TableCell)(({ theme }) => ({
+//   color: theme.palette.text.primary,
+//   borderBottom: `2px solid ${theme.palette.divider}`,
+// }));
 
 // 상태 박스 스타일
 const StatusBox = styled(Box)(({ status, theme }) => ({
@@ -39,9 +40,9 @@ const StatusBox = styled(Box)(({ status, theme }) => ({
     },
 }));
 
-const CustomTableRow = styled(TableRow)(({ theme }) => ({
-    backgroundColor: theme.palette.background.paper,
-}));
+// const CustomTableRow = styled(TableRow)(({ theme }) => ({
+//     backgroundColor: theme.palette.background.paper,
+// }));
 
 const progressStyle = {
   margin: "20px",
@@ -141,39 +142,39 @@ const ReplyInquiry = () => {
   };
 
   return (
-    <>
+    <div>
         <CustomTableContainer component={Paper}>
-        <Table>
-            <CustomTableHead>
-            <TableRow>
-                <TableCell sx={{ width: '10%' }}>아이디</TableCell>
-                <TableCell sx={{ width: '25%' }}>이메일</TableCell>
-                <TableCell sx={{ width: '20%' }}>구분</TableCell>
-                <TableCell sx={{ width: '20%' }}>신청 날짜</TableCell>
-                <TableCell sx={{ width: '15%' }}>승인 여부</TableCell>
-                <TableCell sx={{ width: '10%' }}></TableCell>
-            </TableRow>
-            </CustomTableHead>
-            <TableBody>
-            {data && ( data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-              <CustomTableRow key={row.user_index} onClick={() => handleOpenApproval(row)}>
-                <CustomTableCell>{row.id}</CustomTableCell>
-                <CustomTableCell>{row.email}</CustomTableCell>
-                <CustomTableCell>{row.role}</CustomTableCell>
-                <CustomTableCell>{formatDate(row.applyDate)}</CustomTableCell>
-                <CustomTableCell>
-                    <StatusBox status={row.status}>{row.status === null ? '대기' : row.status === 'completed' ? '승인' : '거절'}</StatusBox>
-                </CustomTableCell>
-                <CustomTableCell>
-                    <Button sx={{ color: theme.palette.text.primary }}
-                      onClick={(e) => { e.stopPropagation(); handleDelete(row.user_index); }}
-                      disabled={row.status === null}
-                    >✕</Button>
-                </CustomTableCell>
-              </CustomTableRow>
-            )))}
-            </TableBody>
-        </Table>
+          <Table>
+              <TableHead>
+                <TableRow>
+                    <TableCell sx={[{ width: '10%' }, tableHeaderStyle(theme)]}>아이디</TableCell>
+                    <TableCell sx={[{ width: '25%' }, tableHeaderStyle(theme)]}>이메일</TableCell>
+                    <TableCell sx={[{ width: '20%' }, tableHeaderStyle(theme)]}>구분</TableCell>
+                    <TableCell sx={[{ width: '20%' }, tableHeaderStyle(theme)]}>신청 날짜</TableCell>
+                    <TableCell sx={[{ width: '15%' }, tableHeaderStyle(theme)]}>승인 여부</TableCell>
+                    <TableCell sx={[{ width: '10%' }, tableHeaderStyle(theme)]}></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+              {data && ( data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                <CustomTableRow key={row.user_index} onClick={() => handleOpenApproval(row)}>
+                  <CustomTableCell>{row.id}</CustomTableCell>
+                  <CustomTableCell>{row.email}</CustomTableCell>
+                  <CustomTableCell>{row.role}</CustomTableCell>
+                  <CustomTableCell>{formatDate(row.applyDate)}</CustomTableCell>
+                  <CustomTableCell>
+                      <StatusBox status={row.status}>{row.status === null ? '대기' : row.status === 'completed' ? '승인' : '거절'}</StatusBox>
+                  </CustomTableCell>
+                  <CustomTableCell>
+                      <Button sx={{ color: theme.palette.text.primary }}
+                        onClick={(e) => { e.stopPropagation(); handleDelete(row.user_index); }}
+                        disabled={row.status === null}
+                      >✕</Button>
+                  </CustomTableCell>
+                </CustomTableRow>
+              )))}
+              </TableBody>
+          </Table>
         {data && <TablePagination
             component="div"
             count={data.length}
@@ -195,7 +196,7 @@ const ReplyInquiry = () => {
         )}
         </CustomTableContainer>
         {selectedInquiry && <ApprovalAlert open={openApproval} handleClose={handleCloseApproval} handleApprovalOrRejection={handleApprovalOrRejection} inquiry={selectedInquiry} />}
-    </>
+    </div>
   );
 }
 

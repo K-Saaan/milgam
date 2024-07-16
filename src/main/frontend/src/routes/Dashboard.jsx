@@ -3,6 +3,7 @@ import RightContentArea from '../components/Dashboard/RightContentArea';
 import { Outlet, useLocation } from 'react-router-dom';
 import DashBackground from "../components/DashBackground.js";
 import MapCard from '../components/Dashboard/MapCard'; // MapCard import
+import { createGlobalStyle } from 'styled-components';
 
 const containerStyle = {
   display: 'grid',
@@ -19,7 +20,6 @@ const leftContentStyle = {
 const rightContentStyle = {
   display: 'grid',
   gap: '20px',
-  minWidth: '300px',
 };
 
 const fullWidthStyle = {
@@ -30,6 +30,12 @@ const fullWidthStyle = {
 const hiddenMapCardStyle = {
   visibility: 'hidden', // MapCard를 숨기지만, 그 자리를 차지하도록
 };
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    overflow-x: hidden; /* 가로 스크롤 숨기기 */
+  }
+`;
 
 const Dashboard = () => {
   const [selectedAlert, setSelectedAlert] = useState(null); // 선택된 알림을 관리하는 상태
@@ -47,37 +53,35 @@ const Dashboard = () => {
     }
   }, [location.pathname]);
 
-  // 알림 목록 -> 데이터 불러와서 받는걸로
-  const alerts = [
-    { id: 1, time: '12:53', title: '2구역 Lv.1 이상 행동 감지', details: '2구역에서 이상 행동이 감지되었습니다. 자세한 내용은 여기 있습니다.' },
-    { id: 2, time: '14:02', title: '5구역 혼잡 (Lv.3)', details: '5구역에서 혼잡이 발생했습니다. 자세한 내용은 여기 있습니다.' },
-  ];
-
   const isMapCardVisible = location.pathname === '/dashboard' || location.pathname === '/admin/dashboard';
 
   return (
-    <DashBackground name={"대시보드"}
-      contents={
-        <>
-          <div style={containerStyle}>
-            {/* 좌측 콘텐츠 영역 */}
-            <div style={leftContentStyle}>
-              <Outlet />
-            </div>
-            {/* 우측 알림 리스트 */}
-            <div style={rightContentStyle}>
-              <RightContentArea alerts={alerts} handleAlertClick={handleAlertClick} selectedAlert={selectedAlert} />
-            </div>
-            {/* 지도 카드 */}
-            <div style={fullWidthStyle}>
-              <div style={isMapCardVisible ? {} : hiddenMapCardStyle}>
-                <MapCard />
+    <>
+      <GlobalStyle />
+      <DashBackground name={"대시보드"}
+        contents={
+          <>
+            <div style={containerStyle}>
+              {/* 좌측 콘텐츠 영역 */}
+              <div style={leftContentStyle}>
+                <Outlet />
+              </div>
+              {/* 우측 알림 리스트 */}
+              <div style={rightContentStyle}>
+                <RightContentArea handleAlertClick={handleAlertClick} selectedAlert={selectedAlert} />
+              </div>
+              {/* 지도 카드 */}
+              <div style={fullWidthStyle}>
+                <div style={isMapCardVisible ? {} : hiddenMapCardStyle}>
+                  <MapCard />
+                </div>
               </div>
             </div>
-          </div>
-        </>
-      }
-    />
+          </>
+        }
+      />
+    </>
+
   );
 }
 
