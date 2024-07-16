@@ -91,7 +91,7 @@ public class LoginService {
                     session.setAttribute("userIndex", user.getUser_index());
                     Integer userIndex = (Integer) session.getAttribute("userIndex");
                     logger.info("userIndex: {}", userIndex);
-                    
+
                 }
 
                 // 로그인 로그 저장 -> LoginLog 테이블에 로그인 기록 저장

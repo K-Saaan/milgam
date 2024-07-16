@@ -25,38 +25,11 @@ public class MessageController {
 
     private final MessageService messageService;
 
+    //전체 목록 가져오기
     @GetMapping("/all")
     public ResponseEntity<List<MessageDto>> getAllMessageManageEntities() {
         List<MessageDto> messageManageEntities = messageService.getAllMessageManageEntities();
         return ResponseEntity.ok(messageManageEntities);
-    }
-    @GetMapping("/user/messages")
-    public  ResponseEntity<List<MessageDto>> getMessagesByUserIndex(HttpServletRequest request){
-        HttpSession session = request.getSession();
-        if(session.getAttribute("userIndex") != null) {
-            logger.info("session null");
-        }
-        Integer userIndexInt = (Integer) session.getAttribute("userIndex");
-        logger.info("user_indexint", userIndexInt);
-
-        Long userIndex = userIndexInt != null ? userIndexInt.longValue() : null;
-        logger.info("user_index", userIndex);
-
-        List<MessageDto> allMessages = messageService.getAllMessageManageEntities();
-        List<MessageDto> fillteredMessages = allMessages.stream()
-                .filter(message -> message.getUserIndex() == userIndex)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(fillteredMessages);
-    }
-
-    @GetMapping("/{userIndex}/log-indices")
-    public ResponseEntity<List<Integer>> getLogIndicesByUserIndex(@PathVariable long userIndex) {
-        List<MessageDto> allMessages = messageService.getAllMessageManageEntities();
-        List<Integer> logIndices = allMessages.stream()
-                .filter(message -> message.getUserIndex() == userIndex)
-                .map(MessageDto::getLogIndex) // Assuming getLogIndex() returns Integer
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(logIndices);
     }
 
     @GetMapping("/log-all")
@@ -64,14 +37,75 @@ public class MessageController {
         List<MessageLogDto> messageLogEntities = messageService.getAllMessageLogEntities();
         return ResponseEntity.ok(messageLogEntities);
     }
-    @GetMapping("/{userIndex}/message-logs")
-    public ResponseEntity<List<MessageLogDto>> getMessageLogsByUserIndex(@PathVariable long userIndex) {
+
+    //특정 유저 메세지 가져오기
+    @GetMapping("/user/messages")
+    public ResponseEntity<List<MessageDto>> getMessagesByUserIndex(HttpServletRequest request) {
+        Long userIndex = getUserIndexFromSession(request);
+        if (userIndex == null) {
+//            return ResponseEntity.status(401).body(null);
+            userIndex = 11L;
+        }
+
+        List<MessageDto> filteredMessages = filterMessagesByUserIndex(userIndex);
+        return ResponseEntity.ok(filteredMessages);
+    }
+    //특정 유저 메세지로그 목록 가져오기
+    @GetMapping("/user/log-indices")
+    public ResponseEntity<List<Integer>> getLogIndicesByUserIndex(HttpServletRequest request) {
+        Long userIndex = getUserIndexFromSession(request);
+        if (userIndex == null) {
+//            return ResponseEntity.status(401).body(null);
+            userIndex = 11L;
+        }
+
+        List<Integer> logIndices = filterLogIndicesByUserIndex(userIndex);
+        return ResponseEntity.ok(logIndices);
+    }
+
+    //특정유저 메세지 가저오기
+    @GetMapping("/user/message-logs")
+    public ResponseEntity<List<MessageLogDto>> getMessageLogsByUserIndex(HttpServletRequest request) {
+        Long userIndex = getUserIndexFromSession(request);
+        if (userIndex == null) {
+//            return ResponseEntity.status(401).body(null);
+            userIndex = 11L;
+        }
+
+        List<Integer> logIndices = filterLogIndicesByUserIndex(userIndex);
+        List<MessageLogDto> messageLogs = messageService.getMessageLogsByLogIndices(logIndices);
+        return ResponseEntity.ok(messageLogs);
+    }
+
+    //세션에서 유저인덱스 받아오기
+    private Long getUserIndexFromSession(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            logger.info("No session found.");
+            return null;
+        }
+        Integer userIndexInt = (Integer) session.getAttribute("userIndex");
+        if (userIndexInt == null) {
+            logger.info("userIndex attribute is null.");
+            return null;
+        }
+
+        return userIndexInt.longValue();
+    }
+
+    //유저인덱스를 기준으로 메시지를 필터링 함
+    private List<MessageDto> filterMessagesByUserIndex(Long userIndex) {
         List<MessageDto> allMessages = messageService.getAllMessageManageEntities();
-        List<Integer> logIndices = allMessages.stream()
+        return allMessages.stream()
+                .filter(message -> message.getUserIndex() == userIndex)
+                .collect(Collectors.toList());
+    }
+    //유저인덱스를 기준으로 로그를 필터링 함
+    private List<Integer> filterLogIndicesByUserIndex(Long userIndex) {
+        List<MessageDto> allMessages = messageService.getAllMessageManageEntities();
+        return allMessages.stream()
                 .filter(message -> message.getUserIndex() == userIndex)
                 .map(MessageDto::getLogIndex)
                 .collect(Collectors.toList());
-        List<MessageLogDto> messageLogs = messageService.getMessageLogsByLogIndices(logIndices);
-        return ResponseEntity.ok(messageLogs);
     }
 }
