@@ -15,6 +15,7 @@ import org.springframework.web.socket.handler.BinaryWebSocketHandler;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Slf4j
 @Component
@@ -22,7 +23,7 @@ import java.util.Set;
 public class VideoStreamHandler extends BinaryWebSocketHandler {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final RestTemplate restTemplate;
+//    private final RestTemplate restTemplate;
     private final Set<WebSocketSession> sessions = new HashSet<>();
 
     @Value("${server.gcp}")
@@ -40,7 +41,7 @@ public class VideoStreamHandler extends BinaryWebSocketHandler {
             if (session.isOpen()) {
                 byte[] payload = message.getPayload().array();
 
-                restTemplate.postForObject(gcpUrl, payload, String.class);
+//                restTemplate.postForObject(gcpUrl, payload, String.class);
 
                 session.sendMessage(new BinaryMessage("Chunk received".getBytes()));
             }

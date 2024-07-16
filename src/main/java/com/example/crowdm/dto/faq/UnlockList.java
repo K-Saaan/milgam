@@ -7,15 +7,15 @@ public class UnlockList {
     private String id;
     private String email;
     private Timestamp applyDate;
-    private String role_index;
+    private String status;
 
     public UnlockList() {}
 
-    public UnlockList(String id, String email, Timestamp applyDate, String role_index) {
+    public UnlockList(String id, String email, Timestamp applyDate,String status) {
         this.id = id;
         this.email = email;
         this.applyDate = applyDate;
-        this.role_index = role_index;
+        this.status = status;
     }
 
     public String getId() {
@@ -42,11 +42,10 @@ public class UnlockList {
         this.applyDate = applyDate;
     }
 
-    public String getRole_index() {
-        return role_index;
+    public String getStatus() {
+        return status;
     }
-
-    public void setRole_index(String role_index) {
-        this.role_index = role_index;
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

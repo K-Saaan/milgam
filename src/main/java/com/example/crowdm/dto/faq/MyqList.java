@@ -5,19 +5,23 @@ import java.sql.Timestamp;
 public class MyqList {
     private Integer myq_index;
     private String question_title;
+    private String question;
     private Integer user_index;
     private Timestamp question_date;
     private Timestamp answer_date;
+    private String name;
     private String status;
 
 
     public MyqList() {}
-    public MyqList(Integer myq_index, String question_title, Integer user_index, Timestamp question_date, Timestamp answer_date, String status) {
+    public MyqList(Integer myq_index, String question_title, String question, Integer user_index, Timestamp question_date, Timestamp answer_date, String name, String status) {
         this.myq_index=myq_index;
         this.question_title=question_title;
+        this.question=question;
         this.user_index=user_index;
         this.question_date=question_date;
         this.answer_date=answer_date;
+        this.name=name;
         this.status=status;
 
 
@@ -38,6 +42,14 @@ public class MyqList {
 
     public void setQuestion_title(String question_title) {
         this.question_title = question_title;
+    }
+
+    public String getQuestion(){
+        return question;
+    }
+
+    public void setQuestion(String question){
+        this.question=question;
     }
 
     public Integer getUser_index() {
@@ -62,6 +74,13 @@ public class MyqList {
 
     public void setAnswer_date(Timestamp answer_date) {
         this.answer_date = answer_date;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getStatus() {

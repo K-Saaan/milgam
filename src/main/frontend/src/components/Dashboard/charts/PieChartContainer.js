@@ -4,11 +4,11 @@ export const pieChartOptions = (theme) => ({
     plugins: {
       legend: {
         display: false,
-        position: 'right',
+        position: 'bottom',
         labels: {
           color: theme.palette.text.primary,
           font: {
-            size: 5, // 범례의 글자 크기
+            size: 8, // 범례의 글자 크기
           },
           boxWidth: 5, // 범례 상자의 너비
           boxHeight: 5, // 범례 상자의 높이

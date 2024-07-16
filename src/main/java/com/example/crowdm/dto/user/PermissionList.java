@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class PermissionList {
     //private Integer user_index;
-
+    private Integer user_index;
     private String id;
     private String email;
     private String role;
@@ -15,8 +15,8 @@ public class PermissionList {
     public PermissionList() {}
 
     // Parameterized constructor
-    public PermissionList(  String id, String email, String role, Timestamp applyDate, String status) {
-        //this.user_index=user_index;
+    public PermissionList( Integer user_index,  String id, String email, String role, Timestamp applyDate, String status) {
+        this.user_index=user_index;
         this.id = id;
         this.email = email;
         this.role = role;
@@ -28,6 +28,13 @@ public class PermissionList {
     //public Integer getUserIndex() {
     //    return user_index;
     //}
+    public Integer getUser_index() {
+        return user_index;
+    }
+    public void setUser_index(Integer user_index) {
+        this.user_index = user_index;
+    }
+
     public String getId() {
         return id;
     }

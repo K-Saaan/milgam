@@ -37,6 +37,19 @@ public interface LoginRepository extends JpaRepository<UserEntity, Integer>, Jpa
     @Query("UPDATE UserEntity u SET u.admin_index = :admin_index WHERE u.user_index = :user_index")
     int updateAdminIndexById(@Param("user_index") int user_index, @Param("admin_index") int admin_index);*/
 
-    @Query(value = "select * from users where id = :userId and pw = :password", nativeQuery=true)
-    UserEntity findByUser(@Param("userId") String userId, @Param("password") String password);
+    @Query("SELECT u FROM UserEntity u WHERE u.id = :userId")
+    UserEntity findByUser(@Param("userId") String userId);
+
+    // 비밀번호 검증을 위한 메서드 추가
+    @Query("SELECT u FROM UserEntity u WHERE u.id = :userId and u.pw = :password")
+    UserEntity findByUserIdAndPassword(@Param("userId") String userId, @Param("password") String password);
+
+    // 실패 카운트와 계정 잠금을 업데이트하는 메서드
+    @Modifying
+    @Transactional
+    @Query("UPDATE UserEntity u SET u.fail_cnt = :failCnt, u.account_lock = :lock WHERE u.id = :userId")
+    void updateFailCntAndLock(@Param("userId") String userId, @Param("failCnt") int failCnt, @Param("lock") boolean lock);
+
+
 }
+
