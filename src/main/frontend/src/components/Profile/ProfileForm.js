@@ -25,7 +25,6 @@ const formSx = {
     justifyContent: 'center',
     margin: 'auto',
     height: '75vh',
-
     overflow: 'auto', // 스크롤 활성화
     ...noScrollbarStyles // 스크롤 바 숨기기 스타일 추가
 };
@@ -68,22 +67,9 @@ const ProfileForm = () => {
     //     console.log("Full response:", res.data);
     // }
 
-
-    // delete하기
-    const deleteData = async (id) => {
-        try {
-            const response = await axios.delete(`http://localhost:8080/event/delete/${id}`);
-            console.log("Deleted successfully:", response);
-            // 여기에서 성공적으로 삭제되었을 때 필요한 추가 작업을 수행할 수 있습니다.
-            // 예를 들어, 상태 업데이트를 통해 UI를 변경할 수 있습니다.
-        } catch (error) {
-            console.error("Failed to delete the event:", error);
-            // 삭제 실패 시 오류 처리 로직
-        }
-    }
-
     //event 받아오기
     const [eventTitles, setEventTitles] = useState([]);
+    
     useEffect(() => {
         const getData = async () => {
             console.log('Fetching event data...');
@@ -101,8 +87,46 @@ const ProfileForm = () => {
         getData();
     }, []);  // 의존성 배열을 빈 배열로 설정하여 컴포넌트 마운트 시 한 번만 실행됨
     
+    
+    const [profile, setProfile] = useState({
+        name: '',
+        id: '',
+        email: '',
+        phone: '',
+        org: ''
+    });
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/login/profile');
+                setProfile({
+                    name: response.data.name,
+                    id: response.data.username,
+                    email: response.data.email,
+                    phone: response.data.phone,
+                    org: response.data.affiliation
+                });
+                console.log('Profile fetched:', response.data);
+            } catch (error) {
+                console.error('Error fetching profile data:', error);
+            }
+        };
+    
+        fetchProfile();
+    }, []);  // 프로필 데이터 로드
 
-
+    // const deleteData = async (id) => {
+    //     try {
+    //         const response = await axios.delete(`http://localhost:8080/event/delete/${id}`);
+    //         console.log("Deleted successfully:", response);
+    //         setEventTitles(prev => prev.filter(event => event.id !== id));
+    //         if (event === id) {
+    //             setEvent('');
+    //         }
+    //     } catch (error) {
+    //         console.error("Failed to delete the event:", error);
+    //     }
+    // };
 
     // 이벤트
     const [event, setEvent] = useState('');
@@ -110,11 +134,9 @@ const ProfileForm = () => {
     const [dialogOpen, setDialogOpen] = useState(false);
 
     const handleEventChange = (event) => { // 이벤트 선택
-        const value = event.target.value;
-        if (value === 'add-new') {
+        setEvent(event.target.value);
+        if (event.target.value === 'add-new') {
             setDialogOpen(true);
-        } else {
-            setEvent(value);
         }
     };
 
@@ -150,7 +172,7 @@ const ProfileForm = () => {
                     </div>
                     <CustomTypographyWrapper>
                         <CustomTypography variant="h6">
-                            홍길동 {/* 저장된 이름값 */}
+                            {profile.name || '홍길동'} {/* 서버에서 받은 이름값이나 기본값 */}
                         </CustomTypography>
                     </CustomTypographyWrapper>
                 </div>
@@ -162,7 +184,7 @@ const ProfileForm = () => {
                     </div>
                     <CustomTypographyWrapper>
                         <CustomTypography variant="h6">
-                            abcd1234 {/* 저장된 아이디값 */}
+                        {profile.id || 'abcd1234'} {/* 서버에서 받은 아이디값이나 기본값 */}
                         </CustomTypography>
                     </CustomTypographyWrapper>
                 </div>
@@ -174,7 +196,7 @@ const ProfileForm = () => {
                     </div>
                     <CustomTypographyWrapper>
                         <CustomTypography variant="h6">
-                            abcd1234@naver.com {/* 저장된 이메일값 */}
+                        {profile.email || 'abcd1234@naver.com'} {/* 서버에서 받은 이메일값이나 기본값 */}
                         </CustomTypography>
                     </CustomTypographyWrapper>
                 </div>
@@ -186,7 +208,7 @@ const ProfileForm = () => {
                     </div>
                     <CustomTypographyWrapper>
                         <CustomTypography variant="h6">
-                            010-0000-0000 {/* 저장된 전화번호값 */}
+                        {profile.phone || '010-0000-0000'} {/* 서버에서 받은 전화번호값이나 기본값 */}
                         </CustomTypography>
                     </CustomTypographyWrapper>
                 </div>
@@ -198,7 +220,7 @@ const ProfileForm = () => {
                     </div>
                     <CustomTypographyWrapper>
                         <CustomTypography variant="h6">
-                            청와대 {/* 저장된 소속값 */}
+                        {profile.org || '청와대'} {/* 서버에서 받은 소속값이나 기본값 */}
                         </CustomTypography>
                     </CustomTypographyWrapper>
                 </div>
@@ -219,12 +241,15 @@ const ProfileForm = () => {
                         //     return selected;
                         // }}
                         renderValue={(selected) => selected ? selected : <em>선택</em>}
-                        >
-                            {eventTitles.map((title, index) => (
-                                <MenuItem key={index} value={title}>
-                                    {title}
-                                </MenuItem>
-                            ))}
+                    >
+                        {eventTitles.map((title, index) => (
+                            <MenuItem
+                                key={index}
+                                value={title}
+                            >
+                                {title}
+                            </MenuItem>
+                        ))}
                         {customEvents.map((customEvent, index) => ( // 직접 입력된 행사명 생성 및 삭제
                             <MenuItem
                                 key={index}
