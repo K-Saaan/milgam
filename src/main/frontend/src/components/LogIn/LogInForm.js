@@ -53,11 +53,11 @@ const LogInForm = ({ marginBottom }) => {
                     localStorage.setItem("key", data.id);
                     setIsLogined(true);
                     navigate('/dashboard');
-                } else if (res.data === "diff") {
+                } else if (res.data.RESULT === "INVALID_PASSWORD") {
                     setPasswordError("비밀번호가 틀렸습니다.");
-                } else if (res.data === "lock") {
+                } else if (res.data.RESULT === "LOCK_ACCOUNT") {
                     alHandleClickOpen();
-                } else if (res.data === "assign") {
+                } else if (res.data.RESULT === "PERMISSION_DENIED") {
                     npHandleClickOpen();
                 }
             } catch (error) {

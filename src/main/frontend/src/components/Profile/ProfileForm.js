@@ -24,14 +24,15 @@ const formSx = {
     alignItems: 'center',
     justifyContent: 'center',
     margin: 'auto',
-    height: '75vh',
+    height: '65vh',
+    width: '95%',
     overflow: 'auto', // 스크롤 활성화
     ...noScrollbarStyles // 스크롤 바 숨기기 스타일 추가
 };
 
 // 행사 선택 select box 스타일
 const EventControl = styled(FormControl)(({ theme }) => ({
-    width: '370px',
+    width: '100%',
     height: '56px',
     backgroundColor: theme.palette.secondary.main,
     '& .MuiOutlinedInput-root': {
@@ -67,9 +68,23 @@ const ProfileForm = () => {
     //     console.log("Full response:", res.data);
     // }
 
+
+    // delete하기
+    const deleteData = async (id) => {
+        try {
+            const response = await axios.delete(`http://localhost:8080/event/delete/${id}`);
+            console.log("Deleted successfully:", response);
+            // 여기에서 성공적으로 삭제되었을 때 필요한 추가 작업을 수행할 수 있습니다.
+            // 예를 들어, 상태 업데이트를 통해 UI를 변경할 수 있습니다.
+        } catch (error) {
+            console.error("Failed to delete the event:", error);
+            // 삭제 실패 시 오류 처리 로직
+        }
+    }
+
     //event 받아오기
     const [eventTitles, setEventTitles] = useState([]);
-    
+
     useEffect(() => {
         const getData = async () => {
             console.log('Fetching event data...');
@@ -87,7 +102,7 @@ const ProfileForm = () => {
         getData();
     }, []);  // 의존성 배열을 빈 배열로 설정하여 컴포넌트 마운트 시 한 번만 실행됨
     
-    
+
     const [profile, setProfile] = useState({
         name: '',
         id: '',
@@ -113,7 +128,7 @@ const ProfileForm = () => {
                 console.error('Error fetching profile data:', error);
             }
         };
-    
+
         fetchProfile();
     }, []);  // 프로필 데이터 로드
 
@@ -167,7 +182,7 @@ const ProfileForm = () => {
             autoComplete="off"
             sx={formSx}
         >
-            <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/* 이름 */}
+            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, }}> {/* 이름 */}
                 <div>
                     <div style={{ marginBottom: '4px' }}>
                         이름
@@ -179,7 +194,7 @@ const ProfileForm = () => {
                     </CustomTypographyWrapper>
                 </div>
             </Grid>
-            <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/* 아이디 */}
+            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, }}> {/* 아이디 */}
                 <div>
                     <div style={{ marginBottom: '4px' }}>
                         아이디
@@ -191,7 +206,7 @@ const ProfileForm = () => {
                     </CustomTypographyWrapper>
                 </div>
             </Grid>
-            <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/* 이메일 */}
+            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, }}> {/* 이메일 */}
                 <div>
                     <div style={{ marginBottom: '4px' }}>
                         이메일
@@ -203,7 +218,7 @@ const ProfileForm = () => {
                     </CustomTypographyWrapper>
                 </div>
             </Grid>
-            <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/* 전화번호 */}
+            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, }}> {/* 전화번호 */}
                 <div>
                     <div style={{ marginBottom: '4px' }}>
                         전화번호
@@ -215,7 +230,7 @@ const ProfileForm = () => {
                     </CustomTypographyWrapper>
                 </div>
             </Grid>
-            <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/* 소속 */}
+            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, }}> {/* 소속 */}
                 <div>
                     <div style={{ marginBottom: '4px' }}>
                         소속
@@ -227,7 +242,7 @@ const ProfileForm = () => {
                     </CustomTypographyWrapper>
                 </div>
             </Grid>
-            <Grid item xs={12} md={6} sx={{ mb: 2 }}> {/* 행사 선택 */}
+            <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, }}> {/* 행사 선택 */}
                 <div style={{ marginBottom: '4px' }}>
                     행사
                 </div>
