@@ -172,15 +172,16 @@ const UploadBG = styled('div')({
             formData.append('chunkFile', chunk);
             formData.append('chunkIndex', i);
             formData.append('totalChunks', totalChunks);
-            formData.append('sector', data.sector);
-            formData.append('camera_num', data.camera);
-            formData.append('content', data.detail);
-            formData.append('length', selectedFile.size);
+            //formData.append('sector', data.sector);
+            //formData.append('camera_num', data.camera);
+            //formData.append('content', data.detail);
+            //formData.append('length', selectedFile.size);
 
             //formData 확인
             //for (let key of formData.keys()) { console.log(key, ":", formData.get(key));}
 
             await axios.post('/api/videoUpload', formData, {
+              withCredentials: true, // 쿠키를 포함한 요청
               headers: {
                 'Content-Type': 'multipart/form-data',
               },

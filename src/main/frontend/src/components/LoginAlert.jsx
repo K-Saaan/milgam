@@ -45,7 +45,7 @@ const LoginAlert = ({ isAdmin, alertOpen, handleClose }) => {
     const navigate = useNavigate(); 
 
     const handleLoginRedirect = () => {
-        const loginPath = isAdmin ? '/admin/login' : '/login/loginPage';
+        const loginPath = '/login/loginPage';
         navigate(loginPath); 
         handleClose();
       };

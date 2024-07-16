@@ -23,12 +23,19 @@ const AdminLogInForm = ({ marginBottom }) => {
     const onLogIn = async (data) => {
         try {
             //console.log("data : ", data)
-            const res = await axios.post("/admin/loginAction", data);
+            const res = await axios.post("/login/loginAction", data, {
+                withCredentials: true, // 쿠키를 포함한 요청
+                    headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
             //console.log(res.data);
-            if (res.data.RESULT === "GO_MAIN") {
+            if (res.data.RESULT === "GO_ADMIN_DASHBOARD") {
                 localStorage.setItem("key", data.id);
                 setAdminLogined(true);
                 navigate('/admin');
+            } else {
+                alert(res.data.RESULT);
             }
         } catch (error) {
             console.error("오류가 발생하였습니다:", error);

@@ -47,6 +47,11 @@ const ApprovalAlert = ({ open, handleClose, handleApprovalOrRejection, inquiry }
                 setLoading(true);
                 setError(null);
                 try {
+                    /*const instance = axios.create({
+                        withCredentials: true, // 쿠키 포함 설정
+                    });*/
+
+                    //const response = await instance.get(`/admin/userdetail?user_index=${inquiry.user_index}`);
                     const response = await axios.get(`/admin/userdetail?user_index=${inquiry.user_index}`);
                     if (isMounted) {
                         setData(response.data[0]);
@@ -74,16 +79,16 @@ const ApprovalAlert = ({ open, handleClose, handleApprovalOrRejection, inquiry }
     };
 
     return (
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={open} onClose={handleClose} >
             <DialogTitle>회원가입 상세 정보</DialogTitle>
             <Divider style={{ background: theme.palette.divider }} />
-            <DialogContent>
+            <DialogContent sx={{minWidth:'560px'}}>
                 {loading && (
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
                         <CircularProgress />
                     </div>
                 )}
-                {error && (
+                {!data && error && (
                     <CustomDialogContentText>
                         {error}
                     </CustomDialogContentText>
