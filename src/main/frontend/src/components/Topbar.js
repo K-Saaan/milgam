@@ -4,42 +4,30 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import Sidebar from './Sidebar';
 import { useTheme } from '@mui/material/styles';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
 import useStore from "../store";
-
 import Character from "../components/Home/new_cha.png"
 import LoginAlert from './LoginAlert';
 import ModeSwitch from './Styles/ModalSwitch';
-
-
+import axios from 'axios';
 
 // const barBoxStyle = { flexGrow: 1 };
 const abStyle = (theme) => ({backgroundColor: theme.palette.background.paper});
-const menuIconStyle = (theme) => ({ mr: 2, color: theme.palette.text.primary });
 const titleStyle = { display: {  sm: 'block' } };
 // xs: 'none',
 const profileIconStyle = { display: { xs: 'none', md: 'flex' } };
-
-
 
 function Topbar({ isAdmin, toggleTheme }) {
 
   const navigate = useNavigate();
   const location = useLocation();
-
-
+  const wapiKey = process.env.REACT_APP_W_API_KEY;
 
   const {isLogined, setIsLogined} = useStore(state => state);
-  const {adminLogined, setAdminLogined} = useStore(state => state);
-
+  // const {adminLogined, setAdminLogined} = useStore(state => state);
   const [logoutModalOpen, setLogoutModalOpen] = React.useState(false);
-
 
   const handleModalClose = () => {
     setLogoutModalOpen(false);
@@ -54,8 +42,6 @@ function Topbar({ isAdmin, toggleTheme }) {
     }
   }
 
-
-
   // 테마 변경
   const theme = useTheme();
   const handleToggleClick = () => {
@@ -65,16 +51,31 @@ function Topbar({ isAdmin, toggleTheme }) {
 
   const appBarStyle = abStyle(theme);
 
-
   // 페이지 이동 핸들러
   const handleProfileClick = () => {
     navigate('/profile', { state: { from: location.pathname } });
   };
 
-  // 홈 이동 핸들러
-  const handleHomeClick = () => {
-    navigate('/home', { state: { from: location.pathname } });
+  const [temp, setTemp]= React.useState()
+  const [code, setCode]= React.useState()
+
+  const getWeather = async () => {
+    try {
+        const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=${wapiKey}&units=metric`);
+        setTemp(res.data.main.temp);
+        setCode(res.data.weather[0].icon)
+    } catch (error) {
+        console.error("Error fetching weather data:", error);
+    }
   };
+
+  React.useEffect(() => {
+      getWeather();
+  }, []);
+
+  
+
+
 
   return (
     <Box>
@@ -103,30 +104,48 @@ function Topbar({ isAdmin, toggleTheme }) {
 
       
         
-        <div style={{display:'flex', alignItems:'center'}}>
+          <div style={{display:'flex', alignItems:'center'}}>
 
-        <ModeSwitch
-          checked={theme.palette.mode === 'dark'}
-          onChange={handleToggleClick}
-          inputProps={{ 'aria-label': 'theme switch' }}
-          />
+            <div>
+              {temp === null ? 
+                <div>데이터를 로딩 중...</div> :
+                <div style={{marginRight:'8px', height: '64px', display:'flex', justifyContent:'center', alignItems:'center'}}>
+                  <img style={{width: '50px', height: '50px', marginRight:'-8px'}} src={`http://openweathermap.org/img/wn/${code}.png`} alt='weather' />
+                  <span style={{textAlign:'center' ,fontSize:'14px', width: '50px', height: 'auto'}}>
+                    {temp} 
+                    <span style={{ position: 'relative', top:'-4px', right:'-2px', fontWeight: 800 }}>
+                      &deg;C
+                    </span>
+                  </span>
+                </div>
+                
+              }
+            </div>
 
-          {/* 데스크탑 화면에서 프로필 아이콘 */}
-          { isLogined || (
-            <Box sx={profileIconStyle}>
-                    <IconButton
-                      size="large"
-                      aria-label="go to profile page"
-                      aria-haspopup="true"
-                      color="inherit"
-                      onClick={handleProfileClick} // 클릭 시 /profile 경로로 이동
-                      sx={{color: theme.palette.text.primary}}
-                    >
-                      <AccountCircle />
-                    </IconButton>
-                  </Box>
-          )}
-        </div>
+
+            <ModeSwitch
+              checked={theme.palette.mode === 'dark'}
+              onChange={handleToggleClick}
+              inputProps={{ 'aria-label': 'theme switch' }}
+            />
+            
+
+            {/* 데스크탑 화면에서 프로필 아이콘 */}
+            { isLogined || (
+              <Box sx={profileIconStyle}>
+                <IconButton
+                  size="large"
+                  aria-label="go to profile page"
+                  aria-haspopup="true"
+                  color="inherit"
+                  onClick={handleProfileClick} // 클릭 시 /profile 경로로 이동
+                  sx={{color: theme.palette.text.primary}}
+                >
+                  <AccountCircle />
+                </IconButton>
+              </Box>
+            )}
+          </div>
         </Toolbar>
       </AppBar>
       <LoginAlert alertOpen={logoutModalOpen} handleClose={handleModalClose} />

@@ -15,13 +15,6 @@ const sectionStyle = {
   flexDirection: 'column',
 };
 
-const contentBoxStyle = {
-  flex: 1,
-  display:'flex',
-  justifyContent:'center',
-  alignItems: 'flex-start'
-};
-
 // Create a client
 const queryClient = new QueryClient();
 
@@ -40,13 +33,22 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={currentTheme}>
         <CssBaseline />
-        <Box component="section" sx={sectionStyle}>
-          <Topbar isAdmin={isAdmin} toggleTheme={toggleTheme}/>
+        <Topbar isAdmin={isAdmin} toggleTheme={toggleTheme}/>
+        
 
-          <Box sx={contentBoxStyle}>
-            <Outlet />
-          </Box>
-        </Box>
+
+        <div style={{scrollbarWidth:'none', overflowX:'hidden', height:'90vh', width:'100vw'}}>
+          <Outlet />
+        </div>
+        {/* <Outlet /> */}
+
+
+
+
+        {/* <Box component="section" sx={sectionStyle}>
+          <Topbar isAdmin={isAdmin} toggleTheme={toggleTheme}/>
+          <Outlet />
+        </Box> */}
       </ThemeProvider>
     </QueryClientProvider>
   );

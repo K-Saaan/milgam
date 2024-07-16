@@ -1,6 +1,5 @@
 import { useTheme } from "@emotion/react";
 import { motion, useScroll, useTransform} from "framer-motion";
-import pic from "./pic.jpg"
 import { useRef } from "react";
 
 // conatiner
@@ -58,36 +57,20 @@ function Page1(){
   
       return (
           <>
-            <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
-            transition={{
-                ease: "easeInOut",
-                duration: 1,
-                y: { duration: 1 },
-            }}
-            style={pageStyle}
-            >
+            <div >
+              <video loop autoPlay muted style={{width:'100vw', zIndex:'3'}}>
+                  <source src="https://videos.pexels.com/video-files/16476078/16476078-uhd_2560_1440_30fps.mp4" type="video/mp4" />
+              </video>
+              <p style={{color:'white', position:'relative', top:'-550px', paddingLeft:'100px', fontSize:'40px', fontWeight:'800', zIndex:'1'}}>
+                AI를 활용한 크라우드 매니지먼트<br/>
+                단 하나의 솔루션, 밀감
+              </p>
 
-              <span style={spanStyle}>#001</span>
-
-              <div style={{...textStyle, y}}>
-               
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac
-                  rhoncus quam. 대강 문제상황 우리서비스를써야하는그런거설득
-                  Fringilla quam urna. Cras turpis elit, euismod eget ligula quis,
-                  imperdiet sagittis justo. In viverra fermentum ex ac vestibulum.
-                  Aliquam eleifend nunc a luctus porta. Mauris laoreet augue ut felis
-                  blandit, at iaculis odio ultrices. Nulla facilisi. Vestibulum cursus
-                  ipsum tellus, eu tincidunt neque tincidunt a.
-            
-              </div>
-
-              <img style={picStyle} src={pic} alt="giyomi" />
+                  
+              
 
 
-            </motion.div>
+            </div>
           </>
         );
   }

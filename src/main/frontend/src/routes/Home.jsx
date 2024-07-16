@@ -5,14 +5,17 @@ import Page3 from "../components/Home/Page3";
 
 import { motion, useScroll, useSpring } from "framer-motion";
 import { useRef } from "react";
+import Page4 from "../components/Home/Page4";
+import Page5 from "../components/Home/Page5";
+import Page6 from "../components/Home/Page6";
 
 
 
 //page
 const cPageStyle = (theme) => ({
-  scrollSnapType: 'y mandatory',
+  // scrollSnapType: 'y mandatory',
   overflowY: 'scroll',
-  height: '90vh',
+  height: '100vh',
   width: '100vw',
   scrollbarWidth:'none',
 });
@@ -23,13 +26,14 @@ const cCTStyle = (theme) => ({
   justifyContent:'center',
   alignItems:'center',
   flexDirection: 'column',
+  width:'100vw',
 });
 
 //content
 const cContentStyle = (theme) => ({
   scrollSnapAlign: 'center',
-  height: '90vh',
-  width:'100%',
+  height: '100vh',
+  width:'100vw',
   maxWidth: '1000px',
   display:'flex',
   justifyContent:'center',
@@ -91,28 +95,22 @@ function Home(){
               </div>
 
               <div style={contentStyle}>
-                <Page1 />
+                <Page4 />
               </div>
 
               <div style={contentStyle}>
-                <Page1 />
+                <Page5 />
               </div>
 
               <div style={contentStyle}>
-                <Page1 />
+                <Page6 />
               </div>
 
-              <div style={contentStyle}>
-                <Page1 />
-              </div>
+           
 
-              <div style={contentStyle}>
-                <Page1 />
-              </div>
-
+            <motion.div  style={{ scaleX, ...pBarStyle }} />
             </div>
             
-            <motion.div  style={{ scaleX, ...pBarStyle }} />
           </div>
         </>
       );
