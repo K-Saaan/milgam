@@ -113,7 +113,7 @@ const UploadBG = styled('div')({
     const navigate = useNavigate();
     const inputRef = useRef();
     const [selectedFile, setSelectedFile] = useState(null);
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, reset } = useForm();
 
     const [error, setError] = useState('');
     const [isActive, setActive] = useState(false)
@@ -152,6 +152,7 @@ const UploadBG = styled('div')({
     const removeFile = (e) => {
       e.preventDefault();
       setSelectedFile(null);
+      reset();
     };
 
     // 파일 전송 처리
@@ -168,20 +169,32 @@ const UploadBG = styled('div')({
             const end = Math.min(selectedFile.size, start + chunkSize);
             const chunk = selectedFile.slice(start, end);
 
-            const formData = new FormData();
-            formData.append('chunkFile', chunk);
-            formData.append('chunkIndex', i);
-            formData.append('totalChunks', totalChunks);
-            //formData.append('sector', data.sector);
-            //formData.append('camera_num', data.camera);
-            //formData.append('content', data.detail);
-            //formData.append('length', selectedFile.size);
+            const vMetaData = new FormData();
+            vMetaData.append('length', selectedFile.size);
+            vMetaData.append('sector', data.sector);
+            vMetaData.append('camera_num', data.camera);
+            vMetaData.append('content', data.detail);
+            vMetaData.append('file_name', selectedFile.name);
+            vMetaData.append('chunk_index', i);
 
-            //formData 확인
+            const formData = new FormData();
+            formData.append('chunkIndex', i);
+            formData.append('chunkFile', chunk);
+            formData.append('totalChunks', totalChunks);
+
+            //Data 확인
             //for (let key of formData.keys()) { console.log(key, ":", formData.get(key));}
+            //for (let key of vMetaData.keys()) { console.log(key, ":", vMetaData.get(key));}
 
             await axios.post('/api/videoUpload', formData, {
-              withCredentials: true, // 쿠키를 포함한 요청
+              //withCredentials: true, // 쿠키를 포함한 요청
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
+
+            await axios.post('/api/uploadmeta', vMetaData, {
+              //withCredentials: true, // 쿠키를 포함한 요청
               headers: {
                 'Content-Type': 'multipart/form-data',
               },

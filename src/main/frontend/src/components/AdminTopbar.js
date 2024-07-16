@@ -74,7 +74,7 @@ function AdminTopbar({ isAdmin, toggleTheme }) {
         <Toolbar sx={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
         <div >
             {/* 앱 타이틀 */}
-            <Link to="admin/login" style={{display:'flex', alignItems:'center', textDecoration:'none'}}>
+            <Link to="/login/loginPage" style={{display:'flex', alignItems:'center', textDecoration:'none'}}>
               <Typography
                 variant="h6"
                 noWrap
