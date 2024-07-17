@@ -71,27 +71,33 @@ const ReplyInquiryAlert = ({ open, handleClose, question, onSubmit }) => {
                     <Typography variant="body1" gutterBottom>문의 날짜: {question?.question_date}</Typography>
                     <Typography variant="body1" gutterBottom>작성자: {question?.name}</Typography>
                 </div>
-                <form onSubmit={handleSubmit(handleFormSubmit)}>
-                    <CustomTextField
-                        autoFocus
-                        margin="dense"
-                        placeholder="답변 내용을 입력해주세요"
-                        type="text"
-                        fullWidth
-                        variant="outlined"
-                        rows={8}
-                        multiline
-                        {...register("answer", { required: "답변 내용을 입력해주세요." })}
-                        value={answer}
-                        onChange={(e) => setAnswer(e.target.value)}
-                        error={!!errors.answer}
-                        helperText={errors.answer ? errors.answer.message : ''}
-                    />
-                    <DialogActions style={{ marginRight: "20px", marginBottom: "20px" }}>
-                        <Button variant="contained" onClick={handleClose} color="primary">취소</Button>
-                        <Button variant="contained" type="submit" color="primary">제출</Button>
-                    </DialogActions>
-                </form>
+                {question?.answer ? (
+                    <div style={{ margin: "10px" }}>
+                        <Typography variant="body1" gutterBottom>답변 내용: {question.answer}</Typography>
+                    </div>
+                ) : (
+                    <form onSubmit={handleSubmit(handleFormSubmit)}>
+                        <CustomTextField
+                            autoFocus
+                            margin="dense"
+                            placeholder="답변 내용을 입력해주세요"
+                            type="text"
+                            fullWidth
+                            variant="outlined"
+                            rows={8}
+                            multiline
+                            {...register("answer", { required: "답변 내용을 입력해주세요." })}
+                            value={answer}
+                            onChange={(e) => setAnswer(e.target.value)}
+                            error={!!errors.answer}
+                            helperText={errors.answer ? errors.answer.message : ''}
+                        />
+                        <DialogActions style={{ marginRight: "20px", marginBottom: "20px" }}>
+                            <Button variant="contained" onClick={handleClose} color="primary">취소</Button>
+                            <Button variant="contained" type="submit" color="primary">제출</Button>
+                        </DialogActions>
+                    </form>
+                )}
             </DialogContent>
         </Dialog>
     );
