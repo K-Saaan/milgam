@@ -46,7 +46,13 @@ public class LoginService {
 
         // 사용자 ID로 사용자 정보를 데이터베이스에서 가져옴
         UserEntity user = loginRepository.findByUser(userId);
-
+        /**
+         * 1. MethodName: login
+         * 2. ClassName : LoginService
+         * 3. Comment   : 로그인
+         * 4. 작성자    : 이수민
+         * 5. 작성일    : 2024. 07. 15
+         **/
         logger.info("user :: " + user);
         if (user != null) {
             logger.info("Fetched user with ID: {}", user.getId());
@@ -55,25 +61,17 @@ public class LoginService {
             if (passwordEncoder.matches(password, user.getPw())) { // 평문 비교 제거, 암호화된 비밀번호만 검증
                 logger.info("Password matches for user: {}", user.getId());
 
-                /**
-                 * 1. MethodName: Login
-                 * 2. ClassName : LoginService
-                 * 3. Comment   : 로그인서비스
-                 * 4. 작성자    : 이수민
-                 * 5. 작성일    : 2024. 07. 15
-                 **/
-
-                // permission_yn 확인
+                // permission_yn 확인       0715 이수민
                 if (!user.getPermission_yn()) {
                     logger.info("Permission denied for user: {}", user.getId());
                     resultMap.put("RESULT", "PERMISSION_DENIED");
                     return resultMap;
                 }
 
-                // 로그인 시도 기간 확인
+                // 로그인 시도 기간 확인         0715 이수민
                 LocalDateTime now = LocalDateTime.now();
-                LocalDateTime startDate = user.getStartDate().toLocalDateTime();
-                LocalDateTime endDate = user.getEndDate().toLocalDateTime();
+                LocalDateTime startDate = user.getStart_date().toLocalDateTime();
+                LocalDateTime endDate = user.getEnd_date().toLocalDateTime();
 
                 if (now.isBefore(startDate) || now.isAfter(endDate)) {
                     logger.info("Login attempt outside of allowed date range for user: {}", user.getId());
@@ -158,7 +156,7 @@ public class LoginService {
                     HttpSession session = request.getSession(true);
                     session.setAttribute("adminIndex", admin.getAdmin_index());
 
-                    // 0715: 관리자 로그인 성공 로그
+                    // 관리자 로그인 성공 로그
                     logger.info("Login successful for admin: {}", admin.getId());
                 } else {
                     logger.info("Invalid password for admin: {}", admin.getId());
@@ -173,13 +171,14 @@ public class LoginService {
         return resultMap;
     }
 
-    public String getEventTitle(Integer event_index){
+    public String getEventTitle(Integer event_index) {
         Optional<EventEntity> eventOptional = eventRepository.findById(event_index);
         EventEntity event = eventOptional.get();
         return event.getTitle();
     }
-    public Profile getProfile(){
-        Integer user_index=11;
+
+    public Profile getProfile() {
+        Integer user_index = 11; // 사용자 인덱스를 하드코딩하는 대신 적절한 방법으로 가져오도록 변경 필요
         Optional<UserEntity> userOptional = loginRepository.findById(user_index);
         UserEntity user = userOptional.get();
         Profile profile = new Profile();
@@ -192,17 +191,15 @@ public class LoginService {
         profile.setEvent(getEventTitle(user.getEvent_index()));
 
         return profile;
-
-
     }
+
     @Transactional
-    public String UpdateEventAtProfile(Integer event_index){
-        Integer user_index=11;
+    public String UpdateEventAtProfile(Integer event_index) {
+        Integer user_index = 11; // 사용자 인덱스를 하드코딩하는 대신 적절한 방법으로 가져오도록 변경 필요
         Optional<UserEntity> userOptional = loginRepository.findById(user_index);
         UserEntity user = userOptional.get();
         user.updateEvent(event_index);
         loginRepository.save(user);
         return "ok";
     }
-
 }
