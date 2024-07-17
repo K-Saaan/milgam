@@ -22,7 +22,7 @@ const LogInForm = ({ marginBottom }) => {
         alignItems: 'center',
         justifyContent: 'center',
         margin: 'auto',
-        height: '65vh',
+        height: '600px',
     };
 
     //회원가입 이동
@@ -33,7 +33,7 @@ const LogInForm = ({ marginBottom }) => {
     const npHandleClickOpen = () => { npSetOpen(true); };
     const npHandleClose = () => { npSetOpen(false); };
 
-    const {setIsLogined} = useStore(state => state);
+    const {setIsLogined, setAdminLogined} = useStore(state => state);
     const onLogIn = async (data) => {
 
         const { id, pw } = data;
@@ -48,17 +48,22 @@ const LogInForm = ({ marginBottom }) => {
                     }
                 });
                 console.log("response data", res.data);
-                if (res.data.RESULT === "GO_MAIN") {
-                    console.log("go dashboard")
+                if (res.data.RESULT === "GO_USER_DASHBOARD") {
                     localStorage.setItem("key", data.id);
                     setIsLogined(true);
                     navigate('/dashboard');
-                } else if (res.data === "diff") {
-                    setPasswordError("비밀번호가 틀렸습니다.");
-                } else if (res.data === "lock") {
+                } else if (res.data.RESULT === "GO_ADMIN_DASHBOARD") {
+                    localStorage.setItem("key", data.id);
+                    setAdminLogined(true);
+                    navigate('/admin/approval');
+                } else if (res.data.RESULT === "INVALID_PASSWORD" || res.data.RESULT === 'USER_NOT_FOUND') {
+                    setPasswordError("아이디 혹은 비밀번호가 틀렸습니다.");
+                } else if (res.data.RESULT === "LOCK_ACCOUNT") {
                     alHandleClickOpen();
-                } else if (res.data === "assign") {
+                } else if (res.data.RESULT === "PERMISSION_DENIED") {
                     npHandleClickOpen();
+                } else if (res.data.RESULT === 'OUTSIDE_DATE_RANGE') {
+                    setPasswordError('사용 기간이 아닙니다.')
                 }
             } catch (error) {
                 console.error("오류가 발생하였습니다:", error);

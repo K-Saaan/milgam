@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import axios from "axios";
 import {useForm} from 'react-hook-form';
-import {Button, Grid} from '@mui/material';
+import {Button, Grid, Divider} from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -9,18 +10,45 @@ import DialogContentText from '@mui/material/DialogContentText';
 import CustomTextField from '../Styles/CustomTextField';
 import DialogTitle from '@mui/material/DialogTitle';
 
+// 타이틀 스타일 정의
+const cTitleStyle = (theme) => ({
+    color: theme.palette.text.primary,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+    margin: "5px",
+    fontSize: "15px"
+});
+// 내용 정렬
+const actionStyle = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+}
+// 버튼 스타일 정의
+const btnStyle = {
+    width: "40%",
+    marginTop: "20px",
+}
+
+
 function EmailAlert({open, handleClose}) {
+    const theme = useTheme();
     const {register, handleSubmit, formState: {errors}} = useForm();
     const [message, setMessage] = useState('');
+    const titleStyle = cTitleStyle(theme);
+
     const onSubmit = async (data) => {
 
         console.log(data);
 
         try {
+            //await new Promise((resolve) => setTimeout(resolve, 1000));
             const response = await axios.post(`http://localhost:8080/signup/verify`,data);
 
             if (response.status === 200) {
-                setMessage('인증에 성공했습니다.')
+                setMessage('인증에 성공하였습니다.')
             }
             console.log("Code:", data.title);    // 입력된 코드를 콘솔에 출력
             //handleClose();
@@ -35,61 +63,37 @@ function EmailAlert({open, handleClose}) {
             open={open}
             onClose={handleClose}
             PaperProps={{
-                sx: {
-                    background: '#273142',
-                    borderRadius: "12px"
-                },
+                sx: {background: theme.palette.background.default, width: "350px",},
             }}
         >
-            <DialogTitle>인증코드 입력</DialogTitle>
-            <DialogContent>
-                <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={8}>
-                        <CustomTextField
-                            autoFocus
-                            required
-                            margin="dense"
-                            id="code"
-                            name="code"
-                            label="인증코드"
-                            type="text"
-                            fullWidth
-                            {...register('code', {required: true})}
-                            error={!!errors.title}
-                            helperText={errors.title ? 'This field is required' : ''}
-                            sx={{
-                                width: '100%',
-                                // 입력 필드 배경색
-                                '& .MuiOutlinedInput-root': {
-                                    backgroundColor: '#323D4E',
-                                    // 필드 셋의 테두리 색
-                                    '& fieldset': {
-                                        borderColor: '#CFCFCF1D',
-                                    },
-                                    // 호버 시 테두리 색
-                                    '&:hover fieldset': {
-                                        borderColor: '#CFCFCF1D',
-                                    },
-                                    // 포커스 시 테두리 색
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: '#FFFFFF1D',
-                                    },
-                                },
-                            }}
-                        />
-                    </Grid>
-                    <Grid item xs={4}>
-                        <DialogContentText></DialogContentText>
-                        <Button variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>
-                            인증확인
-                        </Button>
-                    </Grid>
-                </Grid>
-                {message && <DialogContentText>{message}</DialogContentText>}
+            <DialogTitle style={titleStyle}>인증코드 입력</DialogTitle>
+            <Divider style={{background: theme.palette.divider, marginLeft: '40px', marginRight: '40px',}} />
+            <DialogContent style={{margin: "20px", marginTop: "10px", marginBottom: "10px",}}>
+                <CustomTextField
+                    autoFocus
+                    required
+                    margin="dense"
+                    id="code"
+                    name="code"
+                    label="인증코드"
+                    type="text"
+                    fullWidth
+                    {...register('code', {required: true})}
+                    error={!!errors.title}
+                    helperText={errors.title ? 'This field is required' : ''}
+                    sx={{width: '100%'}}
+                />
+                {message && <DialogContentText variant='caption' sx={{ textAlign: 'center' }}>{message}</DialogContentText>}
+                <DialogActions style={actionStyle}>
+                    <Button variant="contained" onClick={handleClose}
+                        sx={{...btnStyle, backgroundColor: theme.palette.cancel, '&:hover': { backgroundColor: 'inherit' } }}>
+                        취소
+                    </Button>
+                    <Button variant="contained" onClick={handleSubmit(onSubmit)} style={btnStyle}>
+                        인증확인
+                    </Button>
+                </DialogActions>
             </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose}>취소</Button>
-            </DialogActions>
         </Dialog>
     );
 }

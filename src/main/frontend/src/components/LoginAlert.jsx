@@ -38,15 +38,16 @@ const cTextStyle = (theme) => ({
 });
 
 // 로그인 안된 상태에서 메뉴 클릭시 뜨는 알림
-const LoginAlert = ({ alertOpen, handleClose }) => {
+const LoginAlert = ({ isAdmin, alertOpen, handleClose }) => {
     const theme = useTheme();
     const titleStyle = cTitleStyle(theme);
     const textStyle = cTextStyle(theme);
     const navigate = useNavigate(); 
 
     const handleLoginRedirect = () => {
-        navigate('/login/loginPage'); 
-        handleClose()
+        const loginPath = '/login/loginPage';
+        navigate(loginPath); 
+        handleClose();
       };
 
     return (
