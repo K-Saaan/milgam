@@ -50,7 +50,6 @@ public class LoginController {
             result.put("RESULT", "GO_ADMIN_DASHBOARD");
             result.put("URL", "/admin");
         }
-
         return result;
     }
 }

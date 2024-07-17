@@ -44,6 +44,7 @@ function EmailAlert({open, handleClose}) {
         console.log(data);
 
         try {
+            //await new Promise((resolve) => setTimeout(resolve, 1000));
             const response = await axios.post(`http://localhost:8080/signup/verify`,data);
 
             if (response.status === 200) {

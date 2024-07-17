@@ -20,14 +20,14 @@ const DashBackground = (props) => {
           justifyContent: 'center',
           flexDirection: 'column',
           flex: 0.7,
-          marginTop:'5%',
+          marginTop:'3%',
         }}
       >
         {/* 헤더 부분 */}
         <Container
           sx={{
               backgroundColor: 'transparent',
-              margin: 0,
+              margin: 0, maxWidth: '1152px',
               padding: "32px", paddingTop: "16px", paddingBottom: "10px"}}>
           <h1 style={{margin: "0px" }}>{props.name}</h1>
         </Container>
@@ -38,6 +38,7 @@ const DashBackground = (props) => {
               minHeight: '65vh',
               // padding: 0,
               // margin: 0,
+              maxWidth: '1200px',
           }}
         >
           {props.contents}

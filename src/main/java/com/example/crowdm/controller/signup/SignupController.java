@@ -26,8 +26,8 @@ public class SignupController {
             return new ResponseEntity<>("Email cannot be null or empty", HttpStatus.BAD_REQUEST);
         }
         try {
-            String userId = signupService.saveUser(signUpDto);
-            return new ResponseEntity<>(userId, HttpStatus.CREATED);
+            signupService.saveUser(signUpDto);
+            return new ResponseEntity<>("SignUp Service", HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
