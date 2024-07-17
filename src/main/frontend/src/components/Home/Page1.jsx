@@ -51,7 +51,7 @@ function Page1(){
           <>
             <div >
               <video loop autoPlay muted style={{width:'100vw', zIndex:'3'}}>
-                  <source src="https://videos.pexels.com/video-files/16476078/16476078-uhd_2560_1440_30fps.mp4" type="video/mp4" />
+                  <source src="https://videos.pexels.com/video-files/26690702/11987721_2560_1440_60fps.mp4" type="video/mp4" />
               </video>
               <p style={{color:'white', position:'relative', top:'-550px', paddingLeft:'100px', fontSize:'40px', fontWeight:'800', zIndex:'1'}}>
                 AI를 활용한 크라우드 매니지먼트<br/>
