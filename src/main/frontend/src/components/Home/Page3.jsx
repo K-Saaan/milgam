@@ -124,7 +124,7 @@ function Page3(){
                     <img style={pngStyle} src={Thirteenth} alt="png" />
                   </div>
                   <div style={cellStyle}>
-                    <img style={pngStyle} src={Fourteenth} alt="png" />
+                    <img style={{width:'100%', height:'auto',objectFit: 'contain'}} src={Fourteenth} alt="png" />
                   </div>
                   <div style={cellStyle}>
                     <img style={pngStyle} src={Fifteenth} alt="png" />
