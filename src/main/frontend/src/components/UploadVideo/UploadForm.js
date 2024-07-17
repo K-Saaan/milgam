@@ -27,7 +27,7 @@ const UploadBG = styled('div')({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: "65vh",
+    height: "600px",
     flexDirection: "column",
   });
 
@@ -155,8 +155,9 @@ const UploadBG = styled('div')({
       reset();
     };
 
-    const uploadFileChunk = async (chunk, index, totalChunks) => {
+    const uploadFileChunk = async (selectedFile, chunk, index, totalChunks) => {
       const formData = new FormData();
+      formData.append('originName', selectedFile.name)
       formData.append('chunkFile', chunk);
       formData.append('chunkIndex', index);
       formData.append('totalChunks', totalChunks);
@@ -205,7 +206,7 @@ const UploadBG = styled('div')({
             const end = Math.min(selectedFile.size, start + chunkSize);
             const chunk = selectedFile.slice(start, end);
 
-            await uploadFileChunk(chunk, i, totalChunks);
+            await uploadFileChunk(selectedFile, chunk, i, totalChunks);
             //await uploadMetaData(data, selectedFile, i);
           }
 
