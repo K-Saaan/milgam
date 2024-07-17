@@ -5,7 +5,7 @@ const API_BASE_URL = 'http://localhost:8080'; // API 서버의 기본 URL을 설
 
 export const getAllDashboards = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/dashboards/user/messages`, {
+    const response = await axios.get(`${API_BASE_URL}/dashboards/user/message-logs`, {
       withCredentials: true // 쿠키를 포함한 요청
     });
     return response.data;

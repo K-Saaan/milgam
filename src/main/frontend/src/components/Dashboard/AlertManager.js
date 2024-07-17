@@ -7,9 +7,9 @@ const AlertManager = ({ setAlerts }) => {
       try {
         const dashboards = await getAllDashboards();
         const newAlerts = {};
-
+        console.log("raw",dashboards)
         dashboards.forEach(alert => {
-          const index = alert.analysis_index;
+          const index = alert.analysisIndex;
           if (!newAlerts[index]){
             newAlerts[index]=[];
           }
