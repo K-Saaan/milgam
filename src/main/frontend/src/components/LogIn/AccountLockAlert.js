@@ -26,6 +26,8 @@ const actionStyle = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    position: 'absolute',
+    right: 0,
 }
 // 글씨 스타일 정의
 const cTextStyle = (theme) => ({
