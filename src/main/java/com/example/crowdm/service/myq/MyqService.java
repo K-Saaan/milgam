@@ -26,18 +26,17 @@ public class MyqService {
     private final MyqRepository myqRepository;
 
     public List<MyqListTwo> findAllQuestions(HttpServletRequest request) {
-        //HttpSession session = request.getSession(false);
-        //if (session != null) {
-        //String userIndex = (String) session.getAttribute("userIndex");
-        //if (userIndex != null) {
-        Integer userIndex = 11;
-        List<MyqEntity> myqlist = myqRepository.findByUser(userIndex);
+        HttpSession session = request.getSession(false);
+        Integer user_index = (Integer) session.getAttribute("userIndex");
+
+        //Integer userIndex = 11;
+        List<MyqEntity> myqlist = myqRepository.findByUser(user_index);
         List<MyqListTwo> answerList = new ArrayList<>();
         for (MyqEntity myq : myqlist) {
             Integer myq_index = myq.getMyq_index();
             String question_title = myq.getQuestion_title();
             String question = myq.getQuestion();
-            Integer user_index = userIndex;
+            //Integer user_index = user_index;
             Timestamp question_date = myq.getQuestion_date();
             Timestamp answer_date = myq.getAnswer_date();
             String answer = myq.getAnswer();
@@ -62,12 +61,11 @@ public class MyqService {
 
     @Transactional
     public MyqEntity addquestion(String question_title, String question, HttpServletRequest request) {
-        //HttpSession session = request.getSession(false);
-        //if (session != null) {
-            //String userIndex = (String) session.getAttribute("userIndex");
-            //if (userIndex!= null) {
+        HttpSession session = request.getSession(false);
+        Integer user_index = (Integer) session.getAttribute("userIndex");
+
                 MyqEntity newQuestion = new MyqEntity();
-                newQuestion.setUserId(11);
+                newQuestion.setUserId(user_index);
                 newQuestion.setQuestionTitle(question_title);
                 newQuestion.setQuestion(question);
                 Timestamp date = new Timestamp(System.currentTimeMillis());
@@ -78,7 +76,7 @@ public class MyqService {
                 return myqRepository.save(newQuestion);
 
 
-           //}
+
         }
         // 세션이 없거나 userId가 null인 경우 예외를 던짐
         //throw new IllegalStateException("User not logged in or session expired");

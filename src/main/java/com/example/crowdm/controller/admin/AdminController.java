@@ -59,10 +59,10 @@ public class AdminController {
      **/
 
     @GetMapping("/permission")
-    public ResponseEntity<String> permission(@RequestParam("user_index") int user_index) {
+    public ResponseEntity<String> permission(@RequestParam("user_index") int user_index, HttpServletRequest request) {
         logger.debug("permission start >>>>>>>>>>>>>>>>>>>>>>>>> id : {}", user_index);
 
-        int updateResult = adminService.permissionUpdateUser(user_index);
+        int updateResult = adminService.permissionUpdateUser(user_index, request);
         if (updateResult == 1) {
             return ResponseEntity.ok("OK");
         } else {
@@ -72,8 +72,8 @@ public class AdminController {
 
 
     @GetMapping("/deny")
-    public ResponseEntity<String> deny(@RequestParam("user_index") int user_index) {
-        int updateResult=adminService.denyUpdateUser(user_index);
+    public ResponseEntity<String> deny(@RequestParam("user_index") int user_index, HttpServletRequest request) {
+        int updateResult=adminService.denyUpdateUser(user_index, request);
         if (updateResult == 1) {
             return ResponseEntity.ok("OK");
         } else {
@@ -123,8 +123,8 @@ public class AdminController {
      **/
 
     @PostMapping("/answer")
-    public ResponseEntity<Answerq> answer(@RequestBody Requestq answerRequest) {
-        int result = adminService.answering(answerRequest.getMyq_index(), answerRequest.getAnswer());
+    public ResponseEntity<Answerq> answer(@RequestBody Requestq answerRequest, HttpServletRequest request) {
+        int result = adminService.answering(answerRequest.getMyq_index(), answerRequest.getAnswer(), request);
 
         System.out.println(answerRequest.getMyq_index());
         // Fetch the updated entity from the repository
