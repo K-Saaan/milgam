@@ -137,7 +137,7 @@ const ApprovalAlert = ({ open, handleClose, handleApprovalOrRejection, inquiry }
                                     <TableRow key="status-row">
                                         <CustomTableCell><strong>상태</strong></CustomTableCell>
                                         <CustomTableCell>
-                                            {data.status === 'completed' ? '승인' : data.status === 'rejected' ? '거절' : '진행중'}
+                                            {data.status === '승인' ? '승인' : data.status === '거절' ? '거절' : '진행중'}
                                         </CustomTableCell>
                                         <CustomTableCell /><CustomTableCell /><CustomTableCell />
                                     </TableRow>

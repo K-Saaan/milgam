@@ -26,6 +26,7 @@ const MenuButton = styled('button')(({ theme, isActive }) => ({
   border: 'none',
   textAlign: 'center',
   fontSize: '18px',
+  fontWeight: 540,
   '&:hover': {
     color: theme.palette.primary.main,
   },
@@ -62,6 +63,19 @@ function Topbar({ isAdmin, toggleTheme }) {
   const handleToggleClick = () => {
     const newPaletteType = theme.palette.mode === 'light' ? 'dark' : 'light';
     toggleTheme(newPaletteType);
+  };
+
+  const containerStyle = {
+    background: theme.palette.mode === 'dark' 
+      ? 'rgb(201,234,255) radial-gradient(circle, rgba(201,234,255,1) 17%, rgba(191,246,255,1) 57%, rgba(56, 56, 56, 1) 95%)' 
+      : 'rgb(201,234,255) radial-gradient(circle, rgba(201,234,255,1) 17%, rgba(191,246,255,1) 57%, rgba(255,255,255,1) 95%)',
+    marginRight: '8px',
+    height: '64px',
+    width: ' 120px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: '16px', // 둥근 모서리
   };
 
   const appBarStyle = abStyle(theme);
@@ -143,13 +157,15 @@ function Topbar({ isAdmin, toggleTheme }) {
         <div>
           {temp === null ? 
             <div>데이터를 로딩 중...</div> :
-            <div style={{
-              background: 'rgb(201,234,255) radial-gradient(circle, rgba(201,234,255,1) 17%, rgba(191,246,255,1) 57%, rgba(255,255,255,1) 100%)',
-              marginRight:'8px', height: '64px', display:'flex', justifyContent:'center', alignItems:'center'}}>
-              <img style={{width: '50px', height: '50px', marginRight:'-8px'}} src={`http://openweathermap.org/img/wn/${code}.png`} alt='weather' />
-              <span style={{textAlign:'center' ,fontSize:'14px', width: '50px', height: 'auto'}}>
+            <div style={containerStyle}>
+              <img 
+                style={{ width: '50px', height: '50px', marginRight: '-8px' }} 
+                src={`http://openweathermap.org/img/wn/${code}.png`} 
+                alt='weather' 
+              />
+              <span style={{ textAlign: 'center', fontSize: '14px', width: '50px', height: 'auto', color: '#524e4a' }}>
                 {temp} 
-                <span style={{ position: 'relative', top:'-4px', right:'-2px', fontWeight: 800 }}>
+                <span style={{ position: 'relative', top: '-4px', right: '-2px', fontWeight: 800 }}>
                   &deg;C
                 </span>
               </span>

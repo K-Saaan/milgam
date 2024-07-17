@@ -22,7 +22,7 @@ const LogInForm = ({ marginBottom }) => {
         alignItems: 'center',
         justifyContent: 'center',
         margin: 'auto',
-        height: '65vh',
+        height: '600px',
     };
 
     //회원가입 이동
@@ -40,7 +40,7 @@ const LogInForm = ({ marginBottom }) => {
 
         if (id && pw) {
             try {
-                console.log("data : ", data)
+                //console.log("data : ", data)
                 const res = await axios.post("/login/loginAction", data, {
                     withCredentials: true, // 쿠키를 포함한 요청
                     headers: {
@@ -55,7 +55,7 @@ const LogInForm = ({ marginBottom }) => {
                 } else if (res.data.RESULT === "GO_ADMIN_DASHBOARD") {
                     localStorage.setItem("key", data.id);
                     setAdminLogined(true);
-                    navigate('/admin/approval');
+                    navigate('/admin/dashboard');
                 } else if (res.data.RESULT === "INVALID_PASSWORD" || res.data.RESULT === 'USER_NOT_FOUND') {
                     setPasswordError("아이디 혹은 비밀번호가 틀렸습니다.");
                 } else if (res.data.RESULT === "LOCK_ACCOUNT") {

@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface MessageLogRepository extends JpaRepository<MessageLogEntity, Integer>, JpaSpecificationExecutor<MessageLogEntity> {
-    List<MessageLogEntity> findByLogIndexIn(List<Integer> logIndices);
+    List<MessageLogEntity> findByLogIndex(Integer logIndex);
 }

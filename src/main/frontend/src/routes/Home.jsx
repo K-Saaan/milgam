@@ -16,7 +16,7 @@ const cPageStyle = (theme) => ({
   // scrollSnapType: 'y mandatory',
   overflowY: 'scroll',
   height: '100vh',
-  width: '100vw',
+  width: '1920px',
   scrollbarWidth:'none',
 });
 
@@ -26,19 +26,20 @@ const cCTStyle = (theme) => ({
   justifyContent:'center',
   alignItems:'center',
   flexDirection: 'column',
-  width:'100vw',
+  width:'1920px',
 });
 
 //content
 const cContentStyle = (theme) => ({
   scrollSnapAlign: 'center',
   height: '100vh',
+  minHeight: '1080px',
   width:'100vw',
   maxWidth: '1000px',
   display:'flex',
   justifyContent:'center',
   alignItems:'center',
-
+  marginBottom: '75px', 
 });
 
 
@@ -94,17 +95,17 @@ function Home(){
                 <Page3 />
               </div>
 
-              <div style={contentStyle}>
+              {/* <div style={contentStyle}>
                 <Page4 />
-              </div>
+              </div> */}
 
-              <div style={contentStyle}>
+              {/* <div style={contentStyle}>
                 <Page5 />
-              </div>
+              </div> */}
 
-              <div style={contentStyle}>
+              {/* <div style={contentStyle}>
                 <Page6 />
-              </div>
+              </div> */}
 
            
 

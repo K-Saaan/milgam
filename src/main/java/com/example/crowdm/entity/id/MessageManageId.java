@@ -12,32 +12,15 @@ import java.util.Objects;
 @Embeddable
 public class MessageManageId implements Serializable {
 
-    private int userIndex;
-    private int logIndex;
+    private Integer userIndex;
+    private Integer logIndex;
 
     // 기본 생성자
     public MessageManageId() {}
 
     // 매개변수 있는 생성자
-    public MessageManageId(int userIndex, int logIndex) {
+    public MessageManageId(Integer userIndex, Integer logIndex) {
         this.userIndex = userIndex;
-        this.logIndex = logIndex;
-    }
-
-    // Getters and Setters
-    public int getUserIndex() {
-        return userIndex;
-    }
-
-    public void setUserIndex(int userIndex) {
-        this.userIndex = userIndex;
-    }
-
-    public int getLogIndex() {
-        return logIndex;
-    }
-
-    public void setLogIndex(int logIndex) {
         this.logIndex = logIndex;
     }
 

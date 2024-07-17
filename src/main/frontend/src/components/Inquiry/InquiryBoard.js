@@ -83,7 +83,8 @@ const InquiryBoard = () => {
     try {
       const response = await axios.get('/myq/questionlist');
       console.log('Inquiry 데이터:', response.data);
-      setInquiries(response.data);
+      const sortedData = response.data.sort((a, b) => new Date(b.question_date) - new Date(a.question_date));
+      setInquiries(sortedData);
     } catch (error) {
       console.error('Inquiry 데이터를 가져오는 중 오류 발생:', error);
     } finally {

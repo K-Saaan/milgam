@@ -83,12 +83,18 @@ const prouter = createBrowserRouter([
         path: "admin",
         element: <Admin />,
         children: [
-          { path: "login", element: <AdminLogIn /> },
           { path: '',
             element: <AdminProtectedRoute />,
             children: [
               { path: "approval", element: <AdminApproval /> },
-              { path: "replyinquiry", element: <AdminReply /> }
+              { path: "replyinquiry", element: <AdminReply /> },
+              { path: "dashboard",
+                element: <Dashboard />,
+                children: [
+                  { path: "", element: <LeftContentArea /> },
+                  { path: "detail/:id", element: <LeftContentAreaDetail /> }
+                ]
+              },
             ],
           },
         ],
