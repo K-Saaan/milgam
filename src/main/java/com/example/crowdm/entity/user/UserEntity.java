@@ -3,11 +3,12 @@ package com.example.crowdm.entity.user;
 
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-
+import com.example.crowdm.entity.message.MessageManageEntity;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -21,7 +22,7 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_index")
-    private Integer user_index;
+    private int user_index;
 
     @Column(name = "id", nullable = false, length = 30)
     private String id;
