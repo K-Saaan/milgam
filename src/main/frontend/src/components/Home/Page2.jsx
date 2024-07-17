@@ -1,8 +1,6 @@
 import { useTheme } from "@emotion/react";
 import { motion, useScroll, useTransform} from "framer-motion";
-
 import { useRef } from "react";
-import Char from "./new_cha.png"
 import First from "./gif_icon/1.gif"
 import Second from "./gif_icon/2.gif"
 import Third from "./gif_icon/3.gif"
@@ -72,6 +70,7 @@ const cCellTitleStyle = (theme) => ({
   fontSize:'1.5rem',
   fontWeight:600,
   marginBottom:'10px',
+  marginTop:'10px',
 })
 
 function Page2(){
