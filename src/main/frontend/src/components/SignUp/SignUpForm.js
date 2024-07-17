@@ -25,11 +25,10 @@ const formSx = {
     alignItems: 'center',
     justifyContent: 'center',
     margin: 'auto',
-    height: '65vh',
     width: '1100px',
     maxWidth: '1100px', // 최대 너비 설정
     minWidth: '1100px', // 최소 너비 설정
-    overflow: 'auto', // 스크롤 활성화
+    //overflow: 'auto', // 스크롤 활성화
     ...noScrollbarStyles // 스크롤 바 숨기기 스타일 추가
     // flexDirection: 'column', // 요소들을 세로로 정렬
     // maxHeight: 'calc(100vh - 100px)', // 전체 화면에서 일정 높이를 제외한 만큼의 최대 높이 설정
