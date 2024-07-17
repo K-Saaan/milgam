@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.sql.Timestamp;
+import java.time.Instant;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +20,8 @@ public class EventService {
     private final EventRepository eventRepository;
 
     public List<EventEntity> findAllEvent(){
-        List<EventEntity> eventList = eventRepository.findAll();
+        Timestamp now = Timestamp.from(Instant.now());
+        List<EventEntity> eventList = eventRepository.findEventsWithinCurrentTime(now);
         return eventList;
     }
 

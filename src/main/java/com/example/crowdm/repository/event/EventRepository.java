@@ -8,9 +8,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
-
+import java.util.List;
 
 @Repository
 public interface EventRepository extends JpaRepository<EventEntity, Integer>, JpaSpecificationExecutor<EventEntity> {
+
+
+    @Query("SELECT e FROM EventEntity e WHERE :now BETWEEN e.start_date AND e.end_date")
+    List<EventEntity> findEventsWithinCurrentTime(Timestamp now);
 
 }

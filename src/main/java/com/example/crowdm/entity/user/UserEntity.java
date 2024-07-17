@@ -3,12 +3,11 @@ package com.example.crowdm.entity.user;
 
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-import com.example.crowdm.entity.message.MessageManageEntity;
+
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
-import java.util.Set;
 
 @Getter
 @Entity
@@ -22,7 +21,7 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_index")
-    private int user_index;
+    private Integer user_index;
 
     @Column(name = "id", nullable = false, length = 30)
     private String id;
@@ -83,10 +82,6 @@ public class UserEntity {
 
     @Column(name = "temppw", length = 30)
     private String temppw;
-
-    //상빈수정
-    @OneToMany(mappedBy = "user")
-    private Set<MessageManageEntity> messageManageEntity;
 
     @Transactional
     public void updatePermissionYn(Timestamp permission_date, Integer admin_index) {

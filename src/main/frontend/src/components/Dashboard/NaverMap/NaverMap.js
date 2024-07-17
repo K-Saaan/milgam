@@ -19,7 +19,7 @@ const NaverMap = ({ mapCenter, setMapCenter, crowdData, getCrowdColor }) => {
     script.onload = () => {
       const mapOptions = {
         center: new naver.maps.LatLng(37.5365, 126.9780),
-        zoom: 11.5,
+        zoom: 12,
       };
 
       mapRef.current = new naver.maps.Map(mapElement.current, mapOptions);
