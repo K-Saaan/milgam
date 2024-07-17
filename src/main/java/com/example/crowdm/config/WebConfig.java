@@ -29,21 +29,19 @@ public class WebConfig implements WebMvcConfigurer {
 //    }
 //
 //    public void addResourcesHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/").setCachePeriod(20);
+//        registry.addResourceHandler("/static/**")
+//                .addResourceLocations("classpath:/static/")
+//                .setCachePeriod(20);
 //    }
 
     //POST
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("*")
-                .allowedOrigins("*")
-                .allowedMethods("*")
-                .allowedHeaders("*")
                 .allowedOrigins("http://localhost:3000")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
-                .allowCredentials(true);;
+                .allowCredentials(true);
     }
 }
 

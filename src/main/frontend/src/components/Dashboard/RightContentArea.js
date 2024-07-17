@@ -9,7 +9,7 @@ import AlertManager from './AlertManager';
 // 컨테이너의 flex 속성을 설정하여 레이아웃을 조정
 const containerStyle = {
   flex: 3,
-  height: '545px',
+  height: '515px',
 };
 
 // Paper 스타일

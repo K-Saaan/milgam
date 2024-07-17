@@ -3,12 +3,12 @@ package com.example.crowdm.entity.user;
 
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import com.example.crowdm.entity.message.MessageManageEntity;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -84,11 +84,15 @@ public class UserEntity {
     @Column(name = "temppw", length = 30)
     private String temppw;
 
+    //상빈수정
+    @OneToMany(mappedBy = "user")
+    private Set<MessageManageEntity> messageManageEntity;
 
     @Transactional
-    public void updatePermissionYn(Timestamp permission_date) {
+    public void updatePermissionYn(Timestamp permission_date, Integer admin_index) {
         this.permission_yn = true;
         this.permission_date = permission_date;
+        this.admin_index=admin_index;
         //this.admin_index=1; 나중에 세션값으로 바꿔야함
 
     }
@@ -101,13 +105,19 @@ public class UserEntity {
     }
 
     @Transactional
-    public void updateDenyYn(){
+    public void updateDenyYn(Integer admin_index){
         this.permission_yn = false;
+        this.admin_index=admin_index;
     }
 
 
     public boolean getPermissionyn() {
         return this.permission_yn;
+    }
+
+    @Transactional
+    public void updateEvent(Integer event_index){
+        this.event_index = event_index;
     }
 
 }

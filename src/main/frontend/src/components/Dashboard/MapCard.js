@@ -1,12 +1,13 @@
-import React, { useEffect  } from 'react';
-import { Box, Paper, Typography, TextField, Autocomplete, Skeleton } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, Paper, Typography, Skeleton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQueries } from 'react-query';
 import NaverMap from './NaverMap';
 import { fetchData } from '../../api/fetchData';
-import regions from './data/regions'
-import useStore from '../../store'
-
+import { extractCrowdDataToMap } from '../../api/dataExtractor';
+import regions from './data/regions';
+import useStore from '../../store';
+import Legend from './styles/LegendStyle'
 
 // 지도 영역 바깥 컨테이너 스타일
 const paperStyle = (theme) => ({
@@ -14,8 +15,10 @@ const paperStyle = (theme) => ({
   padding: 2,
   bgcolor: theme.palette.background.paper,
   color: theme.palette.text.primary,
-  height: '380px',
+  height: '600px',
   borderRadius: 2,
+  position: 'relative',
+  top: '-80px', // 원하는 만큼 높이 조정
 });
 
 // 타이틀 스타일
@@ -35,99 +38,99 @@ const boxStyle = (theme) => ({
   marginTop: '6px'
 });
 
-// Autocomplete 스타일
-const autocompleteStyle = (theme) => ({
-  minWidth: 280,
-  '& .MuiOutlinedInput-root': {
-    height: '40px', // 높이를 줄입니다
-    '& fieldset': {
-      borderColor: theme.palette.primary.main,
-      '& legend': {
-        width: 'auto', // 레이블이 있는 경우 노치 크기
-      },
-    },
-    '&:hover fieldset': {
-      borderColor: theme.palette.primary.dark,
-    },
-    '&.Mui-focused fieldset': {
-      borderColor: theme.palette.primary.main,
-    },
-  },
-  '& .MuiInputLabel-outlined': {
-    color: theme.palette.primary.main,
-    textAlign: 'center', // 가운데 정렬
-    transform: 'translate(14px, -6px) scale(0.75)', // 포커스된 상태를 기본 상태로 설정
-  },
-  '& .MuiInputLabel-outlined.Mui-focused': {
-    color: theme.palette.primary.main,
-  },
-  '& .MuiAutocomplete-input': {
-    padding: '10px 14px', // 입력 높이를 줄입니다
-  },
-  '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-    borderColor: theme.palette.primary.main,
-  },
-});
+// 혼잡도 단계별 배경색 지정
+const getCrowdColor = (level, theme) => {
+  switch (level) {
+    case '붐빔':
+      return theme.palette.crowd.busy; // 빨강
+    case '약간 붐빔':
+      return theme.palette.crowd.slightlyBusy; // 주황
+    case '보통':
+      return theme.palette.crowd.normal; // 노랑
+    case '여유':
+      return theme.palette.crowd.relaxed; // 초록
+    default:
+      return theme.palette.background.paper; // 기본 배경색
+  }
+};
+
+// 선택한 장소의 주변 장소를 계산하는 함수
+const getNearbyRegionsByCenter = (center, regions, radius = 0.02) => {
+  if (!center) return [];
+
+  return regions.filter(region => {
+    const distance = Math.sqrt(
+      Math.pow(region.lat - center.lat, 2) +
+      Math.pow(region.lng - center.lng, 2)
+    );
+    return distance <= radius;
+  });
+};
 
 // MapCard 컴포넌트
 const MapCard = () => {
   const theme = useTheme();
-  const { selectedRegion, setSelectedRegion } = useStore();
-  const queryClient = useQueryClient();
+  const { selectedRegion, setSelectedRegion, mapCenter, setMapCenter } = useStore();
+
+  const [crowdData, setCrowdData] = useState({});
+  const [isFetching, setIsFetching] = useState(true);
 
   useEffect(() => {
     if (!selectedRegion) {
       setSelectedRegion('광화문·덕수궁');
+      setMapCenter({ lat: 37.5759, lng: 126.9769 }); // 광화문·덕수궁의 중심 좌표
+    } else {
+      const selectedRegionData = regions.find(region => region.value === selectedRegion) || {};
+      setMapCenter({ lat: selectedRegionData.lat, lng: selectedRegionData.lng });
     }
-  }, [selectedRegion, setSelectedRegion]);
+  }, [selectedRegion, setSelectedRegion, setMapCenter]);
 
-  
-  // React Query를 사용하여 selectedRegion이 변경될 때마다 데이터를 가져옴
-  const { error, isLoading } = useQuery(['fetchData', selectedRegion], () => fetchData(selectedRegion), {
-    refetchInterval: 300000, // 5분마다 갱신
-    enabled: !!selectedRegion, // selectedRegion이 있을 때만 쿼리를 실행
-  });
+  const nearbyRegions = getNearbyRegionsByCenter(mapCenter, regions);
 
-  // 사용자가 지역을 변경했을 때 호출
-  const handleRegionChange = (event, newValue) => {
-    const regionValue = newValue ? newValue.value : '광화문·덕수궁';
-    setSelectedRegion(regionValue); // 선택된 지역을 업데이트합니다 (useQuery 트리거)
-    queryClient.invalidateQueries('fetchData'); // 선택한 지역에 대한 데이터를 다시 불러옵니다
-  };
+  const queries = nearbyRegions.map(region => ({
+    queryKey: ['fetchData', region.value],
+    queryFn: () => fetchData(region.value),
+    staleTime: 300000,
+  }));
 
-  if (error) return <div>Error fetching data</div>;
+  const results = useQueries(queries);
+
+  useEffect(() => {
+    if (results.every(result => !result.isLoading)) {
+      const newCrowdData = {};
+      results.forEach((result, index) => {
+        if (result.data) {
+          const regionName = nearbyRegions[index].value;
+          const { areaCongestLvl } = extractCrowdDataToMap(result.data);
+          newCrowdData[regionName] = areaCongestLvl;
+        }
+      });
+      setCrowdData(newCrowdData);
+      setIsFetching(false);
+    }
+  }, [results, nearbyRegions]);
+
+  if (isFetching) return <Skeleton variant="rectangular" width="100%" height="100%" />;
 
   return (
     <Paper sx={paperStyle(theme)}>
-    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        {/* 로딩중 스켈레톤 적용 */}
-        {isLoading ? (
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        {isFetching ? (
           <Skeleton variant="text" width={100} height={50} />
         ) : (
           <Typography variant="h6" sx={typographyStyle(theme)}>
             {selectedRegion}
           </Typography>
         )}
-        {/* 지역 선택 Autocomplete */}
-        <Autocomplete
-          disablePortal
-          id="region-select"
-          options={regions}
-          getOptionLabel={(option) => option.label}
-          value={regions.find(region => region.value === selectedRegion) || null}
-          onChange={handleRegionChange}
-          sx={autocompleteStyle(theme)}
-          renderInput={(params) => (
-            <TextField 
-              {...params} 
-              label="지역 선택" 
-              placeholder="지역을 검색하세요." // placeholder 추가
-            />
-          )}
-        />
+        <Legend /> {/* Legend 컴포넌트 추가 */}
       </Box>
       <Box sx={boxStyle(theme)}>
-        <NaverMap />
+        <NaverMap 
+          mapCenter={mapCenter}
+          setMapCenter={setMapCenter}
+          crowdData={crowdData}
+          getCrowdColor={(level) => getCrowdColor(level, theme)}
+        />
       </Box>
     </Paper>
   );
