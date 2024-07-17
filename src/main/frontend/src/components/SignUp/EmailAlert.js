@@ -13,19 +13,21 @@ function EmailAlert({open, handleClose}) {
     const {register, handleSubmit, formState: {errors}} = useForm();
     const [message, setMessage] = useState('');
     const onSubmit = async (data) => {
-        try {
-            const response = await axios.get(`http://localhost:8080/signup/verify?code=${data.title}`);
 
-            if (response.data === '인증이 완료되었습니다.') {
-                setMessage('인증에 성공하였습니다.');
-            } else {
-                setMessage('인증에 실패하였습니다.');
+        console.log(data);
+
+        try {
+            //await new Promise((resolve) => setTimeout(resolve, 1000));
+            const response = await axios.post(`http://localhost:8080/signup/verify`,data);
+
+            if (response.status === 200) {
+                setMessage('인증에 성공했습니다.')
             }
             console.log("Code:", data.title);    // 입력된 코드를 콘솔에 출력
-            handleClose();
+            //handleClose();
         } catch (error) {
             console.error('Error verifying code:', error);
-            setMessage('오류가 발생했습니다. 다시 시도해 주세요');
+            setMessage('인증에 실패하였습니다. 다시 시도해 주세요');
         }
     };
 
@@ -48,12 +50,12 @@ function EmailAlert({open, handleClose}) {
                             autoFocus
                             required
                             margin="dense"
-                            id="title"
-                            name="title"
+                            id="code"
+                            name="code"
                             label="인증코드"
                             type="text"
                             fullWidth
-                            {...register('title', {required: true})}
+                            {...register('code', {required: true})}
                             error={!!errors.title}
                             helperText={errors.title ? 'This field is required' : ''}
                             sx={{

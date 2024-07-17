@@ -59,22 +59,22 @@ public class LoginService {
                 }
 
                 // 로그인 시도 기간 확인         0715 이수민
-                LocalDateTime now = LocalDateTime.now();
-                LocalDateTime startDate = user.getStart_date().toLocalDateTime();
-                LocalDateTime endDate = user.getEnd_date().toLocalDateTime();
-
-                if (now.isBefore(startDate) || now.isAfter(endDate)) {
-                    logger.info("Login attempt outside of allowed date range for user: {}", user.getId());
-                    resultMap.put("RESULT", "OUTSIDE_DATE_RANGE");
-                    return resultMap;
-                }
-
-                // 계정 잠김 여부 확인
-                if (user.getAccount_lock()) {
-                    logger.info("Account locked for user: {}", user.getId());
-                    resultMap.put("RESULT", "LOCK_ACCOUNT");
-                    return resultMap;
-                }
+//                LocalDateTime now = LocalDateTime.now();
+//                LocalDateTime startDate = user.getStart_date().toLocalDateTime();
+//                LocalDateTime endDate = user.getEnd_date().toLocalDateTime();
+//
+//                if (now.isBefore(startDate) || now.isAfter(endDate)) {
+//                    logger.info("Login attempt outside of allowed date range for user: {}", user.getId());
+//                    resultMap.put("RESULT", "OUTSIDE_DATE_RANGE");
+//                    return resultMap;
+//                }
+//
+//                // 계정 잠김 여부 확인
+//                if (user.getAccount_lock()) {
+//                    logger.info("Account locked for user: {}", user.getId());
+//                    resultMap.put("RESULT", "LOCK_ACCOUNT");
+//                    return resultMap;
+//                }
 
                 // 로그인 성공
                 resultMap.put("RESULT", "GO_MAIN");
@@ -89,16 +89,17 @@ public class LoginService {
                 } else {
                     logger.info("Session created successfully for user: {}", user.getId());
                     session.setAttribute("userIndex", user.getUser_index());
-                    Long userIndex = (Long) session.getAttribute("userIndex");
+                    Integer userIndex = (Integer) session.getAttribute("userIndex");
                     logger.info("userIndex: {}", userIndex);
+
                 }
 
                 // 로그인 로그 저장 -> LoginLog 테이블에 로그인 기록 저장
-                LoginLogEntity loginLog = LoginLogEntity.builder()
-                        .userIndex(user.getUser_index())
-                        .loginDate(Timestamp.valueOf(LocalDateTime.now()))
-                        .build();
-                loginLogRepository.save(loginLog);
+//                LoginLogEntity loginLog = LoginLogEntity.builder()
+//                        .userIndex(user.getUser_index())
+//                        .loginDate(Timestamp.valueOf(LocalDateTime.now()))
+//                        .build();
+//                loginLogRepository.save(loginLog);
 
                 // 로그인 성공 로그
                 logger.info("Login successful for user: {}", user.getId());

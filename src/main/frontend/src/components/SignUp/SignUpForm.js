@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
@@ -15,13 +15,52 @@ const SignUpForm = ({marginBottom}) => {
     const {register, handleSubmit, formState: {errors, isValid}, setValue, watch, control, trigger} = useForm({
         mode: 'onChange',
     });
+
     const email = watch('email');
+    function generateRandomString(length) {
+        const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        const charactersLength = CHARACTERS.length;
+        for (let i = 0; i < length; i++) {
+            result += CHARACTERS.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+
+    const handleClickOpenRegister = async () => {
+        const code = generateRandomString(12); // 12자 랜덤 문자열 생성
+        const additionalData = {
+            email_status: false,
+            code: code
+        };
+
+        const mergedData_2 = {
+            email,
+            ...additionalData,
+        };
+
+        console.log(mergedData_2);
+
+        while (true) {
+            try {
+                const response = await axios.post("http://localhost:8080/signup/email", mergedData_2);
+                console.log('Response:', response);
+                setOpenRegister(true);
+                break; // 요청이 성공하면 루프를 종료
+            } catch (error) {
+                console.error('Error sending verification code:', error);
+                console.log('오류가 발생했습니다. 다시 시도해 주세요.');
+
+                // 요청 간의 간격을 두고 다시 시도 (예: 2초 후에 재시도)
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
+        }
+    };
+
     // 페이지 이동
     const onSubmit = async (data) => {
-        // Clone the data object and remove the repw property
-        const {repw, ...dataWithoutRepw} = data;
+        const { repw, ...dataWithoutRepw } = data;
 
-        // Declare additional variables
         const currentTime = new Date().toISOString();
         const additionalData = {
             account_lock: false,
@@ -36,55 +75,26 @@ const SignUpForm = ({marginBottom}) => {
             temppw: null,
             start_date: start_date ? start_date.toISOString() : null,
             end_date: end_date ? end_date.toISOString() : null,
-            role_index: data.role_index === 'director' ? 1 : data.role_index === 'host' ? 2 : null,
+            role_index: data.role_index === "director" ? 1 : data.role_index === "host" ? 2 : null,
         };
 
-        // Merge additional variables with existing data
-        const mergedData = {...dataWithoutRepw, ...additionalData};
+        const mergedData = { ...dataWithoutRepw, ...additionalData };
 
         console.log(mergedData);
 
-        // Send the merged object using axios.post
-        try {
-            const response = await axios.post("http://localhost:8080/signup", mergedData);
-            console.log('Response:', response.data);
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
+        while (true) {
+            try {
+                const response = await axios.post("http://localhost:8080/signup", mergedData);
+                console.log("Response:", response.data);
 
-    function generateRandomString(length) {
-        const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let result = '';
-        const charactersLength = CHARACTERS.length;
-        for (let i = 0; i < length; i++) {
-            result += CHARACTERS.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result;
-    }
+                navigate("/login/loginPage");
+                break; // 요청이 성공하면 루프를 종료
+            } catch (error) {
+                console.error("Error:", error);
 
-    const handleClickOpenRegister = async (data) => {
-        const password = generateRandomString(12); // 12자 랜덤 문자열 생성
-        console.log(data)
-        try {
-            const response = await axios.post("http://localhost:8080/signup/email", {
-                email: email,
-                email_status: false,
-                password: password
-            });
-            console.log('Response:', response.data);
-
-            if (response.status === 200) {
-                console.log('인증번호가 발송되었습니다.');
-            } else {
-                console.log('인증번호 발송에 실패했습니다. 다시 시도해 주세요.');
+                // 요청 간의 간격을 두고 다시 시도 (예: 2초 후에 재시도)
+                await new Promise(resolve => setTimeout(resolve, 2000));
             }
-
-            setOpenRegister(true);
-        } catch (error) {
-            console.error('Error sending verification code:', error);
-            console.log('오류가 발생했습니다. 다시 시도해 주세요.');
-            setOpenRegister(true);
         }
     };
 
