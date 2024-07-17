@@ -10,11 +10,12 @@ public class MyqList {
     private Timestamp question_date;
     private Timestamp answer_date;
     private String name;
+    private String answer;
     private String status;
 
 
     public MyqList() {}
-    public MyqList(Integer myq_index, String question_title, String question, Integer user_index, Timestamp question_date, Timestamp answer_date, String name, String status) {
+    public MyqList(Integer myq_index, String question_title, String question, Integer user_index, Timestamp question_date, Timestamp answer_date, String name, String answer, String status) {
         this.myq_index=myq_index;
         this.question_title=question_title;
         this.question=question;
@@ -23,6 +24,7 @@ public class MyqList {
         this.answer_date=answer_date;
         this.name=name;
         this.status=status;
+        this.answer=answer;
 
 
     }
@@ -89,6 +91,13 @@ public class MyqList {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 }
 

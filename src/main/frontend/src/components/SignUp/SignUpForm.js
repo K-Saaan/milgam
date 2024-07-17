@@ -124,7 +124,6 @@ const SignUpForm = () => {
 
     const handleClickOpenRegister = async () => {
         const code = generateRandomString(12); // 12자 랜덤 문자열 생성
-        //const { email } = data;
         const additionalData = {
             email_status: false,
             code: code
@@ -137,15 +136,60 @@ const SignUpForm = () => {
 
         console.log(mergedData_2);
 
-        try {
-            const response = await axios.post("http://localhost:8080/signup/email", mergedData_2);
-            console.log('Response:', response);
-            setOpenRegister(true);
+        while (true) {
+            try {
+                const response = await axios.post("http://localhost:8080/signup/email", mergedData_2);
+                console.log('Response:', response);
+                setOpenRegister(true);
+                break; // 요청이 성공하면 루프를 종료
+            } catch (error) {
+                console.error('Error sending verification code:', error);
+                console.log('오류가 발생했습니다. 다시 시도해 주세요.');
 
-        } catch (error) {
-            console.error('Error sending verification code:', error);
-            console.log('오류가 발생했습니다. 다시 시도해 주세요.');
-            setOpenRegister(true);
+                // 요청 간의 간격을 두고 다시 시도 (예: 2초 후에 재시도)
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
+        }
+    };
+
+    // 페이지 이동
+    const onSubmit = async (data) => {
+        const { repw, ...dataWithoutRepw } = data;
+
+        const currentTime = new Date().toISOString();
+        const additionalData = {
+            account_lock: false,
+            admin_index: 3,
+            apply_date: currentTime,
+            event_index: null,
+            fail_cnt: 0,
+            last_login: currentTime,
+            permission_date: null,
+            permission_yn: false,
+            pw_duedate: null,
+            temppw: null,
+            start_date: start_date ? start_date.toISOString() : null,
+            end_date: end_date ? end_date.toISOString() : null,
+            role_index: data.role_index === "director" ? 1 : data.role_index === "host" ? 2 : null,
+        };
+
+        const mergedData = { ...dataWithoutRepw, ...additionalData };
+
+        console.log(mergedData);
+
+        while (true) {
+            try {
+                const response = await axios.post("http://localhost:8080/signup", mergedData);
+                console.log("Response:", response.data);
+
+                navigate("/login/loginPage");
+                break; // 요청이 성공하면 루프를 종료
+            } catch (error) {
+                console.error("Error:", error);
+
+                // 요청 간의 간격을 두고 다시 시도 (예: 2초 후에 재시도)
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
         }
     };
 
