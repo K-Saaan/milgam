@@ -85,12 +85,12 @@ function EmailAlert({open, handleClose}) {
                 />
                 {message && <DialogContentText variant='caption' sx={{ textAlign: 'center' }}>{message}</DialogContentText>}
                 <DialogActions style={actionStyle}>
-                    <Button variant="contained" onClick={handleClose}
-                        sx={{...btnStyle, backgroundColor: theme.palette.cancel, '&:hover': { backgroundColor: 'inherit' } }}>
-                        취소
-                    </Button>
                     <Button variant="contained" onClick={handleSubmit(onSubmit)} style={btnStyle}>
                         인증확인
+                    </Button>
+                    <Button variant="contained" onClick={handleClose}
+                        sx={{...btnStyle, backgroundColor: theme.palette.cancel, '&:hover': { backgroundColor: 'inherit' } }}>
+                        닫기
                     </Button>
                 </DialogActions>
             </DialogContent>
