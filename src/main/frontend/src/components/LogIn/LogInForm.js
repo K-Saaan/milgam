@@ -40,7 +40,7 @@ const LogInForm = ({ marginBottom }) => {
 
         if (id && pw) {
             try {
-                console.log("data : ", data)
+                //console.log("data : ", data)
                 const res = await axios.post("/login/loginAction", data, {
                     withCredentials: true, // 쿠키를 포함한 요청
                     headers: {
