@@ -49,10 +49,11 @@ const LeftContentAreaDetail = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
-
+  const isAdmin = location.pathname.startsWith('/admin');
 
   const handleCloseClick = () => {
-    navigate('/dashboard');
+    const targetPath = isAdmin ? '/admin/dashboard' : '/dashboard';
+    navigate(targetPath);
   };
 
   return (

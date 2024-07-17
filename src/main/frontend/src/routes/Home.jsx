@@ -5,15 +5,18 @@ import Page3 from "../components/Home/Page3";
 
 import { motion, useScroll, useSpring } from "framer-motion";
 import { useRef } from "react";
+import Page4 from "../components/Home/Page4";
+import Page5 from "../components/Home/Page5";
+import Page6 from "../components/Home/Page6";
 
 
 
 //page
 const cPageStyle = (theme) => ({
-  scrollSnapType: 'y mandatory',
+  // scrollSnapType: 'y mandatory',
   overflowY: 'scroll',
-  height: '90vh',
-  width: '100vw',
+  height: '100vh',
+  width: '1920px',
   scrollbarWidth:'none',
 });
 
@@ -23,18 +26,20 @@ const cCTStyle = (theme) => ({
   justifyContent:'center',
   alignItems:'center',
   flexDirection: 'column',
+  width:'1920px',
 });
 
 //content
 const cContentStyle = (theme) => ({
   scrollSnapAlign: 'center',
-  height: '90vh',
-  width:'100%',
+  height: '100vh',
+  minHeight: '1080px',
+  width:'100vw',
   maxWidth: '1000px',
   display:'flex',
   justifyContent:'center',
   alignItems:'center',
-
+  marginBottom: '75px', 
 });
 
 
@@ -90,29 +95,23 @@ function Home(){
                 <Page3 />
               </div>
 
-              <div style={contentStyle}>
-                <Page1 />
-              </div>
+              {/* <div style={contentStyle}>
+                <Page4 />
+              </div> */}
 
-              <div style={contentStyle}>
-                <Page1 />
-              </div>
+              {/* <div style={contentStyle}>
+                <Page5 />
+              </div> */}
 
-              <div style={contentStyle}>
-                <Page1 />
-              </div>
+              {/* <div style={contentStyle}>
+                <Page6 />
+              </div> */}
 
-              <div style={contentStyle}>
-                <Page1 />
-              </div>
+           
 
-              <div style={contentStyle}>
-                <Page1 />
-              </div>
-
+            <motion.div  style={{ scaleX, ...pBarStyle }} />
             </div>
             
-            <motion.div  style={{ scaleX, ...pBarStyle }} />
           </div>
         </>
       );
