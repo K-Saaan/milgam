@@ -227,9 +227,10 @@ public class AdminService {
     }
     public List<MyqList> myqList() {
         List<MyqEntity> myqlist = myqRepository.findAll();
-        List<MyqList> answer = new ArrayList<>();
+        List<MyqList> answerlist = new ArrayList<>();
         for (MyqEntity myq : myqlist) {
             //Integer user_index= user.getUser_index();
+
 
             Integer myq_index = myq.getMyq_index();
             String question_title = myq.getQuestion_title();
@@ -238,6 +239,7 @@ public class AdminService {
             Timestamp question_date = myq.getQuestion_date();
             Timestamp answer_date = myq.getAnswer_date();
             String name= getUserNameById(user_index);
+            String answer=myq.getAnswer();
             String status;
             if (answer_date == null) {
                 status = "대기";
@@ -245,10 +247,10 @@ public class AdminService {
                 status = "완료";
             }
 
-            MyqList myqList = new MyqList(myq_index, question_title, question, user_index, question_date, answer_date, name,status);
-            answer.add(myqList);
+            MyqList myqList = new MyqList(myq_index, question_title, question, user_index, question_date, answer_date, name,answer, status);
+            answerlist.add(myqList);
         }
-        return answer;
+        return answerlist;
     }
 
 
