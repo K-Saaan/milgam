@@ -1,7 +1,8 @@
 package com.example.crowdm.service.message;
 
-import com.example.crowdm.dto.message.MessageDto;
+import com.example.crowdm.dto.message.MessageManageDto;
 import com.example.crowdm.dto.message.MessageLogDto;
+import com.example.crowdm.entity.id.MessageManageId;
 import com.example.crowdm.entity.message.MessageLogEntity;
 import com.example.crowdm.entity.message.MessageManageEntity;
 import com.example.crowdm.repository.message.MessageManageRepository;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
@@ -24,18 +24,29 @@ public class MessageService {
     private final MessageLogRepository messageLogRepository;
 
     //메니지먼트 dto 연결
-    public List<MessageDto> getAllMessageManageEntities() {
+    public List<MessageManageDto> getAllMessageManageEntities() {
         List<MessageManageEntity> entities = messageManageRepository.findAll();
-        return entities.stream().map(this::convertToDto).collect(Collectors.toList());
+        logger.info("entities:{}",entities.toString());
+        List<MessageManageDto> dtos = entities.stream().map(this::convertToManageDto).collect(Collectors.toList());
+        logger.info("dtos:{}",dtos.toString());
+        return dtos;
     }
-    private MessageDto convertToDto(MessageManageEntity entity) {
-        MessageDto dto = new MessageDto();
+    public MessageManageDto convertToManageDto(MessageManageEntity entity) {
+        MessageManageDto dto = new MessageManageDto();
         dto.setUserIndex(entity.getId().getUserIndex());
         dto.setLogIndex(entity.getId().getLogIndex());
         dto.setConfirm(entity.isConfirm());
         dto.setVideoIndex(entity.getVideoIndex());
         return dto;
     }
+    public MessageManageEntity convertToManageEntity(MessageManageDto dto) {
+        return MessageManageEntity.builder()
+                .id(new MessageManageId(dto.getUserIndex(), dto.getLogIndex()))
+                .confirm(dto.isConfirm())
+                .videoIndex(dto.getVideoIndex())
+                .build();
+    }
+
 
     //메새지로그 dto 연결
     public List<MessageLogDto> getAllMessageLogEntities() {
@@ -51,18 +62,28 @@ public class MessageService {
         logDto.setAnalysisIndex(entity.getAnalysisIndex());
         return logDto;
     }
+    public MessageLogEntity convertToLogEntity(MessageLogDto dto) {
+        return MessageLogEntity.builder()
+                .logIndex(dto.getLogIndex())
+                .date(dto.getDate())
+                .context(dto.getContext())
+                .contextTitle(dto.getContextTitle())
+                .analysisIndex(dto.getAnalysisIndex())
+                .build();
+    }
+
 
     //유저 인덱스 항목 가져오기
-    public List<MessageDto> getMessagesByUserIndex(List<MessageDto> messages, long userIndex) {
+    public List<MessageManageDto> getMessagesByUserIndex(List<MessageManageDto> messages, long userIndex) {
         return messages.stream()
                 .filter(message -> message.getUserIndex() == userIndex)
                 .collect(Collectors.toList());
     }
     // 로그인덱스 뽑아오기
-    public List<Integer> getLogIndicesByUserIndex(List<MessageDto> messages, long userIndex) {
+    public List<Integer> getLogIndicesByUserIndex(List<MessageManageDto> messages, Integer userIndex) {
         return messages.stream()
                 .filter(message -> message.getUserIndex() == userIndex)
-                .map(MessageDto::getLogIndex)
+                .map(MessageManageDto::getLogIndex)
                 .collect(Collectors.toList());
     }
 
@@ -70,9 +91,23 @@ public class MessageService {
     public List<MessageLogDto> getMessageLogsByLogIndices(List<Integer> logIndices) {
         // 모든 메시지 로그 DTO를 가져옵니다.
         List<MessageLogDto> allDtos = getAllMessageLogEntities();
+        logger.info("allDTos:{}",allDtos);
         // DTO를 logIndices를 사용해 필터링합니다.
         return allDtos.stream()
                 .filter(dto -> logIndices.contains(dto.getLogIndex()))
                 .collect(Collectors.toList());
+    }
+
+    //메세지 로그 저장
+    public MessageLogDto saveMessageLog(MessageLogDto dto) {
+        MessageLogEntity entity = convertToLogEntity(dto);
+        MessageLogEntity savedEntity = messageLogRepository.save(entity);
+        return convertToLogDto(savedEntity);
+    }
+    //메세지메니지 저장
+    public MessageManageDto saveMessageLog(MessageManageDto dto) {
+        MessageManageEntity entity = convertToManageEntity(dto);
+        MessageManageEntity savedEntity = messageManageRepository.save(entity);
+        return convertToManageDto(savedEntity);
     }
 }
