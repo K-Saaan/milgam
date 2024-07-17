@@ -29,10 +29,19 @@ public class LoginController {
     private final LoginRepository loginRepository;
     private final LoginService loginService;
 
+    /**
+     * 1. MethodName: goLoginPage
+     * 2. ClassName : LoginController
+     * 3. Comment   : 로그인페이지 이동
+     * 4. 작성자    : san
+     * 5. 작성일    : 2024. 06. 24
+     **/
     @GetMapping("/loginPage")
     public String goLoginPage(HttpServletRequest request, HttpServletResponse response, Model model) {
         String errorMessage = request.getParameter("message");
+
         model.addAttribute("errorMessage", errorMessage);
+
         return "login/loginPage";
     }
 
@@ -48,7 +57,7 @@ public class LoginController {
             result.put("URL", "/dashboards");
         } else if ("admin".equals(result.get("userType"))) {
             result.put("RESULT", "GO_ADMIN_DASHBOARD");
-            result.put("URL", "/admin");
+            result.put("URL", "/admin/approval");
         }
 
         return result;
