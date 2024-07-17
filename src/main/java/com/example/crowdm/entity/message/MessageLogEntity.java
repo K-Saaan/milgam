@@ -18,7 +18,7 @@ public class MessageLogEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "log_index")
-    private int logIndex;
+    private Integer logIndex;
 
     @Column(name = "date")
     private Timestamp date;
@@ -31,10 +31,6 @@ public class MessageLogEntity {
 
     @Column(name = "analysis_index")
     private int analysisIndex;
-
-    @OneToMany(mappedBy = "messageLog", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<MessageManageEntity> messageManageEntities = new HashSet<>();
-
 }
 
 
