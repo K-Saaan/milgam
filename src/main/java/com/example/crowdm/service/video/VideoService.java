@@ -44,30 +44,37 @@ import java.nio.file.Files;
 @RequiredArgsConstructor
 public class VideoService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final RestTemplate restTemplate;
+
     private final LoginRepository loginRepository;
     private final VideoRepository videoRepository;
     private final EventRepository eventRepository;
     @Value("${file_path.video_path}")
     String uploadPath;
 
-//    @Value("${server.gcp_upload}")
+    @Value("${url.gcp_upload}")
     String gcpUrl;
 
-    public ResponseEntity<String> uploadToGCP(MultipartFile file, int chunkIndex, int totalChunks) {
+    public ResponseEntity<String> uploadToGCP(MultipartFile file, int chunkIndex, int totalChunks, String fileOriginName) {
         try{
             RestTemplate restTemplate = new RestTemplate();
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
             String uuid = UUID.randomUUID().toString();
-            String fileName = uuid + chunkIndex + file.getOriginalFilename();
-            body.add("file", new ByteArrayResource(file.getBytes()));
+            String fileName = uuid + chunkIndex + fileOriginName;
+
+            ByteArrayResource byteArrayResource = new ByteArrayResource(file.getBytes());
+            body.add("file", byteArrayResource);
             body.add("fileName", fileName);
             body.add("chunkIndex", chunkIndex);
             body.add("totalChunks", totalChunks);
+
+            logger.info("body : {}",  body);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
             HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
             ResponseEntity response = restTemplate.postForEntity(gcpUrl, requestEntity, String.class);
             logger.info("Response : {}",response.getBody().toString());
             return response.ok("upload success");
