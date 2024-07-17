@@ -58,7 +58,8 @@ const ReplyInquiry = () => {
           try {
             const response = await axios.get('/admin/questionlist'); // 실제 API URL로 대체해야 합니다.
             console.log('Questions 데이터:', response.data); // 데이터 확인을 위한 로그
-            setQuestions(response.data);
+            const sortedData = response.data.sort((a, b) => new Date(b.question_date) - new Date(a.question_date));
+            setQuestions(sortedData);
           } catch (error) {
             console.error('Questions 데이터를 가져오는 중 오류 발생:', error);
             setError('데이터를 가져오는 중 오류가 발생했습니다. ')

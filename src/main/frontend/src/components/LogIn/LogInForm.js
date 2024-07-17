@@ -55,7 +55,7 @@ const LogInForm = ({ marginBottom }) => {
                 } else if (res.data.RESULT === "GO_ADMIN_DASHBOARD") {
                     localStorage.setItem("key", data.id);
                     setAdminLogined(true);
-                    navigate('/admin/approval');
+                    navigate('/admin/dashboard');
                 } else if (res.data.RESULT === "INVALID_PASSWORD" || res.data.RESULT === 'USER_NOT_FOUND') {
                     setPasswordError("아이디 혹은 비밀번호가 틀렸습니다.");
                 } else if (res.data.RESULT === "LOCK_ACCOUNT") {
