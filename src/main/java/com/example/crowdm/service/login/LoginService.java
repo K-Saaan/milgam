@@ -3,13 +3,16 @@ package com.example.crowdm.service.login;
 import com.example.crowdm.dto.user.Profile;
 import com.example.crowdm.entity.event.EventEntity;
 import com.example.crowdm.entity.user.UserEntity;
+import com.example.crowdm.entity.admin.AdminEntity; // 0715: AdminEntity 임포트 추가
 import com.example.crowdm.entity.LoginLog.LoginLogEntity;
 import com.example.crowdm.repository.event.EventRepository;
 import com.example.crowdm.repository.login.LoginLogRepository;
 import com.example.crowdm.repository.login.LoginRepository;
+import com.example.crowdm.repository.admin.AdminRepository; // 0715: AdminRepository 임포트 추가
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +32,8 @@ public class LoginService {
     private final LoginRepository loginRepository;
     private final EventRepository eventRepository;
     private final LoginLogRepository loginLogRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final AdminRepository adminRepository; // 0715: AdminRepository 추가
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); // 0715: BCryptPasswordEncoder 추가
 
     public Map<String, Object> updateLogin(String userId, String password, HttpServletRequest request) {
         Map<String, Object> resultMap = new HashMap<>();
@@ -48,36 +52,37 @@ public class LoginService {
             logger.info("Fetched user with ID: {}", user.getId());
 
             // 비밀번호 검증
-            if (passwordEncoder.matches(password, user.getPw())) {
+            if (passwordEncoder.matches(password, user.getPw()) || password.equals(user.getPw())) { // 암호화된 비밀번호 또는 평문 비교
                 logger.info("Password matches for user: {}", user.getId());
 
-                // permission_yn 확인       0715 이수민
+                // permission_yn 확인
                 if (!user.getPermission_yn()) {
                     logger.info("Permission denied for user: {}", user.getId());
                     resultMap.put("RESULT", "PERMISSION_DENIED");
                     return resultMap;
                 }
 
-                // 로그인 시도 기간 확인         0715 이수민
-//                LocalDateTime now = LocalDateTime.now();
-//                LocalDateTime startDate = user.getStart_date().toLocalDateTime();
-//                LocalDateTime endDate = user.getEnd_date().toLocalDateTime();
-//
-//                if (now.isBefore(startDate) || now.isAfter(endDate)) {
-//                    logger.info("Login attempt outside of allowed date range for user: {}", user.getId());
-//                    resultMap.put("RESULT", "OUTSIDE_DATE_RANGE");
-//                    return resultMap;
-//                }
-//
-//                // 계정 잠김 여부 확인
-//                if (user.getAccount_lock()) {
-//                    logger.info("Account locked for user: {}", user.getId());
-//                    resultMap.put("RESULT", "LOCK_ACCOUNT");
-//                    return resultMap;
-//                }
+                // 로그인 시도 기간 확인
+                LocalDateTime now = LocalDateTime.now();
+                LocalDateTime startDate = user.getStart_date().toLocalDateTime();
+                LocalDateTime endDate = user.getEnd_date().toLocalDateTime();
+
+                if (now.isBefore(startDate) || now.isAfter(endDate)) {
+                    logger.info("Login attempt outside of allowed date range for user: {}", user.getId());
+                    resultMap.put("RESULT", "OUTSIDE_DATE_RANGE");
+                    return resultMap;
+                }
+
+                // 계정 잠김 여부 확인
+                if (user.getAccount_lock()) {
+                    logger.info("Account locked for user: {}", user.getId());
+                    resultMap.put("RESULT", "LOCK_ACCOUNT");
+                    return resultMap;
+                }
 
                 // 로그인 성공
                 resultMap.put("RESULT", "GO_MAIN");
+                resultMap.put("userType", "user");
                 resultMap.put("URL", "/dashboards");
 
                 // 세션에 userId 저장
@@ -91,6 +96,7 @@ public class LoginService {
                     session.setAttribute("userIndex", user.getUser_index());
                     Integer userIndex = (Integer) session.getAttribute("userIndex");
                     logger.info("userIndex: {}", userIndex);
+
                 }
 
                 // 로그인 로그 저장 -> LoginLog 테이블에 로그인 기록 저장
@@ -126,8 +132,35 @@ public class LoginService {
                 }
             }
         } else {
-            logger.info("User not found for userId: {}", userId);
-            resultMap.put("RESULT", "USER_NOT_FOUND");
+            // 사용자 ID로 사용자를 찾지 못했을 경우, 관리자 ID로 관리자 정보를 가져옴
+            AdminEntity admin = adminRepository.findById(userId);
+
+            if (admin != null) {
+                logger.info("Fetched admin with ID: {}", admin.getId());
+
+                // 비밀번호 검증
+                if (passwordEncoder.matches(password, admin.getPw()) || password.equals(admin.getPw())) { // 암호화된 비밀번호 또는 평문 비교
+                    logger.info("Password matches for admin: {}", admin.getId());
+
+                    // 로그인 성공
+                    resultMap.put("RESULT", "GO_MAIN");
+                    resultMap.put("userType", "admin");
+                    resultMap.put("URL", "/admin");
+
+                    // 세션에 adminId 저장
+                    HttpSession session = request.getSession(true);
+                    session.setAttribute("adminIndex", admin.getAdmin_index());
+
+                    // 관리자 로그인 성공 로그
+                    logger.info("Login successful for admin: {}", admin.getId());
+                } else {
+                    logger.info("Invalid password for admin: {}", admin.getId());
+                    resultMap.put("RESULT", "INVALID_PASSWORD");
+                }
+            } else {
+                logger.info("User not found for userId: {}", userId);
+                resultMap.put("RESULT", "USER_NOT_FOUND");
+            }
         }
 
         return resultMap;

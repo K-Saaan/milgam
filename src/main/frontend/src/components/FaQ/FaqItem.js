@@ -3,6 +3,7 @@ import { Accordion, AccordionSummary, AccordionDetails, Typography, Stack } from
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTheme } from '@mui/material/styles';
+import Checklist from "./checklist.png"
 
 
 const FaqItem = ({ item, index, expanded, handleChange }) => {
@@ -39,11 +40,6 @@ const FaqItem = ({ item, index, expanded, handleChange }) => {
     color: theme.palette.text.primary,
   };
 
-  // 질문 텍스트 스타일
-  const typographyStyle = {
-    fontWeight: 'bold',
-  };
-
   // 본문 텍스트 스타일 
   const typographyBodyStyle = {
     flexGrow: 1,
@@ -62,7 +58,7 @@ const FaqItem = ({ item, index, expanded, handleChange }) => {
         id={`panel${index}bh-header`}
         sx={accordionSummaryStyle}
       >
-        <Typography variant="body1" sx={typographyStyle}>
+        <Typography variant="body1" sx={{fontWeight: 'bold'}}>
           Q
         </Typography>
         <Typography variant="body1" sx={typographyBodyStyle}>
@@ -71,11 +67,15 @@ const FaqItem = ({ item, index, expanded, handleChange }) => {
       </AccordionSummary>
       <AccordionDetails sx={accordionDetailsStyle}>
         <Stack direction="row" alignItems="center" spacing={2}>
-          <Typography variant="body2" sx={{ color: theme.palette.text.primary }}>
+          <Typography variant="body1" sx={{ color: theme.palette.text.primary, fontWeight: 'bold' }}>
             A
           </Typography>
-          <Typography variant="body2" sx={{ color: theme.palette.text.primary }}>
+          <Typography variant="body1" sx={{ color: theme.palette.text.primary, fontWeight: '400' }}>
             {item.answer}
+            <br />
+            {item.faq_index === 3 && (
+            <img src={Checklist} alt="checklist" style={{ marginTop:'12px', width: '500px', height: '500px' }} />
+            )}
           </Typography>
         </Stack>
       </AccordionDetails>
