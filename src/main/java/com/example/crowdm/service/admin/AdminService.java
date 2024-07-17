@@ -231,6 +231,7 @@ public class AdminService {
         for (MyqEntity myq : myqlist) {
             //Integer user_index= user.getUser_index();
 
+
             Integer myq_index = myq.getMyq_index();
             String question_title = myq.getQuestion_title();
             String question=myq.getQuestion();
