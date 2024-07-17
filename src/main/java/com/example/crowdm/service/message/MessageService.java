@@ -26,9 +26,7 @@ public class MessageService {
     //메니지먼트 dto 연결
     public List<MessageManageDto> getAllMessageManageEntities() {
         List<MessageManageEntity> entities = messageManageRepository.findAll();
-        logger.info("entities:{}",entities.toString());
         List<MessageManageDto> dtos = entities.stream().map(this::convertToManageDto).collect(Collectors.toList());
-        logger.info("dtos:{}",dtos.toString());
         return dtos;
     }
     public MessageManageDto convertToManageDto(MessageManageEntity entity) {
@@ -91,7 +89,6 @@ public class MessageService {
     public List<MessageLogDto> getMessageLogsByLogIndices(List<Integer> logIndices) {
         // 모든 메시지 로그 DTO를 가져옵니다.
         List<MessageLogDto> allDtos = getAllMessageLogEntities();
-        logger.info("allDTos:{}",allDtos);
         // DTO를 logIndices를 사용해 필터링합니다.
         return allDtos.stream()
                 .filter(dto -> logIndices.contains(dto.getLogIndex()))
@@ -99,13 +96,13 @@ public class MessageService {
     }
 
     //메세지 로그 저장
-    public MessageLogDto saveMessageLog(MessageLogDto dto) {
+    public MessageLogDto saveMessageManage(MessageLogDto dto) {
         MessageLogEntity entity = convertToLogEntity(dto);
         MessageLogEntity savedEntity = messageLogRepository.save(entity);
         return convertToLogDto(savedEntity);
     }
     //메세지메니지 저장
-    public MessageManageDto saveMessageLog(MessageManageDto dto) {
+    public MessageManageDto saveMessageManage(MessageManageDto dto) {
         MessageManageEntity entity = convertToManageEntity(dto);
         MessageManageEntity savedEntity = messageManageRepository.save(entity);
         return convertToManageDto(savedEntity);
