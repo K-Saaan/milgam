@@ -33,7 +33,7 @@ public class MessageLogEntity {
     private int analysisIndex;
 
     @OneToMany(mappedBy = "messageLog", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<MessageManageEntity> messageManageEntities = new HashSet<>();
+    private final Set<MessageManageEntity> messageManageEntities = new HashSet<>();
 
 }
 
