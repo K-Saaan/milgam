@@ -65,7 +65,7 @@ public class LoginService {
                         .userIndex(user.getUser_index())
                         .loginDate(Timestamp.valueOf(LocalDateTime.now()))
                         .build();
-                loginLogRepository.save(loginLog);
+//                loginLogRepository.save(loginLog);
 
                 // 로그인 성공 로그
                 logger.info("Login successful for user: {}", user.getId());

@@ -5,6 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -30,6 +34,10 @@ public class VideoController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private final VideoService videoService;
     public SimpMessagingTemplate messagingTemplate;
+    private final RestTemplate restTemplate;
+
+    @Value("${url.gcp_upload}")
+    String gcpUrl;
 
     /**
      * 1. MethodName: videoUploadPage
@@ -54,8 +62,12 @@ public class VideoController {
     @PostMapping("/videoUpload")
     public void videoUpload(@RequestParam("chunkFile") MultipartFile mFile,
                             @RequestParam("chunkIndex") int chunkIndex,
-                            @RequestParam("totalChunks") int totalChunks) throws IOException{
-        videoService.uploadToGCP(mFile, chunkIndex, totalChunks);
+                            @RequestParam("totalChunks") int totalChunks,
+                            @RequestParam("originName") String fileOriginName) throws IOException{
+        logger.info("chunkIndex = {}", chunkIndex);
+        logger.info("totalChunks = {}", totalChunks);
+        logger.info("fileOriginName = {}", fileOriginName);
+        videoService.uploadToGCP(mFile, chunkIndex, totalChunks, fileOriginName);
     }
 
     /**

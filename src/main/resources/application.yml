@@ -44,4 +44,4 @@ file_path:
 
 
 url:
-  gcp_upload: http://34.80.243.199/upload
+  gcp_upload: http://34.80.243.199:5000/upload

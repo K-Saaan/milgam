@@ -23,10 +23,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class VideoStreamHandler extends BinaryWebSocketHandler {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-//    private final RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
     private final Set<WebSocketSession> sessions = new HashSet<>();
 
-    @Value("${server.gcp}")
+    @Value("${url.gcp_upload}")
     String gcpUrl;
 
     @Override
@@ -41,7 +41,7 @@ public class VideoStreamHandler extends BinaryWebSocketHandler {
             if (session.isOpen()) {
                 byte[] payload = message.getPayload().array();
 
-//                restTemplate.postForObject(gcpUrl, payload, String.class);
+                restTemplate.postForObject(gcpUrl, payload, String.class);
 
                 session.sendMessage(new BinaryMessage("Chunk received".getBytes()));
             }
