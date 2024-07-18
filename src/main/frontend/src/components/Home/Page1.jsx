@@ -1,5 +1,4 @@
-import { useTheme } from "@emotion/react";
-import { motion, useScroll, useTransform} from "framer-motion";
+import { useScroll, useTransform} from "framer-motion";
 import { useRef } from "react";
 
 // conatiner
@@ -46,14 +45,22 @@ function Page1(){
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref });
   const y = useParallax(scrollYProgress, 300);
-  
       return (
           <>
             <div style={{ position: 'relative' }}>
               <video loop autoPlay muted style={{width:'100vw', zIndex:'3'}}>
-                  <source src="https://videos.pexels.com/video-files/16476078/16476078-uhd_2560_1440_30fps.mp4" type="video/mp4" />
+                <source src="https://videos.pexels.com/video-files/26690702/11987721_2560_1440_60fps.mp4" type="video/mp4" />
               </video>
-              <p style={{color:'white', position:'absolute', top:'30%', paddingLeft:'5%', fontSize:'40px', fontWeight:'800', zIndex:'4'}}>
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '99.5%',
+                backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                zIndex: 4
+              }} />
+              <p style={{color:'white', position:'absolute', top:'30%', paddingLeft:'5%', fontSize:'40px', fontWeight:'800', zIndex:'5'}}>
                 AI를 활용한 크라우드 매니지먼트<br/>
                 단 하나의 솔루션, 밀감
               </p>

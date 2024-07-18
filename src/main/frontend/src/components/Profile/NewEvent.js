@@ -23,6 +23,9 @@ const dialogContentSx = {
     ...noScrollbarStyles, // 스크롤 바 숨기기 스타일 추가
     maxHeight: '1200px', // 필요에 따라 최대 높이 설정
     overflowY: 'auto', // 세로 스크롤 활성화
+    display: 'flex', // Flexbox 사용
+    flexDirection: 'column', // 세로 방향 정렬
+    alignItems: 'center', // 가운데 정렬
 };
 
 // inputProps 스타일 지정
@@ -36,6 +39,11 @@ const inputPropsStyles = {
     'scrollbarWidth': 'none'
 };
 
+const textContainerStyle = {
+    width: '100%',
+    textAlign: 'left', // 왼쪽 정렬
+    paddingLeft: '4px', // 왼쪽 패딩 추가
+};
 
 const NewEvent = ({ open, onClose, onAddEvent }) => {
     const theme = useTheme();
@@ -121,7 +129,9 @@ const NewEvent = ({ open, onClose, onAddEvent }) => {
             <Divider style={{background: theme.palette.divider}} />
             <form onSubmit={handleSubmit(onSubmit)}>
             <DialogContent sx={dialogContentSx}>
-                <DialogContentText marginBottom='16px'>* 필수 입력 사항</DialogContentText>
+                <div style={textContainerStyle}>
+                        <DialogContentText marginBottom='16px'>* 필수 입력 사항</DialogContentText>
+                </div>                
                 {/* 행사명 */}
                 <CustomTextField
                     label="행사명"
@@ -184,7 +194,9 @@ const NewEvent = ({ open, onClose, onAddEvent }) => {
                     helperText={errors.dong?.message}
                     style={{ marginBottom: errors.dong ? '15px' : '23px' }}
                 />
-                <DialogContentText marginTop='16px' marginBottom='16px'>* 선택 입력 사항</DialogContentText>
+                <div style={textContainerStyle}>
+                    <DialogContentText marginTop='16px' marginBottom='16px'>* 선택 입력 사항</DialogContentText>
+                </div>
                 {/* 설계도 이미지(url) */}
                 <CustomTextField
                     label="설계도 이미지(url)"
