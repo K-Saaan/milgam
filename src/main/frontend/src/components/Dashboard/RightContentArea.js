@@ -4,7 +4,7 @@ import { useTheme } from '@mui/material/styles';
 import { useNavigate, useLocation } from 'react-router-dom';
 import MailIcon from '@mui/icons-material/Mail'; 
 import CustomListItem from '../Styles/CustomListItem';
-import AlertManager from './AlertManager';
+import {AlertManager,SseComponent} from './AlertManager';
 
 // 컨테이너의 flex 속성을 설정하여 레이아웃을 조정
 const containerStyle = {
@@ -77,6 +77,7 @@ const RightContentArea = ({ handleAlertClick, selectedAlert }) => {
   return (
     <Box sx={containerStyle}>
       <AlertManager setAlerts={setAlerts} />
+      <SseComponent></SseComponent>
       <Paper sx={paperStyle(theme)}>
         <Box sx={headerStyle(theme)}>
           <Typography variant="subtitle1" sx={{ color: theme.palette.text.primary, fontWeight: 600, fontSize: '1rem' }}>

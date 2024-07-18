@@ -44,7 +44,7 @@ public class MessageController {
             userIndex = 11;
         }
 
-        MessageLogDto responseDto = messageService.saveMessageManage(messageLogDto);
+        MessageLogDto responseDto = messageService.saveMessageLog(messageLogDto);
 
         // MessageManageEntity도 추가
         MessageManageDto messageManageDto = new MessageManageDto();
