@@ -12,6 +12,7 @@ export const CustomTableRow = styled(TableRow)(({ theme }) => ({
 export const CustomTableCell = styled(TableCell)(({ theme }) => ({
   color: theme.palette.text.primary,
   borderBottom: `2px solid ${theme.palette.divider}`,
+  height: 70, // 셀 높이 설정 (예: 50px)
 }));
 
 export const tableHeaderStyle = (theme) => ({
@@ -30,4 +31,5 @@ export const tableCellStyle = (theme) => ({
   borderBottom: `2px solid ${theme.palette.divider}`,
   minWidth: 120,
   width: 150,
+  height: 65,
 });

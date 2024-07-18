@@ -22,7 +22,7 @@ const headerStyle = (theme) => ({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  marginTop: 2,
+  marginTop: 4,
   mb: 5,
 });
 

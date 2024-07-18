@@ -34,7 +34,7 @@ const cPngStyle = (theme) => ({
 })
 
 // mainTitle
-const cMainTitleStyle = (theme) => ({
+export const cMainTitleStyle = (theme) => ({
   display: "flex",
   justifyContent:'center',
   alignItems:'center',

@@ -38,6 +38,21 @@ const ReplyInquiry = () => {
     const [error, setError] = useState(null)
 
     
+    const fetchQuestions = async () => {
+    try {
+        setLoading(true); // 데이터 로딩 시작
+        const response = await axios.get('/admin/questionlist'); // 실제 API URL로 대체해야 합니다.
+        console.log('Questions 데이터:', response.data); // 데이터 확인을 위한 로그
+        const sortedData = response.data.sort((a, b) => new Date(b.question_date) - new Date(a.question_date));
+        setQuestions(sortedData);
+    } catch (error) {
+        console.error('Questions 데이터를 가져오는 중 오류 발생:', error);
+        setError('데이터를 가져오는 중 오류가 발생했습니다. ')
+    } finally {
+        setLoading(false); // 데이터 로딩 종료
+    }
+    };
+
     // 페이지네이션
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -53,23 +68,8 @@ const ReplyInquiry = () => {
 
     // 처음 렌더링될 때 실행
     useEffect(() => {
-        // 데이터를 가져오는 비동기 함수
-        const fetchQuestions = async () => {
-          try {
-            const response = await axios.get('/admin/questionlist'); // 실제 API URL로 대체해야 합니다.
-            console.log('Questions 데이터:', response.data); // 데이터 확인을 위한 로그
-            const sortedData = response.data.sort((a, b) => new Date(b.question_date) - new Date(a.question_date));
-            setQuestions(sortedData);
-          } catch (error) {
-            console.error('Questions 데이터를 가져오는 중 오류 발생:', error);
-            setError('데이터를 가져오는 중 오류가 발생했습니다. ')
-          } finally {
-            setLoading(false);
-          }
-        };
-    
         fetchQuestions();
-      }, []);
+    }, []);
 
     // 모달 여는 함수
     const openModal = (question) => {
@@ -86,23 +86,19 @@ const ReplyInquiry = () => {
     // 답변 제출 처리 함수
     const handleAnswerSubmit = async (data) => {
         const answerData = {
-        myq_index: selectedQuestion.myq_index, 
-        answer: data.answer,
+            myq_index: selectedQuestion.myq_index, 
+            answer: data.answer,
         };
-    
+
         try {
-        await axios.post(`/admin/answer`, answerData);
-        closeModal();
-        // 질문 목록을 업데이트하여 답변 상태 반영
-        setQuestions(prevQuestions =>
-            prevQuestions.map(q =>
-            q.myq_index === selectedQuestion.myq_index ? { ...q, ...answerData, status: '완료' } : q
-            )
-        );
-        alert('답변을 보냈습니다.');
+            const response = await axios.post(`/admin/answer`, answerData);
+            console.log('Answer submitted successfully:', response.data); // POST 요청 성공 여부 확인
+            closeModal();
+            fetchQuestions(); // 질문 목록을 다시 불러와 업데이트 상태 반영
+            alert('답변을 보냈습니다.');
         } catch (error) {
-        console.error('답변 제출 중 오류가 발생했습니다!', error);
-        alert('오류가 발생하여 답변을 제출하지 못했습니다.');
+            console.error('답변 제출 중 오류가 발생했습니다!', error);
+            alert('오류가 발생하여 답변을 제출하지 못했습니다.');
         }
     };
 
