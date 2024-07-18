@@ -57,6 +57,22 @@ public class MessageController {
         return ResponseEntity.ok(responseDto);
     }
 
+    @PatchMapping("/update")
+    public ResponseEntity<MessageManageDto> updateMessageManage(@RequestBody MessageManageDto messageManageDto, HttpServletRequest request) {
+        Integer userIndex = getUserIndexFromSession(request);
+        if (userIndex == null) {
+//            return ResponseEntity.status(401).body(null);
+            userIndex = 11;
+        }
+        // DTO에 사용자 인덱스 설정
+        messageManageDto.setUserIndex(userIndex);
+        messageManageDto.setConfirm(true);
+
+        // 서비스 메서드를 호출하여 엔티티 업데이트
+        MessageManageDto updatedDto = messageService.updateMessageManage(messageManageDto);
+
+        return ResponseEntity.ok(updatedDto);
+    }
     //특정유저 메세지 가저오기
     @GetMapping("/user/message-logs")
     public ResponseEntity<List<MessageLogDto>> getMessageLogsByUserIndex(HttpServletRequest request) {

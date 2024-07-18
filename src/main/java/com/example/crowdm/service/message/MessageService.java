@@ -97,6 +97,18 @@ public class MessageService {
                 .collect(Collectors.toList());
     }
 
+    // 메세지매니지 업데이트 메서드
+    public MessageManageDto updateMessageManage(MessageManageDto dto) {
+        MessageManageId id = new MessageManageId(dto.getUserIndex(), dto.getLogIndex());
+        MessageManageEntity entity = messageManageRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("No MessageManageEntity with given ID"));
+
+        entity.setConfirm(dto.isConfirm());
+
+        MessageManageEntity updatedEntity = messageManageRepository.save(entity);
+        return convertToManageDto(updatedEntity);
+    }
+
     //메세지 로그 저장
     public MessageLogDto saveMessageLog(MessageLogDto dto) {
         MessageLogEntity entity = convertToLogEntity(dto);
