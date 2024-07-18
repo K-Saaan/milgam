@@ -3,7 +3,7 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import useStore from "../store";
 import { styled } from '@mui/system';
@@ -72,7 +72,7 @@ function AdminTopbar({ isAdmin, toggleTheme }) {
     <Box>
       <AppBar position="static" style={appBarStyle}>
         <Toolbar sx={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-        <div style={{display:'flex', alignItems:'center', textDecoration:'none'}} >
+        <Link to="/admin/dashboard" style={{display:'flex', alignItems:'center', textDecoration:'none'}}>
             {/* 앱 타이틀 */}
             <Typography
               variant="h6"
@@ -82,7 +82,7 @@ function AdminTopbar({ isAdmin, toggleTheme }) {
               MilGam
             </Typography>
             <img src={Character} style={{height:'50px', width:'50px', position: 'relative', top:'-6px', right:'7px'}} alt='giyomi' />
-        </div>
+          </Link>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px', }}>
           <MenuButton onClick={()=>isloginCheck('dashboard')} id='dashboard' isActive={isActive('dashboard')}>대시보드</MenuButton>
           <MenuButton onClick={()=>isloginCheck('approval')} id='approval' isActive={isActive('approval')}>가입 승인</MenuButton>
