@@ -8,6 +8,7 @@ import Topbar from "./components/Topbar"
 import AdminTopbar from './components/AdminTopbar.js';
 import { darkTheme, lightTheme } from './Theme.js';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { Helmet } from 'react-helmet';
 
 const globalStyles = {
   body: {
@@ -35,6 +36,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={currentTheme}>
         <CssBaseline />
+        <Helmet>
+          <title>MilGam</title>
+        </Helmet>
         <Global styles={globalStyles} />
           {isAdmin ? (
             <AdminTopbar isAdmin={isAdmin} toggleTheme={toggleTheme} />
