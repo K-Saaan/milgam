@@ -30,4 +30,28 @@ const AlertManager = ({ setAlerts }) => {
   return null; // 이 컴포넌트는 데이터를 가져오기만 하고 UI를 렌더링하지 않습니다.
 };
 
-export default AlertManager;
+const SseComponent = () => {
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    const eventSource = new EventSource('http://localhost:8080/sse');
+
+    eventSource.addEventListener('message-log', function(event) {
+      const newMessage = JSON.parse(event.data);
+      console.log('Received SSE message:', newMessage);
+    });
+
+    eventSource.onerror = function(err) {
+      console.error('EventSource failed:', err);
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, []);
+  return null;
+};
+
+
+export { AlertManager, SseComponent };

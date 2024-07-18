@@ -73,44 +73,6 @@ const SignUpForm = () => {
         color: theme.text,
     }
 
-    // 페이지 이동
-    const onSubmit = async (data) => {
-        // Clone the data object and remove the repw property
-        const {repw, ...dataWithoutRepw} = data;
-
-        // Declare additional variables
-        const currentTime = new Date().toISOString();
-        const additionalData = {
-            account_lock: false,
-            admin_index: 3,
-            apply_date: currentTime,
-            event_index: null,
-            fail_cnt: 0,
-            last_login: currentTime,
-            permission_date: null,
-            permission_yn: false,
-            pw_duedate: null,
-            temppw: null,
-            start_date: start_date ? start_date.toISOString() : null,
-            end_date: end_date ? end_date.toISOString() : null,
-            role_index: data.role_index === 'director' ? 1 : data.role_index === 'host' ? 2 : null,
-        };
-
-        // Merge additional variables with existing data
-        const mergedData = {...dataWithoutRepw, ...additionalData};
-
-        console.log(mergedData);
-
-        // Send the merged object using axios.post
-        try {
-            const response = await axios.post("http://localhost:8080/signup", mergedData);
-            console.log('Response:', response.data);
-
-            navigate('/login/loginPage');
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
 
     function generateRandomString(length) {
         const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

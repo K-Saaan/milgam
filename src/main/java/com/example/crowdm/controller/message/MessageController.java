@@ -3,8 +3,6 @@ package com.example.crowdm.controller.message;
 
 import com.example.crowdm.dto.message.MessageManageDto;
 import com.example.crowdm.dto.message.MessageLogDto;
-import com.example.crowdm.entity.message.MessageManageEntity;
-import com.example.crowdm.entity.message.MessageLogEntity;
 import com.example.crowdm.service.message.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -39,35 +37,42 @@ public class MessageController {
     }
 
     @PostMapping()
-    public ResponseEntity<MessageLogDto> createMessageLog(@RequestBody MessageLogDto messageLogDto) {
+    public ResponseEntity<MessageLogDto> createMessageLog(@RequestBody MessageLogDto messageLogDto, HttpServletRequest request) {
+        Integer userIndex = getUserIndexFromSession(request);
+        if (userIndex == null) {
+//            return ResponseEntity.status(401).body(null);
+            userIndex = 11;
+        }
+
         MessageLogDto responseDto = messageService.saveMessageLog(messageLogDto);
+
+        // MessageManageEntity도 추가
+        MessageManageDto messageManageDto = new MessageManageDto();
+        messageManageDto.setUserIndex(userIndex);  // 예시: 로그 인덱스를 사용자 인덱스로 사용
+        messageManageDto.setLogIndex(responseDto.getLogIndex());
+        messageManageDto.setConfirm(false);  // 기본값 설정
+        messageManageDto.setVideoIndex(0);   // 기본값 설정
+        messageService.saveMessageManage(messageManageDto);
+
         return ResponseEntity.ok(responseDto);
     }
 
+    @PatchMapping("/update")
+    public ResponseEntity<MessageManageDto> updateMessageManage(@RequestBody MessageManageDto messageManageDto, HttpServletRequest request) {
+        Integer userIndex = getUserIndexFromSession(request);
+        if (userIndex == null) {
+//            return ResponseEntity.status(401).body(null);
+            userIndex = 11;
+        }
+        // DTO에 사용자 인덱스 설정
+        messageManageDto.setUserIndex(userIndex);
+        messageManageDto.setConfirm(true);
 
-//
-//    //특정 유저 메세지 가져오기
-//    public ResponseEntity<List<MessageManageDto>> getMessagesByUserIndex(HttpServletRequest request) {
-//        Integer userIndex = getUserIndexFromSession(request);
-//        if (userIndex == null) {
-////            return ResponseEntity.status(401).body(null);
-//            userIndex = 11;
-//        }
-//
-//        List<MessageManageDto> filteredMessages = filterMessagesByUserIndex(userIndex);
-//        return ResponseEntity.ok(filteredMessages);
-//    }
-//    //특정 유저 메세지로그 목록 가져오기
-//    public ResponseEntity<List<Integer>> getLogIndicesByUserIndex(HttpServletRequest request) {
-//        Integer userIndex = getUserIndexFromSession(request);
-//        if (userIndex == null) {
-////            return ResponseEntity.status(401).body(null);
-//            userIndex = 11;
-//        }
-//        List<Integer> logIndices = filterLogIndicesByUserIndex(userIndex);
-//        return ResponseEntity.ok(logIndices);
-//    }
+        // 서비스 메서드를 호출하여 엔티티 업데이트
+        MessageManageDto updatedDto = messageService.updateMessageManage(messageManageDto);
 
+        return ResponseEntity.ok(updatedDto);
+    }
     //특정유저 메세지 가저오기
     @GetMapping("/user/message-logs")
     public ResponseEntity<List<MessageLogDto>> getMessageLogsByUserIndex(HttpServletRequest request) {
@@ -109,7 +114,6 @@ public class MessageController {
     //유저인덱스를 기준으로 로그를 필터링 함
     private List<Integer> filterLogIndicesByUserIndex(Integer userIndex) {
         List<MessageManageDto> allMessages = messageService.getAllMessageManageEntities();
-        logger.info("return: {}",allMessages);
         return allMessages.stream()
                 .filter(message -> message.getUserIndex() == userIndex)
                 .map(MessageManageDto::getLogIndex)
