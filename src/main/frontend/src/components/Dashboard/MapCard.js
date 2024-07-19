@@ -105,7 +105,7 @@ const MapCard = () => {
           newCrowdData[regionName] = areaCongestLvl;
         }
       });
-      setCrowdData(newCrowdData);
+      setCrowdData(newCrowdData); // 무한 루프 걸리 곳!!!
       setIsFetching(false);
     }
   }, [results, nearbyRegions]);
