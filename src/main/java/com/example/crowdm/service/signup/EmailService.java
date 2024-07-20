@@ -27,7 +27,7 @@ public class EmailService {
         // String temppw = SimplePasswordGenerator.generateRandomString(12);
         emailRepository.save(emailDto.toEmailEntity());
         //System.out.println(emailDto.getEmail());
-        mailSender.sendMailTemppw(emailDto.getEmail(), "temppw", emailDto.getCode());
+        mailSender.sendMailTemppw(emailDto.getEmail(), "Email Verification", emailDto.getCode());
     }
 
     // 코드 검증
