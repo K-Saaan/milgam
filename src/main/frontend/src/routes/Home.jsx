@@ -95,9 +95,9 @@ function Home(){
                 <Page3 />
               </div>
 
-              {/* <div style={contentStyle}>
+              <div style={contentStyle}>
                 <Page4 />
-              </div> */}
+              </div>
 
               {/* <div style={contentStyle}>
                 <Page5 />

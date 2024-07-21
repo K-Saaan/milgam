@@ -20,7 +20,7 @@ export const pieChartOptions = (theme) => ({
       horizontal: 5,
       vertical: 5, // 각 범례 항목 간의 수직 간격 조정
     },
-    fontSize: '12px',
+    fontSize: '11px',
     markers: {
       width: 12,
       height: 12,

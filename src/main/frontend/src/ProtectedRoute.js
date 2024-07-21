@@ -11,5 +11,5 @@ export const ProtectedRoute = () => {
 export const AdminProtectedRoute = () => {
   const adminLogined = useStore(state => state.adminLogined);
 
-  return adminLogined ? <Outlet /> : <Navigate to="/admin/login" />;
+  return adminLogined ? <Outlet /> : <Navigate to="/login/loginPage" />;
 };

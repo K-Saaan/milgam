@@ -33,7 +33,7 @@ const btnStyle = {
 }
 
 
-function EmailAlert({open, handleClose}) {
+function EmailAlert({open, handleClose, onSuccess}) {
     const theme = useTheme();
     const {register, handleSubmit, formState: {errors}} = useForm();
     const [message, setMessage] = useState('');
@@ -48,7 +48,13 @@ function EmailAlert({open, handleClose}) {
             const response = await axios.post(`http://localhost:8080/signup/verify`,data);
 
             if (response.status === 200) {
-                setMessage('인증에 성공하였습니다.')
+                // setMessage('인증에 성공하였습니다.')
+                // setTimeout(() => {
+                //     handleClose(); // 인증 성공 시 창을 닫기
+                //     onSuccess();   // 인증 성공 시 콜백 호출
+                // }, 2000); // 메시지를 2초간 보여준 후 창을 닫습니다.
+                handleClose();
+                onSuccess();
             }
             console.log("Code:", data.title);    // 입력된 코드를 콘솔에 출력
             //handleClose();
@@ -85,12 +91,12 @@ function EmailAlert({open, handleClose}) {
                 />
                 {message && <DialogContentText variant='caption' sx={{ textAlign: 'center' }}>{message}</DialogContentText>}
                 <DialogActions style={actionStyle}>
-                    <Button variant="contained" onClick={handleClose}
-                        sx={{...btnStyle, backgroundColor: theme.palette.cancel, '&:hover': { backgroundColor: 'inherit' } }}>
-                        취소
-                    </Button>
                     <Button variant="contained" onClick={handleSubmit(onSubmit)} style={btnStyle}>
                         인증확인
+                    </Button>
+                    <Button variant="contained" onClick={handleClose}
+                        sx={{...btnStyle, backgroundColor: theme.palette.cancel, '&:hover': { backgroundColor: 'inherit' } }}>
+                        닫기
                     </Button>
                 </DialogActions>
             </DialogContent>

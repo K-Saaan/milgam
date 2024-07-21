@@ -1,19 +1,36 @@
 import { useTheme } from "@emotion/react";
 import { motion, useScroll, useTransform} from "framer-motion";
 import { useRef } from "react";
-import { cPage1Style, cSpanStyle } from "./Page1";
+import { cPage1Style } from "./Page1";
+import { cMainTitleStyle } from "./Page3";
 
+const containerStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gridTemplateRows: 'repeat(3, 1fr)', 
+  gap: '30px',
+  justifyContent: 'center',
+  alignItems: 'center', 
+};
 
-
-
+const cCellStyle = (theme) => ({
+  backgroundColor: 'red', // 튀는 색상으로 설정
+  width: '180px',
+  height: '90px',
+  display:'flex',
+  justifyContent:'center',
+  alignItems:'center',
+  flexDirection:'column'
+});
 
 function Page4(){
 
   const theme = useTheme();
   const pageStyle = cPage1Style(theme);
-  const spanStyle = cSpanStyle(theme);
-
+  const cellStyle = cCellStyle(theme);
+  const mainTitleStyle = cMainTitleStyle(theme);
   
+
 
   const ref = useRef(null);
   
@@ -31,17 +48,59 @@ function Page4(){
             style={pageStyle}
             >
               <div>
-
-
-                <span style={spanStyle}>#004</span>
-                <video loop autoPlay muted controls width="600">
-                  <source src="https://assets.planet.com/web/videos/home/homepage-hero.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-                
-                
+                <div style={mainTitleStyle}>
+                  <span>
+                  이런 사람들이 만들었습니다
+                  </span>
+               </div>
+               <div style={containerStyle}>
+                  <div style={cellStyle}>
+                    <span>
+                        김산
+                    </span>  
+                  </div>                
+                  <div style={cellStyle}>
+                    <span>
+                        구본재
+                    </span>  
+                  </div>  
+                  <div style={cellStyle}>
+                    <span>
+                        김미진
+                    </span>  
+                  </div>  
+                  <div style={cellStyle}>
+                    <span>
+                        박보름
+                    </span>  
+                 </div>  
+                  <div style={cellStyle}>
+                   <span>
+                      박보영
+                    </span>  
+                 </div>  
+                  <div style={cellStyle}>
+                    <span>
+                        백승원
+                    </span>  
+                  </div>  
+                  <div style={cellStyle}>
+                    <span>
+                        유병민
+                    </span>  
+                 </div>  
+                  <div style={cellStyle}>
+                    <span>
+                        이상빈
+                    </span>  
+                  </div>  
+                  <div style={cellStyle}>
+                    <span>
+                        이수민
+                    </span>  
+                  </div>  
+                </div>  
               </div>
-
             </motion.div>
           </>
         );

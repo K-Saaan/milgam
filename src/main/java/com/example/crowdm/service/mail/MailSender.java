@@ -38,10 +38,17 @@ public class MailSender {
         logger.info("MailSender Start >>>>>>>>>>>>>>>>>>>>>>>> ");
         try {
             SimpleMailMessage message = new SimpleMailMessage();
+            String emailText = "안녕하세요. Milgam입니다.\n\n"
+                    + "Milgam에 가입해주셔서 감사합니다!\n"
+                    + "아래 인증번호를 사이트에서 인증해주세요:\n\n"
+                    + text+"\n"
+                    + "이메일 인증을 완료하시면, Milgam의 모든 서비스를 이용하실 수 있습니다.\n\n"
+                    + "감사합니다.\n"
+                    + "Milgam 팀 드림";
             message.setTo(to);
             message.setFrom(from);
             message.setSubject(subject);
-            message.setText(text);
+            message.setText(emailText);
             mailSender.send(message);
             logger.info("MailSender Success >>>>>>>>>>>>>>>>>>>>>>>> ");
         } catch (MailException e) {
