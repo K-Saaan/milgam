@@ -4,6 +4,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import DashBackground from "../components/DashBackground.js";
 import MapCard from '../components/Dashboard/MapCard'; // MapCard import
 import { createGlobalStyle } from 'styled-components';
+// import AlertManager from '../components/Dashboard/AlertManager.js';
 
 const containerStyle = {
   display: 'grid',
@@ -40,6 +41,7 @@ const GlobalStyle = createGlobalStyle`
 const Dashboard = () => {
   const [selectedAlert, setSelectedAlert] = useState(null); // 선택된 알림을 관리하는 상태
   const location = useLocation();
+  const [alerts, setAlerts] = useState({});
 
   // 알림 항목 클릭 시 호출되는 함수
   const handleAlertClick = (alert) => {
@@ -64,16 +66,16 @@ const Dashboard = () => {
             <div style={containerStyle}>
               {/* 좌측 콘텐츠 영역 */}
               <div style={leftContentStyle}>
-                <Outlet />
+                <Outlet context={{ alerts, setAlerts }}/>
               </div>
               {/* 우측 알림 리스트 */}
               <div style={rightContentStyle}>
-                <RightContentArea handleAlertClick={handleAlertClick} selectedAlert={selectedAlert} />
+                <RightContentArea handleAlertClick={handleAlertClick} selectedAlert={selectedAlert} alerts={alerts} setAlerts={setAlerts} />
               </div>
               {/* 지도 카드 */}
               <div style={fullWidthStyle}>
-                <div style={isMapCardVisible ? {} : hiddenMapCardStyle}>
-                  <MapCard />
+                <div>
+                  {isMapCardVisible && <MapCard />}
                 </div>
               </div>
             </div>

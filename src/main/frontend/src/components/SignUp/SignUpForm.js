@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import {Button, Typography, DialogActions, Grid, Stack, Divider, IconButton, InputAdornment, MenuItem} from '@mui/material';
+import {Button, Typography, DialogActions, Grid, Divider, IconButton, InputAdornment, MenuItem} from '@mui/material';
 import {Visibility, VisibilityOff} from '@mui/icons-material';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
@@ -99,7 +99,7 @@ const SignUpForm = () => {
 
         while (true) {
             try {
-                const response = await axios.post("http://localhost:8080/signup/email", mergedData_2);
+                const response = await axios.post("/signup/email", mergedData_2);
                 console.log('Response:', response);
                 setOpenRegister(true);
                 break; // 요청이 성공하면 루프를 종료
@@ -140,7 +140,7 @@ const SignUpForm = () => {
 
         while (true) {
             try {
-                const response = await axios.post("http://localhost:8080/signup", mergedData);
+                const response = await axios.post("/signup", mergedData);
                 console.log("Response:", response.data);
 
                 navigate("/login/loginPage");
