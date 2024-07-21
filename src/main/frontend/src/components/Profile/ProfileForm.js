@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import { Grid, Select, MenuItem, FormControl, IconButton } from '@mui/material';
+import { Grid, Select, MenuItem, FormControl, IconButton, Skeleton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/system';
 import { CustomTypographyWrapper, CustomTypography } from './CustomTypo';
 import NewEvent from './NewEvent';
 import LongButton from "../Styles/LongButton.js";
+import axiosRetry from 'axios-retry';
+
+axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
 
 // 스크롤 안 보이게
 const noScrollbarStyles = {
@@ -110,6 +113,9 @@ const ProfileForm = () => {
         org: '',
         event: '',
     });
+
+    const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+
     useEffect(() => {
         const fetchProfile = async () => {
             try {
@@ -125,6 +131,8 @@ const ProfileForm = () => {
                 console.log('Profile fetched:', response.data);
             } catch (error) {
                 console.error('Error fetching profile data:', error);
+            } finally {
+                setIsLoadingProfile(false);
             }
         };
 
@@ -173,9 +181,13 @@ const ProfileForm = () => {
                         이름
                     </div>
                     <CustomTypographyWrapper>
+                        {isLoadingProfile ? (
+                        <Skeleton width={200} height={30} />
+                        ) : (
                         <CustomTypography variant="h6">
                             {profile.name || 'null'} {/* 서버에서 받은 이름값이나 기본값 */}
                         </CustomTypography>
+                        )}
                     </CustomTypographyWrapper>
             </Grid>
             <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop:5 }}> {/* 아이디 */}
@@ -183,9 +195,13 @@ const ProfileForm = () => {
                         아이디
                     </div>
                     <CustomTypographyWrapper>
+                        {isLoadingProfile ? (
+                        <Skeleton width={200} height={30} />
+                        ) : (
                         <CustomTypography variant="h6">
                         {profile.id || 'null'} {/* 서버에서 받은 아이디값이나 기본값 */}
                         </CustomTypography>
+                        )}
                     </CustomTypographyWrapper>
             </Grid>
             <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop:2, paddingBottom:3 }}> {/* 이메일 */}
@@ -193,9 +209,13 @@ const ProfileForm = () => {
                         이메일
                     </div>
                     <CustomTypographyWrapper>
+                        {isLoadingProfile ? (
+                        <Skeleton width={200} height={30} />
+                        ) : (
                         <CustomTypography variant="h6">
                         {profile.email || 'null'} {/* 서버에서 받은 이메일값이나 기본값 */}
                         </CustomTypography>
+                        )}
                     </CustomTypographyWrapper>
             </Grid>
             <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop:2, paddingBottom:3 }}> {/* 전화번호 */}
@@ -203,9 +223,13 @@ const ProfileForm = () => {
                         전화번호
                     </div>
                     <CustomTypographyWrapper>
+                        {isLoadingProfile ? (
+                        <Skeleton width={200} height={30} />
+                        ) : (
                         <CustomTypography variant="h6">
                         {profile.phone || 'null'} {/* 서버에서 받은 전화번호값이나 기본값 */}
                         </CustomTypography>
+                        )}
                     </CustomTypographyWrapper>
             </Grid>
             <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingBottom:6 }}> {/* 소속 */}
@@ -213,9 +237,13 @@ const ProfileForm = () => {
                         소속
                     </div>
                     <CustomTypographyWrapper>
+                        {isLoadingProfile ? (
+                        <Skeleton width={200} height={30} />
+                        ) : (
                         <CustomTypography variant="h6">
                         {profile.org || 'null'} {/* 서버에서 받은 소속값이나 기본값 */}
                         </CustomTypography>
+                        )}
                     </CustomTypographyWrapper>
             </Grid>
             <Grid item xs={12} md={6} sx={{ mb: 2, padding: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingBottom:6 }}> {/* 행사 선택 */}

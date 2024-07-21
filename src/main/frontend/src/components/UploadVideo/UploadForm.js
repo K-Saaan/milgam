@@ -163,7 +163,7 @@ const UploadBG = styled('div')({
       formData.append('totalChunks', totalChunks);
 
       try {
-        await axios.post('http://localhost:8080/api/videoUpload', formData, {
+        await axios.post('/api/videoUpload', formData, {
           withCredentials: true,
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -184,7 +184,7 @@ const UploadBG = styled('div')({
       vMetaData.append('chunk_index', index);
 
       try {
-        await axios.post('http://localhost:8080/api/uploadmeta', vMetaData, {
+        await axios.post('/api/uploadmeta', vMetaData, {
           withCredentials: true,
           headers: {
             'Content-Type': 'multipart/form-data',
