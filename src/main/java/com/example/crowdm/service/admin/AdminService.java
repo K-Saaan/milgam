@@ -27,6 +27,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 
 import java.util.Optional;
@@ -50,14 +53,17 @@ public class AdminService {
 
 
     @Transactional
-    public int permissionUpdateUser(int user_index) {
+    public int permissionUpdateUser(int user_index, HttpServletRequest request) {
+        //session
+        HttpSession session = request.getSession();
+        Integer admin_index = (Integer) session.getAttribute("admin_index");
         Timestamp permission_date = new Timestamp(System.currentTimeMillis());
         logger.info("permissionUpdateUser {}", user_index);
         try {
             Optional<UserEntity> userOptional = loginRepository.findById(user_index);
             if (userOptional.isPresent()) {
                 UserEntity user = userOptional.get();
-                user.updatePermissionYn(permission_date);
+                user.updatePermissionYn(permission_date, admin_index);
                 loginRepository.save(user);
                 logger.info("Permission updated for user {}", user_index);
                 return 1;
@@ -70,13 +76,15 @@ public class AdminService {
             return 0;
         }
     }
-    public int denyUpdateUser(int user_index) {
-
+    public int denyUpdateUser(int user_index, HttpServletRequest request) {
+        //session
+        HttpSession session = request.getSession();
+        Integer admin_index = (Integer) session.getAttribute("admin_index");
         try {
             Optional<UserEntity> userOptional = loginRepository.findById(user_index);
             if (userOptional.isPresent()) {
                 UserEntity user = userOptional.get();
-                user.updateDenyYn();
+                user.updateDenyYn(admin_index);
                 loginRepository.save(user);
                 logger.info("Permission denied for user {}", user_index);
                 return 1;
@@ -227,9 +235,10 @@ public class AdminService {
     }
     public List<MyqList> myqList() {
         List<MyqEntity> myqlist = myqRepository.findAll();
-        List<MyqList> answer = new ArrayList<>();
+        List<MyqList> answerlist = new ArrayList<>();
         for (MyqEntity myq : myqlist) {
             //Integer user_index= user.getUser_index();
+
 
             Integer myq_index = myq.getMyq_index();
             String question_title = myq.getQuestion_title();
@@ -238,6 +247,7 @@ public class AdminService {
             Timestamp question_date = myq.getQuestion_date();
             Timestamp answer_date = myq.getAnswer_date();
             String name= getUserNameById(user_index);
+            String answer=myq.getAnswer();
             String status;
             if (answer_date == null) {
                 status = "대기";
@@ -245,21 +255,23 @@ public class AdminService {
                 status = "완료";
             }
 
-            MyqList myqList = new MyqList(myq_index, question_title, question, user_index, question_date, answer_date, name,status);
-            answer.add(myqList);
+            MyqList myqList = new MyqList(myq_index, question_title, question, user_index, question_date, answer_date, name,answer, status);
+            answerlist.add(myqList);
         }
-        return answer;
+        return answerlist;
     }
 
 
-    public Integer answering(int myq_index, String answercontext) {
-
+    public Integer answering(int myq_index, String answercontext,  HttpServletRequest request) {
+        //session
+        HttpSession session = request.getSession();
+        Integer admin_index = (Integer) session.getAttribute("admin_index");
         try {
             Timestamp date = new Timestamp(System.currentTimeMillis());
             Optional<MyqEntity> myqOptional = myqRepository.findById(myq_index);
             if (myqOptional.isPresent()) {
                 MyqEntity myq = myqOptional.get();
-                myq.updateAnswerDate(date, answercontext);
+                myq.updateAnswerDate(date, answercontext, admin_index);
                 myqRepository.save(myq);
                 logger.info("Answer updated for question {}", myq_index);
                 return 1;

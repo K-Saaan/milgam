@@ -1,7 +1,7 @@
 import React, {  useState } from 'react';
 import { Box, Paper, Typography, List } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import MailIcon from '@mui/icons-material/Mail'; 
 import CustomListItem from '../Styles/CustomListItem';
 import AlertManager from './AlertManager';
@@ -58,13 +58,20 @@ const titleTextStyle = (theme, selected) => ({
 
 const RightContentArea = ({ handleAlertClick, selectedAlert }) => {
   const theme = useTheme();
+  const location = useLocation();
   const navigate = useNavigate();
   const [alerts, setAlerts] = useState([]);
+  const isAdmin = location.pathname.startsWith('/admin');
 
-  const onAlertClick = (alertKey, alert) => {
+  const onAlertClick = (alertKey, alert, isAdmin) => {
     console.log('전달할 데이터', alert);
     handleAlertClick(alert);
-    navigate(`/dashboard/detail/${alertKey}`, { state: { alert } });
+    
+    const targetPath = isAdmin 
+      ? `/admin/dashboard/detail/${alertKey}` 
+      : `/dashboard/detail/${alertKey}`;
+  
+    navigate(targetPath, { state: { alert } });
   };
 
   return (
@@ -82,7 +89,7 @@ const RightContentArea = ({ handleAlertClick, selectedAlert }) => {
             <CustomListItem
               key={index}
               button
-              onClick={() => onAlertClick(key, alerts[key])}
+              onClick={() => onAlertClick(key, alerts[key], isAdmin)}
               selected={selectedAlert?.id === alerts[key][alerts[key].length - 1].id}
             >
               <Typography variant="body2" sx={timeTextStyle(theme, selectedAlert?.id === alerts[key].id)}>

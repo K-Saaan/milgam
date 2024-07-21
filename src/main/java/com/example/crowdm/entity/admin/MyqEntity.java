@@ -42,8 +42,8 @@ public class MyqEntity {
     public MyqEntity() {
     }
     @Transactional
-    public void updateAnswerDate(Timestamp date, String answercontext){
-        this.admin_index=1;
+    public void updateAnswerDate(Timestamp date, String answercontext, Integer admin_index){
+        this.admin_index=admin_index;
         this.answer_date=date;
         this.answer=answercontext;
         //this.admin_index=1; 나중에 세션값으로 바꿔야함
