@@ -49,7 +49,7 @@ export const getBarChartOptions = (theme) => ({
 
 // 바 차트 데이터 및 스타일 지정
 export const barChartData = {
-  labels: ['폭행', '절도'],
+  labels: ['폭행', '실신'],
   datasets: [
     {
       label: '횟수',

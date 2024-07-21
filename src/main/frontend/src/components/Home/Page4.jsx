@@ -8,7 +8,7 @@ const containerStyle = {
   display: 'grid',
   gridTemplateColumns: 'repeat(3, 1fr)',
   gridTemplateRows: 'repeat(3, 1fr)', 
-  gap: '65px',
+  gap: '30px',
   justifyContent: 'center',
   alignItems: 'center', 
 };
