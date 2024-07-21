@@ -27,16 +27,17 @@ const LogInForm = ({ marginBottom }) => {
 
     //회원가입 이동
     const onSignupClick = () => { navigate('/signup'); };
-    // 알림 팝업창 열고 닫기
+    //알림 팝업창 열고 닫기
     const alHandleClickOpen = () => { alSetOpen(true); };
     const alHandleClose = () => { alSetOpen(false); };
     const npHandleClickOpen = () => { npSetOpen(true); };
     const npHandleClose = () => { npSetOpen(false); };
 
-    const { setIsLogined } = useStore(state => state);
-
+    const {setIsLogined, setAdminLogined} = useStore(state => state);
     const onLogIn = async (data) => {
+
         const { id, pw } = data;
+
         if (id && pw) {
             try {
                 //console.log("data : ", data)
@@ -46,11 +47,8 @@ const LogInForm = ({ marginBottom }) => {
                         'Content-Type': 'application/json'
                     }
                 });
-
                 console.log("response data", res.data);
-                // 서버 응답에 따른 리다이렉션 처리
-                if (res.data.RESULT === "GO_MAIN") {
-                    console.log("go dashboard");
+                if (res.data.RESULT === "GO_USER_DASHBOARD") {
                     localStorage.setItem("key", data.id);
                     setIsLogined(true);
                     navigate('/dashboard');
@@ -62,8 +60,10 @@ const LogInForm = ({ marginBottom }) => {
                     setPasswordError("아이디 혹은 비밀번호가 틀렸습니다.");
                 } else if (res.data.RESULT === "LOCK_ACCOUNT") {
                     alHandleClickOpen();
-                } else if (res.data.RESULT === "assign") {
+                } else if (res.data.RESULT === "PERMISSION_DENIED") {
                     npHandleClickOpen();
+                } else if (res.data.RESULT === 'OUTSIDE_DATE_RANGE') {
+                    setPasswordError('사용 기간이 아닙니다.')
                 }
             } catch (error) {
                 console.error("오류가 발생하였습니다:", error);
@@ -96,6 +96,7 @@ const LogInForm = ({ marginBottom }) => {
                 <CustomTextField
                     label="비밀번호"
                     id="pw"
+
                     type="password"
                     {...register("pw", { required: "비밀번호를 입력해주세요." })}
                     inputProps={{ maxLength: 30 }}
