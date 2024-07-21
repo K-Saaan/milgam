@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {getAllDashboards} from '../../api/api.js'
 
-const AlertManager = ({ setAlerts }) => {
+const AlertManager = ({ setAlerts, setLoading  }) => {
   useEffect(() => {
     const fetchDashboards = async () => {
       try {
@@ -21,11 +21,13 @@ const AlertManager = ({ setAlerts }) => {
         setAlerts(newAlerts);
       } catch (error) {
         console.error('Failed to fetch dashboards:', error);
+      } finally {
+        setLoading(false); // 로딩 종료
       }
     };
 
     fetchDashboards();
-  }, [setAlerts]);
+  }, [setAlerts, setLoading]);
 
   return null; // 이 컴포넌트는 데이터를 가져오기만 하고 UI를 렌더링하지 않습니다.
 };

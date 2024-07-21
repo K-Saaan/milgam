@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import { Box, Typography, Skeleton } from '@mui/material';
 import FaqItem from './FaqItem';
+
+axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
 
 function FaqContent() {
   const [questions, setQuestions] = useState([]);

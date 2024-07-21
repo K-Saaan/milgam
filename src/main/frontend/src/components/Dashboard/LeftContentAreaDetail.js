@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Paper, Typography, IconButton , Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import React from 'react';
+import { useNavigate, useLocation, useOutletContext } from 'react-router-dom';
+import { Paper, Typography, IconButton, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/system';
 import axios from 'axios';
+import AlertManager from './AlertManager';
 
 // 지도 영역 바깥 컨테이너 스타일
 const paperStyle = (theme) => ({
@@ -15,7 +16,7 @@ const paperStyle = (theme) => ({
   height: '520px',
   borderRadius: 2,
   display: 'flex',
-  flexDirection: 'column', // 추가
+  flexDirection: 'column',
 });
 
 // 제목 + 닫기 버튼 박스 스타일
@@ -75,13 +76,14 @@ const CustomTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const LeftContentAreaDetail = ( {handleRowClick} ) => {
+const LeftContentAreaDetail = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
   const isAdmin = location.pathname.startsWith('/admin');
 
-  const [alerts, setAlerts] = useState(location.state ? location.state.alert : []);
+  const { alerts, setAlerts } = useOutletContext();
+  const alertData = location.state?.alert || []; // 전달받은 알림 데이터
 
   const handleCloseClick = () => {
     const targetPath = isAdmin ? '/admin/dashboard' : '/dashboard';
@@ -89,22 +91,33 @@ const LeftContentAreaDetail = ( {handleRowClick} ) => {
   };
 
   const onRowClick = async (row) => {
+    // UI 즉시 업데이트
+    const updatedAlerts = { ...alerts };
+    const alertIndex = Object.keys(updatedAlerts).find(key => 
+      updatedAlerts[key].some(alert => alert.logIndex === row.logIndex)
+    );
+    if (alertIndex) {
+      updatedAlerts[alertIndex] = updatedAlerts[alertIndex].map(alert =>
+        alert.logIndex === row.logIndex ? { ...alert, read: true } : alert
+      );
+    }
+    setAlerts(updatedAlerts);
+
     try {
-      // 백엔드에 POST 요청 보내기
-      const response = await axios.post('/dashboard/update', {
+      // 백엔드에 PATCH 요청 보내기
+      await axios.patch('/dashboards/update', { 
         logIndex: row.logIndex,
+        confirm: row.read,
+      }, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
-      console.log('POST 요청 성공:', row.logIndex);
-
-      // 성공 시, 행을 제거하기 위해 상태 업데이트
-      setAlerts(prevAlerts => prevAlerts.filter(alert => alert.logIndex !== row.logIndex));
-
-      // handleRowClick을 호출하여 부모 컴포넌트에서 처리
-      if (handleRowClick) {
-        handleRowClick(row);
-      }
+      console.log('PATCH 요청 성공:', row.logIndex);
+      <AlertManager setAlerts={setAlerts} />
     } catch (error) {
-      console.error('POST 요청 실패:', error);
+      console.error('PATCH 요청 실패:', error);
     }
   };
 
@@ -127,25 +140,27 @@ const LeftContentAreaDetail = ( {handleRowClick} ) => {
               <CustomTableCell sx={{ width: '40%' }}>상황 및 제안</CustomTableCell>
               <CustomTableCell sx={{ width: '10%' }}>혼잡도</CustomTableCell>
               <CustomTableCell sx={{ width: '15%' }}>이상 행동</CustomTableCell>
+              <CustomTableCell sx={{ width: '10%' }}>확인</CustomTableCell>
             </TableRow>
           </CustomTableHead>
           <TableBody>
-            {location.state && location.state.alert ? (
-              location.state.alert.map((row, index) => (
-                <CustomTableRow key={index} onClick={() => onRowClick(row)}>
-                  <CustomTableCell>{formatDate(row.date)}</CustomTableCell>
-                  <CustomTableCell>{row.context}</CustomTableCell>
-                  <CustomTableCell>{row.contextTitle}</CustomTableCell>
-                  <CustomTableCell>{row.crowdLevel}</CustomTableCell>
-                </CustomTableRow>
-              ))
-            ) : (
-              <TableRow>
-                <CustomTableCell colSpan={4} align="center">
-                  No data available
-                </CustomTableCell>
-              </TableRow>
-            )}
+          {alertData.length > 0 ? (
+            alertData.map((row, index) => (
+              <CustomTableRow key={index} onClick={() => onRowClick(row)}>
+                <CustomTableCell>{formatDate(row.date)}</CustomTableCell>
+                <CustomTableCell>{row.context}</CustomTableCell>
+                <CustomTableCell>{row.contextTitle}</CustomTableCell>
+                <CustomTableCell>{row.crowdLevel}</CustomTableCell>
+                <CustomTableCell>{row.read ? '읽음' : '안읽음'}</CustomTableCell>
+              </CustomTableRow>
+            ))
+          ) : (
+            <TableRow>
+              <CustomTableCell colSpan={5} align="center">
+                No data available
+              </CustomTableCell>
+            </TableRow>
+          )}
           </TableBody>
         </Table>
       </CustomTableContainer>

@@ -4,6 +4,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import ReplyInquiryAlert from './ReplyInquiryAlert';
 import { useTheme } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
+import axiosRetry from 'axios-retry';
 import { CustomTableRow, CustomTableCell, tableHeaderStyle  } from '../Styles/CustomTable'
 
 // TableContainer 스타일
@@ -17,6 +18,10 @@ const progressStyle = {
   justifyContent: "center",
   display: 'flex',
 };
+
+// axios 인스턴스 생성 및 retry 설정
+const axiosInstance = axios.create();
+axiosRetry(axiosInstance, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
 
 // 날짜 형식을 yyyy-mm-dd로 변환하는 함수
 const formatDate = (dateString) => {
@@ -36,22 +41,21 @@ const ReplyInquiry = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null)
-
     
     const fetchQuestions = async () => {
-    try {
-        setLoading(true); // 데이터 로딩 시작
-        const response = await axios.get('/admin/questionlist'); // 실제 API URL로 대체해야 합니다.
-        console.log('Questions 데이터:', response.data); // 데이터 확인을 위한 로그
-        const sortedData = response.data.sort((a, b) => new Date(b.question_date) - new Date(a.question_date));
-        setQuestions(sortedData);
-    } catch (error) {
-        console.error('Questions 데이터를 가져오는 중 오류 발생:', error);
-        setError('데이터를 가져오는 중 오류가 발생했습니다. ')
-    } finally {
-        setLoading(false); // 데이터 로딩 종료
-    }
-    };
+        try {
+          setLoading(true); // 데이터 로딩 시작
+          const response = await axiosInstance.get('/admin/questionlist'); // axios 인스턴스 사용
+          console.log('Questions 데이터:', response.data); // 데이터 확인을 위한 로그
+          const sortedData = response.data.sort((a, b) => new Date(b.question_date) - new Date(a.question_date));
+          setQuestions(sortedData);
+        } catch (error) {
+          console.error('Questions 데이터를 가져오는 중 오류 발생:', error);
+          setError('데이터를 가져오는 중 오류가 발생했습니다. ');
+        } finally {
+          setLoading(false); // 데이터 로딩 종료
+        }
+      };
 
     // 페이지네이션
     const [page, setPage] = React.useState(0);
@@ -131,22 +135,22 @@ const ReplyInquiry = () => {
                 </Table>
                 {/* 로딩 중일 때 표시 */}
                 {loading &&
-                    <div style={progressStyle}>
-                        <CircularProgress sx={{color:theme.palette.primary.main}} />
-                    </div>
+                <div style={progressStyle}>
+                    <CircularProgress sx={{ color: theme.palette.primary.main }} />
+                </div>
                 }
-                {!questions && (
-                    <div style={{textAlign:'center', margin:'10px', color:theme.palette.text.secondary}}>{error}목록이 없습니다.</div>
+                {!loading && !questions && (
+                <div style={{ textAlign: 'center', margin: '10px', color: theme.palette.text.secondary }}>{error}목록이 없습니다.</div>
                 )}
                 {questions && <TablePagination
-                    component="div"
-                    count={questions.length}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    rowsPerPage={rowsPerPage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                    rowsPerPageOptions={[5, 10, 15, 20]} // 페이지 네이션 옵션
-                    sx={{ mt: 'auto' }} // 페이지네이션을 하단에 고정
+                component="div"
+                count={questions.length}
+                page={page}
+                onPageChange={handleChangePage}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                rowsPerPageOptions={[5, 10, 15, 20]} // 페이지 네이션 옵션
+                sx={{ mt: 'auto' }} // 페이지네이션을 하단에 고정
                 />}
             </CustomTableContainer>
             <ReplyInquiryAlert

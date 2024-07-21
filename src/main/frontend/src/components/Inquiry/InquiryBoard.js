@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { styled, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, TablePagination , Skeleton} from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, TablePagination , Skeleton} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RegisterAlert from './RegisterAlert';
 import ReplyAlert from './ReplyAlert';
 import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import { CustomTableRow, tableHeaderStyle, tableCellStyle } from '../Styles/CustomTable'
+
+axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
 
 // 컨테이너 스타일
 const containerStyle = {

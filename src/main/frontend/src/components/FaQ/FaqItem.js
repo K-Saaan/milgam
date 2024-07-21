@@ -5,7 +5,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useTheme } from '@mui/material/styles';
 import Checklist from "./checklist.png"
 
-
 const FaqItem = ({ item, index, expanded, handleChange }) => {
   const isExpanded = expanded === `panel${index}`;
   const theme = useTheme();
@@ -44,6 +43,8 @@ const FaqItem = ({ item, index, expanded, handleChange }) => {
   const typographyBodyStyle = {
     flexGrow: 1,
     marginLeft: 2,
+    fontSize: '1rem', // 글씨 크기를 1.5rem로 설정
+
   };
 
   return (
@@ -70,11 +71,11 @@ const FaqItem = ({ item, index, expanded, handleChange }) => {
           <Typography variant="body1" sx={{ color: theme.palette.text.primary, fontWeight: 'bold' }}>
             A
           </Typography>
-          <Typography variant="body1" sx={{ color: theme.palette.text.primary, fontWeight: '400' }}>
+          <Typography variant="body1" sx={[typographyBodyStyle, { color: theme.palette.text.primary, fontWeight: '400' }]}>
             {item.answer}
             <br />
             {item.faq_index === 3 && (
-            <img src={Checklist} alt="checklist" style={{ marginTop:'12px', width: '500px', height: '500px' }} />
+              <img src={Checklist} alt="checklist" style={{ marginTop: '12px', width: '500px', height: '500px' }} />
             )}
           </Typography>
         </Stack>
