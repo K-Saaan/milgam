@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import axios from "axios";
 import {useForm} from 'react-hook-form';
-import {Button, Grid, Divider} from '@mui/material';
+import {Button, Divider} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -32,7 +32,6 @@ const btnStyle = {
     marginTop: "20px",
 }
 
-
 function EmailAlert({open, handleClose, onSuccess}) {
     const theme = useTheme();
     const {register, handleSubmit, formState: {errors}} = useForm();
@@ -45,7 +44,7 @@ function EmailAlert({open, handleClose, onSuccess}) {
 
         try {
             //await new Promise((resolve) => setTimeout(resolve, 1000));
-            const response = await axios.post(`http://localhost:8080/signup/verify`,data);
+            const response = await axios.post(`/signup/verify`,data);
 
             if (response.status === 200) {
                 // setMessage('인증에 성공하였습니다.')

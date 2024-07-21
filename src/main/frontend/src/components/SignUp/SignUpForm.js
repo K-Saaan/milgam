@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import {Button, Typography, DialogActions, Grid, Stack, Divider, IconButton, InputAdornment, MenuItem} from '@mui/material';
+import {Button, Typography, DialogActions, Grid, Divider, IconButton, InputAdornment, MenuItem} from '@mui/material';
 import {Visibility, VisibilityOff} from '@mui/icons-material';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
@@ -140,7 +140,7 @@ const SignUpForm = () => {
 
         while (true) {
             try {
-                const response = await axios.post("http://localhost:8080/signup", mergedData);
+                const response = await axios.post("/signup", mergedData);
                 console.log("Response:", response.data);
 
                 navigate("/login/loginPage");

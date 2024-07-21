@@ -1,5 +1,5 @@
-import React, {  useState } from 'react';
-import { Box, Paper, Typography, List, Badge } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Paper, Typography, List, Badge, Skeleton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate, useLocation } from 'react-router-dom';
 import MailIcon from '@mui/icons-material/Mail'; 
@@ -79,12 +79,12 @@ const formatDate = (dateString) => {
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 };
 
-const RightContentArea = ({ handleAlertClick, selectedAlert }) => {
+const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }) => {
   const theme = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
-  const [alerts, setAlerts] = useState([]);
   const isAdmin = location.pathname.startsWith('/admin');
+  const [loading, setLoading] = useState(true);
 
   const onAlertClick = (alertKey, alert, isAdmin) => {
     console.log('전달할 데이터', alert);
@@ -94,42 +94,58 @@ const RightContentArea = ({ handleAlertClick, selectedAlert }) => {
       ? `/admin/dashboard/detail/${alertKey}` 
       : `/dashboard/detail/${alertKey}`;
   
-    navigate(targetPath, { state: { alert } });
+    navigate(targetPath, { state: { alert: alerts[alertKey] } });
   };
 
   return (
     <Box sx={containerStyle}>
-      <AlertManager setAlerts={setAlerts} />
+      <AlertManager setAlerts={setAlerts} setLoading={setLoading}/>
       <Paper sx={paperStyle(theme)}>
         <Box sx={headerStyle(theme)}>
           <Typography variant="subtitle1" sx={{ color: theme.palette.text.primary, fontWeight: 600, fontSize: '1rem' }}>
             위험 알림
           </Typography>
         </Box>
+        {loading ? (
+        <Box sx={{ padding: 2 }}>
+          <Skeleton variant="rectangular" height={40} sx={{ marginBottom: 2 }} />
+          <Skeleton variant="rectangular" height={40} sx={{ marginBottom: 2 }} />
+          <Skeleton variant="rectangular" height={40} sx={{ marginBottom: 2 }} />
+        </Box>
+      ) : (
         <List sx={listStyle}>
-          {Object.keys(alerts).map((key, index) => (
-            
-            <CustomListItem
-              key={index}
-              button
-              onClick={() => onAlertClick(key, alerts[key], isAdmin)}
-              selected={selectedAlert?.id === alerts[key][0].id}
-            >
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                <Typography variant="body2" sx={timeTextStyle(theme, selectedAlert?.id === alerts[key].id)}>
-                  {formatDate(alerts[key][alerts[key].length - 1].date)}
-                </Typography>
-                <Badge badgeContent={alerts[key].length} sx={badgeStyle}></Badge>
-              </Box>
-              <Box sx={titleBoxStyle}>
-                <MailIcon sx={{ color: selectedAlert?.id === alerts[key].id ? theme.palette.text.primary : theme.palette.primary.main, marginRight: 1 }} />
-                <Typography variant="body2" sx={titleTextStyle(theme, selectedAlert?.id === alerts[key].id)}>
-                  {alerts[key][0].context}
-                </Typography>
-              </Box>
-            </CustomListItem>
-          ))}
-        </List>
+          {alerts && Object.keys(alerts).length > 0 ? (
+            Object.keys(alerts).map((key, index) => {
+              const unreadCount = alerts[key].filter(alert => !alert.read).length;
+              return (
+                <CustomListItem
+                  key={index}
+                  button
+                  onClick={() => onAlertClick(key, alerts[key], isAdmin)}
+                  selected={selectedAlert?.id === alerts[key][0].id}
+                >
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                    <Typography variant="body2" sx={timeTextStyle(theme, selectedAlert?.id === alerts[key].id)}>
+                      {formatDate(alerts[key][0].date)}
+                    </Typography>
+                    <Badge badgeContent={unreadCount} sx={badgeStyle}></Badge>
+                  </Box>
+                  <Box sx={titleBoxStyle}>
+                    <MailIcon sx={{ color: selectedAlert?.id === alerts[key].id ? theme.palette.text.primary : theme.palette.primary.main, marginRight: 1 }} />
+                    <Typography variant="body2" sx={titleTextStyle(theme, selectedAlert?.id === alerts[key].id)}>
+                      {alerts[key][0].context}
+                    </Typography>
+                  </Box>
+                </CustomListItem>
+              );
+            })
+          ) : (
+            <Typography variant="body2" align="center" sx={{ marginTop: '16px' }}>
+              No alerts available
+            </Typography>
+          )}
+          </List>
+        )}
       </Paper>
     </Box>
   );

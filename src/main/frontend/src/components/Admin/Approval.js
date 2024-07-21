@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box, TablePagination } from '@mui/material';
 import { styled } from '@mui/system';
 import ApprovalAlert from './ApprovalAlert';
 import { useTheme } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
 import { CustomTableRow, CustomTableCell, tableHeaderStyle  } from '../Styles/CustomTable'
+
+axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
 
 // TableContainer 스타일
 const CustomTableContainer = styled(TableContainer)(({ theme }) => ({
