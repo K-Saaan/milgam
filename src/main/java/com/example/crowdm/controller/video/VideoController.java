@@ -1,18 +1,23 @@
 package com.example.crowdm.controller.video;
 
+import com.example.crowdm.dto.faq.Answerq;
+import com.example.crowdm.dto.faq.Requestq;
+import com.example.crowdm.dto.video.Videoq;
+import com.example.crowdm.entity.video.VideoEntity;
 import com.example.crowdm.service.video.VideoService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -30,6 +35,10 @@ public class VideoController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private final VideoService videoService;
     public SimpMessagingTemplate messagingTemplate;
+    private final RestTemplate restTemplate;
+
+    @Value("${url.gcp_upload}")
+    String gcpUrl;
 
     /**
      * 1. MethodName: videoUploadPage
@@ -54,8 +63,12 @@ public class VideoController {
     @PostMapping("/videoUpload")
     public void videoUpload(@RequestParam("chunkFile") MultipartFile mFile,
                             @RequestParam("chunkIndex") int chunkIndex,
-                            @RequestParam("totalChunks") int totalChunks) throws IOException{
-        videoService.uploadToGCP(mFile, chunkIndex, totalChunks);
+                            @RequestParam("totalChunks") int totalChunks,
+                            @RequestParam("originName") String fileOriginName) throws IOException{
+        logger.info("chunkIndex = {}", chunkIndex);
+        logger.info("totalChunks = {}", totalChunks);
+        logger.info("fileOriginName = {}", fileOriginName);
+        videoService.uploadToGCP(mFile, chunkIndex, totalChunks, fileOriginName);
     }
 
     /**
@@ -73,7 +86,25 @@ public class VideoController {
         logger.info("resultContent = {}", resultContent);
         logger.info("chunkIndex = {}", chunkIndex);
         logger.info("totalChunks = {}", totalChunks);
-        messagingTemplate.convertAndSend("/topic/video/", resultContent);
+        messagingTemplate.convertAndSend("/videoresult", resultContent);
         return ResponseEntity.ok("Result to front");
     }
+
+
+    /**
+     * 1. MethodName: uploadmeta
+     * 2. ClassName : VideoController
+     * 3. Comment   : 비디오 메타 데이터 저장
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 16
+     **/
+    @PostMapping("/uploadmeta")
+    public ResponseEntity<VideoEntity> uploadMeta(@RequestBody Videoq videoq, HttpServletRequest request) {
+        VideoEntity result = videoService.uploadmeta(videoq.getLength(), videoq.getSector(), videoq.getCamera_num(), videoq.getContent(), videoq.getFile_name(), videoq.getChunk_index(),request);
+
+        return ResponseEntity.ok(result);
+    }
+
+
 }
+

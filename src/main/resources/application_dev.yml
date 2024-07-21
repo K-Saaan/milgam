@@ -13,7 +13,7 @@ spring:
   web:
     resources:
       static-locations:
-        classpath:/static/
+        classpath:/static
       add-mappings: true
   jpa:
     database: postgresql

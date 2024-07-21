@@ -176,16 +176,18 @@ public class LoginService {
         EventEntity event = eventOptional.get();
         return event.getTitle();
     }
+    public Profile getProfile(HttpServletRequest request){
+        //session
+        HttpSession session = request.getSession();
+        Integer user_index = (Integer) session.getAttribute("userIndex");
 
-    public Profile getProfile() {
-        Integer user_index = 11; // 사용자 인덱스를 하드코딩하는 대신 적절한 방법으로 가져오도록 변경 필요
         Optional<UserEntity> userOptional = loginRepository.findById(user_index);
         UserEntity user = userOptional.get();
         Profile profile = new Profile();
         profile.setUser_index(user_index);
         profile.setEmail(user.getEmail());
         profile.setName(user.getName());
-        profile.setOrg(user.getOrg());  //이름이 달라도 이해해줘라
+        profile.setOrg(user.getOrg());
         profile.setPhone(user.getPhone());
         profile.setId(user.getId());
         profile.setEvent(getEventTitle(user.getEvent_index()));
@@ -194,8 +196,11 @@ public class LoginService {
     }
 
     @Transactional
-    public String UpdateEventAtProfile(Integer event_index) {
-        Integer user_index = 11; // 사용자 인덱스를 하드코딩하는 대신 적절한 방법으로 가져오도록 변경 필요
+    public String UpdateEventAtProfile(Integer event_index, HttpServletRequest request){
+        //session
+        HttpSession session = request.getSession();
+        Integer user_index = (Integer) session.getAttribute("userIndex");
+
         Optional<UserEntity> userOptional = loginRepository.findById(user_index);
         UserEntity user = userOptional.get();
         user.updateEvent(event_index);

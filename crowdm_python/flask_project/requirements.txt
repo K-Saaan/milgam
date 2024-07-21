@@ -1,2 +1,8 @@
 Flask
 requests
+
+python-dotenv
+openai
+supabase
+scikit-learn
+numpy

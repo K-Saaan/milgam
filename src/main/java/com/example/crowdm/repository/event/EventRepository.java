@@ -14,7 +14,7 @@ import java.util.List;
 public interface EventRepository extends JpaRepository<EventEntity, Integer>, JpaSpecificationExecutor<EventEntity> {
 
 
-    @Query("SELECT e FROM EventEntity e WHERE :now BETWEEN e.start_date AND e.end_date")
+    @Query("SELECT e FROM EventEntity e WHERE :now BETWEEN e.start_date AND e.end_date ")
     List<EventEntity> findEventsWithinCurrentTime(Timestamp now);
 
 }

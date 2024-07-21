@@ -39,8 +39,9 @@ const LogInForm = ({ marginBottom }) => {
         const { id, pw } = data;
         if (id && pw) {
             try {
-                const res = await axios.post("http://localhost:8080/login/loginAction", data, {
-                    withCredentials: true,
+                //console.log("data : ", data)
+                const res = await axios.post("/login/loginAction", data, {
+                    withCredentials: true, // 쿠키를 포함한 요청
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -55,11 +56,11 @@ const LogInForm = ({ marginBottom }) => {
                     navigate('/dashboard');
                 } else if (res.data.RESULT === "GO_ADMIN_DASHBOARD") {
                     localStorage.setItem("key", data.id);
-                    setIsLogined(true);
-                    navigate('/admin/approval');
-                } else if (res.data.RESULT === "diff") {
-                    setPasswordError("비밀번호가 틀렸습니다.");
-                } else if (res.data.RESULT === "lock") {
+                    setAdminLogined(true);
+                    navigate('/admin/dashboard');
+                } else if (res.data.RESULT === "INVALID_PASSWORD" || res.data.RESULT === 'USER_NOT_FOUND') {
+                    setPasswordError("아이디 혹은 비밀번호가 틀렸습니다.");
+                } else if (res.data.RESULT === "LOCK_ACCOUNT") {
                     alHandleClickOpen();
                 } else if (res.data.RESULT === "assign") {
                     npHandleClickOpen();

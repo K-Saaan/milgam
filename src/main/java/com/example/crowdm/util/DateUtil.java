@@ -468,4 +468,17 @@ public class DateUtil {
         return Timestamp.valueOf(dTime);
     }
 
+    /**
+     * yyyyMMddHHmmss 형태의 날짜를 문자열로 변환.
+     * @return String 변환문자열
+     */
+
+    public static String getStringToday() {
+        SimpleDateFormat formatter = new SimpleDateFormat ( "yyyyMMddHHmmss", Locale.KOREA );
+        Date currentTime = new Date ( );
+        String dTime = formatter.format ( currentTime );
+
+        return dTime;
+    }
+
 }

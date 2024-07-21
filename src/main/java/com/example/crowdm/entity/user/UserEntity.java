@@ -85,9 +85,10 @@ public class UserEntity {
     private String temppw;
 
     @Transactional
-    public void updatePermissionYn(Timestamp permission_date) {
+    public void updatePermissionYn(Timestamp permission_date, Integer admin_index) {
         this.permission_yn = true;
         this.permission_date = permission_date;
+        this.admin_index=admin_index;
         //this.admin_index=1; 나중에 세션값으로 바꿔야함
 
     }
@@ -100,8 +101,9 @@ public class UserEntity {
     }
 
     @Transactional
-    public void updateDenyYn(){
+    public void updateDenyYn(Integer admin_index){
         this.permission_yn = false;
+        this.admin_index=admin_index;
     }
 
 

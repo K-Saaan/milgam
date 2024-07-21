@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
 import java.util.List;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -38,6 +39,21 @@ public class EventService {
 
             throw new IllegalArgumentException("EventEntity fields must not be null or empty");
         }
+
+        Timestamp temp = eventEntity.getEnd_date();
+
+        logger.info("temp: " + temp.toString());
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(temp);
+
+        // 시간, 분, 초, 밀리초를 설정
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+
+        Timestamp newTemp = new Timestamp(cal.getTimeInMillis());
+        eventEntity.setEnd_date(newTemp);
 
         return eventRepository.save(eventEntity);
     }

@@ -25,11 +25,10 @@ const formSx = {
     alignItems: 'center',
     justifyContent: 'center',
     margin: 'auto',
-    height: '65vh',
     width: '1100px',
     maxWidth: '1100px', // 최대 너비 설정
     minWidth: '1100px', // 최소 너비 설정
-    overflow: 'auto', // 스크롤 활성화
+    //overflow: 'auto', // 스크롤 활성화
     ...noScrollbarStyles // 스크롤 바 숨기기 스타일 추가
     // flexDirection: 'column', // 요소들을 세로로 정렬
     // maxHeight: 'calc(100vh - 100px)', // 전체 화면에서 일정 높이를 제외한 만큼의 최대 높이 설정
@@ -100,7 +99,7 @@ const SignUpForm = () => {
 
         while (true) {
             try {
-                const response = await axios.post("http://localhost:8080/signup/email", mergedData_2);
+                const response = await axios.post("/signup/email", mergedData_2);
                 console.log('Response:', response);
                 setOpenRegister(true);
                 break; // 요청이 성공하면 루프를 종료
@@ -198,35 +197,20 @@ const SignUpForm = () => {
         setOpenRegister(false);
     };
 
+    // 이메일 인증 성공 상태 const
+    const [isEmailVerified, setIsEmailVerified] = useState(false);
+    const [verificationMessage, setVerificationMessage] = useState('');
+
+    // 인증 성공 시 호출될 함수
+    const handleEmailVerified = () => {
+        setIsEmailVerified(true);
+        setVerificationMessage('인증에 성공하였습니다.');
+    };
+
     // 이메일 상태 관리
     const [isEmailValid, setIsEmailValid] = useState(false);
     // 회원가입 에러 메시지를 관리하는 상태
     const [signupError, setSignupError] = useState('');
-
-    // 화면
-    // const paperStyle = {
-    //     padding: '20px',
-    //     margin: 'auto',
-    //     maxHeight: 'calc(100vh - 100px)', // 브라우저 창 높이에서 100px 뺀 값
-    //     overflowY: 'auto', // 내용이 많을 경우 스크롤
-    //     color: 'white', // 글자색
-    //     width: '80%', // 너비 설정
-    //     display: 'flex', // flex 컨테이너로 설정
-    //     flexDirection: 'column', // 자식 요소들을 수직으로 배치
-    //     alignItems: 'center' // 자식 요소들을 중앙에 정렬
-    // };
-    // const titleStyle = {
-    //     mb: 4,
-    //     color: 'white',
-    // };
-
-
-
-    // 페이지 디자인 const
-
-
-    // 이메일 버튼 디자인
-
 
     // 비밀번호
     const [showPassword, setShowPassword] = useState(false);
@@ -310,7 +294,7 @@ const SignUpForm = () => {
                         })}
                         inputProps={{maxLength: 30}}
                         error={!!errors.email}
-                        helperText={errors.email?.message}
+                        helperText={errors.email?.message || verificationMessage} // 인증 성공 메시지 추가
                         style={{marginBottom: errors.email ? '0px' : '23px', width: '298px'}}
                     />
                 </Grid>
@@ -320,11 +304,11 @@ const SignUpForm = () => {
                         color="primary"
                         onClick={handleClickOpenRegister}
                         sx={{ ...buttonsx, width: "130px", height: '55px', mt: 0}}
-                        disabled={!isEmailValid} // 유효성 검사 통과하면 버튼 활성화
+                        disabled={!isEmailValid || isEmailVerified} // 유효성 검사 통과하면 버튼 활성화, 인증 성공 시 비활성화
                     >
                         인증번호 받기
                     </Button>
-                    <EmailAlert open={openRegister} handleClose={handleCloseRegister}/>
+                    <EmailAlert open={openRegister} handleClose={handleCloseRegister} onSuccess={handleEmailVerified}/>
                 </Grid>
             </Grid>
             <Grid item xs={12} sx={{mb: 2, display: 'flex', flexDirection: 'column', alignItems: 'center'}}> {/*비밀번호*/}
