@@ -100,7 +100,7 @@ const RightContentArea = ({ handleAlertClick, selectedAlert }) => {
   return (
     <Box sx={containerStyle}>
       <AlertManager setAlerts={setAlerts} />
-      <SseComponent></SseComponent>
+      <SseComponent setAlerts={setAlerts} />
       <Paper sx={paperStyle(theme)}>
         <Box sx={headerStyle(theme)}>
           <Typography variant="subtitle1" sx={{ color: theme.palette.text.primary, fontWeight: 600, fontSize: '1rem' }}>
