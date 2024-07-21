@@ -46,9 +46,10 @@ public class WebConfig implements WebMvcConfigurer {
                 .maxAge(3000);
     }
 
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/static/");
-//    }
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("classpath:/static/", "file:/opt/tomcat/webapps/crowdM/static/");
+    }
 }
 

@@ -14,7 +14,7 @@ spring:
     include: secret
   web:
     resources:
-      static-locations: classpath:/static/
+      static-locations: classpath:/static/, file:/opt/tomcat/webapps/crowdM/static/
       add-mappings: true
   jpa:
     database: postgresql
