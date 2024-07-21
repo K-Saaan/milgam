@@ -206,8 +206,18 @@ const UploadBG = styled('div')({
             const end = Math.min(selectedFile.size, start + chunkSize);
             const chunk = selectedFile.slice(start, end);
 
-            await uploadFileChunk(selectedFile, chunk, i, totalChunks);
-            //await uploadMetaData(data, selectedFile, i);
+            const formData = new FormData();
+            formData.append('chunkFile', chunk);
+            formData.append('chunkIndex', i);
+            formData.append('totalChunks', totalChunks);
+            formData.append('originName', selectedFile.name)
+            console.log("chunkIndex", i)
+            console.log("totalChunks", totalChunks)
+            await axios.post('http://localhost:8080/api/videoUpload', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
           }
 
           navigate("/videoresult", { state: { video: selectedFile, detail: data.detail } });
@@ -308,5 +318,5 @@ const UploadBG = styled('div')({
       </UploadBG>
     );
   }
-
-export default UploadForm;
+  
+  export default UploadForm;

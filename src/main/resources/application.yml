@@ -14,8 +14,7 @@ spring:
     include: secret
   web:
     resources:
-      static-locations:
-        classpath:/static/
+      static-locations: classpath:/static/, file:/opt/tomcat/webapps/crowdM/static/
       add-mappings: true
   jpa:
     database: postgresql
@@ -41,3 +40,7 @@ login:
 # 파일 경로
 file_path:
   video_path: /video/upload
+
+
+url:
+  gcp_upload: http://34.80.243.199:5000/upload

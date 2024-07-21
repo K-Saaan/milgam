@@ -99,7 +99,7 @@ const SignUpForm = () => {
 
         while (true) {
             try {
-                const response = await axios.post("http://localhost:8080/signup/email", mergedData_2);
+                const response = await axios.post("/signup/email", mergedData_2);
                 console.log('Response:', response);
                 setOpenRegister(true);
                 break; // 요청이 성공하면 루프를 종료

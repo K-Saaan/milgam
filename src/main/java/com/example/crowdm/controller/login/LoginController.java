@@ -65,7 +65,7 @@ public class LoginController {
      **/
     @GetMapping("/profile")
     public ResponseEntity<Profile> goProfile(HttpServletRequest request, HttpServletResponse response) {
-        Profile result=loginService.getProfile();
+        Profile result=loginService.getProfile(request);
         return ResponseEntity.ok(result);
 
     }
@@ -77,8 +77,8 @@ public class LoginController {
      * 4. 작성자    : boyeong
      * 5. 작성일    : 2024. 07. 15**/
     @GetMapping("updateevent")
-    public ResponseEntity<String> updateEvent(@RequestParam("event_index") int event_index) {
-        String result=loginService.UpdateEventAtProfile(event_index);
+    public ResponseEntity<String> updateEvent(@RequestParam("event_index") int event_index, HttpServletRequest request) {
+        String result=loginService.UpdateEventAtProfile(event_index, request);
         return ResponseEntity.ok(result);
     }
 }
