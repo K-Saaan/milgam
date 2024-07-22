@@ -8,7 +8,7 @@ import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import { CustomTableRow, tableHeaderStyle, tableCellStyle } from '../Styles/CustomTable'
 
-axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
+axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
 
 // 컨테이너 스타일
 const containerStyle = {

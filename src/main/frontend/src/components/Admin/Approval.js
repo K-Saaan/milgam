@@ -8,24 +8,13 @@ import { useTheme } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
 import { CustomTableRow, CustomTableCell, tableHeaderStyle  } from '../Styles/CustomTable'
 
-axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
+axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
 
 // TableContainer 스타일
 const CustomTableContainer = styled(TableContainer)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   borderRadius: '12px',
 }));
-
-// // TableHead 스타일
-// const CustomTableHead = styled(TableHead)(({ theme }) => ({
-//   backgroundColor: theme.palette.secondary,
-// }));
-
-// // TableCell 스타일
-// const CustomTableCell = styled(TableCell)(({ theme }) => ({
-//   color: theme.palette.text.primary,
-//   borderBottom: `2px solid ${theme.palette.divider}`,
-// }));
 
 // 상태 박스 스타일
 const StatusBox = styled(Box)(({ status, theme }) => ({
@@ -42,10 +31,6 @@ const StatusBox = styled(Box)(({ status, theme }) => ({
       backgroundColor: theme.palette.action.hover,
     },
 }));
-
-// const CustomTableRow = styled(TableRow)(({ theme }) => ({
-//     backgroundColor: theme.palette.background.paper,
-// }));
 
 const progressStyle = {
   margin: "20px",
@@ -131,6 +116,7 @@ const ReplyInquiry = () => {
       );
       setData(updatedData);
       handleCloseApproval();
+      alert('처리에 성공했습니다.');
     })
     .catch(error => {
       console.error('에러가 발생했습니다:', error);

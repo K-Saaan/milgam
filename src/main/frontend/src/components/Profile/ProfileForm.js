@@ -10,7 +10,7 @@ import NewEvent from './NewEvent';
 import LongButton from "../Styles/LongButton.js";
 import axiosRetry from 'axios-retry';
 
-axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
+axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
 
 // 스크롤 안 보이게
 const noScrollbarStyles = {
