@@ -5,7 +5,7 @@ import { useTheme } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/system';
 import axios from 'axios';
-import AlertManager from './AlertManager';
+import { AlertManager } from './AlertManager';
 
 // 지도 영역 바깥 컨테이너 스타일
 const paperStyle = (theme) => ({
@@ -82,45 +82,13 @@ const LeftContentAreaDetail = () => {
   const theme = useTheme();
   const isAdmin = location.pathname.startsWith('/admin');
 
-  const { alerts, setAlerts } = useOutletContext();
   const alertData = location.state?.alert || []; // 전달받은 알림 데이터
 
   const handleCloseClick = () => {
     const targetPath = isAdmin ? '/admin/dashboard' : '/dashboard';
     navigate(targetPath);
   };
-
-  const onRowClick = async (row) => {
-    // UI 즉시 업데이트
-    const updatedAlerts = { ...alerts };
-    const alertIndex = Object.keys(updatedAlerts).find(key => 
-      updatedAlerts[key].some(alert => alert.logIndex === row.logIndex)
-    );
-    if (alertIndex) {
-      updatedAlerts[alertIndex] = updatedAlerts[alertIndex].map(alert =>
-        alert.logIndex === row.logIndex ? { ...alert, read: true } : alert
-      );
-    }
-    setAlerts(updatedAlerts);
-
-    try {
-      // 백엔드에 PATCH 요청 보내기
-      await axios.patch('/dashboards/update', { 
-        logIndex: row.logIndex,
-        confirm: row.read,
-      }, {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      console.log('PATCH 요청 성공:', row.logIndex);
-      <AlertManager setAlerts={setAlerts} />
-    } catch (error) {
-      console.error('PATCH 요청 실패:', error);
-    }
-  };
-
+  
   return (
     <Paper sx={{...paperStyle(theme)}}>
       <Box sx={headerBoxStyle}>
@@ -146,12 +114,12 @@ const LeftContentAreaDetail = () => {
           <TableBody>
           {alertData.length > 0 ? (
             alertData.map((row, index) => (
-              <CustomTableRow key={index} onClick={() => onRowClick(row)}>
+              <CustomTableRow key={index}>
                 <CustomTableCell>{formatDate(row.date)}</CustomTableCell>
                 <CustomTableCell>{row.context}</CustomTableCell>
                 <CustomTableCell>{row.contextTitle}</CustomTableCell>
                 <CustomTableCell>{row.crowdLevel}</CustomTableCell>
-                <CustomTableCell>{row.read ? '읽음' : '안읽음'}</CustomTableCell>
+                <CustomTableCell>{row.confirm ? '읽음' : '안읽음'}</CustomTableCell>
               </CustomTableRow>
             ))
           ) : (

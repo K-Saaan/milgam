@@ -21,7 +21,7 @@ const progressStyle = {
 
 // axios 인스턴스 생성 및 retry 설정
 const axiosInstance = axios.create();
-axiosRetry(axiosInstance, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
+axiosRetry(axiosInstance, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
 
 // 날짜 형식을 yyyy-mm-dd로 변환하는 함수
 const formatDate = (dateString) => {

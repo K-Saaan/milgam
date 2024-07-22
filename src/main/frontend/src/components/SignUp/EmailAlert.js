@@ -52,6 +52,7 @@ function EmailAlert({open, handleClose, onSuccess}) {
                 //     handleClose(); // 인증 성공 시 창을 닫기
                 //     onSuccess();   // 인증 성공 시 콜백 호출
                 // }, 2000); // 메시지를 2초간 보여준 후 창을 닫습니다.
+                alert('인증에 성공하였습니다.');
                 handleClose();
                 onSuccess();
             }

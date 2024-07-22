@@ -2,9 +2,10 @@ import React, { useRef, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
 import VideoCard from "./VideoCard.js";
 
+import dayjs from 'dayjs';
 import { useTheme } from '@mui/material/styles';
-import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
+import { Container, Divider, Table, TableBody, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { CustomTableCell, tableHeaderStyle } from '../Styles/CustomTable'
 
 // 배경 스타일
 const paperStyle = (theme) => ({
@@ -47,11 +48,27 @@ const VideoContentArea = ({ selectedItem }) => {
                 {/* 파일명, 영상 출력 부분 */}
                 <VideoCard video={state.video} playerRef={playerRef}/>
                 {/* 기입한 영상 내용 */}
-                <div>{state.detail}</div>
+                <Divider style={{background: theme.palette.divider, marginTop: "30px"}}/>
+                <TableContainer component={Paper} sx={{ marginTop: "30px" }}>
+                    <Table>
+                        <TableHead sx={tableHeaderStyle(theme)}><TableRow>
+                            <CustomTableCell>영상 내용</CustomTableCell>
+                            <CustomTableCell>구역</CustomTableCell>
+                            <CustomTableCell>카메라</CustomTableCell>
+                            <CustomTableCell>시각</CustomTableCell>
+                        </TableRow></TableHead>
+                        <TableBody><TableRow>
+                            <CustomTableCell>{state.data.detail || '-'}</CustomTableCell>
+                            <CustomTableCell>{state.data.sector || '-'}</CustomTableCell>
+                            <CustomTableCell>{state.data.camera || '-'}</CustomTableCell>
+                            <CustomTableCell>{state.data.time || '-'}</CustomTableCell>
+                        </TableRow></TableBody>
+                    </Table>
+                </TableContainer>
                 {/* 선택한 항목이 있을 때 그 내용 출력 */}
                 {selectedItem &&
                     <div>
-                        <Divider style={{background: theme.palette.divider, marginTop:"20px",marginBottom:"20px"}}/>
+                        <Divider style={{background: theme.palette.divider, marginTop: "30px", marginBottom: "30px"}}/>
                         <div>{selectedItem.details}</div>
                     </div>
                 }

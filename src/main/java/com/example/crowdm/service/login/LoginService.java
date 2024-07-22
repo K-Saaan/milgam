@@ -46,23 +46,29 @@ public class LoginService {
 
         // 사용자 ID로 사용자 정보를 데이터베이스에서 가져옴
         UserEntity user = loginRepository.findByUser(userId);
-
+        /**
+         * 1. MethodName: login
+         * 2. ClassName : LoginService
+         * 3. Comment   : 로그인
+         * 4. 작성자    : 이수민
+         * 5. 작성일    : 2024. 07. 15
+         **/
         logger.info("user :: " + user);
         if (user != null) {
             logger.info("Fetched user with ID: {}", user.getId());
 
             // 비밀번호 검증
-            if (passwordEncoder.matches(password, user.getPw()) || password.equals(user.getPw())) { // 암호화된 비밀번호 또는 평문 비교
+            if (passwordEncoder.matches(password, user.getPw())) { // 평문 비교 제거, 암호화된 비밀번호만 검증
                 logger.info("Password matches for user: {}", user.getId());
 
-                // permission_yn 확인
+                // permission_yn 확인       0715 이수민
                 if (!user.getPermission_yn()) {
                     logger.info("Permission denied for user: {}", user.getId());
                     resultMap.put("RESULT", "PERMISSION_DENIED");
                     return resultMap;
                 }
 
-                // 로그인 시도 기간 확인
+                // 로그인 시도 기간 확인         0715 이수민
                 LocalDateTime now = LocalDateTime.now();
                 LocalDateTime startDate = user.getStart_date().toLocalDateTime();
                 LocalDateTime endDate = user.getEnd_date().toLocalDateTime();
@@ -96,7 +102,6 @@ public class LoginService {
                     session.setAttribute("userIndex", user.getUser_index());
                     Integer userIndex = (Integer) session.getAttribute("userIndex");
                     logger.info("userIndex: {}", userIndex);
-
                 }
 
                 // 로그인 로그 저장 -> LoginLog 테이블에 로그인 기록 저장
@@ -139,13 +144,13 @@ public class LoginService {
                 logger.info("Fetched admin with ID: {}", admin.getId());
 
                 // 비밀번호 검증
-                if (passwordEncoder.matches(password, admin.getPw()) || password.equals(admin.getPw())) { // 암호화된 비밀번호 또는 평문 비교
+                if (passwordEncoder.matches(password, admin.getPw())) { // 평문 비교 제거, 암호화된 비밀번호만 검증
                     logger.info("Password matches for admin: {}", admin.getId());
 
                     // 로그인 성공
                     resultMap.put("RESULT", "GO_MAIN");
                     resultMap.put("userType", "admin");
-                    resultMap.put("URL", "/admin");
+                    resultMap.put("URL", "/admin/approval");
 
                     // 세션에 adminId 저장
                     HttpSession session = request.getSession(true);
@@ -166,7 +171,7 @@ public class LoginService {
         return resultMap;
     }
 
-    public String getEventTitle(Integer event_index){
+    public String getEventTitle(Integer event_index) {
         Optional<EventEntity> eventOptional = eventRepository.findById(event_index);
         EventEntity event = eventOptional.get();
         return event.getTitle();
@@ -188,9 +193,8 @@ public class LoginService {
         profile.setEvent(getEventTitle(user.getEvent_index()));
 
         return profile;
-
-
     }
+
     @Transactional
     public String UpdateEventAtProfile(Integer event_index, HttpServletRequest request){
         //session
@@ -203,5 +207,4 @@ public class LoginService {
         loginRepository.save(user);
         return "ok";
     }
-
 }

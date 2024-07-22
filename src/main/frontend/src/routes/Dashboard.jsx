@@ -4,7 +4,6 @@ import { Outlet, useLocation } from 'react-router-dom';
 import DashBackground from "../components/DashBackground.js";
 import MapCard from '../components/Dashboard/MapCard'; // MapCard import
 import { createGlobalStyle } from 'styled-components';
-// import AlertManager from '../components/Dashboard/AlertManager.js';
 
 const containerStyle = {
   display: 'grid',
@@ -26,10 +25,6 @@ const rightContentStyle = {
 const fullWidthStyle = {
   gridColumn: 'span 2',
   height: '500px', // 지도 높이 유지
-};
-
-const hiddenMapCardStyle = {
-  visibility: 'hidden', // MapCard를 숨기지만, 그 자리를 차지하도록
 };
 
 const GlobalStyle = createGlobalStyle`
@@ -83,7 +78,6 @@ const Dashboard = () => {
         }
       />
     </>
-
   );
 }
 
