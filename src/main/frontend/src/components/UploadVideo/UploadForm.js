@@ -1,7 +1,11 @@
 import React, { useState, useRef } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from '@mui/material/styles';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import dayjs from 'dayjs';
 import axios from 'axios';
 
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
@@ -19,8 +23,8 @@ const CamInputCont = styled('div')({
   alignItems:'center',
   width:'370px',
   paddingLeft:'10px',
-  marginTop:"30px",
-  marginBottom:'10px'
+  marginTop:"5px",
+  marginBottom:'5px'
 });
 
 const UploadBG = styled('div')({
@@ -113,7 +117,7 @@ const UploadBG = styled('div')({
     const navigate = useNavigate();
     const inputRef = useRef();
     const [selectedFile, setSelectedFile] = useState(null);
-    const { register, handleSubmit, reset } = useForm();
+    const { register, handleSubmit, reset, control } = useForm();
 
     const [error, setError] = useState('');
     const [isActive, setActive] = useState(false)
@@ -155,25 +159,33 @@ const UploadBG = styled('div')({
       reset();
     };
 
-    const uploadFileChunk = async (selectedFile, chunk, index, totalChunks) => {
+    // 영상 전송
+    const uploadFileChunk = async (selectedFile, chunk, index, totalChunks, data) => {
       const formData = new FormData();
+      const formattedTime = dayjs(data.time).format('hh:mm a');
       formData.append('originName', selectedFile.name)
       formData.append('chunkFile', chunk);
       formData.append('chunkIndex', index);
       formData.append('totalChunks', totalChunks);
+      formData.append('place', data.detail);
+      formData.append('time', formattedTime);
 
       try {
-        await axios.post('/api/videoUpload', formData, {
+        for (let key of formData.keys()) {
+          console.log(key, ":", formData.get(key));
+        }
+        await axios.post('http://localhost:8080/api/videoUpload', formData, {
           withCredentials: true,
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
       } catch (error) {
-        throw new Error(`Chunk ${index} upload failed.`);
+        console.error(`Chunk ${index} upload failed.`);
       }
     };
 
+    // 메타 데이터 전송
     const uploadMetaData = async (data, file, index) => {
       const vMetaData = new FormData();
       vMetaData.append('length', file.size);
@@ -184,14 +196,14 @@ const UploadBG = styled('div')({
       vMetaData.append('chunk_index', index);
 
       try {
-        await axios.post('/api/uploadmeta', vMetaData, {
+        await axios.post('http://localhost:8080/api/uploadmeta', vMetaData, {
           withCredentials: true,
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
       } catch (error) {
-        throw new Error('Meta data upload failed.');
+        console.error('Meta data upload failed.');
       }
     };
 
@@ -206,18 +218,12 @@ const UploadBG = styled('div')({
             const end = Math.min(selectedFile.size, start + chunkSize);
             const chunk = selectedFile.slice(start, end);
 
-            const formData = new FormData();
-            formData.append('chunkFile', chunk);
-            formData.append('chunkIndex', i);
-            formData.append('totalChunks', totalChunks);
-            formData.append('originName', selectedFile.name)
-            console.log("chunkIndex", i)
-            console.log("totalChunks", totalChunks)
-            await axios.post('http://localhost:8080/api/videoUpload', formData, {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            });
+            // 파일 전송
+            uploadFileChunk(selectedFile, chunk, i, totalChunks, data);
+            // 메타 데이터 전송
+            //uploadMetaData(data, selectedFile, i);
+            console.log("chunkIndex", i);
+            console.log("totalChunks", totalChunks);
           }
 
           navigate("/videoresult", { state: { video: selectedFile, detail: data.detail } });
@@ -281,28 +287,50 @@ const UploadBG = styled('div')({
                 </SelectedFileContainer>
                 {/* 영상 내용 선택적 기입란 */}
                 <CamInputCont>
+                  <div>시각</div>
+                  <Controller
+                      name="time"
+                      control={control}
+                      defaultValue={null}
+                      render={({ field }) => (
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <TimePicker
+                                {...field}
+                                renderInput={(params) => (
+                                    <CustomTextField
+                                        {...params}
+                                        placeholder="영상 촬영 시각을 입력해주세요."
+                                    />
+                                )}
+                                sx={{width: '315px', backgroundColor: theme.palette.secondary.main}}
+                            />
+                          </LocalizationProvider>
+                      )}
+                  />
+                </CamInputCont>
+                <CamInputCont>
                   <div>구역</div>
                   <CustomTextField
                       id="sector"
                       placeholder="구역 번호"
                       {...register("sector")}
-                      inputProps={{ maxLength: 5 }}
-                      sx={{width:"120px"}}
+                      inputProps={{maxLength: 5}}
+                      sx={{width: "120px"}}
                   />
                   <div>카메라</div>
                   <CustomTextField
                       id="camera"
                       placeholder="카메라 번호"
-                      sx={{width:"120px"}}
+                      sx={{width: "120px"}}
                       {...register("camera")}
-                      inputProps={{ maxLength: 10 }}
+                      inputProps={{maxLength: 10}}
                       onInput={handleInput}
                   />
                 </CamInputCont>
                 <div>
                   <CustomTextField
                       id="detail"
-                      placeholder="영상 내용을 기입해주세요(선택)"
+                      placeholder="영상 내용(장소)을 기입해주세요."
                       {...register("detail")}
                       onKeyPress={handleKeyPress}
                   />
