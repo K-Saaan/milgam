@@ -108,7 +108,7 @@ const SignUpForm = () => {
                 console.log('오류가 발생했습니다. 다시 시도해 주세요.');
 
                 // 요청 간의 간격을 두고 다시 시도 (예: 2초 후에 재시도)
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                await new Promise(resolve => setTimeout(resolve, 500));
             }
         }
     };
@@ -149,7 +149,7 @@ const SignUpForm = () => {
                 console.error("Error:", error);
 
                 // 요청 간의 간격을 두고 다시 시도 (예: 2초 후에 재시도)
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                await new Promise(resolve => setTimeout(resolve, 500));
             }
         }
     };
