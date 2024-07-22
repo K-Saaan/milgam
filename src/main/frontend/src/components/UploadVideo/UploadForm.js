@@ -163,6 +163,7 @@ const UploadBG = styled('div')({
     const uploadFileChunk = async (selectedFile, chunk, index, totalChunks, data) => {
       const formData = new FormData();
       const formattedTime = dayjs(data.time).format('hh:mm a');
+
       formData.append('originName', selectedFile.name)
       formData.append('chunkFile', chunk);
       formData.append('chunkIndex', index);
@@ -212,6 +213,7 @@ const UploadBG = styled('div')({
         try {
           const chunkSize = 1024 * 1024;
           const totalChunks = Math.ceil(selectedFile.size / chunkSize);
+          const formattedTime = data.time ? dayjs(data.time).format('hh:mm a') : '';
 
           for (let i = 0; i < totalChunks; i++) {
             const start = i * chunkSize;
@@ -226,7 +228,7 @@ const UploadBG = styled('div')({
             console.log("totalChunks", totalChunks);
           }
 
-          navigate("/videoresult", { state: { video: selectedFile, detail: data.detail } });
+          navigate("/videoresult", { state: { video: selectedFile, data: {...data, time: formattedTime} } });
         } catch (error) {
           console.error('업로드 실패. 에러가 발생하였습니다.', error);
           setError('업로드 실패. 에러가 발생하였습니다.');
