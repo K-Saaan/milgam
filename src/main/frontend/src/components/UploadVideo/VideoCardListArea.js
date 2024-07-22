@@ -1,7 +1,6 @@
 import React from "react";
 
 import { Box, Typography, List, Divider, useTheme, Container } from '@mui/material';
-import CustomChip from "./CustomChip.js";
 import CustomListItem from "../Styles/CustomListItem.js";
 import MailIcon from '@mui/icons-material/Mail';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -14,6 +13,18 @@ const paperStyle = (theme) => ({
   borderRadius: 2,
   marginLeft: 2,
   minHeight: '65vh',
+});
+
+// 헤더 스타일
+const headerStyle = (theme) => ({
+  bgcolor: theme.palette.primary.main,
+  padding: 1,
+  borderRadius: 1,
+  textAlign: 'center',
+  height: '40px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
 });
 
 // 시간 텍스트의 스타일
@@ -41,6 +52,7 @@ const noScrollbarStyles = {
   'scrollbar-width': 'none'  // Firefox
 };
 
+// 알림 리스트의 스타일
 const listStyle = {
   height: 'calc(100% - 100px)',
   overflow: 'auto',
@@ -58,15 +70,11 @@ const VideoCardListArea = ({ alerts, onSelect, selectedItem, isLoading, error })
 
     return (
         <Container sx={paperStyle(theme)}>
-            {/* 상단 칩(버튼 작동 안함) */}
-            <div style={{display: 'flex' ,justifyContent: 'space-between', marginBottom:"20px", marginTop:"10px"}}>
-                <CustomChip label="위험" sx={{backgroundColor:"#EF3826"}}/>
-                <CustomChip label="혼잡" sx={{backgroundColor:"#FFA756"}}/>
-                <CustomChip label="주의" sx={{backgroundColor:"#E9C157"}}/>
-                <CustomChip label="원활" sx={{backgroundColor:"#00B69B"}}/>
-            </div>
-            <div>이벤트 발생 로그</div>
-            <Divider style={{background: theme.palette.divider, marginTop:"5px",marginBottom:"20px"}}/>
+            <Box sx={headerStyle(theme)}>
+              <Typography variant="subtitle1" sx={{ color: theme.palette.text.primary, fontWeight: 600, fontSize: '1rem' }}>
+                위험 알림
+              </Typography>
+            </Box>
             {/* 분석 결과 목록 */}
             <List sx={listStyle}>
                 {/* 알림 있을 때만 띄움 */}
@@ -94,9 +102,9 @@ const VideoCardListArea = ({ alerts, onSelect, selectedItem, isLoading, error })
 
                 {/* 로딩도 끝났고 알림도 없을 때 */}
                 {!isLoading && !alerts &&
-                    <CustomListItem>
-                        {error}이벤트가 없습니다.
-                    </CustomListItem>
+                    <Typography variant="body2" align="center" sx={{ marginTop: '16px' }}>
+                      No alerts available
+                    </Typography>
                 }
             </List>
         </Container>
