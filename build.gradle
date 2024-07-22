@@ -84,9 +84,6 @@ dependencies {
     //email
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-    //jsp
-    implementation 'javax.servlet:jstl'
-    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
 }
 
 tasks.named('test') {
