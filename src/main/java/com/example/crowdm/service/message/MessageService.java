@@ -115,7 +115,6 @@ public class MessageService {
         MessageLogEntity savedEntity = messageLogRepository.save(entity);
         MessageLogDto savedDto = convertToLogDto(savedEntity);
         // 이벤트 발행
-        logger.info("Publishing MessageLogEvent for logIndex: {}", savedDto.getLogIndex());
         eventPublisher.publishEvent(new MessageLogEvent(this, savedDto));
 
         return savedDto;

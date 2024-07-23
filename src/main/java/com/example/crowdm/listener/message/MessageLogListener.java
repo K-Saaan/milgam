@@ -20,7 +20,6 @@ public class MessageLogListener {
 
     @EventListener
     public void handleMessageLogEvent(MessageLogEvent event) {
-        logger.info("Received MessageLogEvent for logIndex: {}", event.getMessageLogDto().getLogIndex());
         sseController.sendMessageToClients(event.getMessageLogDto());
     }
 }
