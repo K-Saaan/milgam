@@ -4,9 +4,9 @@ import LogInForm from '../components/LogIn/LogInForm'
 
 function Login(){
     return (
-      <>
-        <Background name={"로그인"} contents={<LogInForm/ >}/>
-      </>
+        <>
+            <LogInForm />
+        </>
     );
 }
 

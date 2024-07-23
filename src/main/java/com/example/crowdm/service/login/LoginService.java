@@ -216,4 +216,5 @@ public class LoginService {
         loginRepository.save(user);
         return "ok";
     }
+
 }
