@@ -265,7 +265,7 @@ const UploadForm = ({ onUploadSuccess }) => {
           // 메타 데이터 전송
           uploadMetaData(data, selectedFile);
           // 화면 이동
-          navigate("/videoresult", { state: { video: selectedFile, data: {...data, time: formattedTime}, alert: response } });
+          navigate("/videoresult", { state: { video: selectedFile, data: {...data, time: formattedTime}, response: response } });
         }
 
       } catch (error) {
