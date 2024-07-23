@@ -4,6 +4,8 @@ import com.example.crowdm.dto.login.LoginRequest;
 import com.example.crowdm.dto.user.Profile;
 import com.example.crowdm.repository.login.LoginRepository;
 import com.example.crowdm.service.login.LoginService;
+import com.example.crowdm.dto.user.Profile;
+import org.springframework.http.ResponseEntity;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,9 +43,7 @@ public class LoginController {
     @GetMapping("/loginPage")
     public String goLoginPage(HttpServletRequest request, HttpServletResponse response, Model model) {
         String errorMessage = request.getParameter("message");
-
         model.addAttribute("errorMessage", errorMessage);
-
         return "login/loginPage";
     }
 
@@ -59,11 +59,11 @@ public class LoginController {
             result.put("URL", "/dashboards");
         } else if ("admin".equals(result.get("userType"))) {
             result.put("RESULT", "GO_ADMIN_DASHBOARD");
-            result.put("URL", "/admin/approval");
+            result.put("URL", "/admin");
         }
-
         return result;
     }
+
 
     /**
      * 1. MethodName: profile
@@ -74,8 +74,9 @@ public class LoginController {
      **/
     @GetMapping("/profile")
     public ResponseEntity<Profile> goProfile(HttpServletRequest request, HttpServletResponse response) {
-        Profile result = loginService.getProfile();
+        Profile result=loginService.getProfile(request);
         return ResponseEntity.ok(result);
+
     }
 
     /**
@@ -83,11 +84,10 @@ public class LoginController {
      * 2. ClassName : LoginController
      * 3. Comment   : 이벤트 선택했을때, 선택된 이벤트로 업데이트 시키기
      * 4. 작성자    : boyeong
-     * 5. 작성일    : 2024. 07. 15
-     **/
-    @GetMapping("/updateevent")
-    public ResponseEntity<String> updateEvent(@RequestParam("event_index") int event_index) {
-        String result = loginService.UpdateEventAtProfile(event_index);
+     * 5. 작성일    : 2024. 07. 15**/
+    @GetMapping("updateevent")
+    public ResponseEntity<String> updateEvent(@RequestParam("event_index") int event_index, HttpServletRequest request) {
+        String result=loginService.UpdateEventAtProfile(event_index, request);
         return ResponseEntity.ok(result);
     }
 }

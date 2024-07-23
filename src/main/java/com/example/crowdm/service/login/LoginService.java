@@ -9,6 +9,7 @@ import com.example.crowdm.repository.event.EventRepository;
 import com.example.crowdm.repository.login.LoginLogRepository;
 import com.example.crowdm.repository.login.LoginRepository;
 import com.example.crowdm.repository.admin.AdminRepository; // 0715: AdminRepository 임포트 추가
+import com.example.crowdm.service.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -34,6 +37,9 @@ public class LoginService {
     private final LoginLogRepository loginLogRepository;
     private final AdminRepository adminRepository; // 0715: AdminRepository 추가
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); // 0715: BCryptPasswordEncoder 추가
+
+    @Autowired
+    private AdminService adminService; // 0723 추가됨
 
     public Map<String, Object> updateLogin(String userId, String password, HttpServletRequest request) {
         Map<String, Object> resultMap = new HashMap<>();
@@ -57,9 +63,12 @@ public class LoginService {
         if (user != null) {
             logger.info("Fetched user with ID: {}", user.getId());
 
-            // 비밀번호 검증
-            if (passwordEncoder.matches(password, user.getPw())) { // 평문 비교 제거, 암호화된 비밀번호만 검증
-                logger.info("Password matches for user: {}", user.getId());
+            // 비밀번호 검증 Temppw도 가능 0723 이수민
+            boolean isPasswordMatch = passwordEncoder.matches(password, user.getPw());
+            boolean isTempPasswordMatch = passwordEncoder.matches(password, user.getTemppw());
+
+            if (isPasswordMatch || isTempPasswordMatch) {
+                   logger.info("Password matches for user: {}", user.getId());
 
                 // permission_yn 확인       0715 이수민
                 if (!user.getPermission_yn()) {
@@ -131,6 +140,9 @@ public class LoginService {
                     loginRepository.updateFailCntAndLock(userId, failCnt, true);
                     resultMap.put("RESULT", "LOCK_ACCOUNT");
                     logger.info("Account locked due to multiple failed attempts for user: {}", user.getId());
+                    // 0723 추가 시작 - AdminService 호출하여 계정 해제 및 임시 비밀번호 발송
+                    adminService.unlockUserAccount(user);
+                    // 0723 추가 끝
                 } else {
                     loginRepository.updateFailCntAndLock(userId, failCnt, false);
                     resultMap.put("RESULT", "INVALID_PASSWORD");
@@ -191,6 +203,8 @@ public class LoginService {
         profile.setEvent(getEventTitle(user.getEvent_index()));
 
         return profile;
+
+
     }
 
     @Transactional
@@ -202,4 +216,5 @@ public class LoginService {
         loginRepository.save(user);
         return "ok";
     }
+
 }
