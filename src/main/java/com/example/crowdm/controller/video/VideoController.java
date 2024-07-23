@@ -58,19 +58,12 @@ public class VideoController {
      * 5. 작성일    : 2024. 06. 27
      **/
     @PostMapping("/videoUpload")
-    public ResponseEntity videoUpload(@RequestParam("chunkFile") MultipartFile mFile,
-                            @RequestParam("chunkIndex") int chunkIndex,
-                            @RequestParam("totalChunks") int totalChunks,
+    public List videoUpload(@RequestParam("file") MultipartFile mFile,
                             @RequestParam("originName") String fileOriginName,
                             @RequestParam("place") String place,
                             @RequestParam("time") String time) throws IOException{
-        try{
-            videoService.uploadToGCP(mFile, chunkIndex, totalChunks, fileOriginName, place, time);
-            return ResponseEntity.ok("success");
-        }catch (Exception e){
-            logger.info("videoUpload Error : {}", e);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+            List<String> result = videoService.uploadToGCP(mFile, fileOriginName, place, time);
+            return result;
     }
 
     /**

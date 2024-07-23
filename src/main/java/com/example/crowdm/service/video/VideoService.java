@@ -9,6 +9,9 @@ import com.example.crowdm.repository.event.EventRepository;
 import com.example.crowdm.repository.login.LoginRepository;
 import com.example.crowdm.repository.video.VideoRepository;
 import com.example.crowdm.util.DateUtil;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.boot.Metadata;
 import org.slf4j.Logger;
@@ -16,13 +19,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.core.io.InputStreamResource;
@@ -42,6 +49,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 @Service
 @RequiredArgsConstructor
@@ -59,26 +67,21 @@ public class VideoService {
     @Value("${url.gcp_upload}")
     String gcpUrl;
 
-    public void uploadToGCP(MultipartFile file, int chunkIndex, int totalChunks, String fileOriginName, String place, String time) {
+    public List<String> uploadToGCP(MultipartFile file, String fileOriginName, String place, String time) {
         try{
             RestTemplate restTemplate = new RestTemplate();
+            restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
             String uuid = UUID.randomUUID().toString();
-            String fileName = uuid + chunkIndex + fileOriginName;
+            String fileName = uuid + fileOriginName;
             String convertTime = DateUtil.convertTo24HourFormat(time);
 
-
-//            fileTransferService.uploadFile(file, fileName);
-
-//            ByteArrayResource chunkFile = new ByteArrayResource(file.getBytes());
             NamedByteArrayResource chunkFile = new NamedByteArrayResource(file.getBytes(), file.getOriginalFilename());
-
             body.add("file", chunkFile);
             body.add("fileName", fileName);
             body.add("place", place);
             body.add("time", convertTime);
-            body.add("chunkIndex", chunkIndex);
-            body.add("totalChunks", totalChunks);
 
             logger.info("body : {}",  body);
 
@@ -88,10 +91,27 @@ public class VideoService {
             HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
             ResponseEntity response = restTemplate.postForEntity(gcpUrl, requestEntity, String.class);
-            logger.info("Response : {}",response.getBody().toString());
+            logger.info("Response body: {}",response.getBody());
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(response.getBody().toString());
+            JsonNode resultNode = rootNode.path("result");
+            List<String> result = new ArrayList<>();
 
+
+            for (JsonNode arrayNode : resultNode) {
+                logger.info("arrayNode {}", arrayNode);
+                String[] answer = arrayNode.get(2).asText().split("\\[답변\\]:");
+                logger.info("answer {}", answer);
+                String combinedString = "[" + arrayNode.get(0).asText() + ", " + arrayNode.get(1).asText() + ", " + answer[1] + "]";
+                result.add(combinedString);
+            }
+
+
+            logger.info("result {}", result);
+            return result;
         }catch (Exception e){
             logger.error("uploadToGCP Error : ",e.getMessage());
+            return null;
         }
     }
 
