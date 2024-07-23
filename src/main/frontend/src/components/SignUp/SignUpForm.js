@@ -477,6 +477,7 @@ const SignUpForm = () => {
                     <CustomTextField
                         fullWidth
                         label="직접 입력"
+                        style={{width: '457px'}}
                         value={customOrg}
                         onChange={(e) => setCustomOrg(e.target.value)}
                         margin="normal"
