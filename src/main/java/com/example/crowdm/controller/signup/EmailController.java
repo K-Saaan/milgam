@@ -19,7 +19,7 @@ import javax.mail.MessagingException;
 
 public class EmailController {
     private final EmailService emailService;
-
+    static int count = 0;
     // 인증코드 메일 발송
     @PostMapping("/signup/email")
     public ResponseEntity<String> mailSend(@RequestBody EmailDto emailDto) {
@@ -29,10 +29,13 @@ public class EmailController {
         }
 
         try {
-            emailService.sendEmail(emailDto);
-            System.out.println("1");
+            if(count == 0){
+                emailService.sendEmail(emailDto);
+            }
+            count = 0;
             return new ResponseEntity<>("Verification email sent successfully", HttpStatus.OK);
         }  catch (Exception e) {
+            count++;
             log.error("An unexpected error occurred", e);
             return new ResponseEntity<>("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
         }
