@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,14 +58,19 @@ public class VideoController {
      * 5. 작성일    : 2024. 06. 27
      **/
     @PostMapping("/videoUpload")
-    public void videoUpload(@RequestParam("chunkFile") MultipartFile mFile,
+    public ResponseEntity videoUpload(@RequestParam("chunkFile") MultipartFile mFile,
                             @RequestParam("chunkIndex") int chunkIndex,
                             @RequestParam("totalChunks") int totalChunks,
-                            @RequestParam("originName") String fileOriginName) throws IOException{
-        logger.info("chunkIndex = {}", chunkIndex);
-        logger.info("totalChunks = {}", totalChunks);
-        logger.info("fileOriginName = {}", fileOriginName);
-        videoService.uploadToGCP(mFile, chunkIndex, totalChunks, fileOriginName);
+                            @RequestParam("originName") String fileOriginName,
+                            @RequestParam("place") String place,
+                            @RequestParam("time") String time) throws IOException{
+        try{
+            videoService.uploadToGCP(mFile, chunkIndex, totalChunks, fileOriginName, place, time);
+            return ResponseEntity.ok("success");
+        }catch (Exception e){
+            logger.info("videoUpload Error : {}", e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     /**

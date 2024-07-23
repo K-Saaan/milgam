@@ -25,6 +25,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
   h2:
     console:
       enabled: false
@@ -43,4 +48,4 @@ file_path:
 
 
 url:
-  gcp_upload: http://34.80.243.199:5000/upload
+  gcp_upload: http://34.64.251.222:5000/upload

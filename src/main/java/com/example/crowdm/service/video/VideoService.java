@@ -1,5 +1,6 @@
 package com.example.crowdm.service.video;
 
+import com.example.crowdm.config.NamedByteArrayResource;
 import com.example.crowdm.entity.admin.MyqEntity;
 import com.example.crowdm.entity.event.EventEntity;
 import com.example.crowdm.entity.user.UserEntity;
@@ -7,7 +8,9 @@ import com.example.crowdm.entity.video.VideoEntity;
 import com.example.crowdm.repository.event.EventRepository;
 import com.example.crowdm.repository.login.LoginRepository;
 import com.example.crowdm.repository.video.VideoRepository;
+import com.example.crowdm.util.DateUtil;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.boot.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,22 +52,31 @@ public class VideoService {
     private final LoginRepository loginRepository;
     private final VideoRepository videoRepository;
     private final EventRepository eventRepository;
+
     @Value("${file_path.video_path}")
     String uploadPath;
 
     @Value("${url.gcp_upload}")
     String gcpUrl;
 
-    public ResponseEntity<String> uploadToGCP(MultipartFile file, int chunkIndex, int totalChunks, String fileOriginName) {
+    public void uploadToGCP(MultipartFile file, int chunkIndex, int totalChunks, String fileOriginName, String place, String time) {
         try{
             RestTemplate restTemplate = new RestTemplate();
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
             String uuid = UUID.randomUUID().toString();
             String fileName = uuid + chunkIndex + fileOriginName;
+            String convertTime = DateUtil.convertTo24HourFormat(time);
 
-            ByteArrayResource byteArrayResource = new ByteArrayResource(file.getBytes());
-            body.add("file", byteArrayResource);
+
+//            fileTransferService.uploadFile(file, fileName);
+
+//            ByteArrayResource chunkFile = new ByteArrayResource(file.getBytes());
+            NamedByteArrayResource chunkFile = new NamedByteArrayResource(file.getBytes(), file.getOriginalFilename());
+
+            body.add("file", chunkFile);
             body.add("fileName", fileName);
+            body.add("place", place);
+            body.add("time", convertTime);
             body.add("chunkIndex", chunkIndex);
             body.add("totalChunks", totalChunks);
 
@@ -77,12 +89,10 @@ public class VideoService {
 
             ResponseEntity response = restTemplate.postForEntity(gcpUrl, requestEntity, String.class);
             logger.info("Response : {}",response.getBody().toString());
-            return response.ok("upload success");
-        }catch (IOException e){
+
+        }catch (Exception e){
             logger.error("uploadToGCP Error : ",e.getMessage());
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("");
         }
-        return null;
     }
 
 
@@ -112,8 +122,7 @@ public class VideoService {
         Timestamp date = new Timestamp(System.currentTimeMillis());
 
         String uuid = UUID.randomUUID().toString();
-        //String path = uploadPath+uuid;
-        String path=gcpUrl+uuid;
+        String path = uploadPath+uuid;
 
         VideoEntity newvideo = new VideoEntity(date, path, length, gu, dong, sector, camera_num, content, uuid, user_index, file_name, chunk_index);
         videoRepository.save(newvideo);
