@@ -29,4 +29,6 @@
 
 ## Architecture
 
-![README](https://github.com/K-Saaan/crowdm/assets/117886852/6539cf1d-dfd6-49a1-8e66-c3808aae179d)
+![아키텍처 1](https://github.com/user-attachments/assets/2c8f66ce-35d3-4d8a-acaa-cec8778a5fbc)
+![아키텍처 2](https://github.com/user-attachments/assets/fbdce276-f95b-477c-9479-a64b92bb220e)
+![아키텍처 3](https://github.com/user-attachments/assets/ce91019c-71e3-48e7-88b9-420e490c027f)
