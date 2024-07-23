@@ -33,6 +33,12 @@ const titleBoxStyle = {
     alignItems: 'center',
 };
 
+// 시간 텍스트의 스타일
+const timeTextStyle = (theme, selected) => ({
+    color: selected ? theme.palette.text.primary : theme.palette.primary.main,
+    marginBottom: 1,
+});
+
 // 제목 텍스트 스타일
 const titleTextStyle = (theme, selected) => ({
     color: selected ? 'white' : theme.palette.primary.main,
@@ -51,6 +57,14 @@ const listStyle = {
     height: 'calc(100% - 100px)',
     overflow: 'auto',
     ...noScrollbarStyles
+};
+
+// 시간 포맷팅
+const formatTimestamp = (timestamp) => {
+    const date = new Date(timestamp);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
 };
 
 const VideoCardListArea = ({ onSelect, selectedItem}) => {
@@ -79,6 +93,9 @@ const VideoCardListArea = ({ onSelect, selectedItem}) => {
                 {alerts.length > 0 ? alerts.map(alert => (
                     //선택 항목 정보를 부모로 전달함
                     <CustomListItem key={alert.id} onClick={() => onSelect(alert)} selected={selectedItem?.id === alert.id} button>
+                        <Typography variant="body2" sx={timeTextStyle(theme, isSelected)}>
+                            {formatTimestamp(alert.timestamp)}
+                        </Typography>
                         <Box sx={titleBoxStyle}>
                             <MailIcon sx={{ color: selectedItem?.id === alert.id ? 'white' : theme.palette.primary.main, marginRight: 1 }} />
                             <Typography variant="body2" sx={titleTextStyle(theme, selectedItem?.id === alert.id)}>
