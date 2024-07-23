@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +46,7 @@ public class AdminService {
     //private final UserRepository userRepository;
     private final MyqRepository myqRepository;
     private final MailSender mailSender;
+    private final PasswordEncoder passwordEncoder;
     public List<UserEntity> showAllUser() {
         List<UserEntity> userList = loginRepository.findAll();
         return userList;
@@ -317,7 +319,7 @@ public class AdminService {
             if (Boolean.TRUE.equals(account_lock)) {
                 try {
                     String temppw = SimplePasswordGenerator.generateRandomString(12);
-                    user.updateUnlock(temppw);
+                    user.updateUnlock(passwordEncoder.encode(temppw));
                     loginRepository.save(user);
                     UnlockList unlockList = new UnlockList(id, email, applyDate, status);
                     answer.add(unlockList);
