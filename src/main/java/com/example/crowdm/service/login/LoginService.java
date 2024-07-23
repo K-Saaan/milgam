@@ -17,8 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -37,10 +35,7 @@ public class LoginService {
     private final LoginLogRepository loginLogRepository;
     private final AdminRepository adminRepository; // 0715: AdminRepository 추가
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); // 0715: BCryptPasswordEncoder 추가
-
-    @Autowired
-    private AdminService adminService; // 0723 추가됨
-
+    private final AdminService adminService; // 0723 추가됨
     public Map<String, Object> updateLogin(String userId, String password, HttpServletRequest request) {
         Map<String, Object> resultMap = new HashMap<>();
 
@@ -63,12 +58,9 @@ public class LoginService {
         if (user != null) {
             logger.info("Fetched user with ID: {}", user.getId());
 
-            // 비밀번호 검증 Temppw도 가능 0723 이수민
-            boolean isPasswordMatch = passwordEncoder.matches(password, user.getPw());
-            boolean isTempPasswordMatch = passwordEncoder.matches(password, user.getTemppw());
-
-            if (isPasswordMatch || isTempPasswordMatch) {
-                   logger.info("Password matches for user: {}", user.getId());
+            // 비밀번호 검증
+            if (passwordEncoder.matches(password, user.getPw())) { // 평문 비교 제거, 암호화된 비밀번호만 검증
+                logger.info("Password matches for user: {}", user.getId());
 
                 // permission_yn 확인       0715 이수민
                 if (!user.getPermission_yn()) {
@@ -92,6 +84,7 @@ public class LoginService {
                 if (user.getAccount_lock()) {
                     logger.info("Account locked for user: {}", user.getId());
                     resultMap.put("RESULT", "LOCK_ACCOUNT");
+                    adminService.unlock();
                     return resultMap;
                 }
 
@@ -141,8 +134,9 @@ public class LoginService {
                     resultMap.put("RESULT", "LOCK_ACCOUNT");
                     logger.info("Account locked due to multiple failed attempts for user: {}", user.getId());
                     // 0723 추가 시작 - AdminService 호출하여 계정 해제 및 임시 비밀번호 발송
-                    adminService.unlockUserAccount(user);
+                    adminService.unlock();
                     // 0723 추가 끝
+
                 } else {
                     loginRepository.updateFailCntAndLock(userId, failCnt, false);
                     resultMap.put("RESULT", "INVALID_PASSWORD");
@@ -188,28 +182,31 @@ public class LoginService {
         EventEntity event = eventOptional.get();
         return event.getTitle();
     }
+    public Profile getProfile(HttpServletRequest request){
+        //session
+        HttpSession session = request.getSession();
+        Integer user_index = (Integer) session.getAttribute("userIndex");
 
-    public Profile getProfile() {
-        Integer user_index = 11; // 사용자 인덱스를 하드코딩하는 대신 적절한 방법으로 가져오도록 변경 필요
         Optional<UserEntity> userOptional = loginRepository.findById(user_index);
         UserEntity user = userOptional.get();
         Profile profile = new Profile();
         profile.setUser_index(user_index);
         profile.setEmail(user.getEmail());
         profile.setName(user.getName());
-        profile.setOrg(user.getOrg());  //이름이 달라도 이해해줘라
+        profile.setOrg(user.getOrg());
         profile.setPhone(user.getPhone());
         profile.setId(user.getId());
         profile.setEvent(getEventTitle(user.getEvent_index()));
 
         return profile;
-
-
     }
 
     @Transactional
-    public String UpdateEventAtProfile(Integer event_index) {
-        Integer user_index = 11; // 사용자 인덱스를 하드코딩하는 대신 적절한 방법으로 가져오도록 변경 필요
+    public String UpdateEventAtProfile(Integer event_index, HttpServletRequest request){
+        //session
+        HttpSession session = request.getSession();
+        Integer user_index = (Integer) session.getAttribute("userIndex");
+
         Optional<UserEntity> userOptional = loginRepository.findById(user_index);
         UserEntity user = userOptional.get();
         user.updateEvent(event_index);
