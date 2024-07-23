@@ -3,6 +3,7 @@ package com.example.crowdm.controller.video;
 import com.example.crowdm.dto.faq.Answerq;
 import com.example.crowdm.dto.faq.Requestq;
 import com.example.crowdm.dto.video.Videoq;
+import com.example.crowdm.entity.event.EventEntity;
 import com.example.crowdm.entity.video.VideoEntity;
 import com.example.crowdm.service.video.VideoService;
 import lombok.RequiredArgsConstructor;
@@ -58,12 +59,14 @@ public class VideoController {
      * 5. 작성일    : 2024. 06. 27
      **/
     @PostMapping("/videoUpload")
-    public List videoUpload(@RequestParam("file") MultipartFile mFile,
-                            @RequestParam("originName") String fileOriginName,
-                            @RequestParam("place") String place,
-                            @RequestParam("time") String time) throws IOException{
-            List<String> result = videoService.uploadToGCP(mFile, fileOriginName, place, time);
-            return result;
+    public ResponseEntity<List<String>> videoUpload(@RequestParam("file") MultipartFile mFile,
+                                                         @RequestParam("originName") String fileOriginName,
+                                                         @RequestParam("place") String place,
+                                                         @RequestParam("time") String time,
+                                                         Model model) throws IOException{
+        List<String> result = videoService.uploadToGCP(mFile, fileOriginName, place, time);
+        model.addAttribute("data", result);
+        return ResponseEntity.ok(result);
     }
 
     /**
