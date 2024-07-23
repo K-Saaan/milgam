@@ -215,13 +215,13 @@ const UploadForm = ({ onUploadSuccess }) => {
       //for (let key of formData.keys()) {
       //  console.log(key, ":", formData.get(key));
       //}
-      const response = await axios.post('https://82e92ba4-9b46-48d5-abfd-2bc03da82b15.mock.pstmn.io/uploadVideo', formData, {
+      const response = await axios.post('http://localhost:8080/api/videoUpload', formData, {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log(response);
+      //console.log(response);
       return response.data;
     } catch (error) {
       console.error(`upload failed.`);
