@@ -221,11 +221,11 @@ const UploadForm = ({ onUploadSuccess }) => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      //console.log(response);
-      return response.data;
+      console.log(response.data);
+      return response;
     } catch (error) {
       console.error(`upload failed.`);
-      alert.error('파일 업로드에 실패하였습니다.');
+      alert('파일 업로드에 실패하였습니다.');
     }
   };
 
@@ -265,7 +265,7 @@ const UploadForm = ({ onUploadSuccess }) => {
           // 메타 데이터 전송
           uploadMetaData(data, selectedFile);
           // 화면 이동
-          navigate("/videoresult", { state: { video: selectedFile, data: {...data, time: formattedTime}, response: response } });
+          navigate("/videoresult", { state: { video: selectedFile, data: {...data, time: formattedTime}, response: response.data } });
         }
 
       } catch (error) {

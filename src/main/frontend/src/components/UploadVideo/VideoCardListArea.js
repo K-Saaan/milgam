@@ -62,8 +62,8 @@ const listStyle = {
 // 시간 포맷팅
 const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const hours = date.getUTCHours().toString().padStart(2, '0');
+    const minutes = date.getUTCMinutes().toString().padStart(2, '0');
     return `${hours}:${minutes}`;
 };
 
@@ -93,7 +93,7 @@ const VideoCardListArea = ({ onSelect, selectedItem}) => {
                 {alerts.length > 0 ? alerts.map(alert => (
                     //선택 항목 정보를 부모로 전달함
                     <CustomListItem key={alert.id} onClick={() => onSelect(alert)} selected={selectedItem?.id === alert.id} button>
-                        <Typography variant="body2" sx={timeTextStyle(theme, isSelected)}>
+                        <Typography variant="body2" sx={timeTextStyle(theme, selectedItem?.id === alert.id)}>
                             {formatTimestamp(alert.timestamp)}
                         </Typography>
                         <Box sx={titleBoxStyle}>
