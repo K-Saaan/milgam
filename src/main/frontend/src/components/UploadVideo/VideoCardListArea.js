@@ -60,7 +60,7 @@ const VideoCardListArea = ({ onSelect, selectedItem}) => {
 
     useEffect(() => {
         if (state?.response) {
-            const sortedAlerts = state.response.slice().sort((a, b) => new Date(a.timeStamp) - new Date(b.timeStamp));
+            const sortedAlerts = state.response.slice().sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
             const alertsWithId = sortedAlerts.map((alert, index) => ({ ...alert, id: index + 1 }));
             setAlerts(alertsWithId);
         }
