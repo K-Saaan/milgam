@@ -29,6 +29,6 @@
 
 ## Architecture
 
-![아키텍처 1](https://github.com/user-attachments/assets/2c8f66ce-35d3-4d8a-acaa-cec8778a5fbc)
-![아키텍처 2](https://github.com/user-attachments/assets/fbdce276-f95b-477c-9479-a64b92bb220e)
-![아키텍처 3](https://github.com/user-attachments/assets/ce91019c-71e3-48e7-88b9-420e490c027f)
+![아키텍처 1](https://github.com/user-attachments/assets/aeb1bb27-b83e-46b0-acad-1c70e444980a)
+![아키텍처 2](https://github.com/user-attachments/assets/22d30544-4f5c-4e00-b6da-29b250f5527d)
+![아키텍처 3](https://github.com/user-attachments/assets/46a176ac-377f-446d-ad2d-18cd3e30027e)
