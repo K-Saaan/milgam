@@ -187,27 +187,48 @@ const UploadBG = styled('div')({
     };
 
     // 메타 데이터 전송
+    // const uploadMetaData = async (data, file, index) => {
+    //   const vMetaData = new FormData();
+    //   vMetaData.append('length', file.size);
+    //   vMetaData.append('sector', data.sector);
+    //   vMetaData.append('camera_num', data.camera);
+    //   vMetaData.append('content', data.detail);
+    //   vMetaData.append('file_name', file.name);
+    //   vMetaData.append('chunk_index', index);
+    //
+    //   try {
+    //     await axios.post('http://localhost:8080/api/uploadmeta', vMetaData, {
+    //       withCredentials: true,
+    //       headers: {
+    //         'Content-Type': 'multipart/form-data',
+    //       },
+    //     });
+    //   } catch (error) {
+    //     console.error('Meta data upload failed.');
+    //   }
+    // };
+
     const uploadMetaData = async (data, file, index) => {
-      const vMetaData = new FormData();
-      vMetaData.append('length', file.size);
-      vMetaData.append('sector', data.sector);
-      vMetaData.append('camera_num', data.camera);
-      vMetaData.append('content', data.detail);
-      vMetaData.append('file_name', file.name);
-      vMetaData.append('chunk_index', index);
+      const metaData = {
+        length: file.size,
+        sector: data.sector,
+        camera_num: data.camera,
+        content: data.detail,
+        file_name: file.name,
+        chunk_index: index,
+      };
 
       try {
-        await axios.post('http://localhost:8080/api/uploadmeta', vMetaData, {
+        await axios.post('http://localhost:8080/api/uploadmeta', metaData, {
           withCredentials: true,
           headers: {
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': 'application/json',
           },
         });
       } catch (error) {
         console.error('Meta data upload failed.');
       }
     };
-
     const onHSubmit = async (data) => {
       if (selectedFile) {
         try {
@@ -223,7 +244,7 @@ const UploadBG = styled('div')({
             // 파일 전송
             uploadFileChunk(selectedFile, chunk, i, totalChunks, data);
             // 메타 데이터 전송
-            //uploadMetaData(data, selectedFile, i);
+            uploadMetaData(data, selectedFile, i);
             console.log("chunkIndex", i);
             console.log("totalChunks", totalChunks);
           }

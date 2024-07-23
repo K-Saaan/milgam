@@ -112,7 +112,8 @@ public class VideoService {
         Timestamp date = new Timestamp(System.currentTimeMillis());
 
         String uuid = UUID.randomUUID().toString();
-        String path = uploadPath+uuid;
+        //String path = uploadPath+uuid;
+        String path=gcpUrl+uuid;
 
         VideoEntity newvideo = new VideoEntity(date, path, length, gu, dong, sector, camera_num, content, uuid, user_index, file_name, chunk_index);
         videoRepository.save(newvideo);
