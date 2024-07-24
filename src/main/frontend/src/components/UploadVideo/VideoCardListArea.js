@@ -21,10 +21,11 @@ const headerStyle = (theme) => ({
     padding: 1,
     borderRadius: 1,
     textAlign: 'center',
-    height: '40px',
+    height: '60px',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginBottom: '15px',
 });
 
 // 제목 박스 스타일
@@ -37,11 +38,15 @@ const titleBoxStyle = {
 const timeTextStyle = (theme, selected) => ({
     color: selected ? theme.palette.text.primary : theme.palette.primary.main,
     marginBottom: 1,
+    fontSize: '18px',
+    fontWeight: 400,
 });
 
 // 제목 텍스트 스타일
 const titleTextStyle = (theme, selected) => ({
-    color: selected ? 'white' : theme.palette.primary.main,
+    fontSize: '20px',
+    fontWeight: 500,
+    color: selected ? theme.palette.text.primary : theme.palette.primary.main,
 });
 
 const noScrollbarStyles = {
@@ -102,7 +107,7 @@ const VideoCardListArea = ({ onSelect, selectedItem}) => {
     return (
         <Container sx={paperStyle(theme)}>
             <Box sx={headerStyle(theme)}>
-                <Typography variant="subtitle1" sx={{ color: theme.palette.text.primary, fontWeight: 600, fontSize: '1rem' }}>
+                <Typography variant="subtitle1" sx={{ color: theme.palette.text.primary, fontWeight: 600, fontSize: '1.3rem' }}>
                     위험 알림
                 </Typography>
             </Box>
@@ -111,12 +116,16 @@ const VideoCardListArea = ({ onSelect, selectedItem}) => {
                 {/* 알림 있을 때만 띄움 */}
                 {alerts.length > 0 ? alerts.map((alert) => (
                     //선택 항목 정보를 부모로 전달함
-                    <CustomListItem key={alert.id} onClick={() => onSelect(alert)} selected={selectedItem?.id === alert.id} button>
+                    <CustomListItem key={alert.id}
+                        onClick={() => onSelect(alert)}
+                        selected={selectedItem?.id === alert.id }
+                        style={{ padding: '15px', marginBottom: '15px' }}
+                    button>
                         <Typography variant="body2" sx={timeTextStyle(theme, selectedItem?.id === alert.id)}>
-                            {alert.timestamp + " minute"}
+                            {alert.timestamp + " seconds"}
                         </Typography>
                         <Box sx={titleBoxStyle}>
-                            <MailIcon sx={{ color: selectedItem?.id === alert.id ? 'white' : theme.palette.primary.main, marginRight: 1 }} />
+                            <MailIcon sx={{ color: selectedItem?.id === alert.id ? theme.palette.text.primary : theme.palette.primary.main, marginRight: 1 }} />
                             <Typography variant="body2" sx={titleTextStyle(theme, selectedItem?.id === alert.id)}>
                                 {alert.event}
                             </Typography>
