@@ -9,15 +9,15 @@ export const AlertManager = ({ setAlerts, setLoading }) => {
         const manages = await getAllMessages();
         const newAlerts = {};
         
-        console.log("Fetched logs:", massages);
-        console.log("Fetched messages:", manages);
+        // console.log("Fetched logs:", massages);
+        // console.log("Fetched messages:", manages);
 
         // 맵으로 manage 정보를 빠르게 찾기 위해 맵핑
         const manageMap = manages.reduce((map, manage) => {
           map[manage.logIndex] = manage;
           return map;
         }, {});
-        console.log("Processed manageMap:", manageMap);
+        //console.log("Processed manageMap:", manageMap);
 
         massages.forEach(alert => {
           const index = alert.analysisIndex;
@@ -38,11 +38,11 @@ export const AlertManager = ({ setAlerts, setLoading }) => {
           });
         });
 
-        console.log('Processed Alerts Array:', newAlerts);
+        //console.log('Processed Alerts Array:', newAlerts);
         
         setAlerts(newAlerts);
       } catch (error) {
-        console.error('Failed to fetch dashboards:', error);
+        //console.error('Failed to fetch dashboards:', error);
       } finally {
         setLoading(false); // 로딩 종료
       }

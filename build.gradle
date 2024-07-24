@@ -99,7 +99,7 @@ sourceSets {
     }
 }
 
-processResources { dependsOn "copyReactBuildFiles" }
+processResources { dependsOn "copyTomcat" }
 
 task installReact(type: Exec) {
     workingDir "$frontendDir"
@@ -133,3 +133,12 @@ task copyReactBuildFiles(type: Copy) {
 
     outputs.upToDateWhen { false }
 }
+
+task copyTomcat(type: Copy){
+    dependsOn "copyReactBuildFiles"
+    from "$projectDir/src/main/resources/static/js"
+    into "$projectDir/src/main/resources/static/static/js"
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+    outputs.upToDateWhen { false }
+    }
