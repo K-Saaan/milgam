@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,6 +70,9 @@ public class VideoService {
 
     public List<String> uploadToGCP(MultipartFile file, String fileOriginName, String place, String time) {
         try{
+            HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+            factory.setConnectTimeout(1000 * 300);
+            factory.setReadTimeout(1000 * 300);
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
 
@@ -100,10 +104,16 @@ public class VideoService {
 
             for (JsonNode arrayNode : resultNode) {
                 logger.info("arrayNode {}", arrayNode);
-                String[] answer = arrayNode.get(2).asText().split("\\[답변\\]:");
-                logger.info("answer {}", answer);
-                String combinedString = "[" + arrayNode.get(0).asText() + ", " + arrayNode.get(1).asText() + ", " + answer[1] + "]";
-                result.add(combinedString);
+                if (arrayNode.size() >2) {
+                    String[] answer = arrayNode.get(2).asText().split("\\[답변\\]:");
+                    logger.info("answer {}", answer);
+                    String combinedString = "[" + arrayNode.get(0).asText() + ", " + arrayNode.get(1).asText() + ", " + answer[1] + "]";
+                    result.add(combinedString);
+                }else{
+                    String combinedString = "[" + arrayNode.get(0).asText() + ", " + arrayNode.get(1).asText() + "]";
+                    result.add(combinedString);
+                }
+
             }
 
 
@@ -117,7 +127,10 @@ public class VideoService {
 
 
     public String[] findGuDong(Integer user_index){
-
+        logger.info("user_index : {}", user_index);
+        if (user_index == null){
+            user_index = 11;
+        }
         Optional<UserEntity> userOptional = loginRepository.findById(user_index);
         UserEntity user = userOptional.get();
         Integer event_index=user.getEvent_index();

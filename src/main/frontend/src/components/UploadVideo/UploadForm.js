@@ -258,14 +258,16 @@ const UploadForm = ({ onUploadSuccess }) => {
       try {
         const formattedTime = data.time ? dayjs(data.time).format('hh:mm a') : '';
 
-        // 동영상 전송
-        const response = await uploadFile(selectedFile, data);
+        // 메타 데이터 전송
+        const response = await uploadMetaData(data, selectedFile);;
 
         if(response) {
-          // 메타 데이터 전송
-          uploadMetaData(data, selectedFile);
+          // 동영상 전송
+          const videoResponse = uploadFile(selectedFile, data)
           // 화면 이동
-          navigate("/videoresult", { state: { video: selectedFile, data: {...data, time: formattedTime}, response: response.data } });
+          if(videoResponse){
+            navigate("/videoresult", { state: { video: selectedFile, data: {...data, time: formattedTime}, response: videoResponse.data } });
+          }
         }
 
       } catch (error) {
