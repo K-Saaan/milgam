@@ -116,7 +116,14 @@ const LeftContentAreaDetail = () => {
             alertData.map((row, index) => (
               <CustomTableRow key={index}>
                 <CustomTableCell>{formatDate(row.date)}</CustomTableCell>
-                <CustomTableCell>{row.context}</CustomTableCell>
+                <CustomTableCell>
+                {row.context.split('\n').map((line, index) => (
+                <React.Fragment key={index}>
+                              {line}
+                              <br />
+                  </React.Fragment>))}
+                </CustomTableCell>
+                
                 <CustomTableCell>{row.contextTitle}</CustomTableCell>
                 <CustomTableCell>{row.crowdLevel}</CustomTableCell>
                 <CustomTableCell>{row.confirm ? '읽음' : '안읽음'}</CustomTableCell>

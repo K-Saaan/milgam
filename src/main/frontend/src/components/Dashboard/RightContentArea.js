@@ -49,7 +49,8 @@ const headerStyle = (theme) => ({
 // 알림 리스트의 스타일
 const listStyle = {
   height: 'calc(100% - 100px)',
-  overflow: 'auto',
+  overflow: 'hidden',
+  height: '110px'
 };
 
 // 시간 텍스트의 스타일
@@ -200,18 +201,18 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }
         </Box>
       ) : (
         <List sx={listStyle}>
-{alerts && Object.keys(alerts).length > 0 ? (
-  Object.keys(alerts).map((key, index) => {
-    const unreadCount = unreadCounts[key] || 0;
-    const alertList = alerts[key] || [];
-    const isSelected = selectedAlert?.id === alertList?.[0]?.id;
-    return (
-      <CustomListItem
-        key={index}
-        button
-        onClick={() => onAlertClick(key, alertList, isAdmin)}
-        selected={isSelected}
-      >
+        {alerts && Object.keys(alerts).length > 0 ? (
+          Object.keys(alerts).map((key, index) => {
+            const unreadCount = unreadCounts[key] || 0;
+            const alertList = alerts[key] || [];
+            const isSelected = selectedAlert?.id === alertList?.[0]?.id;
+            return (
+              <CustomListItem
+                key={index}
+                button
+                onClick={() => onAlertClick(key, alertList, isAdmin)}
+                selected={isSelected}
+              >
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
           <Typography variant="body2" sx={timeTextStyle(theme, isSelected)}>
             {formatDate(alertList[0]?.date)}
@@ -221,7 +222,11 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }
         <Box sx={titleBoxStyle}>
           <MailIcon sx={{ color: isSelected ? theme.palette.text.primary : theme.palette.primary.main, marginRight: 1 }} />
           <Typography variant="body2" sx={titleTextStyle(theme, isSelected)}>
-            {alertList[0]?.context}
+            {alertList[0]?.context.split('\n').map((line, index) => (
+               <React.Fragment key={index}>
+                              {line}
+                              <br />
+              </React.Fragment>))}
           </Typography>
         </Box>
       </CustomListItem>
