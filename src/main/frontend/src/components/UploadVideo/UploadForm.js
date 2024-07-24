@@ -152,7 +152,7 @@ const Dot = styled('div')(({ theme }) => ({
   },
 }));
 
-const UploadForm = ({ onUploadSuccess }) => {
+const UploadForm = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const inputRef = useRef();
@@ -241,12 +241,14 @@ const UploadForm = ({ onUploadSuccess }) => {
     };
     console.log(metaData);
     try {
-      await axios.post('http://localhost:8080/api/uploadmeta', metaData, {
+      const response = await axios.post('http://localhost:8080/api/uploadmeta', metaData, {
         withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
         },
       });
+      console.log(response);
+      return response;
     } catch (error) {
       console.error('Meta data upload failed.');
     }
@@ -259,7 +261,7 @@ const UploadForm = ({ onUploadSuccess }) => {
         const formattedTime = data.time ? dayjs(data.time).format('hh:mm a') : '';
 
         // 메타 데이터 전송
-        const response = await uploadMetaData(data, selectedFile);;
+        const response = await uploadMetaData(data, selectedFile);
 
         if(response) {
           // 동영상 전송
