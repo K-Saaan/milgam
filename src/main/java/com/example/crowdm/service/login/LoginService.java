@@ -86,6 +86,7 @@ public class LoginService {
                 if (user.getAccount_lock()) {
                     logger.info("Account locked for user: {}", user.getId());
                     resultMap.put("RESULT", "LOCK_ACCOUNT");
+                    adminService.unlock();
                     return resultMap;
                 }
 
