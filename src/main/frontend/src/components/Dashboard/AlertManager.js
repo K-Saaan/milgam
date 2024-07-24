@@ -9,15 +9,15 @@ export const AlertManager = ({ setAlerts, setLoading }) => {
         const manages = await getAllMessages();
         const newAlerts = {};
         
-        // console.log("Fetched logs:", massages);
-        // console.log("Fetched messages:", manages);
+        console.log("Fetched logs:", massages);
+        console.log("Fetched messages:", manages);
 
         // 맵으로 manage 정보를 빠르게 찾기 위해 맵핑
         const manageMap = manages.reduce((map, manage) => {
           map[manage.logIndex] = manage;
           return map;
         }, {});
-        // console.log("Processed manageMap:", manageMap);
+        console.log("Processed manageMap:", manageMap);
 
         massages.forEach(alert => {
           const index = alert.analysisIndex;
@@ -56,7 +56,7 @@ export const AlertManager = ({ setAlerts, setLoading }) => {
 
 export const SseComponent = ({ setAlerts }) => {
   useEffect(() => {
-    const eventSource = new EventSource('http://localhost:8080/sse');
+    const eventSource = new EventSource('/sse');
 
     eventSource.addEventListener('message-log', function(event) {
       const newMessage = JSON.parse(event.data);

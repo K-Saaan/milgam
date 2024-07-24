@@ -128,5 +128,8 @@ task buildReact(type: Exec) {
 task copyReactBuildFiles(type: Copy) {
     dependsOn "buildReact"
     from "$frontendDir/build"
-    into "$projectDir/src/main/resources"
+    into "$projectDir/src/main/resources/static"
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+    outputs.upToDateWhen { false }
 }
