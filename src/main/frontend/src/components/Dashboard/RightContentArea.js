@@ -101,6 +101,16 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }
   const [loading, setLoading] = useState(true);
   const [unreadCounts, setUnreadCounts] = useState({});
 
+  const handleSetAlerts = (alerts) => {
+    const unreadCounts = {};
+
+    Object.keys(alerts).forEach(key => {
+      unreadCounts[key] = alerts[key].filter(alert => !alert.confirm).length;
+    });
+
+    setAlerts(alerts);
+    setUnreadCounts(unreadCounts);
+  };
   // // getAllMessages로 unreadcount 계산
   // useEffect(() => {
   //   const fetchMessages = async () => {
@@ -143,34 +153,36 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }
     
     setAlerts(updatedAlerts); // 상태 업데이트
   
-    // try {
-    //   const alertToUpdate = updatedAlerts[alertKey].find(alertItem => alertItem.logIndex === alert[0].logIndex);
-    //   console.log('alertToUpdate.logIndex,', alertToUpdate.logIndex);
+    handleAlertClick(alert);
+
+    try {
+      const alertToUpdate = updatedAlerts[alertKey].find(alertItem => alertItem.logIndex === alert[0].logIndex);
+      console.log('alertToUpdate.logIndex,', alertToUpdate.logIndex);
   
-    //   // 각 메시지에 대해 PATCH 요청 보내기
-    //   const updatePromises = updatedAlerts[alertKey].map(async alertItem => {
-    //     try {
-    //       await axios.patch('/dashboards/update', {
-    //         logIndex: alertItem.logIndex,
-    //       }, {
-    //         withCredentials: true,
-    //         headers: {
-    //           'Content-Type': 'application/json'
-    //         }
-    //       });
-    //       console.log("Patch 요청 성공:", alertItem.logIndex);
-    //     } catch (error) {
-    //       console.error('Patch 요청 실패:', alertItem.logIndex, error);
-    //     }
-    //   });
+      // 각 메시지에 대해 PATCH 요청 보내기
+      const updatePromises = updatedAlerts[alertKey].map(async alertItem => {
+        try {
+          await axios.patch('/dashboards/update', {
+            logIndex: alertItem.logIndex,
+          }, {
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          console.log("Patch 요청 성공:", alertItem.logIndex);
+        } catch (error) {
+          console.error('Patch 요청 실패:', alertItem.logIndex, error);
+        }
+      });
   
-    //   // 모든 PATCH 요청이 완료될 때까지 기다림
-    //   await Promise.all(updatePromises);
+      // 모든 PATCH 요청이 완료될 때까지 기다림
+      await Promise.all(updatePromises);
   
-    //   console.log('모든 PATCH 요청 성공:', alertKey);
-    // } catch (error) {
-    //   console.error('fetch 요청 실패:', error);
-    // }
+      console.log('모든 PATCH 요청 성공:', alertKey);
+    } catch (error) {
+      console.error('fetch 요청 실패:', error);
+    }
   
     handleAlertClick(alert);
   
@@ -185,8 +197,8 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }
 
   return (
     <Box sx={containerStyle}>
-      <AlertManager setAlerts={setAlerts} setLoading={setLoading}/>
-      <SseComponent setAlerts={setAlerts} />
+      <AlertManager setAlerts={handleSetAlerts} setLoading={setLoading}/>
+      <SseComponent setAlerts={handleSetAlerts} />
       <Paper sx={paperStyle(theme)}>
         <Box sx={headerStyle(theme)}>
           <Typography variant="subtitle1" sx={{ color: theme.palette.text.primary, fontWeight: 600, fontSize: '1rem' }}>
@@ -226,7 +238,7 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }
                <React.Fragment key={index}>
                               {line}
                               <br />
-              </React.Fragment>))}
+                </React.Fragment>))}
           </Typography>
         </Box>
       </CustomListItem>
