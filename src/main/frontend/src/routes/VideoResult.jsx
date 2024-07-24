@@ -23,8 +23,12 @@ const rightSectionStyle = {
 function VideoResult(){
     // 분석 결과 리스트를 선택하면 내용이 바뀌도록 전달하는 역할
     const [selectedItem, setSelectedItem] = useState(null);
+    // 클릭 시 비디오 이동
+    const [isClicked, setClicked] = useState(0);
+
     const handleSelect = (item) => {
         setSelectedItem(item);
+        setClicked(isClicked + 1);
     };
 
     return (
@@ -33,7 +37,7 @@ function VideoResult(){
                 <div style={containerStyle}>
                     {/* 비디오가 재생되는 왼쪽 부분 */}
                     <div style={leftSectionStyle}>
-                        <VideoContentArea selectedItem={selectedItem}/>
+                        <VideoContentArea selectedItem={selectedItem} isClicked={isClicked}/>
                     </div>
                     {/* 결과 목록이 나타나는 오른쪽 부분 */}
                     <div style={rightSectionStyle}>

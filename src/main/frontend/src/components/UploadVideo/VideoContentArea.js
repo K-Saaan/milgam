@@ -21,7 +21,7 @@ const contStyle = (theme) => ({
 });
 
 // 영상 분석 결과 좌측 영역
-const VideoContentArea = ({ selectedItem }) => {
+const VideoContentArea = ({ selectedItem, isClicked }) => {
     const theme = useTheme();
     const { state } = useLocation();
     const playerRef = useRef(null);
@@ -32,8 +32,12 @@ const VideoContentArea = ({ selectedItem }) => {
             // 문자열 타입의 시간을 초 단위로 변환
             const timeString = selectedItem.timestamp;
                 if (timeString) {
-                    const [minutes, seconds] = timeString.split('.').map(Number);
-                    const totalTimeInSeconds = minutes * 60 + seconds;
+                    // 초와 밀리초를 분리 (예: "12.345" -> 12초, 345밀리초)
+                    const [secondsPart, millisecondsPart] = timeString.split('.').map(Number);
+                    const milliseconds = millisecondsPart || 0;
+
+                    // 밀리초를 반올림하여 총 초를 계산
+                    const totalTimeInSeconds = secondsPart + Math.round(milliseconds / 1000);
 
                     // 비디오의 총 길이 가져오기 (예: playerRef.current.getDuration() 사용)
                     const videoDuration = playerRef.current.getDuration();
@@ -45,7 +49,7 @@ const VideoContentArea = ({ selectedItem }) => {
                 }
         }
     // 선택 항목 바뀔 때 작동
-    }, [selectedItem]);
+    }, [selectedItem, isClicked]);
 
     return (
         <Container style={paperStyle(theme)}>
