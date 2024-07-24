@@ -241,12 +241,14 @@ const UploadForm = ({ onUploadSuccess }) => {
     };
     console.log(metaData);
     try {
-      await axios.post('http://localhost:8080/api/uploadmeta', metaData, {
+      const response = await axios.post('http://localhost:8080/api/uploadmeta', metaData, {
         withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
         },
       });
+      console.log(response);
+      return response;
     } catch (error) {
       console.error('Meta data upload failed.');
     }
