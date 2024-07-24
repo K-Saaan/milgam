@@ -7,17 +7,9 @@ import CustomListItem from '../Styles/CustomListItem';
 import {AlertManager,SseComponent} from './AlertManager';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
-import { getAllMessages } from '../../api/api';
 
-axiosRetry(axios, {
-  retries: 5,
-  retryDelay: axiosRetry.exponentialDelay,
-  retryCondition: (error) => {
-    // 재시도할 조건을 명시합니다. 기본적으로 idempotent 요청에 대해서만 재시도합니다.
-    // 500 오류를 포함한 모든 오류에 대해 재시도하도록 합니다.
-    return error.response.status >= 500 || axiosRetry.isNetworkError(error);
-  },
-});
+axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
+
 
 // 컨테이너의 flex 속성을 설정하여 레이아웃을 조정
 const containerStyle = {
