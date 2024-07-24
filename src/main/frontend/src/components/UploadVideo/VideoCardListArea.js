@@ -59,23 +59,42 @@ const listStyle = {
     ...noScrollbarStyles
 };
 
-// 시간 포맷팅
-const formatTimestamp = (timestamp) => {
-    const date = new Date(timestamp);
-    const hours = date.getUTCHours().toString().padStart(2, '0');
-    const minutes = date.getUTCMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
-};
-
 const VideoCardListArea = ({ onSelect, selectedItem}) => {
     const theme = useTheme();
     const { state } = useLocation();
     const [alerts, setAlerts] = useState([]);
 
+    //useEffect(() => {
+    //    if (state?.response) {
+    //        const alertsWithId = state.response.map((alert, index) => ({
+    //            id: index + 1,
+    //            timestamp: alert[0],
+    //            event: alert[1],
+    //            message: alert[2]
+    //        }));
+    //
+    //        setAlerts(alertsWithId);
+    //    }
+    //}, [state]);
+
     useEffect(() => {
         if (state?.response) {
-            const sortedAlerts = state.response.slice().sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-            const alertsWithId = sortedAlerts.map((alert, index) => ({ ...alert, id: index + 1 }));
+            const alertsWithId = state.response.map((alertString, index) => {
+                // 정규식 사용하여 각 부분을 추출
+                const regex = /^\[(.*?),\s(.*?),\s([\s\S]*?)\]$/;
+                const match = alertString.match(regex);
+
+                if (match) {
+                    return {
+                        id: index + 1,
+                        timestamp: match[1],
+                        event: match[2],
+                        message: match[3]
+                    };
+                }
+                return null;
+            }).filter(alert => alert !== null);
+
             setAlerts(alertsWithId);
         }
     }, [state]);
@@ -90,11 +109,11 @@ const VideoCardListArea = ({ onSelect, selectedItem}) => {
             {/* 분석 결과 목록 */}
             <List sx={listStyle}>
                 {/* 알림 있을 때만 띄움 */}
-                {alerts.length > 0 ? alerts.map(alert => (
+                {alerts.length > 0 ? alerts.map((alert) => (
                     //선택 항목 정보를 부모로 전달함
                     <CustomListItem key={alert.id} onClick={() => onSelect(alert)} selected={selectedItem?.id === alert.id} button>
                         <Typography variant="body2" sx={timeTextStyle(theme, selectedItem?.id === alert.id)}>
-                            {formatTimestamp(alert.timestamp)}
+                            {alert.timestamp + " minute"}
                         </Typography>
                         <Box sx={titleBoxStyle}>
                             <MailIcon sx={{ color: selectedItem?.id === alert.id ? 'white' : theme.palette.primary.main, marginRight: 1 }} />
