@@ -215,7 +215,7 @@ const UploadForm = () => {
       //for (let key of formData.keys()) {
       //  console.log(key, ":", formData.get(key));
       //}
-      const response = await axios.post('http://localhost:8080/api/videoUpload', formData, {
+      const response = await axios.post('/api/videoUpload', formData, {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -241,7 +241,7 @@ const UploadForm = () => {
     };
     console.log(metaData);
     try {
-      const response = await axios.post('http://localhost:8080/api/uploadmeta', metaData, {
+      const response = await axios.post('/api/uploadmeta', metaData, {
         withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
