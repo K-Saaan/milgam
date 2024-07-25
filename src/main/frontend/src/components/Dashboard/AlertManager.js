@@ -1,26 +1,48 @@
-import React, { useEffect } from 'react';
-import {getAllDashboards} from '../../api/api.js'
+import { useEffect } from 'react';
+import { getAllLogs, getAllMessages } from '../../api/api.js';
 
-export const AlertManager = ({ setAlerts, setLoading  }) => {
+export const AlertManager = ({ setAlerts, setLoading }) => {
   useEffect(() => {
     const fetchDashboards = async () => {
       try {
-        const dashboards = await getAllDashboards();
+        const massages = await getAllLogs();
+        const manages = await getAllMessages();
         const newAlerts = {};
-        console.log("raw",dashboards)
-        dashboards.forEach(alert => {
+        
+        // console.log("Fetched logs:", massages);
+        // console.log("Fetched messages:", manages);
+
+        // 맵으로 manage 정보를 빠르게 찾기 위해 맵핑
+        const manageMap = manages.reduce((map, manage) => {
+          map[manage.logIndex] = manage;
+          return map;
+        }, {});
+        //console.log("Processed manageMap:", manageMap);
+
+        massages.forEach(alert => {
           const index = alert.analysisIndex;
-          if (!newAlerts[index]){
-            newAlerts[index]=[];
+          const logIndex = alert.logIndex;
+          const manageInfo = manageMap[logIndex] || {};
+
+          if (!newAlerts[index]) {
+            newAlerts[index] = [];
           }
-          newAlerts[index].push(alert);
+
+          newAlerts[index].push({
+            ...alert,
+            confirm: manageInfo.confirm !== undefined ? manageInfo.confirm : false,
+            userIndex: manageInfo.userIndex !== undefined ? manageInfo.userIndex : alert.userIndex,
+            context: manageInfo.context !== undefined ? manageInfo.context : alert.context,
+            contextTitle: manageInfo.contextTitle !== undefined ? manageInfo.contextTitle : alert.contextTitle,
+            date: manageInfo.date !== undefined ? manageInfo.date : alert.date
+          });
         });
 
-        console.log('Processed Alerts Array:', newAlerts);
+        //console.log('Processed Alerts Array:', newAlerts);
         
         setAlerts(newAlerts);
       } catch (error) {
-        console.error('Failed to fetch dashboards:', error);
+        //console.error('Failed to fetch dashboards:', error);
       } finally {
         setLoading(false); // 로딩 종료
       }
@@ -34,7 +56,7 @@ export const AlertManager = ({ setAlerts, setLoading  }) => {
 
 export const SseComponent = ({ setAlerts }) => {
   useEffect(() => {
-    const eventSource = new EventSource('http://localhost:8080/sse');
+    const eventSource = new EventSource('/sse');
 
     eventSource.addEventListener('message-log', function(event) {
       const newMessage = JSON.parse(event.data);
@@ -61,4 +83,42 @@ export const SseComponent = ({ setAlerts }) => {
   }, [setAlerts]);
 
   return null;
+};
+
+export const fetchDashboards = async (setAlerts, setLoading) => {
+  try {
+    const massages = await getAllLogs();
+    const manages = await getAllMessages();
+    const newAlerts = {};
+
+    const manageMap = manages.reduce((map, manage) => {
+      map[manage.logIndex] = manage;
+      return map;
+    }, {});
+
+    massages.forEach(alert => {
+      const index = alert.analysisIndex;
+      const logIndex = alert.logIndex;
+      const manageInfo = manageMap[logIndex] || {};
+
+      if (!newAlerts[index]) {
+        newAlerts[index] = [];
+      }
+
+      newAlerts[index].push({
+        ...alert,
+        confirm: manageInfo.confirm !== undefined ? manageInfo.confirm : false,
+        userIndex: manageInfo.userIndex !== undefined ? manageInfo.userIndex : alert.userIndex,
+        context: manageInfo.context !== undefined ? manageInfo.context : alert.context,
+        contextTitle: manageInfo.contextTitle !== undefined ? manageInfo.contextTitle : alert.contextTitle,
+        date: manageInfo.date !== undefined ? manageInfo.date : alert.date
+      });
+    });
+
+    setAlerts(newAlerts);
+  } catch (error) {
+    console.error('Failed to fetch dashboards:', error);
+  } finally {
+    setLoading(false); // 로딩 종료
+  }
 };

@@ -22,19 +22,15 @@ public class SseController {
     public SseEmitter connect() {
         SseEmitter emitter = new SseEmitter(86_400_000L);
         emitters.add(emitter);
-        logger.info("New emitter connected. Total emitters: {}", emitters.size());
 
         emitter.onCompletion(() -> {
             emitters.remove(emitter);
-            logger.info("Emitter completed. Total emitters: {}", emitters.size());
         });
         emitter.onTimeout(() -> {
             emitters.remove(emitter);
-            logger.info("Emitter timeout. Total emitters: {}", emitters.size());
         });
         emitter.onError((e) -> {
             emitters.remove(emitter);
-            logger.error("Emitter error. Total emitters: {}", emitters.size(), e);
         });
 
         return emitter;
@@ -42,11 +38,9 @@ public class SseController {
 
     @Transactional // 트랜잭션 경계를 명확히 설정합니다.
     public void sendMessageToClients(MessageLogDto messageLogDto) {
-        logger.info("sendMessageToClients: {}", messageLogDto);
         List<SseEmitter> deadEmitters = new ArrayList<>();
         emitters.forEach(emitter -> {
             try {
-                logger.info("Sending message to emitter: {}", emitter);
                 emitter.send(SseEmitter.event()
                         .name("message-log")
                         .data(messageLogDto, MediaType.APPLICATION_JSON));

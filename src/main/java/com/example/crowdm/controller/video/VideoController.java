@@ -3,16 +3,14 @@ package com.example.crowdm.controller.video;
 import com.example.crowdm.dto.faq.Answerq;
 import com.example.crowdm.dto.faq.Requestq;
 import com.example.crowdm.dto.video.Videoq;
+import com.example.crowdm.entity.event.EventEntity;
 import com.example.crowdm.entity.video.VideoEntity;
 import com.example.crowdm.service.video.VideoService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,14 +59,17 @@ public class VideoController {
      * 5. 작성일    : 2024. 06. 27
      **/
     @PostMapping("/videoUpload")
-    public void videoUpload(@RequestParam("chunkFile") MultipartFile mFile,
-                            @RequestParam("chunkIndex") int chunkIndex,
-                            @RequestParam("totalChunks") int totalChunks,
-                            @RequestParam("originName") String fileOriginName) throws IOException{
-        logger.info("chunkIndex = {}", chunkIndex);
-        logger.info("totalChunks = {}", totalChunks);
-        logger.info("fileOriginName = {}", fileOriginName);
-        videoService.uploadToGCP(mFile, chunkIndex, totalChunks, fileOriginName);
+    public ResponseEntity<List<String>> videoUpload(@RequestParam("file") MultipartFile mFile,
+                                                    @RequestParam("originName") String fileOriginName,
+                                                    @RequestParam("place") String place,
+                                                    @RequestParam("time") String time,
+                                                    @RequestParam("videoq") Videoq videoq,
+                                                    Model model,
+                                                    HttpServletRequest request) throws IOException{
+        videoService.uploadmeta(videoq.getLength(), videoq.getSector(), videoq.getCamera_num(), videoq.getContent(), videoq.getFile_name(), videoq.getChunk_index(),request);
+        List<String> result = videoService.uploadToGCP(mFile, fileOriginName, place, time);
+        model.addAttribute("data", result);
+        return ResponseEntity.ok(result);
     }
 
     /**
@@ -98,12 +99,12 @@ public class VideoController {
      * 4. 작성자    : boyeong
      * 5. 작성일    : 2024. 07. 16
      **/
-    @PostMapping("/uploadmeta")
-    public ResponseEntity<VideoEntity> uploadMeta(@RequestBody Videoq videoq, HttpServletRequest request) {
-        VideoEntity result = videoService.uploadmeta(videoq.getLength(), videoq.getSector(), videoq.getCamera_num(), videoq.getContent(), videoq.getFile_name(), videoq.getChunk_index(),request);
-
-        return ResponseEntity.ok(result);
-    }
+//    @PostMapping("/uploadmeta")
+//    public ResponseEntity<VideoEntity> uploadMeta(@RequestBody Videoq videoq, HttpServletRequest request) {
+//        VideoEntity result = videoService.uploadmeta(videoq.getLength(), videoq.getSector(), videoq.getCamera_num(), videoq.getContent(), videoq.getFile_name(), videoq.getChunk_index(),request);
+//
+//        return ResponseEntity.ok(result);
+//    }
 
 
 }

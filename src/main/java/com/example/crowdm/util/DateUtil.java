@@ -9,6 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.LocalTime;
 
 /**
  * 1. ClassName: DateUtil
@@ -479,6 +482,22 @@ public class DateUtil {
         String dTime = formatter.format ( currentTime );
 
         return dTime;
+    }
+
+    /**
+     * 12시간제 형태의 시간을 24시간제로 변환.
+     * @return String 24시간제 시간
+     */
+    public static String convertTo24HourFormat(String time12Hour) {
+        String[] timeArray = time12Hour.split(" ");
+        String resultTime = "";
+        if (timeArray[1].equals("pm")) {
+            String[] times = timeArray[0].split(":");
+            int hour = Integer.parseInt(times[0]) + 12;
+            return resultTime = hour + ":" + times[1];
+        }else{
+            return resultTime = timeArray[0];
+        }
     }
 
 }

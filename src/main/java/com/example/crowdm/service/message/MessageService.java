@@ -105,11 +105,14 @@ public class MessageService {
     public MessageLogDto saveMessageLog(MessageLogDto dto) {
         MessageLogEntity entity = convertToLogEntity(dto);
         MessageLogEntity savedEntity = messageLogRepository.save(entity);
-        return convertToLogDto(savedEntity);
-    }
+        MessageLogDto savedDto = convertToLogDto(savedEntity);
+        // 이벤트 발행
+        eventPublisher.publishEvent(new MessageLogEvent(this, savedDto));
 
-    // 메세지메니지 저장
-    public MessageManageDto saveMessageLog(MessageManageDto dto) {
+        return savedDto;
+    }
+    //메세지메니지 저장
+    public MessageManageDto saveMessageManage(MessageManageDto dto) {
         MessageManageEntity entity = convertToManageEntity(dto);
         MessageManageEntity savedEntity = messageManageRepository.save(entity);
         return convertToManageDto(savedEntity);

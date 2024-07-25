@@ -9,6 +9,7 @@ import com.example.crowdm.repository.event.EventRepository;
 import com.example.crowdm.repository.login.LoginLogRepository;
 import com.example.crowdm.repository.login.LoginRepository;
 import com.example.crowdm.repository.admin.AdminRepository; // 0715: AdminRepository 임포트 추가
+import com.example.crowdm.service.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,7 @@ public class LoginService {
     private final LoginLogRepository loginLogRepository;
     private final AdminRepository adminRepository; // 0715: AdminRepository 추가
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); // 0715: BCryptPasswordEncoder 추가
-
+    private final AdminService adminService; // 0723 추가됨
     public Map<String, Object> updateLogin(String userId, String password, HttpServletRequest request) {
         Map<String, Object> resultMap = new HashMap<>();
 
@@ -78,6 +79,7 @@ public class LoginService {
                 if (user.getAccount_lock()) {
                     logger.info("Account locked for user: {}", user.getId());
                     resultMap.put("RESULT", "LOCK_ACCOUNT");
+                    adminService.unlock();
                     return resultMap;
                 }
 
@@ -127,6 +129,10 @@ public class LoginService {
                     loginRepository.updateFailCntAndLock(userId, failCnt, true);
                     resultMap.put("RESULT", "LOCK_ACCOUNT");
                     logger.info("Account locked due to multiple failed attempts for user: {}", user.getId());
+                    // 0723 추가 시작 - AdminService 호출하여 계정 해제 및 임시 비밀번호 발송
+                    adminService.unlock();
+                    // 0723 추가 끝
+
                 } else {
                     loginRepository.updateFailCntAndLock(userId, failCnt, false);
                     resultMap.put("RESULT", "INVALID_PASSWORD");
