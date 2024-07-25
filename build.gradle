@@ -80,7 +80,7 @@ sourceSets {
     }
 }
 
-processResources { dependsOn "copyReactBuildFiles" }
+processResources { dependsOn "copyTomcat" }
 
 task installReact(type: Exec) {
     workingDir "$frontendDir"
@@ -110,5 +110,26 @@ task buildReact(type: Exec) {
 task copyReactBuildFiles(type: Copy) {
     dependsOn "buildReact"
     from "$frontendDir/build"
-    into "$projectDir/src/main/resources"
+    into "$projectDir/src/main/resources/static"
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+    outputs.upToDateWhen { false }
 }
+
+task copyMedia(type: Copy){
+    dependsOn "copyReactBuildFiles"
+    from "$projectDir/src/main/resources/static/static/media"
+    into "$projectDir/src/main/resources/static/media"
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+    outputs.upToDateWhen { false }
+}
+
+task copyTomcat(type: Copy){
+    dependsOn "copyMedia"
+    from "$projectDir/src/main/resources/static/static/js"
+    into "$projectDir/src/main/resources/static/js"
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+    outputs.upToDateWhen { false }
+    }

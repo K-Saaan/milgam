@@ -39,6 +39,7 @@ export const getBarChartOptions = (theme) => ({
       },
       ticks: {
         color: theme.palette.text.primary,
+        stepSize: 1,
       },
       grid: {
         color: theme.palette.divider,
@@ -46,23 +47,3 @@ export const getBarChartOptions = (theme) => ({
     },
   },
 });
-
-// 바 차트 데이터 및 스타일 지정
-export const barChartData = {
-  labels: ['폭행', '실신'],
-  datasets: [
-    {
-      label: '횟수',
-      data: [3, 2], // 임시 데이터
-      backgroundColor: [
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-      ],
-      borderColor: [
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-      ],
-      borderWidth: 1,
-    },
-  ],
-};

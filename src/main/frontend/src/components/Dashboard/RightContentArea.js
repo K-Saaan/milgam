@@ -4,20 +4,11 @@ import { useTheme } from '@mui/material/styles';
 import { useNavigate, useLocation } from 'react-router-dom';
 import MailIcon from '@mui/icons-material/Mail'; 
 import CustomListItem from '../Styles/CustomListItem';
-import {AlertManager,SseComponent} from './AlertManager';
+import {fetchDashboards,SseComponent} from './AlertManager';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
-import { getAllMessages } from '../../api/api';
 
-axiosRetry(axios, {
-  retries: 5,
-  retryDelay: axiosRetry.exponentialDelay,
-  retryCondition: (error) => {
-    // 재시도할 조건을 명시합니다. 기본적으로 idempotent 요청에 대해서만 재시도합니다.
-    // 500 오류를 포함한 모든 오류에 대해 재시도하도록 합니다.
-    return error.response.status >= 500 || axiosRetry.isNetworkError(error);
-  },
-});
+axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
 
 // 컨테이너의 flex 속성을 설정하여 레이아웃을 조정
 const containerStyle = {
@@ -48,8 +39,8 @@ const headerStyle = (theme) => ({
 
 // 알림 리스트의 스타일
 const listStyle = {
-  height: 'calc(100% - 100px)',
   overflow: 'auto',
+  height: 'calc(100% - 40px)',
 };
 
 // 시간 텍스트의 스타일
@@ -100,40 +91,17 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }
   const [loading, setLoading] = useState(true);
   const [unreadCounts, setUnreadCounts] = useState({});
 
-  // getAllMessages로 unreadcount 계산
-  useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const { data: messages } = await getAllMessages();
-        const unreadCounts = {};
-        
-        messages.forEach(message => {
-          const key = message.alertKey;
-          if (!message.confirm) {
-            if (!unreadCounts[key]) {
-              unreadCounts[key] = 0;
-            }
-            unreadCounts[key] += 1;
-          }
-        });
-  
-        setAlerts(messages.reduce((acc, message) => {
-          const key = message.alertKey;
-          if (!acc[key]) acc[key] = [];
-          acc[key].push(message);
-          return acc;
-        }, {}));
-  
-        setUnreadCounts(unreadCounts);
-        setLoading(false);
-        console.log(messages);
-      } catch (error) {
-        console.error('Error fetching messages:', error);
-      }
-    };
-  
-    fetchMessages();
-  }, [setAlerts]);
+  const handleSetAlerts = (alerts) => {
+    const unreadCounts = {};
+
+    Object.keys(alerts).forEach(key => {
+      unreadCounts[key] = alerts[key].filter(alert => !alert.confirm).length;
+    });
+
+    setAlerts(alerts);
+    setUnreadCounts(unreadCounts);
+    setLoading(false);
+  };
 
   // 알림을 클릭하면 읽었다는 patch 요청보내기
   const onAlertClick = async (alertKey, alert, isAdmin) => {
@@ -141,7 +109,8 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }
     updatedAlerts[alertKey] = updatedAlerts[alertKey].map(alert => ({ ...alert, read: true }));
     
     setAlerts(updatedAlerts); // 상태 업데이트
-  
+    handleAlertClick(alert);
+
     try {
       const alertToUpdate = updatedAlerts[alertKey].find(alertItem => alertItem.logIndex === alert[0].logIndex);
       console.log('alertToUpdate.logIndex,', alertToUpdate.logIndex);
@@ -170,9 +139,7 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }
     } catch (error) {
       console.error('fetch 요청 실패:', error);
     }
-  
-    handleAlertClick(alert);
-  
+    
     // 여기서 바로 네비게이션
     const targetPath = isAdmin 
       ? `/admin/dashboard/detail/${alertKey}` 
@@ -181,12 +148,13 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }
     navigate(targetPath, { state: { alert: updatedAlerts[alertKey] } });
   };
 
-  // getAllDashboards에서 받아온 logIndex랑 getAllMessages에서 받아온 logIndex랑 비교해서 같은 것만 가져와서, 그 중에 confirm이 false인 값만 
+  useEffect(() => {
+    fetchDashboards(setAlerts, setLoading);
+  }, [setAlerts, setLoading]);
 
   return (
     <Box sx={containerStyle}>
-      <AlertManager setAlerts={setAlerts} setLoading={setLoading}/>
-      <SseComponent setAlerts={setAlerts} />
+      <SseComponent setAlerts={handleSetAlerts} />
       <Paper sx={paperStyle(theme)}>
         <Box sx={headerStyle(theme)}>
           <Typography variant="subtitle1" sx={{ color: theme.palette.text.primary, fontWeight: 600, fontSize: '1rem' }}>
@@ -201,18 +169,19 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }
         </Box>
       ) : (
         <List sx={listStyle}>
-{alerts && Object.keys(alerts).length > 0 ? (
-  Object.keys(alerts).map((key, index) => {
-    const unreadCount = unreadCounts[key] || 0;
-    const alertList = alerts[key] || [];
-    const isSelected = selectedAlert?.id === alertList?.[0]?.id;
-    return (
-      <CustomListItem
-        key={index}
-        button
-        onClick={() => onAlertClick(key, alertList, isAdmin)}
-        selected={isSelected}
-      >
+        {alerts && Object.keys(alerts).length > 0 ? (
+          Object.keys(alerts).map((key, index) => {
+            const unreadCount = unreadCounts[key] || 0;
+            const alertList = alerts[key] || [];
+            const isSelected = selectedAlert?.id === alertList?.[0]?.id;
+            return (
+              <CustomListItem
+                key={index}
+                button
+                onClick={() => onAlertClick(key, alertList, isAdmin)}
+                selected={isSelected}
+                sx={{ height: '100px', overflow: 'hidden' }}
+              >
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
           <Typography variant="body2" sx={timeTextStyle(theme, isSelected)}>
             {formatDate(alertList[0]?.date)}
@@ -222,7 +191,11 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }
         <Box sx={titleBoxStyle}>
           <MailIcon sx={{ color: isSelected ? theme.palette.text.primary : theme.palette.primary.main, marginRight: 1 }} />
           <Typography variant="body2" sx={titleTextStyle(theme, isSelected)}>
-            {alertList[0]?.context}
+            {alertList[0]?.context.split('\n').map((line, index) => (
+               <React.Fragment key={index}>
+                              {line}
+                              <br />
+                </React.Fragment>))}
           </Typography>
         </Box>
       </CustomListItem>
