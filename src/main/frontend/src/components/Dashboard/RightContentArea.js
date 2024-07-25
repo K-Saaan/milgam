@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Paper, Typography, List, Badge, Skeleton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate, useLocation } from 'react-router-dom';
 import MailIcon from '@mui/icons-material/Mail'; 
 import CustomListItem from '../Styles/CustomListItem';
-import {AlertManager,SseComponent} from './AlertManager';
+import {fetchDashboards,SseComponent} from './AlertManager';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 
 axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
-
 
 // 컨테이너의 flex 속성을 설정하여 레이아웃을 조정
 const containerStyle = {
@@ -40,7 +39,7 @@ const headerStyle = (theme) => ({
 
 // 알림 리스트의 스타일
 const listStyle = {
-  overflow: 'hidden',
+  overflow: 'auto',
   height: 'calc(100% - 40px)',
 };
 
@@ -84,7 +83,7 @@ const formatDate = (dateString) => {
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 };
 
-const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts}) => {
+const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }) => {
   const theme = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
@@ -149,10 +148,12 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts})
     navigate(targetPath, { state: { alert: updatedAlerts[alertKey] } });
   };
 
+  useEffect(() => {
+    fetchDashboards(setAlerts, setLoading);
+  }, [setAlerts, setLoading]);
 
   return (
     <Box sx={containerStyle}>
-      <AlertManager setAlerts={handleSetAlerts} setLoading={setLoading}/>
       <SseComponent setAlerts={handleSetAlerts} />
       <Paper sx={paperStyle(theme)}>
         <Box sx={headerStyle(theme)}>

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Paper, Typography, Box, Skeleton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Bar } from 'react-chartjs-2';
 import { getBarChartOptions } from './charts/BarChartContainer';
-import { AlertManager,SseComponent } from './AlertManager';
+import { fetchDashboards, SseComponent } from './AlertManager';
 import CustomPaper from './styles/CustomPaper'
+
 
 // 초기 바 차트 데이터
 const initialBarChartData = {
@@ -77,9 +78,13 @@ const AbnormalBehaviorCard = () => {
     setLoading(false);
   };
 
+  useEffect(() => {
+    fetchDashboards(handleSetAlerts, setLoading);
+  }, []);
+
+
   return (
     <Paper sx={CustomPaper(theme)}>
-      <AlertManager setAlerts={handleSetAlerts} setLoading={setLoading} />
       <SseComponent setAlerts={handleSetAlerts} />
       <Box sx={{ textAlign: 'center' }}>
         <Typography variant="subtitle1" gutterBottom>
