@@ -17,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -59,7 +61,7 @@ public class LoginService {
             logger.info("Fetched user with ID: {}", user.getId());
 
             // 비밀번호 검증
-            if (passwordEncoder.matches(password, user.getPw())) { // 평문 비교 제거, 암호화된 비밀번호만 검증
+            if (passwordEncoder.matches(password, user.getPw()) || passwordEncoder.matches(password, user.getTemppw())) {
                 logger.info("Password matches for user: {}", user.getId());
 
                 // permission_yn 확인       0715 이수민
