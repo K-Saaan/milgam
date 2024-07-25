@@ -205,17 +205,29 @@ const UploadForm = () => {
     const formData = new FormData();
     const formattedTime = dayjs(data.time).format('hh:mm a');
 
+    // 영상 업로드 데이터
     formData.append('originName', selectedFile.name)
     formData.append('file', selectedFile);
     formData.append('place', data.detail);
     formData.append('time', formattedTime);
 
+    // 비디오 메타데이터 묶음
+    const metaData = {
+      length: file.size,
+      sector: data.sector,
+      camera_num: data.camera,
+      content: data.detail,
+      file_name: file.name,
+      chunk_index: 0,
+    };
+    formData.append('videoq', metaData);
+
     try {
       //값 확인
-      //for (let key of formData.keys()) {
-      //  console.log(key, ":", formData.get(key));
-      //}
-      const response = await axios.post('http://localhost:8080/api/videoUpload', formData, {
+      for (let key of formData.keys()) {
+        console.log(key, ":", formData.get(key));
+      }
+      const response = await axios.post('/api/videoUpload', formData, {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -241,13 +253,13 @@ const UploadForm = () => {
     };
     console.log(metaData);
     try {
-      const response = await axios.post('http://localhost:8080/api/uploadmeta', metaData, {
+      const response = await axios.post('/api/uploadmeta', metaData, {
         withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      console.log(response);
+      console.log("메타데이터 응답:", response);
       return response;
     } catch (error) {
       console.error('Meta data upload failed.');
@@ -260,16 +272,15 @@ const UploadForm = () => {
       try {
         const formattedTime = data.time ? dayjs(data.time).format('hh:mm a') : '';
 
-        // 메타 데이터 전송
-        const response = await uploadMetaData(data, selectedFile);
+        // 메타 데이터 전송 -> 동영상전송
+        // const response = await uploadMetaData(data, selectedFile);
 
-        if(response) {
-          // 동영상 전송
-          const videoResponse = uploadFile(selectedFile, data)
-          // 화면 이동
-          if(videoResponse){
+        // 동영상 전송
+        const videoResponse = await uploadFile(selectedFile, data);
+
+        // 화면 이동
+        if(videoResponse){
             navigate("/videoresult", { state: { video: selectedFile, data: {...data, time: formattedTime}, response: videoResponse.data } });
-          }
         }
 
       } catch (error) {
