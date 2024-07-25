@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Paper, Typography, Box } from '@mui/material';
+import { Paper, Typography, Box, Skeleton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Bar } from 'react-chartjs-2';
 import { getBarChartOptions } from './charts/BarChartContainer';
@@ -32,6 +32,7 @@ const AbnormalBehaviorCard = () => {
   const options = getBarChartOptions(theme);
   const [barChartData, setBarChartData] = useState(initialBarChartData);
   const [isDataEmpty, setIsDataEmpty] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   const handleSetAlerts = (alerts) => {
     const newBarChartData = { 
@@ -73,34 +74,39 @@ const AbnormalBehaviorCard = () => {
     } else {
       setIsDataEmpty(true);
     }
+    setLoading(false);
   };
 
   return (
     <Paper sx={CustomPaper(theme)}>
-      <AlertManager setAlerts={handleSetAlerts} setLoading={() => {}} />
+      <AlertManager setAlerts={handleSetAlerts} setLoading={setLoading} />
       <SseComponent setAlerts={handleSetAlerts} />
       <Box sx={{ textAlign: 'center' }}>
         <Typography variant="subtitle1" gutterBottom>
           이상 행동
         </Typography>
       </Box>
-      <div style={{ height: '85%', display: 'flex', justifyContent: 'center', alignItems: 'center'  }}> {/* 높이 조정 */}
-      {isDataEmpty ? (
-          <Typography
-                variant="subtitle2"
-                sx={{
-                  padding: '10px',
-                  paddingLeft: '40px', // 왼쪽 패딩을 키웁니다
-                  paddingRight: '40px', // 오른쪽 패딩을 키웁니다
-                  borderRadius: '4px',
-                  margin: '4px 0', // 위아래 margin 조정
-                  display: 'inline-block' // 아랫줄로 내려쓰기 위해 display 변경
-                  }}
-                >
-                감지된 이상행동이 없어요.
-          </Typography>
+      <div style={{ height: '85%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        {loading ? (
+          <Skeleton variant="rectangular" width="80%" height="80%" />
         ) : (
-          <Bar data={barChartData} options={options} />
+          isDataEmpty ? (
+            <Typography
+              variant="subtitle2"
+              sx={{
+                padding: '10px',
+                paddingLeft: '40px', // 왼쪽 패딩을 키웁니다
+                paddingRight: '40px', // 오른쪽 패딩을 키웁니다
+                borderRadius: '4px',
+                margin: '4px 0', // 위아래 margin 조정
+                display: 'inline-block' // 아랫줄로 내려쓰기 위해 display 변경
+              }}
+            >
+              감지된 이상행동이 없어요.
+            </Typography>
+          ) : (
+            <Bar data={barChartData} options={options} />
+          )
         )}
       </div>
     </Paper>
