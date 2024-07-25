@@ -40,7 +40,7 @@ const headerStyle = (theme) => ({
 
 // 알림 리스트의 스타일
 const listStyle = {
-  overflow: 'hidden',
+  overflow: 'auto',
   height: 'calc(100% - 40px)',
 };
 

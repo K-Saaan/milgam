@@ -147,6 +147,9 @@ public class VideoService {
         HttpSession session = request.getSession();
         Integer user_index = (Integer) session.getAttribute("user_index");
         //Integer user_index = 11;
+        if(user_index == null){
+            user_index = 11;
+        }
 
         String[] guDong = findGuDong(user_index);
         String gu = guDong[0];

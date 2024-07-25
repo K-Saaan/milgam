@@ -134,8 +134,17 @@ task copyReactBuildFiles(type: Copy) {
     outputs.upToDateWhen { false }
 }
 
-task copyTomcat(type: Copy){
+task copyMedia(type: Copy){
     dependsOn "copyReactBuildFiles"
+    from "$projectDir/src/main/resources/static/static/media"
+    into "$projectDir/src/main/resources/static/media"
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+    outputs.upToDateWhen { false }
+}
+
+task copyTomcat(type: Copy){
+    dependsOn "copyMedia"
     from "$projectDir/src/main/resources/static/static/js"
     into "$projectDir/src/main/resources/static/js"
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
