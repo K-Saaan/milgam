@@ -319,7 +319,7 @@ public class AdminService {
             if (Boolean.TRUE.equals(account_lock)) {
                 try {
                     String temppw = SimplePasswordGenerator.generateRandomString(12);
-                    user.updateUnlock(temppw);
+                    user.updateUnlock(passwordEncoder.encode(temppw));
                     loginRepository.save(user);
                     UnlockList unlockList = new UnlockList(id, email, applyDate, status);
                     answer.add(unlockList);
