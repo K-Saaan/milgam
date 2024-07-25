@@ -1,10 +1,10 @@
-import React, {useState, useRef} from "react";
-import {useForm, Controller} from "react-hook-form";
-import {useNavigate} from "react-router-dom";
-import {useTheme} from '@mui/material/styles';
-import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
-import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
-import {TimePicker} from '@mui/x-date-pickers/TimePicker';
+import React, { useState, useRef } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { useTheme } from '@mui/material/styles';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs from 'dayjs';
 import axios from 'axios';
 
@@ -15,141 +15,141 @@ import CustomTextField from "../Styles/CustomTextField.js";
 
 
 // mui system을 사용한 코드
-import {styled} from '@mui/system';
+import { styled } from '@mui/system';
 
 const CamInputCont = styled('div')({
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '370px',
-    paddingLeft: '10px',
-    marginTop: "5px",
-    marginBottom: '5px'
+  display:'flex',
+  justifyContent:'space-between',
+  alignItems:'center',
+  width:'370px',
+  paddingLeft:'10px',
+  marginTop:"5px",
+  marginBottom:'5px'
 });
 
 const UploadBG = styled('div')({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: "600px",
-    flexDirection: "column",
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: "600px",
+  flexDirection: "column",
 });
 
 const UploadFormContainer = styled('form')({
-    display: 'flex',
-    flexDirection: "column",
-    alignItems: 'center',
-    width: "350px",
-    margin: "50px",
+  display: 'flex',
+  flexDirection: "column",
+  alignItems: 'center',
+  width: "350px",
+  margin: "50px",
 });
 
-const FileButton = styled('button')(({theme}) => ({
-    width: '100%',
-    height: '200px',
-    fontSize: '18px',
-    fontWeight: 500,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '15px',
+const FileButton = styled('button')(({ theme }) => ({
+  width: '100%',
+  height: '200px',
+  fontSize: '18px',
+  fontWeight: 500,
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '15px',
+  color: theme.palette.primary.main,
+  backgroundColor: theme.palette.background.paper,
+  border: `2px dashed ${theme.palette.primary.main}`,
+  borderRadius: '20px',
+  cursor: 'pointer',
+  transition: 'all 0.3s ease',
+  '&:hover': {
     color: theme.palette.primary.main,
-    backgroundColor: theme.palette.background.paper,
-    border: `2px dashed ${theme.palette.primary.main}`,
-    borderRadius: '20px',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    '&:hover': {
-        color: theme.palette.primary.main,
-        backgroundColor: theme.palette.text.primary,
-    },
+    backgroundColor: theme.palette.text.primary,
+  },
 }));
 
-const FileButtonSpan = styled('span')(({theme}) => ({
-    width: '50px',
-    height: '50px',
-    fontSize: '30px',
-    color: '#FFFFFF',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: '25px',
-    backgroundColor: theme.palette.primary.main,
+const FileButtonSpan = styled('span')(({ theme }) => ({
+  width: '50px',
+  height: '50px',
+  fontSize: '30px',
+  color: '#FFFFFF',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderRadius: '25px',
+  backgroundColor: theme.palette.primary.main,
 }));
 
-const SelectedFileContainer = styled('div')(({theme}) => ({
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: `${theme.palette.primary.main}2D`,
-    border: `1px solid ${theme.palette.primary.main}5D`,
-    borderRadius: '5px',
-    marginBottom: '5px',
+const SelectedFileContainer = styled('div')(({ theme }) => ({
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  backgroundColor: `${theme.palette.primary.main}2D`,
+  border: `1px solid ${theme.palette.primary.main}5D`,
+  borderRadius: '5px',
+  marginBottom: '5px',
 }));
 
 const SelectedFileP = styled('p')({
-    fontSize: '13px',
-    fontWeight: 500,
-    marginLeft: '15px',
+  fontSize: '13px',
+  fontWeight: 500,
+  marginLeft: '15px',
 });
 
-const SelectedFileButton = styled('button')(({theme}) => ({
-    width: '50px',
-    height: '50px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+const SelectedFileButton = styled('button')(({ theme }) => ({
+  width: '50px',
+  height: '50px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: theme.palette.text.primary,
+  backgroundColor: 'transparent',
+  border: 'none',
+  borderRadius: '5px',
+  cursor: 'pointer',
+  transition: 'all 0.3s ease',
+  '&:hover': {
     color: theme.palette.text.primary,
-    backgroundColor: 'transparent',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    '&:hover': {
-        color: theme.palette.text.primary,
-        backgroundColor: theme.palette.primary.main,
-    },
-}));
-
-const LoadingOverlay = styled('div')(({theme}) => ({
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    zIndex: 9999,
-}));
-
-const DotContainer = styled('div')(({theme}) => ({
-    display: 'flex',
-    gap: '8px',
-}));
-
-const Dot = styled('div')(({theme}) => ({
-    width: '16px',
-    height: '16px',
     backgroundColor: theme.palette.primary.main,
-    borderRadius: '50%',
-    animation: 'dot-blink 1.5s infinite ease-in-out',
-    '&:nth-of-type(2)': {
-        animationDelay: '0.3s',
+  },
+}));
+
+const LoadingOverlay = styled('div')(({ theme }) => ({
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  zIndex: 9999,
+}));
+
+const DotContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
+  gap: '8px',
+}));
+
+const Dot = styled('div')(({ theme }) => ({
+  width: '16px',
+  height: '16px',
+  backgroundColor: theme.palette.primary.main,
+  borderRadius: '50%',
+  animation: 'dot-blink 1.5s infinite ease-in-out',
+  '&:nth-of-type(2)': {
+    animationDelay: '0.3s',
+  },
+  '&:nth-of-type(3)': {
+    animationDelay: '0.6s',
+  },
+  '@keyframes dot-blink': {
+    '0%, 80%, 100%': {
+      transform: 'scale(0)',
     },
-    '&:nth-of-type(3)': {
-        animationDelay: '0.6s',
+    '40%': {
+      transform: 'scale(1)',
     },
-    '@keyframes dot-blink': {
-        '0%, 80%, 100%': {
-            transform: 'scale(0)',
-        },
-        '40%': {
-            transform: 'scale(1)',
-        },
-    },
+  },
 }));
 
 const UploadForm = () => {
@@ -160,74 +160,86 @@ const UploadForm = () => {
     const {register, handleSubmit, reset, control} = useForm();
     const [loading, setLoading] = useState(false);
 
-    const [error, setError] = useState('');
-    const [isActive, setActive] = useState(false)
-    const handleDragStart = () => setActive(true);
-    const handleDragEnd = () => setActive(false);
+  const [error, setError] = useState('');
+  const [isActive, setActive] = useState(false)
+  const handleDragStart = () => setActive(true);
+  const handleDragEnd = () => setActive(false);
 
-    // 파일 선택
-    const handleOnChange = (e) => {
-        if (e.target.files && e.target.files.length > 0) {
-            setSelectedFile(e.target.files[0]);
-            e.target.value = null;
-        }
+  // 파일 선택
+  const handleOnChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedFile(e.target.files[0]);
+      e.target.value = null;
+    }
+  };
+
+  // 드래그 앤 드롭 처리
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const file = e.dataTransfer.files[0];
+      if (file.type.startsWith('video/')) {
+        setSelectedFile(file);
+      } else {
+        alert("영상 파일만 업로드할 수 있습니다.");
+      }
+    }
+  };
+
+  // 클릭으로 파일 업로드 처리
+  const onChooseFile = (e) => {
+    e.preventDefault();
+    inputRef.current.click();
+  };
+
+  // 파일 선택 취소
+  const removeFile = (e) => {
+    e.preventDefault();
+    setSelectedFile(null);
+    reset();
+  };
+
+  // 영상 전송
+  const uploadFile = async (selectedFile, data) => {
+    const formData = new FormData();
+    const formattedTime = dayjs(data.time).format('hh:mm a');
+
+    // 영상 업로드 데이터
+    formData.append('originName', selectedFile.name)
+    formData.append('file', selectedFile);
+    formData.append('place', data.detail);
+    formData.append('time', formattedTime);
+
+    // 비디오 메타데이터 묶음
+    const metaData = {
+      length: file.size,
+      sector: data.sector,
+      camera_num: data.camera,
+      content: data.detail,
+      file_name: file.name,
+      chunk_index: 0,
     };
+    formData.append('videoq', metaData);
 
-    // 드래그 앤 드롭 처리
-    const handleDrop = (e) => {
-        e.preventDefault();
-        setActive(false);
-        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-            const file = e.dataTransfer.files[0];
-            if (file.type.startsWith('video/')) {
-                setSelectedFile(file);
-            } else {
-                alert("영상 파일만 업로드할 수 있습니다.");
-            }
-        }
-    };
-
-    // 클릭으로 파일 업로드 처리
-    const onChooseFile = (e) => {
-        e.preventDefault();
-        inputRef.current.click();
-    };
-
-    // 파일 선택 취소
-    const removeFile = (e) => {
-        e.preventDefault();
-        setSelectedFile(null);
-        reset();
-    };
-
-    // 영상 전송
-    const uploadFile = async (selectedFile, data) => {
-        const formData = new FormData();
-        const formattedTime = dayjs(data.time).format('hh:mm a');
-
-        formData.append('originName', selectedFile.name)
-        formData.append('file', selectedFile);
-        formData.append('place', data.detail);
-        formData.append('time', formattedTime);
-
-        try {
-            //값 확인
-            //for (let key of formData.keys()) {
-            //  console.log(key, ":", formData.get(key));
-            //}
-            const response = await axios.post('/api/videoUpload', formData, {
-                withCredentials: true,
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            console.log(response.data);
-            return response;
-        } catch (error) {
-            console.error(`upload failed.`);
-            alert('파일 업로드에 실패하였습니다.');
-        }
-    };
+    try {
+      //값 확인
+      //for (let key of formData.keys()) {
+      //  console.log(key, ":", formData.get(key));
+      //}
+      const response = await axios.post('/api/videoUpload', formData, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log(response.data);
+      return response;
+    } catch (error) {
+      console.error(`upload failed.`);
+      alert('파일 업로드에 실패하였습니다.');
+    }
+  };
 
     // 메타 데이터 전송
     const uploadMetaData = async (data, file) => {
@@ -265,46 +277,39 @@ const UploadForm = () => {
             try {
                 const formattedTime = data.time ? dayjs(data.time).format('hh:mm a') : '';
 
-                // 메타 데이터 전송
-                const response = await uploadMetaData(data, selectedFile);
+        // 메타 데이터 전송 -> 동영상전송
+        // const response = await uploadMetaData(data, selectedFile);
 
-                if (response) {
-                    // 동영상 전송
-                    const videoResponse = uploadFile(selectedFile, data)
-                    // 화면 이동
-                    if (videoResponse) {
-                        navigate("/videoresult", {
-                            state: {
-                                video: selectedFile,
-                                data: {...data, time: formattedTime},
-                                response: videoResponse.data
-                            }
-                        });
-                    }
-                }
+        // 동영상 전송
+        const videoResponse = await uploadFile(selectedFile, data);
 
-            } catch (error) {
-                console.error('업로드 실패. 에러가 발생하였습니다.', error);
-                setError('업로드 실패. 에러가 발생하였습니다.');
-            } finally {
-                setLoading(false);
-            }
-        } else {
-            setError("파일을 선택해주세요.");
+        // 화면 이동
+        if(videoResponse){
+            navigate("/videoresult", { state: { video: selectedFile, data: {...data, time: formattedTime}, response: videoResponse.data } });
         }
-    };
 
-    // 영상 내용 기입란에서 엔터 처리
-    const handleKeyPress = (event) => {
-        if (event.key === 'Enter') {
-            handleSubmit(onHSubmit)();
-        }
-    };
-    const handleInput = (event) => {
-        const value = event.target.value;
-        // 비숫자 문자를 모두 제거합니다.
-        event.target.value = value.replace(/[^0-9]/g, '');
-    };
+      } catch (error) {
+        console.error('업로드 실패. 에러가 발생하였습니다.', error);
+        setError('업로드 실패. 에러가 발생하였습니다.');
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setError("파일을 선택해주세요.");
+    }
+  };
+
+  // 영상 내용 기입란에서 엔터 처리
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSubmit(onHSubmit)();
+    }
+  };
+  const handleInput = (event) => {
+    const value = event.target.value;
+    // 비숫자 문자를 모두 제거합니다.
+    event.target.value = value.replace(/[^0-9]/g, '');
+  };
 
     return (
         <UploadBG>
