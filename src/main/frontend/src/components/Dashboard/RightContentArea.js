@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box, Paper, Typography, List, Badge, Skeleton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate, useLocation } from 'react-router-dom';
 import MailIcon from '@mui/icons-material/Mail'; 
 import CustomListItem from '../Styles/CustomListItem';
-import {fetchDashboards,SseComponent} from './AlertManager';
+import {AlertManager,SseComponent} from './AlertManager';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 
@@ -148,12 +148,10 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }
     navigate(targetPath, { state: { alert: updatedAlerts[alertKey] } });
   };
 
-  useEffect(() => {
-    fetchDashboards(setAlerts, setLoading);
-  }, [setAlerts, setLoading]);
 
   return (
     <Box sx={containerStyle}>
+      <AlertManager setAlerts={handleSetAlerts} setLoading={setLoading} />
       <SseComponent setAlerts={handleSetAlerts} />
       <Paper sx={paperStyle(theme)}>
         <Box sx={headerStyle(theme)}>
