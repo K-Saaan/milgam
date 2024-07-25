@@ -213,11 +213,11 @@ const UploadForm = () => {
 
     // 비디오 메타데이터 묶음
     const metaData = {
-      length: file.size,
+      length: selectedFile.size,
       sector: data.sector,
       camera_num: data.camera,
       content: data.detail,
-      file_name: file.name,
+      file_name: selectedFile.name,
       chunk_index: 0,
     };
     formData.append('videoq', metaData);
@@ -241,63 +241,30 @@ const UploadForm = () => {
     }
   };
 
-    // 메타 데이터 전송
-    const uploadMetaData = async (data, file) => {
-        const metaData = {
-            length: file.size,
-            sector: data.sector,
-            camera_num: data.camera,
-            content: data.detail,
-            file_name: file.name,
-            chunk_index: 0,
-        };
-        console.log(metaData);
-
-        while (true) {
-            try {
-                const response = await axios.post('/api/uploadmeta', metaData, {
-                    withCredentials: true,
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-                console.log(response);
-                return response;
-                break;
-            } catch (error) {
-                console.error('Meta data upload failed.');
-                await new Promise(resolve => setTimeout(resolve, 500));
-            }
-        }
-    };
-
     const onHSubmit = async (data) => {
         if (selectedFile) {
             setLoading(true);
             try {
                 const formattedTime = data.time ? dayjs(data.time).format('hh:mm a') : '';
 
-        // 메타 데이터 전송 -> 동영상전송
-        // const response = await uploadMetaData(data, selectedFile);
+                // 동영상 전송
+                const videoResponse = await uploadFile(selectedFile, data);
 
-        // 동영상 전송
-        const videoResponse = await uploadFile(selectedFile, data);
+                // 화면 이동
+                if(videoResponse){
+                    navigate("/videoresult", { state: { video: selectedFile, data: {...data, time: formattedTime}, response: videoResponse.data } });
+                }
 
-        // 화면 이동
-        if(videoResponse){
-            navigate("/videoresult", { state: { video: selectedFile, data: {...data, time: formattedTime}, response: videoResponse.data } });
+              } catch (error) {
+                console.error('업로드 실패. 에러가 발생하였습니다.', error);
+                setError('업로드 실패. 에러가 발생하였습니다.');
+              } finally {
+                setLoading(false);
+              }
+        } else {
+          setError("파일을 선택해주세요.");
         }
-
-      } catch (error) {
-        console.error('업로드 실패. 에러가 발생하였습니다.', error);
-        setError('업로드 실패. 에러가 발생하였습니다.');
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      setError("파일을 선택해주세요.");
-    }
-  };
+    };
 
   // 영상 내용 기입란에서 엔터 처리
   const handleKeyPress = (event) => {

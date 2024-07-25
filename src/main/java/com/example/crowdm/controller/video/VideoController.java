@@ -60,10 +60,13 @@ public class VideoController {
      **/
     @PostMapping("/videoUpload")
     public ResponseEntity<List<String>> videoUpload(@RequestParam("file") MultipartFile mFile,
-                                                         @RequestParam("originName") String fileOriginName,
-                                                         @RequestParam("place") String place,
-                                                         @RequestParam("time") String time,
-                                                         Model model) throws IOException{
+                                                    @RequestParam("originName") String fileOriginName,
+                                                    @RequestParam("place") String place,
+                                                    @RequestParam("time") String time,
+                                                    @RequestParam("videoq") Videoq videoq,
+                                                    Model model,
+                                                    HttpServletRequest request) throws IOException{
+        videoService.uploadmeta(videoq.getLength(), videoq.getSector(), videoq.getCamera_num(), videoq.getContent(), videoq.getFile_name(), videoq.getChunk_index(),request);
         List<String> result = videoService.uploadToGCP(mFile, fileOriginName, place, time);
         model.addAttribute("data", result);
         return ResponseEntity.ok(result);
@@ -96,12 +99,12 @@ public class VideoController {
      * 4. 작성자    : boyeong
      * 5. 작성일    : 2024. 07. 16
      **/
-    @PostMapping("/uploadmeta")
-    public ResponseEntity<VideoEntity> uploadMeta(@RequestBody Videoq videoq, HttpServletRequest request) {
-        VideoEntity result = videoService.uploadmeta(videoq.getLength(), videoq.getSector(), videoq.getCamera_num(), videoq.getContent(), videoq.getFile_name(), videoq.getChunk_index(),request);
-
-        return ResponseEntity.ok(result);
-    }
+//    @PostMapping("/uploadmeta")
+//    public ResponseEntity<VideoEntity> uploadMeta(@RequestBody Videoq videoq, HttpServletRequest request) {
+//        VideoEntity result = videoService.uploadmeta(videoq.getLength(), videoq.getSector(), videoq.getCamera_num(), videoq.getContent(), videoq.getFile_name(), videoq.getChunk_index(),request);
+//
+//        return ResponseEntity.ok(result);
+//    }
 
 
 }
