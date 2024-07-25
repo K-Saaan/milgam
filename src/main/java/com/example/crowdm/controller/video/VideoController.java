@@ -63,7 +63,7 @@ public class VideoController {
                                                     @RequestParam("originName") String fileOriginName,
                                                     @RequestParam("place") String place,
                                                     @RequestParam("time") String time,
-                                                    @RequestParam("videoq") Videoq videoq,
+                                                    @RequestPart("videoq") Videoq videoq,
                                                     Model model,
                                                     HttpServletRequest request) throws IOException{
         videoService.uploadmeta(videoq.getLength(), videoq.getSector(), videoq.getCamera_num(), videoq.getContent(), videoq.getFile_name(), videoq.getChunk_index(),request);

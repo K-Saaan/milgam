@@ -220,7 +220,7 @@ const UploadForm = () => {
       file_name: selectedFile.name,
       chunk_index: 0,
     };
-    formData.append('videoq', metaData);
+    formData.append('videoq',  new Blob([JSON.stringify(metaData)], { type: 'application/json' }));
 
     try {
       //값 확인
@@ -251,8 +251,11 @@ const UploadForm = () => {
                 const videoResponse = await uploadFile(selectedFile, data);
 
                 // 화면 이동
-                if(videoResponse){
+                if(videoResponse && videoResponse.data){
                     navigate("/videoresult", { state: { video: selectedFile, data: {...data, time: formattedTime}, response: videoResponse.data } });
+                } else {
+                  console.error('업로드 실패.');
+                  setError('업로드 실패. 에러가 발생하였습니다.');
                 }
 
               } catch (error) {
