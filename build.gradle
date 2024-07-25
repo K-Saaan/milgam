@@ -88,11 +88,9 @@ task installReact(type: Exec) {
     group = BasePlugin.BUILD_GROUP
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
         commandLine "npm.cmd", "audit", "fix"
-        commandLine 'npm.cmd', 'install' }
-    else {
-        commandLine "/Users/isumin/.npm-global/bin/npm", "audit", "fix"
-        commandLine '/Users/isumin/.npm-global/bin/npm', 'install'
+        commandLine 'npm.cmd', 'install'
     }
+
 }
 
 task buildReact(type: Exec) {
@@ -103,8 +101,9 @@ task buildReact(type: Exec) {
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
         commandLine "npm.cmd", "run-script", "build"
     } else {
-        commandLine "/Users/isumin/.npm-global/bin/npm", "run-script", "build"
+        commandLine "npm", "run-script", "build"
     }
+
 }
 
 task copyReactBuildFiles(type: Copy) {
@@ -116,7 +115,7 @@ task copyReactBuildFiles(type: Copy) {
     outputs.upToDateWhen { false }
 }
 
-task copyMedia(type: Copy){
+task copyMedia(type: Copy) {
     dependsOn "copyReactBuildFiles"
     from "$projectDir/src/main/resources/static/static/media"
     into "$projectDir/src/main/resources/static/media"
@@ -125,11 +124,11 @@ task copyMedia(type: Copy){
     outputs.upToDateWhen { false }
 }
 
-task copyTomcat(type: Copy){
+task copyTomcat(type: Copy) {
     dependsOn "copyMedia"
     from "$projectDir/src/main/resources/static/static/js"
     into "$projectDir/src/main/resources/static/js"
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
     outputs.upToDateWhen { false }
-    }
+}
