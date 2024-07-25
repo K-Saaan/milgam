@@ -4,12 +4,11 @@ import { useTheme } from '@mui/material/styles';
 import { useNavigate, useLocation } from 'react-router-dom';
 import MailIcon from '@mui/icons-material/Mail'; 
 import CustomListItem from '../Styles/CustomListItem';
-import {AlertManager,SseComponent} from './AlertManager';
+import {fetchDashboards,SseComponent} from './AlertManager';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 
 axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
-
 
 // 컨테이너의 flex 속성을 설정하여 레이아웃을 조정
 const containerStyle = {
@@ -40,8 +39,8 @@ const headerStyle = (theme) => ({
 
 // 알림 리스트의 스타일
 const listStyle = {
-  overflow: 'hidden',
-  height: '110px'
+  overflow: 'auto',
+  height: 'calc(100% - 40px)',
 };
 
 // 시간 텍스트의 스타일
@@ -101,41 +100,8 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }
 
     setAlerts(alerts);
     setUnreadCounts(unreadCounts);
+    setLoading(false);
   };
-  // // getAllMessages로 unreadcount 계산
-  // useEffect(() => {
-  //   const fetchMessages = async () => {
-  //     try {
-  //       const { data: messages } = await getAllMessages();
-  //       const unreadCounts = {};
-        
-  //       messages.forEach(message => {
-  //         const key = message.alertKey;
-  //         if (!message.confirm) {
-  //           if (!unreadCounts[key]) {
-  //             unreadCounts[key] = 0;
-  //           }
-  //           unreadCounts[key] += 1;
-  //         }
-  //       });
-  
-  //       setAlerts(messages.reduce((acc, message) => {
-  //         const key = message.alertKey;
-  //         if (!acc[key]) acc[key] = [];
-  //         acc[key].push(message);
-  //         return acc;
-  //       }, {}));
-  
-  //       setUnreadCounts(unreadCounts);
-  //       setLoading(false);
-  //       // console.log(messages);
-  //     } catch (error) {
-  //       console.error('Error fetching messages:', error);
-  //     }
-  //   };
-  
-  //   fetchMessages();
-  // }, [setAlerts]);
 
   // 알림을 클릭하면 읽었다는 patch 요청보내기
   const onAlertClick = async (alertKey, alert, isAdmin) => {
@@ -143,7 +109,6 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }
     updatedAlerts[alertKey] = updatedAlerts[alertKey].map(alert => ({ ...alert, read: true }));
     
     setAlerts(updatedAlerts); // 상태 업데이트
-  
     handleAlertClick(alert);
 
     try {
@@ -174,9 +139,7 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }
     } catch (error) {
       console.error('fetch 요청 실패:', error);
     }
-  
-    handleAlertClick(alert);
-  
+    
     // 여기서 바로 네비게이션
     const targetPath = isAdmin 
       ? `/admin/dashboard/detail/${alertKey}` 
@@ -185,10 +148,12 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }
     navigate(targetPath, { state: { alert: updatedAlerts[alertKey] } });
   };
 
+  useEffect(() => {
+    fetchDashboards(setAlerts, setLoading);
+  }, [setAlerts, setLoading]);
 
   return (
     <Box sx={containerStyle}>
-      <AlertManager setAlerts={handleSetAlerts} setLoading={setLoading}/>
       <SseComponent setAlerts={handleSetAlerts} />
       <Paper sx={paperStyle(theme)}>
         <Box sx={headerStyle(theme)}>
@@ -215,6 +180,7 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }
                 button
                 onClick={() => onAlertClick(key, alertList, isAdmin)}
                 selected={isSelected}
+                sx={{ height: '100px', overflow: 'hidden' }}
               >
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
           <Typography variant="body2" sx={timeTextStyle(theme, isSelected)}>

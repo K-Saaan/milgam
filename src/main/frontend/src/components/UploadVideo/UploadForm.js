@@ -153,12 +153,12 @@ const Dot = styled('div')(({ theme }) => ({
 }));
 
 const UploadForm = () => {
-  const theme = useTheme();
-  const navigate = useNavigate();
-  const inputRef = useRef();
-  const [selectedFile, setSelectedFile] = useState(null);
-  const { register, handleSubmit, reset, control } = useForm();
-  const [loading, setLoading] = useState(false);
+    const theme = useTheme();
+    const navigate = useNavigate();
+    const inputRef = useRef();
+    const [selectedFile, setSelectedFile] = useState(null);
+    const {register, handleSubmit, reset, control} = useForm();
+    const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState('');
   const [isActive, setActive] = useState(false)
@@ -224,9 +224,9 @@ const UploadForm = () => {
 
     try {
       //값 확인
-      for (let key of formData.keys()) {
-        console.log(key, ":", formData.get(key));
-      }
+      //for (let key of formData.keys()) {
+      //  console.log(key, ":", formData.get(key));
+      //}
       const response = await axios.post('/api/videoUpload', formData, {
         withCredentials: true,
         headers: {
@@ -241,36 +241,41 @@ const UploadForm = () => {
     }
   };
 
-  // 메타 데이터 전송
-  const uploadMetaData = async (data, file) => {
-    const metaData = {
-      length: file.size,
-      sector: data.sector,
-      camera_num: data.camera,
-      content: data.detail,
-      file_name: file.name,
-      chunk_index: 0,
-    };
-    console.log(metaData);
-    try {
-      const response = await axios.post('/api/uploadmeta', metaData, {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      console.log("메타데이터 응답:", response);
-      return response;
-    } catch (error) {
-      console.error('Meta data upload failed.');
-    }
-  };
+    // 메타 데이터 전송
+    const uploadMetaData = async (data, file) => {
+        const metaData = {
+            length: file.size,
+            sector: data.sector,
+            camera_num: data.camera,
+            content: data.detail,
+            file_name: file.name,
+            chunk_index: 0,
+        };
+        console.log(metaData);
 
-  const onHSubmit = async (data) => {
-    if (selectedFile) {
-      setLoading(true);
-      try {
-        const formattedTime = data.time ? dayjs(data.time).format('hh:mm a') : '';
+        while (true) {
+            try {
+                const response = await axios.post('/api/uploadmeta', metaData, {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                console.log(response);
+                return response;
+                break;
+            } catch (error) {
+                console.error('Meta data upload failed.');
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+        }
+    };
+
+    const onHSubmit = async (data) => {
+        if (selectedFile) {
+            setLoading(true);
+            try {
+                const formattedTime = data.time ? dayjs(data.time).format('hh:mm a') : '';
 
         // 메타 데이터 전송 -> 동영상전송
         // const response = await uploadMetaData(data, selectedFile);
@@ -306,113 +311,113 @@ const UploadForm = () => {
     event.target.value = value.replace(/[^0-9]/g, '');
   };
 
-  return (
-      <UploadBG>
-        {loading && (
-            <LoadingOverlay sx={{flexDirection:'column'}}>
-              <DotContainer>
-                <Dot />
-                <Dot />
-                <Dot />
-              </DotContainer>
-              <div style={{color: theme.palette.primary.main, margin: '10px'}}>영상 분석 중</div>
-            </LoadingOverlay>
-        )}
-        {/* 입력 폼 처리 */}
-        <UploadFormContainer
-            isActive={isActive}
-            onSubmit={handleSubmit(onHSubmit)}
-            onDragEnter={handleDragStart}
-            onDragOver={(e) => e.preventDefault()}
-            onDragLeave={handleDragEnd}
-            onDrop={handleDrop}
-        >
-          <input
-              type="file"
-              accept="video/*"
-              style={{ display: "none" }}
-              ref={inputRef}
-              onChange={handleOnChange}
-          />
-          {/* 선택 파일이 없을 때 나타남 */}
-          {!selectedFile && (
-              <FileButton onClick={onChooseFile}>
-                <FileButtonSpan>
-                  <CloudUploadRoundedIcon />
-                </FileButtonSpan>
-                분석할 영상을 선택해주세요.
-              </FileButton>
-          )}
-          {/* 선택한 파일이 있을 때 나타남 */}
-          {selectedFile && (
-              <UploadBG>
-                {/* 파일 명, 선택 취소 */}
-                <SelectedFileContainer>
-                  <SelectedFileP>{selectedFile.name}</SelectedFileP>
-                  <SelectedFileButton onClick={removeFile}>
-                    <DeleteForeverOutlinedIcon/>
-                  </SelectedFileButton>
-                </SelectedFileContainer>
-                {/* 영상 내용 선택적 기입란 */}
-                <CamInputCont>
-                  <div>시각</div>
-                  <Controller
-                      name="time"
-                      control={control}
-                      defaultValue={null}
-                      render={({ field }) => (
-                          <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <TimePicker
-                                {...field}
-                                renderInput={(params) => (
-                                    <CustomTextField
-                                        {...params}
-                                        placeholder="영상 촬영 시각을 입력해주세요."
-                                    />
+    return (
+        <UploadBG>
+            {loading && (
+                <LoadingOverlay sx={{flexDirection: 'column'}}>
+                    <DotContainer>
+                        <Dot/>
+                        <Dot/>
+                        <Dot/>
+                    </DotContainer>
+                    <div style={{color: theme.palette.primary.main, margin: '10px'}}>영상 분석 중</div>
+                </LoadingOverlay>
+            )}
+            {/* 입력 폼 처리 */}
+            <UploadFormContainer
+                isActive={isActive}
+                onSubmit={handleSubmit(onHSubmit)}
+                onDragEnter={handleDragStart}
+                onDragOver={(e) => e.preventDefault()}
+                onDragLeave={handleDragEnd}
+                onDrop={handleDrop}
+            >
+                <input
+                    type="file"
+                    accept="video/*"
+                    style={{display: "none"}}
+                    ref={inputRef}
+                    onChange={handleOnChange}
+                />
+                {/* 선택 파일이 없을 때 나타남 */}
+                {!selectedFile && (
+                    <FileButton onClick={onChooseFile}>
+                        <FileButtonSpan>
+                            <CloudUploadRoundedIcon/>
+                        </FileButtonSpan>
+                        분석할 영상을 선택해주세요.
+                    </FileButton>
+                )}
+                {/* 선택한 파일이 있을 때 나타남 */}
+                {selectedFile && (
+                    <UploadBG>
+                        {/* 파일 명, 선택 취소 */}
+                        <SelectedFileContainer>
+                            <SelectedFileP>{selectedFile.name}</SelectedFileP>
+                            <SelectedFileButton onClick={removeFile}>
+                                <DeleteForeverOutlinedIcon/>
+                            </SelectedFileButton>
+                        </SelectedFileContainer>
+                        {/* 영상 내용 선택적 기입란 */}
+                        <CamInputCont>
+                            <div>시각</div>
+                            <Controller
+                                name="time"
+                                control={control}
+                                defaultValue={null}
+                                render={({field}) => (
+                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                        <TimePicker
+                                            {...field}
+                                            renderInput={(params) => (
+                                                <CustomTextField
+                                                    {...params}
+                                                    placeholder="영상 촬영 시각을 입력해주세요."
+                                                />
+                                            )}
+                                            sx={{width: '315px', backgroundColor: theme.palette.secondary.main}}
+                                        />
+                                    </LocalizationProvider>
                                 )}
-                                sx={{width: '315px', backgroundColor: theme.palette.secondary.main}}
                             />
-                          </LocalizationProvider>
-                      )}
-                  />
-                </CamInputCont>
-                <CamInputCont>
-                  <div>구역</div>
-                  <CustomTextField
-                      id="sector"
-                      placeholder="구역 번호"
-                      {...register("sector")}
-                      inputProps={{maxLength: 5}}
-                      sx={{width: "120px"}}
-                  />
-                  <div>카메라</div>
-                  <CustomTextField
-                      id="camera"
-                      placeholder="카메라 번호"
-                      sx={{width: "120px"}}
-                      {...register("camera")}
-                      inputProps={{maxLength: 10}}
-                      onInput={handleInput}
-                  />
-                </CamInputCont>
-                <div>
-                  <CustomTextField
-                      id="detail"
-                      placeholder="영상 내용(장소)을 기입해주세요."
-                      {...register("detail")}
-                      onKeyPress={handleKeyPress}
-                  />
-                </div>
-                {/* 분석 결과로 이동하는 버튼 */}
-                <LongButton variant="contained" type="submit" style={{marginTop: "40px"}}>
-                  분석
-                </LongButton>
-                <div style={{color: theme.palette.warn}}>{error}</div>
-              </UploadBG>
-          )}
-        </UploadFormContainer>
-      </UploadBG>
-  );
+                        </CamInputCont>
+                        <CamInputCont>
+                            <div>구역</div>
+                            <CustomTextField
+                                id="sector"
+                                placeholder="구역 번호"
+                                {...register("sector")}
+                                inputProps={{maxLength: 5}}
+                                sx={{width: "120px"}}
+                            />
+                            <div>카메라</div>
+                            <CustomTextField
+                                id="camera"
+                                placeholder="카메라 번호"
+                                sx={{width: "120px"}}
+                                {...register("camera")}
+                                inputProps={{maxLength: 10}}
+                                onInput={handleInput}
+                            />
+                        </CamInputCont>
+                        <div>
+                            <CustomTextField
+                                id="detail"
+                                placeholder="영상 내용(장소)을 기입해주세요."
+                                {...register("detail")}
+                                onKeyPress={handleKeyPress}
+                            />
+                        </div>
+                        {/* 분석 결과로 이동하는 버튼 */}
+                        <LongButton variant="contained" type="submit" style={{marginTop: "40px"}}>
+                            분석
+                        </LongButton>
+                        <div style={{color: theme.palette.warn}}>{error}</div>
+                    </UploadBG>
+                )}
+            </UploadFormContainer>
+        </UploadBG>
+    );
 }
 
 export default UploadForm;
