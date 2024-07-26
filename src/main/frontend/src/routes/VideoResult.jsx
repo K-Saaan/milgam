@@ -20,12 +20,21 @@ const rightSectionStyle = {
   minWidth: '300px',
 };
 
+/**
+ * 1. ClassName: VideoResult
+ * 2. FileName : VideoResult.jsx
+ * 3. Package  : routes
+ * 4. Comment  : 영상 분석 결과 페이지
+ * 5. 작성자   : boreum
+ * 6. 작성일   : 2024. 07. 02
+ **/
 function VideoResult(){
     // 분석 결과 리스트를 선택하면 내용이 바뀌도록 전달하는 역할
     const [selectedItem, setSelectedItem] = useState(null);
     // 클릭 시 비디오 이동
     const [isClicked, setClicked] = useState(0);
 
+    // 리스트 선택 뿐 아니라 클릭도 관리하기 위해 카운트
     const handleSelect = (item) => {
         setSelectedItem(item);
         setClicked(isClicked + 1);

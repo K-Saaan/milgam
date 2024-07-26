@@ -32,6 +32,14 @@ const CustomDialogContentText = styled(DialogContentText)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
+/**
+ * 1. ClassName: ApprovalAlert
+ * 2. FileName : ApprovalAlert.js
+ * 3. Package  : components.Admin
+ * 4. Comment  : 회원 가입 신청 승인 상세 페이지
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 04
+ **/
 const ApprovalAlert = ({ open, handleClose, handleApprovalOrRejection, inquiry }) => {
     const theme = useTheme();
 
@@ -39,6 +47,13 @@ const ApprovalAlert = ({ open, handleClose, handleApprovalOrRejection, inquiry }
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    /**
+     * 1. MethodName: -
+     * 2. ClassName : ApprovalAlert
+     * 3. Comment   : 가입 승인 상세 정보 요청
+     * 4. 작성자    : boreum
+     * 5. 작성일    : 2024. 07. 10
+     **/
     useEffect(() => {
         let isMounted = true;
 
@@ -47,11 +62,6 @@ const ApprovalAlert = ({ open, handleClose, handleApprovalOrRejection, inquiry }
                 setLoading(true);
                 setError(null);
                 try {
-                    /*const instance = axios.create({
-                        withCredentials: true, // 쿠키 포함 설정
-                    });*/
-
-                    //const response = await instance.get(`/admin/userdetail?user_index=${inquiry.user_index}`);
                     const response = await axios.get(`/admin/userdetail?user_index=${inquiry.user_index}`);
                     if (isMounted) {
                         setData(response.data[0]);
@@ -73,6 +83,7 @@ const ApprovalAlert = ({ open, handleClose, handleApprovalOrRejection, inquiry }
         }
     }, [inquiry]);
 
+    //타임스탬프 형식의 날짜를 포맷팅
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
         return new Date(dateString).toLocaleDateString('en-CA', options);
@@ -83,16 +94,19 @@ const ApprovalAlert = ({ open, handleClose, handleApprovalOrRejection, inquiry }
             <DialogTitle>회원가입 상세 정보</DialogTitle>
             <Divider style={{ background: theme.palette.divider }} />
             <DialogContent sx={{minWidth:'560px'}}>
+                {/* 로딩 중 */}
                 {loading && (
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
                         <CircularProgress />
                     </div>
                 )}
+                {/* 오류 처리 */}
                 {!data && error && (
                     <CustomDialogContentText>
                         {error}
                     </CustomDialogContentText>
                 )}
+                {/* 로딩 성공 */}
                 {data && !loading && (
                     <>
                         <DialogContentText style={{ marginBottom: '15px' }}>
@@ -151,6 +165,7 @@ const ApprovalAlert = ({ open, handleClose, handleApprovalOrRejection, inquiry }
                 <BtnStyle variant="contained" onClick={handleClose} sx={{ backgroundColor: theme.palette.cancel }}>
                     취소
                 </BtnStyle>
+                {/* 상태에 따라 버튼 나타남 */}
                 {data && data.status !== '거절' && (
                     <BtnStyle variant="contained" onClick={() => handleApprovalOrRejection('rejected')} sx={{ backgroundColor: theme.palette.warn }}>
                         거절

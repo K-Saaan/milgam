@@ -38,6 +38,14 @@ const progressStyle = {
   display: 'flex',
 };
 
+/**
+ * 1. ClassName: ReplyInquiry
+ * 2. FileName : ReplyInquiry.js
+ * 3. Package  : components.Admin
+ * 4. Comment  : 회원 가입 신청 승인 페이지
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 04
+ **/
 const ReplyInquiry = () => {
   const theme = useTheme();
 
@@ -61,17 +69,20 @@ const ReplyInquiry = () => {
     setPage(0);
   };
 
+  /**
+   * 1. MethodName: -
+   * 2. ClassName : Approval
+   * 3. Comment   : 가입 신청 목록 요청
+   * 4. 작성자    : boreum
+   * 5. 작성일    : 2024. 07. 09
+   **/
   useEffect(() => {
     // 데이터를 가져오는 비동기 함수
     const fetchReq = async () => {
       try {
-        /* const instance = axios.create({
-          withCredentials: true, // 쿠키 포함 설정
-        }); */
-
-        //const response = await instance.get('/admin/userlist');
         const response = await axios.get('/admin/userlist');
         //console.log(response.data);
+        //날짜 순 정렬
         const sortedData = response.data.sort((a, b) => new Date(b.applyDate) - new Date(a.applyDate));
         setData(sortedData);
       } catch (error) {
@@ -103,13 +114,15 @@ const ReplyInquiry = () => {
   };
 
   // 승인, 거절 처리 함수
+  /**
+   * 1. MethodName: handleApprovalOrRejection
+   * 2. ClassName : Approval
+   * 3. Comment   : 가입 승인, 거절 처리
+   * 4. 작성자    : boreum
+   * 5. 작성일    : 2024. 07. 15
+  **/
   const handleApprovalOrRejection = (status) => {
     const apiEndpoint = status === 'completed' ? `/admin/permission?user_index=${selectedInquiry.user_index}` : `/admin/deny?user_index=${selectedInquiry.user_index}`;
-    /*const instance = axios.create({
-      withCredentials: true, // 쿠키 포함 설정
-    });
-
-    instance.get(apiEndpoint).then(response => {*/
     axios.get(apiEndpoint).then(response => {
       const updatedData = data.map((row) =>
         row.user_index === selectedInquiry.user_index ? { ...row, status: status === 'completed' ? 'completed' : 'rejected' } : row

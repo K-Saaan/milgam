@@ -36,6 +36,14 @@ const cTextStyle = (theme) => ({
     fontSize: "14px"
 });
 
+/**
+ * 1. ClassName: NoPermissionAlert
+ * 2. FileName : NoPermissionAlert.js
+ * 3. Package  : components.Login
+ * 4. Comment  : 미승인으로 로그인 실패 알림 창
+ * 5. 작성자   : boreum
+ * 6. 작성일   : 2024. 06. 27
+ **/
 // 관리자 승인 전일 때 띄움
 const NoPermissionAlert = ({ alertOpen, handleClose }) => {
     const theme = useTheme();
