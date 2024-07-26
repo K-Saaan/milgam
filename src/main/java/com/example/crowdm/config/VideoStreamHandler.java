@@ -17,6 +17,15 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+
+
+/**
+ * 1. ClassName : VideoStreamHandler
+ * 2. Comment   : video 전송을 위한 handler 정의
+ * 3. 작성자    : san
+ * 4. 작성일    : 2024. 07. 09
+ **/
+
 @Slf4j
 @Component
 @RequiredArgsConstructor

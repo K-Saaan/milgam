@@ -65,33 +65,11 @@ public class VideoController {
                                                     Model model,
                                                     HttpServletRequest request) throws IOException{
         videoService.uploadmeta(videoq.getLength(), videoq.getSector(), videoq.getCamera_num(), videoq.getContent(), videoq.getFile_name(), videoq.getChunk_index(),request);
+
+        // GCP VM으로 비디오 전송
         List<String> result = videoService.uploadToGCP(mFile, fileOriginName, place, time);
         model.addAttribute("data", result);
         return ResponseEntity.ok(result);
     }
-
-    /**
-     * 1. MethodName: videoUpload
-     * 2. ClassName : VideoController
-     * 3. Comment   : 비디오 업로드
-     * 4. 작성자    : san
-     * 5. 작성일    : 2024. 06. 27
-     **/
-    @PostMapping("/videoResult")
-    public ResponseEntity handleResult(@RequestParam("result") MultipartFile result,
-                                       @RequestParam("chunkIndex") int chunkIndex,
-                                       @RequestParam("totalChunks") int totalChunks) throws IOException{
-        String resultContent = new String(result.getBytes(), "UTF-8");
-        logger.info("resultContent = {}", resultContent);
-        logger.info("chunkIndex = {}", chunkIndex);
-        logger.info("totalChunks = {}", totalChunks);
-        messagingTemplate.convertAndSend("/videoresult", resultContent);
-        return ResponseEntity.ok("Result to front");
-    }
-
-
-
-
-
 }
 

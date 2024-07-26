@@ -1,19 +1,15 @@
+server:
+  port: 8080
+
 spring:
-  config:
-    activate:
-      on-profile: dev
   thymeleaf:
     cache: false
-  mvc:
-    view:
-      prefix: /WEB-INF/views/
-      suffix: .jsp
-    static-path-pattern: /static/**
-  include: devsecret
+  profiles:
+    default: dev
+    include: secret_dev
   web:
     resources:
-      static-locations:
-        classpath:/static
+      static-locations: classpath:/static/, file:/opt/tomcat/webapps/crowdM/static/
       add-mappings: true
   jpa:
     database: postgresql
@@ -24,6 +20,27 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+  h2:
+    console:
+      enabled: false
 logging:
-  level:
-    root: info
+  logging:
+    config: classpath:logback/logback.xml
+
+# 로그인 실패 횟수
+login:
+  fail:
+    limit : 5
+
+# 파일 경로
+file_path:
+  video_path: /video/upload
+
+
+url:
+  gcp_upload: http://34.64.251.222:5000/upload

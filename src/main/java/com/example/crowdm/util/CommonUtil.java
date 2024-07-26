@@ -1,11 +1,6 @@
 package com.example.crowdm.util;
 
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -95,7 +90,6 @@ public class CommonUtil {
      * 3. Comment   : VO 를 Map 로 변환
      * 4. 작성자    : san
      * 5. 작성일    : 2024. 06. 24
-     * 
      *
      * @return Map
      * @param obj

@@ -7,10 +7,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+/**
+ * 1. ClassName : ErrorPageController
+ * 2. Comment   : 에러 화면으로 이동
+ * 3. 작성자    : san
+ * 4. 작성일    : 2024. 07. 09
+ **/
+
 @Slf4j
 @Controller
 @RequestMapping("/error")
 public class ErrorPageController {
+
 
     @RequestMapping("/400")
     public String error400(HttpServletRequest request, HttpServletResponse response) {
