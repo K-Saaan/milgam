@@ -8,6 +8,14 @@ import Fourth from "./gif_icon/4.gif"
 import Fifth from "./gif_icon/5.gif"
 import Sixth from "./gif_icon/6.gif"
 
+/**
+ * 1. FileName : Page2.js
+ * 3. Package  : components.Home.Page2
+ * 4. Comment  : home 페이지 속 기능 소개 
+ * 5. 작성자   : bonjae
+ * 6. 작성일   : 2024. 07. 08
+ **/
+
 // page
 const cPage2Style = (theme) => ({
   widht:'100%',

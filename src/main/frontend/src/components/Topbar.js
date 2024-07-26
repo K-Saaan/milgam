@@ -15,6 +15,15 @@ import ModeSwitch from './Styles/ModalSwitch';
 import Logout from './Logout';
 import axios from 'axios';
 
+/**
+ * 1. FileName : Topbar.js
+ * 3. Package  : components.Topbar
+ * 4. Comment  : 네비게이션 바
+ * 5. 작성자   : bonjae
+ * 6. 작성일   : 2024. 07. 01
+ **/
+
+
 const abStyle = (theme) => ({backgroundColor: theme.palette.background.paper});
 const titleStyle = { display: {  sm: 'block' } };
 const profileIconStyle = { display: { xs: 'none', md: 'flex' } };

@@ -13,6 +13,14 @@ import sb from "./team_images/상빈-ccut.png"
 import sm from "./team_images/수민-ccut.png"
 import sw from "./team_images/승원-ccut.png"
 
+/**
+ * 1. FileName : Page4.js
+ * 3. Package  : components.Home.Page4
+ * 4. Comment  : home 페이지 속 툴 소개 
+ * 5. 작성자   : bonjae
+ * 6. 작성일   : 2024. 07. 25
+ **/
+
 const containerStyle = {
   display: 'grid',
   gridTemplateColumns: 'repeat(3, 1fr)',
