@@ -5,13 +5,20 @@ import lombok.*;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+/**
+ * 1. ClassName : EventEntity
+ * 2. Comment : 이벤트 조회와 추가
+ * 3. 작성자 : bonjae
+ * 4. 작성일 : 2024. 07. 08
+ **/
+
 @Getter
 @Setter
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "event", schema="public")
+@Table(name = "event", schema = "public")
 public class EventEntity {
 
     @Id
@@ -28,7 +35,7 @@ public class EventEntity {
     @Column(name = "end_date", nullable = false)
     private Timestamp end_date;
 
-    @Column(name = "gu", length = 30, nullable = false )
+    @Column(name = "gu", length = 30, nullable = false)
     private String gu;
 
     @Column(name = "dong", length = 30, nullable = false)

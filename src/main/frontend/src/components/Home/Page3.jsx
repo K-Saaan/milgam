@@ -18,6 +18,14 @@ import Thirteenth from "./tech_images/13.png";
 import Fourteenth from "./tech_images/14.png";
 import Fifteenth from "./tech_images/15.png";
 
+/**
+ * 1. FileName : Page3.js
+ * 3. Package  : components.Home.Page3
+ * 4. Comment  : home 페이지 속 툴 소개 
+ * 5. 작성자   : bonjae
+ * 6. 작성일   : 2024. 07. 08
+ **/
+
 const containerStyle = {
   display: 'grid',
   gridTemplateColumns: 'repeat(5, 1fr)',
