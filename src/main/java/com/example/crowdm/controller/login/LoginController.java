@@ -38,6 +38,13 @@ public class LoginController {
         return "login/loginPage";
     }
 
+    /**
+     * 1. MethodName: loginAction
+     * 2. ClassName : LoginController
+     * 3. Comment   : 내 페이지 프로필
+     * 4. 작성자    : leesumin
+     * 5. 작성일    : 2024. 07. 15
+     **/
     @PostMapping(value = "/loginAction")
     public Object loginAction(@RequestBody LoginRequest loginRequest, Model model, HttpServletRequest request, HttpServletResponse response) throws InvalidKeyException, UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
         logger.info("userID = {}", loginRequest.getId());
