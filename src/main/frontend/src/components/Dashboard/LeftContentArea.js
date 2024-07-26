@@ -9,6 +9,15 @@ import CrowdRatioCard from './CrowdRatioCard';
 import regions from './data/regions';
 import useStore from '../../store';
 
+/**
+ * 1. ClassName: LeftContentArea
+ * 2. FileName : LeftContentArea.js
+ * 3. Package  : components.LeftContentArea
+ * 4. Comment  : 대시보드 좌측 화면 카드
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 12
+ **/
+
 // Autocomplete 스타일
 const autocompleteStyle = (theme) => ({
   minWidth: 280,
@@ -52,8 +61,8 @@ const LeftContentArea = () => {
   // 사용자가 지역을 변경했을 때 호출
   const handleRegionChange = (event, newValue) => {
     const regionValue = newValue ? newValue.value : '광화문·덕수궁';
-    setSelectedRegion(regionValue); // 선택된 지역을 업데이트합니다 (useQuery 트리거)
-    queryClient.invalidateQueries('fetchData'); // 선택한 지역에 대한 데이터를 다시 불러옵니다
+    setSelectedRegion(regionValue); 
+    queryClient.invalidateQueries('fetchData'); 
   };
 
   return (
@@ -72,12 +81,12 @@ const LeftContentArea = () => {
             sx={{
               ...autocompleteStyle(theme),
               position: 'relative',
-              top: '-65px', // 원하는 높이만큼 올려줍니다
+              top: '-65px', 
             }}            renderInput={(params) => (
               <TextField 
                 {...params} 
                 label="지역 선택" 
-                placeholder="지역을 검색하세요." // placeholder 추가
+                placeholder="지역을 검색하세요." 
               />
             )}
           />

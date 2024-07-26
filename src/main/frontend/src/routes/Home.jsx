@@ -2,13 +2,9 @@ import { useTheme } from "@emotion/react";
 import Page1 from "../components/Home/Page1";
 import Page2 from "../components/Home/Page2";
 import Page3 from "../components/Home/Page3";
-
 import { motion, useScroll, useSpring } from "framer-motion";
 import { useRef } from "react";
 import Page4 from "../components/Home/Page4";
-import Page5 from "../components/Home/Page5";
-import Page6 from "../components/Home/Page6";
-
 
 
 //page
@@ -56,6 +52,14 @@ const cPBarStyle = (theme) => ({
 
 });
 
+/**
+ * 1. ClassName: Home
+ * 2. FileName : Home.js
+ * 3. Package  : components.Home
+ * 4. Comment  : Home 화면 
+ * 5. 작성자   : bonjae
+ * 6. 작성일   : 2024. 07. 12
+ **/
 
 function Home(){
 
@@ -77,38 +81,20 @@ function Home(){
 
     return (
         <>
-
-
-
           <div style={pageStyle} ref={ref}>
             <div style={containerStyle}>
-
               <div style={contentStyle}>
                 <Page1 />
               </div>
-
               <div style={contentStyle}>
                 <Page2 />
               </div>
-
               <div style={contentStyle}>
                 <Page3 />
               </div>
-
               <div style={contentStyle}>
                 <Page4 />
               </div>
-
-              {/* <div style={contentStyle}>
-                <Page5 />
-              </div> */}
-
-              {/* <div style={contentStyle}>
-                <Page6 />
-              </div> */}
-
-           
-
             <motion.div  style={{ scaleX, ...pBarStyle }} />
             </div>
             

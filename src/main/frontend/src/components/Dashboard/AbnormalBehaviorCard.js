@@ -6,6 +6,14 @@ import { getBarChartOptions } from './charts/BarChartContainer';
 import { AlertManager, SseComponent } from './AlertManager';
 import CustomPaper from './styles/CustomPaper'
 
+/**
+ * 1. ClassName: AbnormalBehaviorCard
+ * 2. FileName : AbnormalBehaviorCard.js
+ * 3. Package  : components.AbnormalBehaviorCard
+ * 4. Comment  : 대시보드 이상행동 카드
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 12
+ **/
 
 // 초기 바 차트 데이터
 const initialBarChartData = {

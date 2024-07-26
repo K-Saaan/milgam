@@ -1,9 +1,18 @@
-import React from 'react';
-import { useNavigate, useLocation, useOutletContext } from 'react-router-dom';
-import { Paper, Typography, IconButton, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
+import { Box, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/system';
+import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+/**
+ * 1. ClassName: LeftContentAreaDetail
+ * 2. FileName : LeftContentAreaDetail.js
+ * 3. Package  : components.LeftContentAreaDetail
+ * 4. Comment  : 대시보드 알림 상세 카드
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 12
+ **/
 
 // 지도 영역 바깥 컨테이너 스타일
 const paperStyle = (theme) => ({
@@ -79,9 +88,7 @@ const LeftContentAreaDetail = () => {
   const location = useLocation();
   const theme = useTheme();
   const isAdmin = location.pathname.startsWith('/admin');
-
   const alertData = location.state?.alert || []; // 전달받은 알림 데이터
-
   const handleCloseClick = () => {
     const targetPath = isAdmin ? '/admin/dashboard' : '/dashboard';
     navigate(targetPath);

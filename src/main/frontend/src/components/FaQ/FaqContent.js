@@ -6,6 +6,14 @@ import FaqItem from './FaqItem';
 
 axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
 
+/**
+ * 1. FunctionName: FaqContent
+ * 2. FileName : FaqContent.js
+ * 3. Package  : components.FaqContent
+ * 4. Comment  : Faq 내용 함수
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 03
+ **/
 function FaqContent() {
   const [questions, setQuestions] = useState([]);
   const [expanded, setExpanded] = useState(false);
@@ -16,6 +24,13 @@ function FaqContent() {
     setExpanded(isExpanded ? panel : false);
   };
 
+  /**
+   * 1. MethodName: -
+   * 2. ClassName : FaqContent
+   * 3. Comment   : faq 답변 통신
+   * 4. 작성자    : mijin
+   * 5. 작성일    : 2024. 07. 06
+   **/
   useEffect(() => {
     // 데이터를 가져오는 비동기 함수
     const fetchFaqs = async () => {

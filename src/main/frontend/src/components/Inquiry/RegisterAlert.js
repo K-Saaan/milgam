@@ -19,13 +19,27 @@ const actionStyle = {
     marginBottom: "20px",
 }
 
+/**
+ * 1. FunctionName: RegisterAlert
+ * 2. FileName : RegisterAlert.js
+ * 3. Package  : components.RegisterAlert
+ * 4. Comment  : 문의 제출 폼
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 19
+ **/
 function RegisterAlert({ open, handleClose, onSubmit }) {
   const theme = useTheme();
   // useForm 훅으로 폼 관리 기능
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
-  // 폼이 제출될 때 호출되는 함수 
-  const handleFormSubmit = async (data) => {
+  /**
+   * 1. MethodName: handleFormSubmit
+   * 2. ClassName : handleFormSubmit
+   * 3. Comment   : 문의 데이터 제출
+   * 4. 작성자    : mijin
+   * 5. 작성일    : 2024. 07. 19
+   **/
+    const handleFormSubmit = async (data) => {
     try {
       console.log(data);
       await axios.post('/myq/addquestion', data);
@@ -74,7 +88,7 @@ function RegisterAlert({ open, handleClose, onSubmit }) {
             type="text"
             fullWidth
             rows={8}
-            multiline // 여러줄 입력 가능
+            multiline
             {...register('question', { required: true })}
             error={!!errors.question}
             helperText={errors.question ? 'This field is required' : ''}

@@ -3,7 +3,14 @@ import regions from '../data/regions';
 
 /* global naver */
 
-// NaverMap 컴포넌트
+/**
+ * 1. ClassName: NaverMap
+ * 2. FileName : NaverMap.js
+ * 3. Package  : components.NaverMap
+ * 4. Comment  : 네이버 지도 API 통신
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 12
+ **/
 const NaverMap = ({ mapCenter, setMapCenter, crowdData, getCrowdColor }) => {
   const mapElement = useRef(null);
   const mapRef = useRef(null);
