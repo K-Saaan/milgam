@@ -33,6 +33,15 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+/**
+ * 1. ClassName: Dashboard
+ * 2. FileName : Dashboard.js
+ * 3. Package  : components.Dashboard
+ * 4. Comment  : Dashboard 화면 
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 12
+ **/
+
 const Dashboard = () => {
   const [selectedAlert, setSelectedAlert] = useState(null); // 선택된 알림을 관리하는 상태
   const location = useLocation();

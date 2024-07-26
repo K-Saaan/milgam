@@ -6,7 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-
+/**
+ * 1. MethodName: loginlog
+ * 2. ClassName : LoginLogService
+ * 3. Comment   : 로그인로그 기록
+ * 4. 작성자    : 이수민
+ * 5. 작성일    : 2024. 07. 04
+ **/
 @Service
 public class LoginLogService {
 

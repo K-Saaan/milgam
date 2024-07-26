@@ -5,6 +5,15 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useTheme } from '@mui/material/styles';
 import Checklist from "./checklist.png"
 
+/**
+ * 1. ClassName: FaqItem
+ * 2. FileName : FaqItem.js
+ * 3. Package  : components.FaqItem
+ * 4. Comment  : Faq 질문 목록 컴포넌트
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 03
+ **/
+
 const FaqItem = ({ item, index, expanded, handleChange }) => {
   const isExpanded = expanded === `panel${index}`;
   const theme = useTheme();

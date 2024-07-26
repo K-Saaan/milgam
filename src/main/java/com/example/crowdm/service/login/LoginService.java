@@ -171,14 +171,28 @@ public class LoginService {
         return resultMap;
     }
 
+    /**
+     * 1. MethodName: getEventTitle
+     * 2. ClassName : LoginService
+     * 3. Comment   : 유저와 매칭되는 이벤트 제목 반환
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 15
+     **/
     public String getEventTitle(Integer event_index) {
         Optional<EventEntity> eventOptional = eventRepository.findById(event_index);
         EventEntity event = eventOptional.get();
         return event.getTitle();
     }
 
-    public Profile getProfile(HttpServletRequest request) {
-        // session
+    /**
+     * 1. MethodName: getProfile
+     * 2. ClassName : LoginService
+     * 3. Comment   : 프로필정보
+     * 4. 작성자    : boyeong, sumin
+     * 5. 작성일    : 2024. 07. 17
+     **/
+    public Profile getProfile(HttpServletRequest request){
+        //session
         HttpSession session = request.getSession();
         Integer user_index = (Integer) session.getAttribute("userIndex");
 
@@ -197,6 +211,13 @@ public class LoginService {
 
     }
 
+    /**
+     * 1. MethodName: UpdateEventAtProfile
+     * 2. ClassName : FaqService
+     * 3. Comment   : 프로필에서 이벤트 업데이트
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 16
+     **/
     @Transactional
     public String UpdateEventAtProfile(Integer event_index, HttpServletRequest request) {
         // session

@@ -1,7 +1,14 @@
 package com.example.crowdm.dto.faq;
 
-import java.sql.Timestamp;
 
+
+/**
+ * 1. MethodName: RequestAddMyq
+ * 2. ClassName : RequestAddMyq
+ * 3. Comment   : 1:1 문의 등록하는 요청 dto
+ * 4. 작성자    : boyeong
+ * 5. 작성일    : 2024. 07. 12
+ **/
 public class RequestAddMyq {
 
     private String question_title;

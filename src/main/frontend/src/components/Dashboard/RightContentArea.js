@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
-import { Box, Paper, Typography, List, Badge, Skeleton } from '@mui/material';
+import MailIcon from '@mui/icons-material/Mail';
+import { Badge, Box, List, Paper, Skeleton, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useNavigate, useLocation } from 'react-router-dom';
-import MailIcon from '@mui/icons-material/Mail'; 
-import CustomListItem from '../Styles/CustomListItem';
-import {AlertManager,SseComponent} from './AlertManager';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
+import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import CustomListItem from '../Styles/CustomListItem';
+import { AlertManager, SseComponent } from './AlertManager';
+
+/**
+ * 1. ClassName: RightContentArea
+ * 2. FileName : RightContentArea.js
+ * 3. Package  : components.RightContentArea
+ * 4. Comment  : 대시보드 위험 상세 카드 
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 02
+ **/
+
 
 axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
 
@@ -83,6 +93,7 @@ const formatDate = (dateString) => {
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 };
 
+
 const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }) => {
   const theme = useTheme();
   const location = useLocation();
@@ -103,7 +114,13 @@ const RightContentArea = ({ handleAlertClick, selectedAlert, alerts, setAlerts }
     setLoading(false);
   };
 
-  // 알림을 클릭하면 읽었다는 patch 요청보내기
+  /**
+   * 1. MethodName: onAlertClick
+   * 2. ClassName : RightContentArea
+   * 3. Comment   : 알림 읽음 통신
+   * 4. 작성자    : mijin
+   * 5. 작성일    : 2024. 07. 22
+   **/
   const onAlertClick = async (alertKey, alert, isAdmin) => {
     const updatedAlerts = { ...alerts };
     updatedAlerts[alertKey] = updatedAlerts[alertKey].map(alert => ({ ...alert, read: true }));

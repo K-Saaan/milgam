@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, TablePagination , Skeleton} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import RegisterAlert from './RegisterAlert';
-import ReplyAlert from './ReplyAlert';
+import { Box, Button, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
-import { CustomTableRow, tableHeaderStyle, tableCellStyle } from '../Styles/CustomTable'
+import React, { useEffect, useState } from 'react';
+import { CustomTableRow, tableCellStyle, tableHeaderStyle } from '../Styles/CustomTable';
+import RegisterAlert from './RegisterAlert';
+import ReplyAlert from './ReplyAlert';
 
 axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
 
@@ -40,6 +40,14 @@ const formatDate = (dateString) => {
   return `${year}-${month}-${day}`;
 };
 
+/**
+ * 1. FunctionName: InquiryBoard
+ * 2. FileName : InquiryBoard.js
+ * 3. Package  : components.InquiryBoard
+ * 4. Comment  : 문의 보여주는 카드
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 12
+ **/
 const InquiryBoard = () => {
   const theme = useTheme();
   const [page, setPage] = React.useState(0); // 페이지네이션
@@ -56,9 +64,9 @@ const InquiryBoard = () => {
     setPage(0);
   };
 
-  const [openRegister, setOpenRegister] = useState(false);   // 등록 다이얼로그 열림 상태 관리
-  const [openReply, setOpenReply] = useState(false);   // 답변 다이얼로그 열림 상태 관리
-  const [selectedInquiry, setSelectedInquiry] = useState(null);   // 선택된 문의 관리
+  const [openRegister, setOpenRegister] = useState(false);  
+  const [openReply, setOpenReply] = useState(false);   
+  const [selectedInquiry, setSelectedInquiry] = useState(null);   
 
   // 등록 다이얼로그 열기
   const handleClickOpenRegister = () => {
@@ -82,6 +90,13 @@ const InquiryBoard = () => {
     setSelectedInquiry(null);
   };
 
+  /**
+   * 1. MethodName: fetchInquiries
+   * 2. ClassName : fetchInquiries
+   * 3. Comment   : 문의 데이터 통신
+   * 4. 작성자    : mijin
+   * 5. 작성일    : 2024. 07. 19
+   **/
   const fetchInquiries = async () => {
     try {
       const response = await axios.get('/myq/questionlist');
@@ -134,7 +149,6 @@ const InquiryBoard = () => {
               inquiries.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((inquiry, index) => (
                 // 각 문의 항목을 클릭하면 답변 다이얼로그 열기
                 <CustomTableRow key={inquiry.myq_index} onClick={() => handleClickOpenReply(inquiry)} sx={{ cursor: 'pointer' }}>
-                  {/* <TableCell sx={tableCellStyle(theme)}>{inquiry.myq_index}</TableCell> */}
                   <TableCell sx={tableCellStyle(theme)}>{page * rowsPerPage + index + 1}</TableCell>
                   <TableCell sx={tableCellStyle(theme)}>{inquiry.question_title}</TableCell>
                   <TableCell sx={tableCellStyle(theme)}>{inquiry.status}</TableCell>
@@ -154,8 +168,7 @@ const InquiryBoard = () => {
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          rowsPerPageOptions={[5, 10, 15, 20]} // 페이지 네이션 옵션
-          sx={{ mt: 'auto' }} // 페이지네이션을 하단에 고정
+          rowsPerPageOptions={[5, 10, 15, 20]} 
         />
       )}
       {/* 등록 다이얼로그 */}

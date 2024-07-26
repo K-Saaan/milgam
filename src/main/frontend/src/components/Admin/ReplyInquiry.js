@@ -33,6 +33,14 @@ const formatDate = (dateString) => {
     return `${year}-${month}-${day}`;
 };
 
+/**
+ * 1. FunctionName: ReplyInquiry
+ * 2. FileName : ReplyInquiry.js
+ * 3. Package  : components.ReplyInquiry
+ * 4. Comment  : 어드민 문의 답변 
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 23
+ **/
 const ReplyInquiry = () => {
     // 상태관리 변수들
     const theme = useTheme();
@@ -41,7 +49,14 @@ const ReplyInquiry = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null)
-    
+
+    /**
+     * 1. MethodName: fetchQuestions
+     * 2. ClassName : fetchQuestions
+     * 3. Comment   : 어드민 답변 통신
+     * 4. 작성자    : mijin
+     * 5. 작성일    : 2024. 07. 21
+     **/
     const fetchQuestions = async () => {
         try {
           setLoading(true); // 데이터 로딩 시작
@@ -87,7 +102,13 @@ const ReplyInquiry = () => {
         setSelectedQuestion(null);
     };
 
-    // 답변 제출 처리 함수
+    /**
+     * 1. MethodName: handleAnswerSubmit
+     * 2. ClassName : handleAnswerSubmit
+     * 3. Comment   : 어드민 제출 통신
+     * 4. 작성자    : mijin
+     * 5. 작성일    : 2024. 07. 21
+     **/
     const handleAnswerSubmit = async (data) => {
         const answerData = {
             myq_index: selectedQuestion.myq_index, 

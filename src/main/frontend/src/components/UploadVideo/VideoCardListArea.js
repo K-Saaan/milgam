@@ -64,31 +64,27 @@ const listStyle = {
     ...noScrollbarStyles
 };
 
+/**
+ * 1. ClassName: VideoCardListArea
+ * 2. FileName : VideoCardListArea.js
+ * 3. Package  : components.UploadVideo
+ * 4. Comment  : 영상 분석 결과 리스트 출력 화면
+ * 5. 작성자   : boreum
+ * 6. 작성일   : 2024. 07. 02
+ **/
 const VideoCardListArea = ({ onSelect, selectedItem}) => {
     const theme = useTheme();
     const { state } = useLocation();
     const [alerts, setAlerts] = useState([]);
 
-    //useEffect(() => {
-    //    if (state?.response) {
-    //        const alertsWithId = state.response.map((alert, index) => ({
-    //            id: index + 1,
-    //            timestamp: alert[0],
-    //            event: alert[1],
-    //            message: alert[2]
-    //        }));
-    //
-    //        setAlerts(alertsWithId);
-    //    }
-    //}, [state]);
-
+    //받아 온 영상 분석 결과를 추출하는 부분
     useEffect(() => {
         if (state?.response) {
             const alertsWithId = state.response.map((alertString, index) => {
                 // 정규식 사용하여 각 부분을 추출
                 const regex = /^\[(.*?),\s(.*?),\s([\s\S]*?)\]$/;
                 const match = alertString.match(regex);
-
+                //문자열을 각 필드로 나누어 저장
                 if (match) {
                     return {
                         id: index + 1,
@@ -132,6 +128,7 @@ const VideoCardListArea = ({ onSelect, selectedItem}) => {
                         </Box>
                     </CustomListItem>
                 )) : (
+                    //알림 없을 때
                     <Typography variant="body2" align="center" sx={{ marginTop: '16px' }}>
                         No alerts available
                     </Typography>

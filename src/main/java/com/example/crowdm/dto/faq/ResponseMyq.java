@@ -1,7 +1,15 @@
 package com.example.crowdm.dto.faq;
 
-import java.sql.Time;
+
 import java.sql.Timestamp;
+/**
+ * 1. MethodName: ResponseMyq
+ * 2. ClassName : ResponseMyq
+ * 3. Comment   : 1:1문의 응답 결과 반환 dto
+ * 4. 작성자    : boyeong
+ * 5. 작성일    : 2024. 07. 12
+ **/
+
 
 public class ResponseMyq {
     private Integer myqIndex;

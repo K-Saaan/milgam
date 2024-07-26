@@ -10,6 +10,14 @@ import CustomTextField from '../Styles/CustomTextField.js';
 import Stack from '@mui/material/Stack';
 import useStore from "../../store";
 
+/**
+ * 1. ClassName: LogInForm
+ * 2. FileName : LogInForm.js
+ * 3. Package  : components.Login
+ * 4. Comment  : 로그인 작성 폼
+ * 5. 작성자   : boreum
+ * 6. 작성일   : 2024. 06. 27
+ **/
 const LogInForm = ({ marginBottom }) => {
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -33,7 +41,16 @@ const LogInForm = ({ marginBottom }) => {
     const npHandleClickOpen = () => { npSetOpen(true); };
     const npHandleClose = () => { npSetOpen(false); };
 
+    //로그인 상태 관리
     const {setIsLogined, setAdminLogined} = useStore(state => state);
+
+    /**
+     * 1. MethodName: onLogIn
+     * 2. ClassName : LoginForm
+     * 3. Comment   : 로그인 요청 및 응답
+     * 4. 작성자    : boreum
+     * 5. 작성일    : 2024. 07. 09
+     **/
     const onLogIn = async (data) => {
 
         const { id, pw } = data;
@@ -48,15 +65,20 @@ const LogInForm = ({ marginBottom }) => {
                     }
                 });
                 console.log("response data", res.data);
+                //일반 유저 로그인 성공 시 대시보드 이동
                 if (res.data.RESULT === "GO_USER_DASHBOARD") {
                     localStorage.setItem("key", data.id);
                     setIsLogined(true);
                     navigate('/dashboard');
-                } else if (res.data.RESULT === "GO_ADMIN_DASHBOARD") {
+                }
+                //어드민 로그인 성공 시 어드민 대시보드 이동
+                else if (res.data.RESULT === "GO_ADMIN_DASHBOARD") {
                     localStorage.setItem("key", data.id);
                     setAdminLogined(true);
                     navigate('/admin/dashboard');
-                } else if (res.data.RESULT === "INVALID_PASSWORD" || res.data.RESULT === 'USER_NOT_FOUND') {
+                }
+                //로그인 실패 처리
+                else if (res.data.RESULT === "INVALID_PASSWORD" || res.data.RESULT === 'USER_NOT_FOUND') {
                     setPasswordError("아이디 혹은 비밀번호가 틀렸습니다.");
                 } else if (res.data.RESULT === "LOCK_ACCOUNT") {
                     alHandleClickOpen();
@@ -66,6 +88,7 @@ const LogInForm = ({ marginBottom }) => {
                     setPasswordError('사용 기간이 아닙니다.')
                 }
             } catch (error) {
+                //오류 처리
                 console.error("오류가 발생하였습니다:", error);
                 setPasswordError("오류가 발생하였습니다.");
             }
