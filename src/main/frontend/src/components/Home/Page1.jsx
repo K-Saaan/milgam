@@ -1,6 +1,14 @@
 import { useScroll, useTransform} from "framer-motion";
 import { useRef } from "react";
 
+/**
+ * 1. FileName : Page1.js
+ * 3. Package  : components.Home.Page1
+ * 4. Comment  : home 페이지 속 영상 
+ * 5. 작성자   : bonjae
+ * 6. 작성일   : 2024. 07. 08
+ **/
+
 // conatiner
 export const cPage1Style = (theme) => ({
   widht:'100%',

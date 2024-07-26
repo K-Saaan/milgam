@@ -27,6 +27,14 @@ const MenuButton = styled('button')(({ theme, isActive }) => ({
   },
 }));
 
+/**
+ * 1. ClassName: AdminTopbar
+ * 2. FileName : AdminTopbar.js
+ * 3. Package  : components.AdminTopbar
+ * 4. Comment  : 어드민 탑바 컴포넌트
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 12
+ **/
 function AdminTopbar({ isAdmin, toggleTheme }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -88,15 +96,12 @@ function AdminTopbar({ isAdmin, toggleTheme }) {
           <MenuButton onClick={()=>isloginCheck('approval')} id='approval' isActive={isActive('approval')}>가입 승인</MenuButton>
           <MenuButton onClick={()=>isloginCheck('replyinquiry')} id='replyinquiry' isActive={isActive('replyinquiry')}>문의 답변</MenuButton>
         </div>
-    
-        
         <div style={{display:'flex', alignItems:'center'}}>
         {adminLogined ? (
         <MenuButton onClick={() => setLogoutModalOpen(true)} id="logout">
             로그아웃
         </MenuButton>
         ) : null}
-        
           <ModeSwitch
           checked={theme.palette.mode === 'dark'}
           onChange={handleToggleClick}

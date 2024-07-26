@@ -6,6 +6,13 @@ import { motion, useScroll, useSpring } from "framer-motion";
 import { useRef } from "react";
 import Page4 from "../components/Home/Page4";
 
+/**
+ * 1. FileName : Home.js
+ * 3. Package  : routes.Home
+ * 4. Comment  : home 화면 
+ * 5. 작성자   : bonjae
+ * 6. 작성일   : 2024. 07. 01
+ **/
 
 //page
 const cPageStyle = (theme) => ({

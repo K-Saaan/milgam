@@ -15,6 +15,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+/**
+ * 1. MethodName: goLoginPage
+ * 2. ClassName : goeventPage, addEvent
+ * 3. Comment : 이벤트 조회와 추가
+ * 4. 작성자 : bonjae
+ * 5. 작성일 : 2024. 07. 08
+ **/
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/event")
@@ -24,15 +32,9 @@ public class EventController {
     private final EventRepository eventRepository;
     private final EventService eventService;
 
-    /**
-     * 1. MethodName: goLoginPage
-     * 2. ClassName : LoginController
-     * 3. Comment   : 로그인페이지 이동
-     * 4. 작성자    : san
-     * 5. 작성일    : 2024. 06. 24
-     **/
     @GetMapping("/eventlist")
-    public ResponseEntity<List<EventEntity>> goeventPage(HttpServletRequest request, HttpServletResponse response, Model model) {
+    public ResponseEntity<List<EventEntity>> goeventPage(HttpServletRequest request, HttpServletResponse response,
+            Model model) {
 
         // 예시 코드
         List<EventEntity> eventList = eventService.findAllEvent();
@@ -51,14 +53,14 @@ public class EventController {
     }
 
     @PostMapping(value = "/eventadd")
-    public  ResponseEntity addEvent(@RequestBody EventEntity eventEntity) {
+    public ResponseEntity addEvent(@RequestBody EventEntity eventEntity) {
         logger.info("Adding Event: {}", eventEntity);
 
         return ResponseEntity.ok(eventService.addEvent(eventEntity));
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity deleteEvent(@PathVariable("id") int id ){
+    public ResponseEntity deleteEvent(@PathVariable("id") int id) {
         logger.info("Deleting event with id {}", id);
         return ResponseEntity.ok(eventService.deleteEvent(id));
     }
