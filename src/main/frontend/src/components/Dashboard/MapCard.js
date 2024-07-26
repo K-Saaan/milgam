@@ -1,13 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Paper, Typography, Skeleton } from '@mui/material';
+import { Box, Paper, Skeleton, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import React, { useEffect, useState } from 'react';
 import { useQueries } from 'react-query';
-import NaverMap from './NaverMap';
-import { fetchData } from '../../api/fetchData';
 import { extractCrowdDataToMap } from '../../api/dataExtractor';
-import regions from './data/regions';
+import { fetchData } from '../../api/fetchData';
 import useStore from '../../store';
-import Legend from './styles/LegendStyle'
+import regions from './data/regions';
+import NaverMap from './NaverMap';
+import Legend from './styles/LegendStyle';
+
+/**
+ * 1. ClassName: MapCard
+ * 2. FileName : MapCard.js
+ * 3. Package  : components.MapCard
+ * 4. Comment  : 대시보드 지도 카드
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 02
+ **/
+
 
 // 지도 영역 바깥 컨테이너 스타일
 const paperStyle = (theme) => ({
@@ -71,9 +81,10 @@ const getNearbyRegionsByCenter = (center, regions, radius = 0.02) => {
 const MapCard = () => {
   const theme = useTheme();
   const { selectedRegion, setSelectedRegion, mapCenter, setMapCenter } = useStore();
-
   const [crowdData, setCrowdData] = useState({});
   const [isFetching, setIsFetching] = useState(true);
+  const results = useQueries(queries);
+  const nearbyRegions = getNearbyRegionsByCenter(mapCenter, regions);
 
   useEffect(() => {
     if (!selectedRegion) {
@@ -85,16 +96,19 @@ const MapCard = () => {
     }
   }, [selectedRegion, setSelectedRegion, setMapCenter]);
 
-  const nearbyRegions = getNearbyRegionsByCenter(mapCenter, regions);
-
   const queries = nearbyRegions.map(region => ({
     queryKey: ['fetchData', region.value],
     queryFn: () => fetchData(region.value),
     staleTime: 300000,
   }));
 
-  const results = useQueries(queries);
-
+  /**
+   * 1. MethodName: -
+   * 2. ClassName : MapCard
+   * 3. Comment   : 지도, 혼잡도 통신
+   * 4. 작성자    : mijin
+   * 5. 작성일    : 2024. 07. 12
+   **/
   useEffect(() => {
     if (results.every(result => !result.isLoading)) {
       const newCrowdData = {};

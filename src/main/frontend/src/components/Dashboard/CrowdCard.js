@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Paper, Typography, Box, Skeleton } from '@mui/material';
+import { Box, Paper, Skeleton, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import { fetchData } from '../../api/fetchData';
 import { extractCrowdData } from '../../api/dataExtractor';
+import { fetchData } from '../../api/fetchData';
+import useStore from '../../store';
 import CustomPaper from './styles/CustomPaper';
-import useStore from '../../store'
 
 // 혼잡도 단계별 배경색 지정
 const getBackgroundColor = (level, theme) => {
@@ -23,16 +23,24 @@ const getBackgroundColor = (level, theme) => {
   }
 };
 
-// 혼잡도 카드
+/**
+ * 1. ClassName: CrowdCard
+ * 2. FileName : CrowdCard.js
+ * 3. Package  : components.CrowdCard
+ * 4. Comment  : 대시보드 혼잡도 카드
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 12
+ **/
+
 const CrowdCard = ({ }) => {
   const theme = useTheme();
   const { selectedRegion } = useStore(); // 선택된 지역을 Zustand 스토어에서 가져옵니다.
   const [ crowdData, setCrowdData] = useState({ areaNm: '', areaCongestLvl: '', areaCongestMsg: '' });
-
   const { data: jsonData, error, isLoading } = useQuery(['fetchData', selectedRegion], () => fetchData(selectedRegion), {
     refetchInterval: 300000, // 5분마다 갱신
   });
 
+  
   useEffect(() => {
     if (jsonData) {
       const extractedData = extractCrowdData(jsonData);

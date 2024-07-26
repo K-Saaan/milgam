@@ -44,6 +44,14 @@ const boxStyle = (theme) => ({
   alignItems: 'center',
 });
 
+/**
+ * 1. FunctionName: ReplyAlert
+ * 2. FileName : ReplyAlert.js
+ * 3. Package  : components.ReplyAlert
+ * 4. Comment  : 답변 확인 알림 창
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 19
+ **/
 const ReplyAlert = ({ open, handleClose, inquiry  }) => {
   const theme = useTheme();
 
