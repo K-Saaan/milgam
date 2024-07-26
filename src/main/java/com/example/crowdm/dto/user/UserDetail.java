@@ -1,7 +1,13 @@
 package com.example.crowdm.dto.user;
 
 import java.sql.Timestamp;
-
+/**
+ * 1. MethodName: UserDetail
+ * 2. ClassName : UserDetail
+ * 3. Comment   : 내 페이지 프로필 디테일 dto
+ * 4. 작성자    : boyeong
+ * 5. 작성일    : 2024. 07. 09
+ **/
 public class UserDetail {
     private Integer user_index;
     private String id;

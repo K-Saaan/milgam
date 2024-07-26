@@ -1,11 +1,9 @@
 package com.example.crowdm.service.myq;
 
-import com.example.crowdm.dto.faq.MyqList;
 import com.example.crowdm.dto.faq.MyqListTwo;
-import com.example.crowdm.dto.user.PermissionList;
+
 import com.example.crowdm.entity.admin.MyqEntity;
-import com.example.crowdm.entity.faq.FaqEntity;
-import com.example.crowdm.entity.user.UserEntity;
+
 import com.example.crowdm.repository.admin.MyqRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,9 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +23,14 @@ public class MyqService {
 
     private final MyqRepository myqRepository;
 
+
+    /**
+     * 1. MethodName: findAllQuestions
+     * 2. ClassName : MyqService
+     * 3. Comment   : 모든 1:1 질문 반환
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 16
+     **/
     public List<MyqListTwo> findAllQuestions(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         Integer user_index = (Integer) session.getAttribute("userIndex");
@@ -58,6 +64,14 @@ public class MyqService {
         // 세션이 없거나 userId가 null인 경우 빈 리스트 반환
         //return Collections.emptyList();
 
+
+    /**
+     * 1. MethodName: addquestion
+     * 2. ClassName : MyqService
+     * 3. Comment   : 1:1 문의 등록
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 16
+     **/
 
     @Transactional
     public MyqEntity addquestion(String question_title, String question, HttpServletRequest request) {

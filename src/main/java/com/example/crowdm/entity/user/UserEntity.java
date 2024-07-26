@@ -9,6 +9,14 @@ import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 
+/**
+ * 1. MethodName: UserEntity
+ * 2. ClassName : UserEntity
+ * 3. Comment   : 유저 엔티티
+ * 4. 작성자    : boyeong, k-ssan, byeongmin
+ * 5. 작성일    : 2024. 07. 17
+ **/
+
 @Getter
 @Entity
 @Builder

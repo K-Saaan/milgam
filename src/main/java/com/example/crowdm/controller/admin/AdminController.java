@@ -6,31 +6,26 @@ import com.example.crowdm.dto.faq.UnlockList;
 import com.example.crowdm.dto.user.PermissionList;
 import com.example.crowdm.dto.user.UserDetail;
 import com.example.crowdm.entity.admin.MyqEntity;
-import com.example.crowdm.entity.user.UserEntity;
+
 import com.example.crowdm.repository.admin.AdminRepository;
 import com.example.crowdm.repository.admin.MyqRepository;
 import com.example.crowdm.service.admin.AdminService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-//import config.SecurityConfig;
+
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
-import java.util.HashMap;
 
 
 @Controller
@@ -55,7 +50,7 @@ public class AdminController {
      * 2. ClassName : AdminController
      * 3. Comment   : 회원가입 승인
      * 4. 작성자    : boyeong
-     * 5. 작성일    : 2024. 07. 09
+     * 5. 작성일    : 2024. 07. 16
      **/
 
     @GetMapping("/permission")
@@ -69,7 +64,13 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating permission");
         }
     }
-
+    /**
+     * 1. MethodName: deny
+     * 2. ClassName : AdminController
+     * 3. Comment   : 회원가입 거절
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 16
+     **/
 
     @GetMapping("/deny")
     public ResponseEntity<String> deny(@RequestParam("user_index") int user_index, HttpServletRequest request) {
@@ -80,6 +81,14 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating permission");
         }
     }
+
+    /**
+     * 1. MethodName: userdetail
+     * 2. ClassName : AdminController
+     * 3. Comment   : 회원가입시킬 유저의 상세 정보
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 09
+     **/
     @GetMapping("/userdetail")
     public ResponseEntity<List<UserDetail>> userdetail(@RequestParam("user_index") int user_index) {
         List<UserDetail> result=adminService.userdetail(user_index);
@@ -119,7 +128,7 @@ public class AdminController {
      * 2. ClassName : AdminController
      * 3. Comment   : 질문에 응답하기
      * 4. 작성자    : boyeong
-     * 5. 작성일    : 2024. 07. 09
+     * 5. 작성일    : 2024. 07. 16
      **/
 
     @PostMapping("/answer")

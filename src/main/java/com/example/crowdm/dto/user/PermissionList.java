@@ -2,6 +2,13 @@ package com.example.crowdm.dto.user;
 
 import java.sql.Timestamp;
 
+/**
+ * 1. MethodName: PermissionList
+ * 2. ClassName : PermissionList
+ * 3. Comment   : 회원가입 승인 대기 목록 dto
+ * 4. 작성자    : boyeong
+ * 5. 작성일    : 2024. 07. 9
+ **/
 public class PermissionList {
     //private Integer user_index;
     private Integer user_index;
@@ -24,10 +31,7 @@ public class PermissionList {
         this.status = status;
     }
 
-    // Getters and Setters
-    //public Integer getUserIndex() {
-    //    return user_index;
-    //}
+
     public Integer getUser_index() {
         return user_index;
     }

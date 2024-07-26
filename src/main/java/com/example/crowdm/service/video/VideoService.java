@@ -1,7 +1,7 @@
 package com.example.crowdm.service.video;
 
 import com.example.crowdm.config.NamedByteArrayResource;
-import com.example.crowdm.entity.admin.MyqEntity;
+
 import com.example.crowdm.entity.event.EventEntity;
 import com.example.crowdm.entity.user.UserEntity;
 import com.example.crowdm.entity.video.VideoEntity;
@@ -9,48 +9,39 @@ import com.example.crowdm.repository.event.EventRepository;
 import com.example.crowdm.repository.login.LoginRepository;
 import com.example.crowdm.repository.video.VideoRepository;
 import com.example.crowdm.util.DateUtil;
-import com.fasterxml.jackson.core.type.TypeReference;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.boot.Metadata;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
+
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
+
 import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
+
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.socket.BinaryMessage;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import com.fasterxml.jackson.databind.type.TypeFactory;
+
 
 @Service
 @RequiredArgsConstructor
@@ -126,6 +117,13 @@ public class VideoService {
     }
 
 
+    /**
+     * 1. MethodName: findGuDong
+     * 2. ClassName : VideoService
+     * 3. Comment   : 비디오 위치 찾기
+     * 4. 작성자    : boyeong, k-ssan
+     * 5. 작성일    : 2024. 07. 24
+     **/
     public String[] findGuDong(Integer user_index){
         logger.info("user_index : {}", user_index);
         if (user_index == null){
@@ -140,6 +138,14 @@ public class VideoService {
 
     }
 
+
+    /**
+     * 1. MethodName: uploadmeta
+     * 2. ClassName : VideoService
+     * 3. Comment   : 비디오 위치 찾기
+     * 4. 작성자    : boyeong, k-ssan, byeongmin
+     * 5. 작성일    : 2024. 07. 25
+     **/
     @Transactional
     public VideoEntity uploadmeta(String length, String sector, Integer camera_num, String content, String file_name, Integer chunk_index, HttpServletRequest request) {
 

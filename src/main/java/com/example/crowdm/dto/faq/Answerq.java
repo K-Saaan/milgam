@@ -1,7 +1,13 @@
 package com.example.crowdm.dto.faq;
 
 import java.sql.Timestamp;
-
+/**
+ * 1. MethodName: Answerq
+ * 2. ClassName : Answerq
+ * 3. Comment   : 1:1응답 반환 형식 dto
+ * 4. 작성자    : boyeong
+ * 5. 작성일    : 2024. 07. 4
+ **/
 public class Answerq {
 
     private Integer myq_index;

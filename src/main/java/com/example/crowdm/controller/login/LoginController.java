@@ -61,7 +61,7 @@ public class LoginController {
      * 2. ClassName : LoginController
      * 3. Comment   : 내 페이지 프로필
      * 4. 작성자    : boyeong
-     * 5. 작성일    : 2024. 07. 15
+     * 5. 작성일    : 2024. 07. 16
      **/
     @GetMapping("/profile")
     public ResponseEntity<Profile> goProfile(HttpServletRequest request, HttpServletResponse response) {
@@ -75,7 +75,8 @@ public class LoginController {
      * 2. ClassName : LoginController
      * 3. Comment   : 이벤트 선택했을때, 선택된 이벤트로 업데이트 시키기
      * 4. 작성자    : boyeong
-     * 5. 작성일    : 2024. 07. 15**/
+     * 5. 작성일    : 2024. 07. 16
+     * **/
     @GetMapping("updateevent")
     public ResponseEntity<String> updateEvent(@RequestParam("event_index") int event_index, HttpServletRequest request) {
         String result=loginService.UpdateEventAtProfile(event_index, request);

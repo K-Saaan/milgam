@@ -6,6 +6,14 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+/**
+ * 1. MethodName: VideoEntity
+ * 2. ClassName : VideoEntity
+ * 3. Comment   : 비디오 메타데이터 엔티티
+ * 4. 작성자    : boyeong
+ * 5. 작성일    : 2024. 07. 16
+ **/
+
 @Getter
 @Entity
 @Builder
