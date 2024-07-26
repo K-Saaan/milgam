@@ -46,10 +46,10 @@ public class LoginController {
     }
 
     /**
-     * 1. MethodName: goLoginPage
+     * 1. MethodName: loginAction
      * 2. ClassName : LoginController
      * 3. Comment   : 로그인 작업 수행
-     * 4. 작성자    : san
+     * 4. 작성자    : 이수민, san
      * 5. 작성일    : 2024. 07. 09
      **/
     @PostMapping(value = "/loginAction")
