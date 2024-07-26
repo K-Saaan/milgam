@@ -7,8 +7,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import CustomTextField from '../Styles/CustomTextField';
 import DialogTitle from '@mui/material/DialogTitle';
+import CustomTextField from '../Styles/CustomTextField';
 
 // 타이틀 스타일 정의
 const cTitleStyle = (theme) => ({
@@ -20,44 +20,55 @@ const cTitleStyle = (theme) => ({
     margin: "5px",
     fontSize: "15px"
 });
+
 // 내용 정렬
 const actionStyle = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
 }
+
 // 버튼 스타일 정의
 const btnStyle = {
     width: "40%",
     marginTop: "20px",
 }
 
+/**
+ * 1. ClassName: EmailAlert
+ * 2. FileName : EmailAlert.js
+ * 3. Package  : components.EmailAlert
+ * 4. Comment  : 이메일 인증번호 인증 창
+ * 5. 작성자   : seungwon
+ * 6. 작성일    : 2024. 07. 19
+ **/
 function EmailAlert({open, handleClose, onSuccess}) {
     const theme = useTheme();
     const {register, handleSubmit, formState: {errors}} = useForm();
     const [message, setMessage] = useState('');
     const titleStyle = cTitleStyle(theme);
 
+    /**
+     * 1. MethodName: onSubmit
+     * 2. ClassName : EmailAlert
+     * 3. Comment   : 인증번호 확인
+     * 4. 작성자    : byeongmin
+     * 5. 작성일    : 2024. 07. 15
+     **/
     const onSubmit = async (data) => {
 
         console.log(data);
 
         try {
-            //await new Promise((resolve) => setTimeout(resolve, 1000));
             const response = await axios.post(`/signup/verify`,data);
 
             if (response.status === 200) {
-                // setMessage('인증에 성공하였습니다.')
-                // setTimeout(() => {
-                //     handleClose(); // 인증 성공 시 창을 닫기
-                //     onSuccess();   // 인증 성공 시 콜백 호출
-                // }, 2000); // 메시지를 2초간 보여준 후 창을 닫습니다.
                 alert('인증에 성공하였습니다.');
                 handleClose();
                 onSuccess();
             }
             console.log("Code:", data.title);    // 입력된 코드를 콘솔에 출력
-            //handleClose();
+
         } catch (error) {
             console.error('Error verifying code:', error);
             setMessage('인증에 실패하였습니다. 다시 시도해 주세요');

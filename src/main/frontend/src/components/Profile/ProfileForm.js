@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import axiosRetry from 'axios-retry';
 import { Grid, Select, MenuItem, FormControl, IconButton, Skeleton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/system';
 import { CustomTypographyWrapper, CustomTypography } from './CustomTypo';
 import NewEvent from './NewEvent';
 import LongButton from "../Styles/LongButton.js";
-import axiosRetry from 'axios-retry';
 
 axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
 
-// 스크롤 안 보이게
 const noScrollbarStyles = {
     '&::WebkitScrollbar': {
         display: 'none', // Chrome, Safari, and Opera
@@ -20,7 +19,6 @@ const noScrollbarStyles = {
     'scrollbarWidth': 'none'  // Firefox
 };
 
-// 페이지 디자인
 const formSx = {
     display: 'flex',
     alignItems: 'center',
@@ -28,8 +26,8 @@ const formSx = {
     margin: 'auto',
     height: '65vh',
     width: '70%',
-    overflow: 'auto', // 스크롤 활성화
-    ...noScrollbarStyles // 스크롤 바 숨기기 스타일 추가
+    overflow: 'auto',
+    ...noScrollbarStyles
 };
 
 // 행사 선택 select box 스타일
@@ -51,41 +49,68 @@ const EventControl = styled(FormControl)(({ theme }) => ({
     },
 }));
 
+/**
+ * 1. ClassName: ProfileForm
+ * 2. FileName : ProfileForm.js
+ * 3. Package  : components.ProfileForm
+ * 4. Comment  : 프로필 화면
+ * 5. 작성자   : seungwon
+ * 6. 작성일    : 2024. 07. 16
+ **/
 const ProfileForm = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const [eventTitles, setEventTitles] = useState([]);
+    const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+    const [event, setEvent] = useState('');
+    const [customEvents, setCustomEvents] = useState([]);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [profile, setProfile] = useState({
+        name: '',
+        id: '',
+        email: '',
+        phone: '',
+        org: '',
+        event: '',
+    });
 
     const from = location.state?.from || "/dashboard"; // 이전 위치 저장
     const onNextClick = () => {    // 이전 페이지로 이동하도록
         navigate(from);
     };
 
-    // delete하기
-    // const deleteData = async(id) => {
-    //     const del = axios.delete(`http://localhost:8080/event/delete/${id}`)
-    //     console.log(del)
-    // }
-    // const getData = async () => {
-    //     const res = await axios.get('http://localhost:8080/event/eventlist');
-    //     console.log("Full response:", res.data);
-    // }
+    // 드롭박스에서 이벤트 선택
+    const handleEventChange = (event) => { 
+        setEvent(event.target.value);
+        if (event.target.value === 'add-new') {
+            setDialogOpen(true);
+        }
+    };
 
-    // delete하기
-    // const deleteData = async (id) => {
-    //     try {
-    //         const response = await axios.delete(`http://localhost:8080/event/delete/${id}`);
-    //         console.log("Deleted successfully:", response);
-    //         // 여기에서 성공적으로 삭제되었을 때 필요한 추가 작업을 수행할 수 있습니다.
-    //         // 예를 들어, 상태 업데이트를 통해 UI를 변경할 수 있습니다.
-    //     } catch (error) {
-    //         console.error("Failed to delete the event:", error);
-    //         // 삭제 실패 시 오류 처리 로직
-    //     }
-    // }
+    // 직접 입력된 이벤트 생성
+    const handleAddEvent = (newEvent) => {
+        if (newEvent && !customEvents.includes(newEvent)) {
+            setCustomEvents([...customEvents, newEvent]);
+            setEvent(newEvent);
+        }
+        setDialogOpen(false);
+    };
 
-    //event 받아오기
-    const [eventTitles, setEventTitles] = useState([]);
+    // 직접 입력 후 생성된 이벤트 삭제
+    const handleDeleteEvent = (eventToDelete) => {
+        setCustomEvents(customEvents.filter(event => event !== eventToDelete));
+        if (event === eventToDelete) {
+            setEvent('');
+        }
+    };
 
+    /**
+     * 1. MethodName: getData
+     * 2. ClassName : ProfileForm
+     * 3. Comment   : DB에서 이벤트 리스트 받아와 드롭박스에 생성
+     * 4. 작성자    : seungwon
+     * 5. 작성일    : 2024. 07. 16
+     **/
     useEffect(() => {
         const getData = async () => {
             console.log('Fetching event data...');
@@ -102,19 +127,14 @@ const ProfileForm = () => {
 
         getData();
     }, []);  // 의존성 배열을 빈 배열로 설정하여 컴포넌트 마운트 시 한 번만 실행됨
-    
 
-    const [profile, setProfile] = useState({
-        name: '',
-        id: '',
-        email: '',
-        phone: '',
-        org: '',
-        event: '',
-    });
-
-    const [isLoadingProfile, setIsLoadingProfile] = useState(true);
-
+    /**
+     * 1. MethodName: fetchProfile
+     * 2. ClassName : ProfileForm
+     * 3. Comment   : 로그인 된 회원의 정보를 DB에서 가져와 띄움
+     * 4. 작성자    : seungwon
+     * 5. 작성일    : 2024. 07. 16
+     **/
     useEffect(() => {
         const fetchProfile = async () => {
             try {
@@ -138,34 +158,6 @@ const ProfileForm = () => {
 
         fetchProfile();
     }, []);  // 프로필 데이터 로드
-
-
-    // 이벤트
-    const [event, setEvent] = useState('');
-    const [customEvents, setCustomEvents] = useState([]);
-    const [dialogOpen, setDialogOpen] = useState(false);
-
-    const handleEventChange = (event) => { // 이벤트 선택
-        setEvent(event.target.value);
-        if (event.target.value === 'add-new') {
-            setDialogOpen(true);
-        }
-    };
-
-    const handleAddEvent = (newEvent) => { // 직접 입력된 이벤트 생성
-        if (newEvent && !customEvents.includes(newEvent)) {
-            setCustomEvents([...customEvents, newEvent]);
-            setEvent(newEvent);
-        }
-        setDialogOpen(false);
-    };
-
-    const handleDeleteEvent = (eventToDelete) => { // 직접 입력 후 생성된 이벤트 삭제
-        setCustomEvents(customEvents.filter(event => event !== eventToDelete));
-        if (event === eventToDelete) {
-            setEvent('');
-        }
-    };
 
     return (
         <Grid

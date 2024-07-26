@@ -5,17 +5,16 @@ const CustomTypographyWrapper = styled('div')(({ theme }) => ({
     width: '75%',
     height: '56px',
     backgroundColor: theme.palette.secondary.main,
-    opacity: 1, // 불투명도
-    borderRadius: '4px', // 둥근 모서리 추가
-    padding: '16.5px 14px', // 내부 패딩 추가
-    border: `1px solid ${theme.palette.border.primary}`, // 기본 테두리 색상 및 두께 설정
+    opacity: 1,
+    borderRadius: '4px',
+    padding: '16.5px 14px',
+    border: `1px solid ${theme.palette.border.primary}`,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-start', // 왼쪽 정렬
+    justifyContent: 'flex-start',
 }));
 
 const CustomTypography = styled(Typography)(({ theme }) => ({
-    // fontFamily: "Nunito Sans",
     color: theme.palette.text.secondary,
     fontSize: '16px',
 }));

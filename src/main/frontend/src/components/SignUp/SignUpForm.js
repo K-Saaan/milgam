@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
@@ -11,13 +11,12 @@ import { useTheme } from '@mui/material/styles';
 import CustomTextField from '../Styles/CustomTextField.js';
 import EmailAlert from './EmailAlert';
 
-// 스크롤 안 보이게
 const noScrollbarStyles = {
     '&::WebkitScrollbar': {
-        display: 'none', // Chrome, Safari, and Opera
+        display: 'none',
     },
-    'msOverflowStyle': 'none',  // Internet Explorer 10+
-    'scrollbarWidth': 'none'  // Firefox
+    'msOverflowStyle': 'none',
+    'scrollbarWidth': 'none'
 };
 
 const formSx = {
@@ -26,24 +25,38 @@ const formSx = {
     justifyContent: 'center',
     margin: 'auto',
     width: '1100px',
-    maxWidth: '1100px', // 최대 너비 설정
-    minWidth: '1100px', // 최소 너비 설정
-    //overflow: 'auto', // 스크롤 활성화
-    ...noScrollbarStyles // 스크롤 바 숨기기 스타일 추가
-    // flexDirection: 'column', // 요소들을 세로로 정렬
-    // maxHeight: 'calc(100vh - 100px)', // 전체 화면에서 일정 높이를 제외한 만큼의 최대 높이 설정
+    maxWidth: '1100px',
+    minWidth: '1100px',
+    ...noScrollbarStyles
 };
 
-
+/**
+ * 1. ClassName: SignUpForm
+ * 2. FileName : SignUpForm.js
+ * 3. Package  : components.SignUpForm
+ * 4. Comment  : 회원가입 화면
+ * 5. 작성자   : seungwon
+ * 6. 작성일    : 2024. 07. 23
+ **/
 const SignUpForm = () => {
     const theme = useTheme();
     const navigate = useNavigate();
     const {register, handleSubmit, formState: {errors, isValid}, setValue, watch, control, trigger} = useForm({
         mode: 'onChange',
     })
-    const email = watch('email');
+    const [role_index, setRoleIndex] = useState('');
+    const [org, setOrg] = useState('');
+    const [customOrg, setCustomOrg] = useState('');
+    const [isCustomInput, setIsCustomInput] = useState(false);
+    const [start_date, setStartdate] = React.useState(null);
+    const [end_date, setEnddate] = useState(null);
+    const [openRegister, setOpenRegister] = useState(false);
+    const [isEmailVerified, setIsEmailVerified] = useState(false);
+    const [verificationMessage, setVerificationMessage] = useState('');
+    const [isEmailValid, setIsEmailValid] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    // Date Picker 스타일 적용
     const dateStyles = {
         width: '215px',
         height: '56px',
@@ -66,13 +79,17 @@ const SignUpForm = () => {
 
     const buttonsx = {
         marginTop: "20px",
-        
         padding: '10px',
         backgroundColor: theme.primary,
         color: theme.text,
     }
 
-
+    /**
+     * 지정된 길이의 랜덤 문자열을 생성하는 함수.
+     * 
+     * @param {number} length - 생성할 문자열의 길이
+     * @returns {string} - 생성된 랜덤 문자열
+     */
     function generateRandomString(length) {
         const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let result = '';
@@ -83,6 +100,51 @@ const SignUpForm = () => {
         return result;
     }
 
+    // 에러 확인
+    const onError = (errors) => {
+        console.log(errors);
+    };
+
+    // 이미 가입 되어있다면, 로그인해주세요 <- 유효성 확인 X
+    const handleLoginClick = () => {
+        navigate('/login');
+    };
+
+    // 회원 소속 '직접 입력' 상태 관리
+    const handleOrgChange = (event) => {
+        const value = event.target.value;
+        setOrg(value);
+        setIsCustomInput(value === 'custom');  // '직접 입력'이 선택되면 입력 필드를 활성화
+        if (value !== 'custom') {
+            setCustomOrg('');  // '직접 입력'이 아니면 입력 필드 초기화
+        }
+    };
+
+    // Email Alert 창 닫기
+    const handleCloseRegister = () => {
+        setOpenRegister(false);
+    };
+
+    // 인증 성공 시 호출될 함수
+    const handleEmailVerified = () => {
+        setIsEmailVerified(true);
+        setVerificationMessage('인증에 성공하였습니다.');
+    };
+
+    // 비밀번호 가시화
+    const handleClickShowPassword = () => setShowPassword((prev) => !prev);
+    const handleClickShowConfirmPassword = () => setShowConfirmPassword((prev) => !prev);
+
+    const email = watch('email');
+    const pw = watch("pw"); // 재입력한 비밀번호가 일치하는지 확인
+
+    /**
+     * 1. MethodName: handleClickOpenRegister
+     * 2. ClassName : SignUpForm
+     * 3. Comment   : 이메일 유효성 검사 성공 시 이메일로 인증번호 발송
+     * 4. 작성자    : byeongmin
+     * 5. 작성일    : 2024. 07. 15
+     **/
     const handleClickOpenRegister = async () => {
         const code = generateRandomString(12); // 12자 랜덤 문자열 생성
         const additionalData = {
@@ -113,7 +175,13 @@ const SignUpForm = () => {
         }
     };
 
-    // 페이지 이동
+    /**
+     * 1. MethodName: onSubmit
+     * 2. ClassName : SignUpForm
+     * 3. Comment   : 회원가입 시 입력 정보 DB로 넘기기
+     * 4. 작성자    : byeongmin
+     * 5. 작성일    : 2024. 07. 23
+     **/
     const onSubmit = async (data) => {
         const { repw, ...dataWithoutRepw } = data;
 
@@ -153,73 +221,6 @@ const SignUpForm = () => {
             }
         }
     };
-
-    const onError = (errors) => {
-        // 에러가 있는 경우 적절한 메시지를 출력하거나 처리합니다.
-        console.log(errors);
-    };
-
-    const onNextClick = () => {    // 이전 페이지로 이동하도록
-        navigate('/login/loginPage');
-    };
-
-    // 이미 가입 되어있다면, 로그인해주세요 <- 유효성 확인 X
-    const handleLoginClick = () => {
-        navigate('/login');
-    };
-
-    // 역할 부분 const
-    const [role_index, setRoleIndex] = useState('');
-
-    // 소속 부분 const
-    const [org, setOrg] = useState('');
-    const [customOrg, setCustomOrg] = useState('');  // 별도의 직접 입력 값을 위한 상태
-    const [isCustomInput, setIsCustomInput] = useState(false);  // 직접 입력 활성화 상태
-    const handleOrgChange = (event) => {
-        const value = event.target.value;
-        setOrg(value);
-        setIsCustomInput(value === 'custom');  // '직접 입력'이 선택되면 입력 필드를 활성화
-        if (value !== 'custom') {
-            setCustomOrg('');  // '직접 입력'이 아니면 입력 필드 초기화
-        }
-    };
-
-    // 날짜 선택 부분 const
-    const [start_date, setStartdate] = React.useState(null);
-    const [end_date, setEnddate] = useState(null);
-
-    // 이메일 인증 부분 const
-    const [openRegister, setOpenRegister] = useState(false);
-    // const handleClickOpenRegister = () => {
-    //     setOpenRegister(true);
-    // };
-    const handleCloseRegister = () => {
-        setOpenRegister(false);
-    };
-
-    // 이메일 인증 성공 상태 const
-    const [isEmailVerified, setIsEmailVerified] = useState(false);
-    const [verificationMessage, setVerificationMessage] = useState('');
-
-    // 인증 성공 시 호출될 함수
-    const handleEmailVerified = () => {
-        setIsEmailVerified(true);
-        setVerificationMessage('인증에 성공하였습니다.');
-    };
-
-    // 이메일 상태 관리
-    const [isEmailValid, setIsEmailValid] = useState(false);
-    // 회원가입 에러 메시지를 관리하는 상태
-    const [signupError, setSignupError] = useState('');
-
-    // 비밀번호
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const handleClickShowPassword = () => setShowPassword((prev) => !prev);
-    const handleClickShowConfirmPassword = () => setShowConfirmPassword((prev) => !prev);
-
-    const pw = watch("pw"); // 재입력한 비밀번호가 일치하는지 확인
-
 
     return (
         <Grid
@@ -268,7 +269,6 @@ const SignUpForm = () => {
                             message: "아이디는 12글자 이하이어야 합니다.",
                         },
                     })}
-                    // inputProps={{ maxLength: 30 }}
                     error={!!errors.id}
                     helperText={errors.id?.message}
                     style={{marginBottom: errors.id ? '0px' : '23px', width: '457px'}}
@@ -294,7 +294,7 @@ const SignUpForm = () => {
                         })}
                         inputProps={{maxLength: 30}}
                         error={!!errors.email}
-                        helperText={errors.email?.message || verificationMessage} // 인증 성공 메시지 추가
+                        helperText={errors.email?.message || verificationMessage}
                         style={{marginBottom: errors.email ? '0px' : '23px', width: '298px'}}
                     />
                 </Grid>
@@ -505,7 +505,6 @@ const SignUpForm = () => {
                 <Divider />
             </Grid>
             <Grid item xs={12} sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-            {/* <Grid item xs={12} display={{md: 'flex'}} justifyContent={{md: 'center'}}> */}
                 <Button
                     type="submit"
                     variant="contained"
