@@ -20,6 +20,14 @@ const contStyle = (theme) => ({
     margin: '20px',
 });
 
+/**
+ * 1. ClassName: VideoContentArea
+ * 2. FileName : VideoContentArea.js
+ * 3. Package  : components.UploadVideo
+ * 4. Comment  : 영상 분석 결과 좌측 화면(영상, 설명 출력)
+ * 5. 작성자   : boreum
+ * 6. 작성일   : 2024. 07. 02
+ **/
 // 영상 분석 결과 좌측 영역
 const VideoContentArea = ({ selectedItem, isClicked }) => {
     const theme = useTheme();

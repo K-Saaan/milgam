@@ -15,30 +15,14 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+/**
+ * 1. ClassName : WebConfig
+ * 2. Comment   : WebConfig 정의
+ * 3. 작성자    : san
+ * 4. 작성일    : 2024. 07. 09
+ **/
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-//    @Bean(name="tilesConfigure")
-//    public TilesConfigurer tilesConfigurer() {
-//        final TilesConfigurer configurer = new TilesConfigurer();
-//        configurer.setDefinitions(new String[] {
-//                "/WEB-INF/tiles/tiles.xml"
-//        });
-//        configurer.setCheckRefresh(true);
-//        return configurer;
-//    }
-//    @Bean(name="viewResolver")
-//    public TilesViewResolver tilesViewResolver() {
-//        final TilesViewResolver tilesViewResolver = new TilesViewResolver();
-//        tilesViewResolver.setViewClass(TilesView.class);
-//        tilesViewResolver.setOrder(1);
-//        return tilesViewResolver;
-//    }
-//
-//    public void addResourcesHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/static/**")
-//                .addResourceLocations("classpath:/static/")
-//                .setCachePeriod(20);
-//    }
 
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         StringHttpMessageConverter converter = new StringHttpMessageConverter(StandardCharsets.UTF_8);
@@ -52,7 +36,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-//                .allowedOrigins("http://localhost:3000")
                 .allowedOriginPatterns("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                 .allowedHeaders("*")

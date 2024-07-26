@@ -152,6 +152,14 @@ const Dot = styled('div')(({ theme }) => ({
   },
 }));
 
+/**
+ * 1. ClassName: UploadForm
+ * 2. FileName : UploadForm.js
+ * 3. Package  : components.UploadVideo
+ * 4. Comment  : 영상 업로드 폼
+ * 5. 작성자   : boreum
+ * 6. 작성일   : 2024. 07. 02
+ **/
 const UploadForm = () => {
     const theme = useTheme();
     const navigate = useNavigate();
@@ -200,7 +208,13 @@ const UploadForm = () => {
     reset();
   };
 
-  // 영상 전송
+  /**
+   * 1. MethodName: uploadFile
+   * 2. ClassName : UploadForm
+   * 3. Comment   : 영상 업로드 통신
+   * 4. 작성자    : boreum
+   * 5. 작성일    : 2024. 07. 23
+   **/
   const uploadFile = async (selectedFile, data) => {
     const formData = new FormData();
     const formattedTime = dayjs(data.time).format('hh:mm a');
@@ -241,6 +255,13 @@ const UploadForm = () => {
     }
   };
 
+  /**
+   * 1. MethodName: onSubmit
+   * 2. ClassName : UploadForm
+   * 3. Comment   : 영상 업로드 실행 함수
+   * 4. 작성자    : boreum
+   * 5. 작성일    : 2024. 07. 09
+   **/
     const onHSubmit = async (data) => {
         if (selectedFile) {
             setLoading(true);

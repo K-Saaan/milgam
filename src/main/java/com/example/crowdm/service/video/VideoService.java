@@ -59,6 +59,13 @@ public class VideoService {
     @Value("${url.gcp_upload}")
     String gcpUrl;
 
+    /**
+     * 1. MethodName: uploadToGCP
+     * 2. ClassName : VideoService
+     * 3. Comment   : GCP로 전송할 데이터 정의 및 데이터 송수신 정의
+     * 4. 작성자    : san
+     * 5. 작성일    : 2024. 07. 17
+     **/
     public List<String> uploadToGCP(MultipartFile file, String fileOriginName, String place, String time) {
         try{
             HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
@@ -72,6 +79,7 @@ public class VideoService {
             String fileName = uuid + fileOriginName;
             String convertTime = DateUtil.convertTo24HourFormat(time);
 
+            // 전송할 데이터 정의
             NamedByteArrayResource chunkFile = new NamedByteArrayResource(file.getBytes(), file.getOriginalFilename());
             body.add("file", chunkFile);
             body.add("fileName", fileName);
@@ -85,6 +93,7 @@ public class VideoService {
 
             HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
+            // 데이터 post 요청 후 response 처리
             ResponseEntity response = restTemplate.postForEntity(gcpUrl, requestEntity, String.class);
             logger.info("Response body: {}",response.getBody());
             ObjectMapper objectMapper = new ObjectMapper();
@@ -92,22 +101,20 @@ public class VideoService {
             JsonNode resultNode = rootNode.path("result");
             List<String> result = new ArrayList<>();
 
-
             for (JsonNode arrayNode : resultNode) {
-                logger.info("arrayNode {}", arrayNode);
+                // 임계치 이상 상황이 발생한 경우
                 if (arrayNode.size() >2) {
                     String[] answer = arrayNode.get(2).asText().split("\\[답변\\]:");
-                    logger.info("answer {}", answer);
                     String combinedString = "[" + arrayNode.get(0).asText() + ", " + arrayNode.get(1).asText() + ", " + answer[1] + "]";
                     result.add(combinedString);
+
+                // 임계치 이상 상황이 발생하지 않은 경우
                 }else{
                     String combinedString = "[" + arrayNode.get(0).asText() + ", " + arrayNode.get(1).asText() + "]";
                     result.add(combinedString);
                 }
 
             }
-
-
             logger.info("result {}", result);
             return result;
         }catch (Exception e){

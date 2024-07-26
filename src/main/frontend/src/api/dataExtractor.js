@@ -1,4 +1,10 @@
-// CrowdCard.js - 혼잡도 관련 데이터를 추출하는 함수
+/*
+  * 1. FunctionName: extractCrowdData
+  * 2. FileName : dataExtractor.java
+  * 3. Comment   : 서울시 인구 데이터 api에서 받아온 데이터 중 혼잡도만 추출 (CrowdCard.js)
+  * 4. 작성자    : mijin
+  * 5. 작성일    : 2024. 07. 10
+*/
 export const extractCrowdData = (jsonData) => {
     if (!jsonData || !jsonData['SeoulRtd.citydata_ppltn'] || !jsonData['SeoulRtd.citydata_ppltn'][0]) {
         console.error('Invalid JSON data:', jsonData);
@@ -13,7 +19,13 @@ export const extractCrowdData = (jsonData) => {
 };
 
 
-// CrowdTrendCard.js - 예측 혼잡도 데이터를 추출하는 함수
+/*
+  * 1. FunctionName: extractCrowdData
+  * 2. FileName : dataExtractor.java
+  * 3. Comment   : 서울시 인구 데이터 api에서 받아온 데이터 중 혼잡도 예측 데이터만 추출 (CrowdTrendCard.js)
+  * 4. 작성자    : mijin
+  * 5. 작성일    : 2024. 07. 10
+*/
 export const extractForecastData = (jsonData) => {
     if (!jsonData || !jsonData['SeoulRtd.citydata_ppltn'] || !jsonData['SeoulRtd.citydata_ppltn'][0]) {
         console.error('Invalid JSON data:', jsonData);
@@ -32,8 +44,13 @@ export const extractForecastData = (jsonData) => {
 };
 
 
-
-// CrowdRatioCard.js - 10대부터 70대까지의 실시간 인구 비율 데이터를 추출하는 함수
+/*
+  * 1. FunctionName: extractCrowdData
+  * 2. FileName : dataExtractor.java
+  * 3. Comment   : 서울시 인구 데이터 api에서 받아온 데이터 중 실시간 인구 비율 데이터 추출 (CrowdRatioCard.js)
+  * 4. 작성자    : mijin
+  * 5. 작성일    : 2024. 07. 10
+*/
 export const extractPopulationRates = (jsonData) => {
     if (!jsonData || !jsonData['SeoulRtd.citydata_ppltn'] || !jsonData['SeoulRtd.citydata_ppltn'][0]) {
         console.error('Invalid JSON data:', jsonData);
@@ -52,7 +69,13 @@ export const extractPopulationRates = (jsonData) => {
     return { ppltnRate10, ppltnRate20, ppltnRate30, ppltnRate40, ppltnRate50, ppltnRate60, ppltnRate70 };
 };
 
-// MapCard.js - 혼잡도 추출 함수
+/*
+  * 1. FunctionName: extractCrowdData
+  * 2. FileName : dataExtractor.js
+  * 3. Comment   : 서울시 인구 데이터 api에서 받아온 데이터 중 혼잡도 데이터 추출 (MapCard.js)
+  * 4. 작성자    : mijin
+  * 5. 작성일    : 2024. 07. 10
+*/
 export const extractCrowdDataToMap = (jsonData) => {
     if (!jsonData || !jsonData['SeoulRtd.citydata_ppltn'] || !jsonData['SeoulRtd.citydata_ppltn'][0]) {
         console.error('Invalid JSON data:', jsonData);

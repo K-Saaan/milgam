@@ -1,7 +1,14 @@
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/system';
 
-// 텍스트필드 스타일 지정
+/**
+ * 1. ClassName: CustomTextField
+ * 2. FileName : CustomTextField.js
+ * 3. Package  : components.Styles
+ * 4. Comment  : 텍스트필드 스타일 지정
+ * 5. 작성자   : boreum
+ * 6. 작성일   : 2024. 06. 27
+ **/
 const CustomTextField = styled(TextField)(({ theme }) => ({
     width: '370px',
     //입력 커서 색

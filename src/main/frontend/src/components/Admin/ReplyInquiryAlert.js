@@ -57,6 +57,14 @@ const AnswerBox = styled(Box)(({ theme }) => ({
     },
 }));
 
+/**
+ * 1. FunctionName: ReplyInquiryAlert
+ * 2. FileName : ReplyInquiryAlert.js
+ * 3. Package  : components.ReplyInquiryAlert
+ * 4. Comment  : 어드민 문의 답변 폼
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 23
+ **/
 const ReplyInquiryAlert = ({ open, handleClose, question, onSubmit }) => {
     const { register, handleSubmit, formState: { errors }, reset  } = useForm();
 

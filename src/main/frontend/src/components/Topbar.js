@@ -58,7 +58,13 @@ function Topbar({ isAdmin, toggleTheme }) {
     }
   }
 
-  // 테마 변경
+  /**
+   * 1. MethodName: handleToggleClick
+   * 2. ClassName : Topbar
+   * 3. Comment   : 라이트/다크 테마 변경
+   * 4. 작성자    : boreum
+   * 5. 작성일    : 2024. 07. 06
+   **/
   const theme = useTheme();
   const handleToggleClick = () => {
     const newPaletteType = theme.palette.mode === 'light' ? 'dark' : 'light';

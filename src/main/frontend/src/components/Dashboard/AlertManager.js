@@ -17,6 +17,7 @@ export const AlertManager = ({ setAlerts, setLoading }) => {
         const manages = await getAllMessages();
         const newAlerts = {};
         
+        // 맵으로 manage 정보를 빠르게 찾기 위해 맵핑
         const manageMap = manages.reduce((map, manage) => {
           map[manage.logIndex] = manage;
           return map;
@@ -44,6 +45,7 @@ export const AlertManager = ({ setAlerts, setLoading }) => {
         
         setAlerts(newAlerts);
       } catch (error) {
+        console.error('Failed to fetch dashboards:', error);
       } finally {
         setLoading(false); 
       }

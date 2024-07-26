@@ -27,12 +27,19 @@ import java.io.IOException;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    /**
+     * 1. MethodName: configure
+     * 2. ClassName : SecurityConfig
+     * 3. Comment   : Spring Security 정의
+     * 4. 작성자    : san
+     * 5. 작성일    : 2024. 07. 09
+     **/
     @Override
     public void configure(HttpSecurity http) throws Exception { // 특정 Http 요청에 대해 웹 기반 보안 구성. 인증/인가 및 로그아웃을 설정
         http
                 .csrf().disable() //csrf토큰 비활성화(테스트시 걸어두는게 좋음)
                 .authorizeRequests()
-                .antMatchers("/login/loginPage", "/login/loginAction", "/**", "/signup", "/signup/email", "/signup/tempw").permitAll()
+                .antMatchers("/login/loginPage", "/login/loginAction", "/signup", "/signup/email", "/signup/tempw").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .logout()

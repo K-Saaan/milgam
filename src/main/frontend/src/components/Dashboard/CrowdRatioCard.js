@@ -1,13 +1,21 @@
-// CrowdRatioCard.js
-import React, { useState, useEffect } from 'react';
-import { Paper, Skeleton, Box } from '@mui/material';
+import { Box, Paper, Skeleton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import { fetchData } from '../../api/fetchData';
 import { extractPopulationRates } from '../../api/dataExtractor';
-import CustomPaper from './styles/CustomPaper';
-import PieChartContainer from './charts/PieChartContainer';
+import { fetchData } from '../../api/fetchData';
 import useStore from '../../store';
+import PieChartContainer from './charts/PieChartContainer';
+import CustomPaper from './styles/CustomPaper';
+
+/**
+ * 1. ClassName: CrowdRatioCard
+ * 2. FileName : CrowdRatioCard.js
+ * 3. Package  : components.CrowdRatioCard
+ * 4. Comment  : 대시보드 인구 비율 카드
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 12
+ **/
 
 const CrowdRatioCard = () => {
   const theme = useTheme();

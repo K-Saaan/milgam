@@ -3,6 +3,14 @@ import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 
+/**
+ * 1. ClassName: SignupButton
+ * 2. FileName : SignupButton.js
+ * 3. Package  : components.Login
+ * 4. Comment  : 회원가입 창으로 이동하는 버튼
+ * 5. 작성자   : boreum
+ * 6. 작성일   : 2024. 06. 27
+ **/
 // 회원가입 버튼
 const SignupButton = () => {
     const theme = useTheme();
