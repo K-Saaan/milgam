@@ -1,16 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { Paper, Typography, Skeleton, Box } from '@mui/material';
+import { Box, Paper, Skeleton, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useQuery } from 'react-query';
+import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import { fetchData } from '../../api/fetchData';
+import { useQuery } from 'react-query';
 import { extractForecastData } from '../../api/dataExtractor';
-import CustomPaper from './styles/CustomPaper'
+import { fetchData } from '../../api/fetchData';
+import useStore from '../../store';
 import { getLineChartOptions, lineChartDatasetOptions } from './charts/LineChartContainer';
-import useStore from '../../store'
+import CustomPaper from './styles/CustomPaper';
+
+/**
+ * 1. ClassName: CrowdTrendCard
+ * 2. FileName : CrowdTrendCard.js
+ * 3. Package  : components.CrowdTrendCard
+ * 4. Comment  : 대시보드 혼잡도 추이 카드
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 12
+ **/
 
 // Chart.js 요소 등록
-import { Chart, LineElement, CategoryScale, LinearScale, PointElement } from 'chart.js';
+import { CategoryScale, Chart, LinearScale, LineElement, PointElement } from 'chart.js';
 Chart.register(LineElement, CategoryScale, LinearScale, PointElement);
 
 // 혼잡 추이 카드
@@ -20,9 +29,15 @@ const CrowdTrendCard = () => {
   const { data: jsonData, error, isLoading } = useQuery(['fetchData', selectedRegion], () => fetchData(selectedRegion), {
     refetchInterval: 300000, // 5분마다 갱신
   });
-
   const [forecastData, setForecastData] = useState([]);
 
+  /**
+   * 1. MethodName: -
+   * 2. ClassName : CrowdTrendCard
+   * 3. Comment   : 혼잡도 추이 통신
+   * 4. 작성자    : mijin
+   * 5. 작성일    : 2024. 07. 12
+   **/
   useEffect(() => {
     if (jsonData) {
       const extractedData = extractForecastData(jsonData);
@@ -30,7 +45,6 @@ const CrowdTrendCard = () => {
     }
   }, [jsonData]);
 
-  // if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error fetching data</div>;
 
   // 날짜와 시간을 분리하여 라벨로 사용

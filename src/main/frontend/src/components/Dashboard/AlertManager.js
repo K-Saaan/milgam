@@ -9,15 +9,11 @@ export const AlertManager = ({ setAlerts, setLoading }) => {
         const manages = await getAllMessages();
         const newAlerts = {};
         
-        // console.log("Fetched logs:", massages);
-        // console.log("Fetched messages:", manages);
-
         // 맵으로 manage 정보를 빠르게 찾기 위해 맵핑
         const manageMap = manages.reduce((map, manage) => {
           map[manage.logIndex] = manage;
           return map;
         }, {});
-        //console.log("Processed manageMap:", manageMap);
 
         massages.forEach(alert => {
           const index = alert.analysisIndex;
@@ -37,12 +33,10 @@ export const AlertManager = ({ setAlerts, setLoading }) => {
             date: manageInfo.date !== undefined ? manageInfo.date : alert.date
           });
         });
-
-        //console.log('Processed Alerts Array:', newAlerts);
         
         setAlerts(newAlerts);
       } catch (error) {
-        //console.error('Failed to fetch dashboards:', error);
+        console.error('Failed to fetch dashboards:', error);
       } finally {
         setLoading(false); // 로딩 종료
       }
@@ -51,7 +45,7 @@ export const AlertManager = ({ setAlerts, setLoading }) => {
     fetchDashboards();
   }, [setAlerts, setLoading]);
 
-  return null; // 이 컴포넌트는 데이터를 가져오기만 하고 UI를 렌더링하지 않습니다.
+  return null; 
 };
 
 export const SseComponent = ({ setAlerts }) => {
