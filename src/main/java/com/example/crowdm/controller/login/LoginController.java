@@ -42,7 +42,7 @@ public class LoginController {
      * 1. MethodName: loginAction
      * 2. ClassName : LoginController
      * 3. Comment   : 내 페이지 프로필
-     * 4. 작성자    : leesumin
+     * 4. 작성자    : 이수민
      * 5. 작성일    : 2024. 07. 15
      **/
     @PostMapping(value = "/loginAction")
