@@ -83,6 +83,13 @@ const darkTheme = createTheme({
   },
 });
 
+/**
+ * 1. MethodName: lightTheme
+ * 2. ClassName : Theme
+ * 3. Comment   : 라이트 모드 theme
+ * 4. 작성자    : boreum
+ * 5. 작성일    : 2024. 07. 06
+ **/
 const lightTheme = createTheme({
   palette: {
     mode: 'light',

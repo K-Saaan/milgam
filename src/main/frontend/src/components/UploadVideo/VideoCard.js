@@ -16,16 +16,14 @@ const cardStyle = (theme) => ({
     border: `1px solid ${theme.palette.border.primary}`,
 });
 
-const iContStyle = (theme) => ({
-    display: 'flex',
-    alignItems: 'center',
-});
-
-const iconStyle = (theme) => ({
-    width: '45%',
-    marginLeft: '5px',
-});
-
+/**
+ * 1. ClassName: VideoCard
+ * 2. FileName : VideoCard.js
+ * 3. Package  : components.UploadVideo
+ * 4. Comment  : 영상 재생 카드 화면
+ * 5. 작성자   : boreum
+ * 6. 작성일   : 2024. 07. 03
+ **/
 const VideoCard = memo(({ video, playerRef }) => {
     const theme = useTheme();
 

@@ -36,6 +36,14 @@ const cTextStyle = (theme) => ({
     fontSize: "14px"
 });
 
+/**
+ * 1. ClassName: AccountLockAlert
+ * 2. FileName : AccountLockAlert.js
+ * 3. Package  : components.Login
+ * 4. Comment  : 계정 잠금으로 로그인 실패 알림 창
+ * 5. 작성자   : boreum
+ * 6. 작성일   : 2024. 06. 27
+ **/
 // 계정 잠금 때 띄움
 const AccountLockAlert = ({ alertOpen, handleClose }) => {
     const theme = useTheme();

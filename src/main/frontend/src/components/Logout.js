@@ -40,6 +40,14 @@ const cTextStyle = (theme) => ({
 
 
 // 로그아웃: 사이드바에서 alertOpen 가 true 되면 열림.
+/**
+ * 1. ClassName: Logout
+ * 2. FileName : Logout.js
+ * 3. Package  : components
+ * 4. Comment  : 로그아웃 확인 창
+ * 5. 작성자   : boreum
+ * 6. 작성일   : 2024. 07. 04
+ **/
 const Logout = ({ alertOpen, handleClose, handleLogout }) => {
     const theme = useTheme();
     const titleStyle = cTitleStyle(theme);
