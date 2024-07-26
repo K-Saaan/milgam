@@ -1,6 +1,14 @@
 import { useEffect } from 'react';
 import { getAllLogs, getAllMessages } from '../../api/api.js';
 
+
+/**
+ * 1. MethodName: AlertManager
+ * 2. ClassName : AlertManager
+ * 3. Comment   : 메세지로그와 메니지먼트 항목을 요청하고 전처리하여 제공
+ * 4. 작성자    : been
+ * 5. 작성일    : 2024. 07. 26
+ **/
 export const AlertManager = ({ setAlerts, setLoading }) => {
   useEffect(() => {
     const fetchDashboards = async () => {
@@ -9,15 +17,10 @@ export const AlertManager = ({ setAlerts, setLoading }) => {
         const manages = await getAllMessages();
         const newAlerts = {};
         
-        // console.log("Fetched logs:", massages);
-        // console.log("Fetched messages:", manages);
-
-        // 맵으로 manage 정보를 빠르게 찾기 위해 맵핑
         const manageMap = manages.reduce((map, manage) => {
           map[manage.logIndex] = manage;
           return map;
         }, {});
-        //console.log("Processed manageMap:", manageMap);
 
         massages.forEach(alert => {
           const index = alert.analysisIndex;
@@ -38,22 +41,27 @@ export const AlertManager = ({ setAlerts, setLoading }) => {
           });
         });
 
-        //console.log('Processed Alerts Array:', newAlerts);
         
         setAlerts(newAlerts);
       } catch (error) {
-        //console.error('Failed to fetch dashboards:', error);
       } finally {
-        setLoading(false); // 로딩 종료
+        setLoading(false); 
       }
     };
 
     fetchDashboards();
   }, [setAlerts, setLoading]);
 
-  return null; // 이 컴포넌트는 데이터를 가져오기만 하고 UI를 렌더링하지 않습니다.
+  return null; 
 };
 
+/**
+ * 1. MethodName: SseComponent
+ * 2. ClassName : AlertManager
+ * 3. Comment   : sse이벤트 리스너를 통해 변경사항시 알람
+ * 4. 작성자    : been
+ * 5. 작성일    : 2024. 07. 26
+ **/
 export const SseComponent = ({ setAlerts }) => {
   useEffect(() => {
     const eventSource = new EventSource('/sse');

@@ -5,12 +5,9 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import com.example.crowdm.controller.sse.SseController;
 import com.example.crowdm.event.message.MessageLogEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Component
 public class MessageLogListener {
-    private static final Logger logger = LoggerFactory.getLogger(MessageLogListener.class);
     private final SseController sseController;
 
     @Autowired
@@ -18,6 +15,14 @@ public class MessageLogListener {
         this.sseController = sseController;
     }
 
+
+    /**
+     * 1. MethodName: handleMessageLogEvent
+     * 2. ClassName : MessageLogListener
+     * 3. Comment   : 메시지 로그 이벤트가 발생했을 때, SseController를 통해 연결된 클라이언트들에게 메시지를 전송
+     * 4. 작성자    : been
+     * 5. 작성일    : 2024. 07. 26
+     **/
     @EventListener
     public void handleMessageLogEvent(MessageLogEvent event) {
         sseController.sendMessageToClients(event.getMessageLogDto());
