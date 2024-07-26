@@ -9,6 +9,14 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+/**
+ * 1. ClassName: DashBackground
+ * 2. FileName : DashBackground.js
+ * 3. Package  : components.DashBackground
+ * 4. Comment  : 대시보드의 Background 디자인 설정
+ * 5. 작성자   : seungwon
+ * 6. 작성일    : 2024. 07. 16
+ **/
 const DashBackground = (props) => {
   return (
     <>
@@ -36,8 +44,6 @@ const DashBackground = (props) => {
           style={{
               backgroundColor: 'transparent',
               minHeight: '65vh',
-              // padding: 0,
-              // margin: 0,
               maxWidth: '1200px',
           }}
         >

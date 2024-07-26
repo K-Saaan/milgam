@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
-import { Dialog, DialogActions, DialogContent,
-    DialogTitle, Button, TextField } from '@mui/material';
+import axios from 'axios';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { useTheme } from '@mui/material/styles';
 import Divider from '@mui/material/Divider';
 import DialogContentText from '@mui/material/DialogContentText';
-import axios from 'axios';
 import CustomTextField from '../Styles/CustomTextField.js';
 
-// 스크롤 안 보이게
+
 const noScrollbarStyles = {
     '&::WebkitScrollbar': {
         display: 'none', // Chrome, Safari, and Opera
@@ -20,12 +19,12 @@ const noScrollbarStyles = {
 };
 
 const dialogContentSx = {
-    ...noScrollbarStyles, // 스크롤 바 숨기기 스타일 추가
-    maxHeight: '1200px', // 필요에 따라 최대 높이 설정
-    overflowY: 'auto', // 세로 스크롤 활성화
-    display: 'flex', // Flexbox 사용
-    flexDirection: 'column', // 세로 방향 정렬
-    alignItems: 'center', // 가운데 정렬
+    ...noScrollbarStyles,
+    maxHeight: '1200px',
+    overflowY: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
 };
 
 // inputProps 스타일 지정
@@ -41,13 +40,21 @@ const inputPropsStyles = {
 
 const textContainerStyle = {
     width: '100%',
-    textAlign: 'left', // 왼쪽 정렬
-    paddingLeft: '4px', // 왼쪽 패딩 추가
+    textAlign: 'left',
+    paddingLeft: '4px',
 };
 
+/**
+ * 1. ClassName: NewEvent
+ * 2. FileName : NewEvent.js
+ * 3. Package  : components.NewEvent
+ * 4. Comment  : 새 이벤트 입력 창
+ * 5. 작성자   : seungwon
+ * 6. 작성일    : 2024. 07. 10
+ **/
 const NewEvent = ({ open, onClose, onAddEvent }) => {
     const theme = useTheme();
-    const { register, handleSubmit, formState: { errors }, setError, clearErrors, setValue } = useForm();
+    const { register, handleSubmit, formState: { errors }, setError, clearErrors } = useForm();
     const [startdate, setStartdate] = useState(null);
     const [enddate, setEnddate] = useState(null);
 
@@ -92,7 +99,13 @@ const NewEvent = ({ open, onClose, onAddEvent }) => {
         return valid;
     };
 
-    // 폼 제출 핸들러
+    /**
+     * 1. MethodName: onSubmit
+     * 2. ClassName : NewEvent
+     * 3. Comment   : 새 이벤트 입력 정보 DB로 넘기기
+     * 4. 작성자    : seungwon
+     * 5. 작성일    : 2024. 07. 16
+     **/
     const onSubmit = async (data) => {
         if (!validateDates()) {
             return; // 날짜가 유효하지 않으면 제출 중단
