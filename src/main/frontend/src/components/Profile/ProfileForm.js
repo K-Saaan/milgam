@@ -128,6 +128,7 @@ const ProfileForm = () => {
                     org: response.data.org,
                     event: response.data.event
                 });
+                setEvent(response.data.event);
                 console.log('Profile fetched:', response.data);
             } catch (error) {
                 console.error('Error fetching profile data:', error);
@@ -252,14 +253,14 @@ const ProfileForm = () => {
                 </div>
                 <EventControl fullWidth>
                     <Select
-                        value={profile.event}
+                        value={event}
                         onChange={handleEventChange}
                         displayEmpty
                         renderValue={(selected) => {
                             if (!selected) {
                               return <em>선택</em>;
                             }
-                            return profile.event ? profile.event : selected;
+                            return selected;
                           }}
                     >
                         {eventTitles.map((title, index) => (

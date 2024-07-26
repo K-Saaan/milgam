@@ -47,30 +47,13 @@ dependencies {
     // Csv parsing
     implementation('com.opencsv:opencsv:5.3')
 
-//    testImplementation 'io.projectreactor:reactor-test'
-//    implementation 'org.springframework.boot:spring-boot-starter-validation'
-//    implementation 'org.apache.commons:commons-lang3:3.12.0'
-//    testImplementation platform('org.junit:junit-bom:5.9.1')
-//    testImplementation 'org.junit.jupiter:junit-jupiter'
-
     // postgreSQL
     implementation 'org.postgresql:postgresql'
 
-    // Spring Security
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    testImplementation 'org.springframework.security:spring-security-test'
-
     // Web socket
-//  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket'
-    
-    // Web
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.apache.httpcomponents:httpclient'
 
-   // Google Cloud Storage
-//    implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter', version: '1.2.5.RELEASE'
-    // implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-storage', version: '1.2.5.RELEASE'
-    
     //sse
     implementation 'io.projectreactor:reactor-core:3.4.11'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
@@ -83,7 +66,6 @@ dependencies {
 
     //email
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-
 }
 
 tasks.named('test') {
@@ -94,8 +76,7 @@ def frontendDir = "$projectDir/src/main/frontend"
 
 sourceSets {
     main {
-        resources { srcDirs = ["$projectDir/src/main/resources"]
-        }
+        resources { srcDirs = ["$projectDir/src/main/resources"] }
     }
 }
 
@@ -113,6 +94,7 @@ task installReact(type: Exec) {
     }
 }
 
+
 task buildReact(type: Exec) {
     dependsOn "installReact"
     workingDir "$frontendDir"
@@ -123,6 +105,7 @@ task buildReact(type: Exec) {
     } else {
         commandLine "npm", "run-script", "build"
     }
+
 }
 
 task copyReactBuildFiles(type: Copy) {
@@ -134,7 +117,7 @@ task copyReactBuildFiles(type: Copy) {
     outputs.upToDateWhen { false }
 }
 
-task copyMedia(type: Copy){
+task copyMedia(type: Copy) {
     dependsOn "copyReactBuildFiles"
     from "$projectDir/src/main/resources/static/static/media"
     into "$projectDir/src/main/resources/static/media"
@@ -143,11 +126,11 @@ task copyMedia(type: Copy){
     outputs.upToDateWhen { false }
 }
 
-task copyTomcat(type: Copy){
+task copyTomcat(type: Copy) {
     dependsOn "copyMedia"
     from "$projectDir/src/main/resources/static/static/js"
     into "$projectDir/src/main/resources/static/js"
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
     outputs.upToDateWhen { false }
-    }
+}

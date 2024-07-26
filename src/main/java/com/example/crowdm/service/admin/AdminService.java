@@ -334,6 +334,9 @@ public class AdminService {
         }
         return answer;
     }
+
+    public void unlockUserAccount(UserEntity user) {
+    }
 }
 
 
