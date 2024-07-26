@@ -5,6 +5,17 @@ import lombok.Data;
 
 import java.sql.Timestamp;
 
+
+/**
+ * 1. ClassName: signup
+ * 2. FileName : SignUpDto.java
+ * 3. Package  : com.example.crowdm.dto
+ * 4. Comment  : 회원가입에 필요한 사용자 DTO
+ * 5. 작성자   : 유병민
+ * 6. 작성일   : 2024. 07. 26
+ */
+
+
 @Data
 public class SignUpDto {
     private int user_index;

@@ -5,15 +5,23 @@ import com.example.crowdm.service.signup.SignupService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
 public class SignupController {
     private final SignupService signupService;
-
+    /**
+     * 1. ClassName: signup
+     * 2. FileName : SignupService.java
+     * 3. Package  : com.example.crowdm.controller
+     * 4. Comment  : 회원가입 API 컨트롤러
+     * 5. 작성자   : 유병민
+     * 6. 작성일   : 2024. 07. 26
+     */
     @PostMapping("/signup")
     public ResponseEntity<String> saveUser(@RequestBody SignUpDto signUpDto) {
         if (signUpDto.getId() == null || signUpDto.getId().trim().isEmpty()) {
