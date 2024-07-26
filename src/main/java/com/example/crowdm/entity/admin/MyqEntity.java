@@ -5,7 +5,13 @@ import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 
-
+/**
+ * 1. MethodName: MyqEntity
+ * 2. ClassName : MyqEntity
+ * 3. Comment   : 1:1문의 엔티티
+ * 4. 작성자    : boyeong
+ * 5. 작성일    : 2024. 07. 12
+ **/
 @Getter
 @Entity
 @Builder

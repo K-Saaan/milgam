@@ -1,9 +1,9 @@
 package com.example.crowdm.service.admin;
 
-import com.example.crowdm.dto.faq.MailDto;
+
 import com.example.crowdm.dto.faq.MyqList;
 import com.example.crowdm.dto.user.UserDetail;
-//import com.example.crowdm.repository.User.UserRepository;
+
 import com.example.crowdm.service.mail.MailSender;
 import com.example.crowdm.dto.faq.UnlockList;
 import com.example.crowdm.dto.user.PermissionList;
@@ -17,13 +17,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.example.crowdm.service.mail.MailSender;
+
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +51,13 @@ public class AdminService {
         return userList;
     }
 
-
+    /**
+     * 1. MethodName: permissionUpdateUser
+     * 2. ClassName : AdminService
+     * 3. Comment   : 회원가입 승인
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 16
+     **/
 
     @Transactional
     public int permissionUpdateUser(int user_index, HttpServletRequest request) {
@@ -78,6 +83,14 @@ public class AdminService {
             return 0;
         }
     }
+
+    /**
+     * 1. MethodName: denyUpdateUser
+     * 2. ClassName : AdminService
+     * 3. Comment   : 회원가입 거절
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 16
+     **/
     public int denyUpdateUser(int user_index, HttpServletRequest request) {
         //session
         HttpSession session = request.getSession();
@@ -100,52 +113,13 @@ public class AdminService {
         }
 
     }
-    /*public List<UserDetail> userdetail(int user_index) {
-
-        List<UserEntity> userList = loginRepository.findById(user_index);
-        List<UserDetail> answer = new ArrayList<>();
-        for (UserEntity user : userList) {
-            if (user == null) {
-                // Handle case where user is not found, for example, return an empty list or throw an exception
-                return List.of();
-            }
-
-            // Determine role based on role_index
-            String role;
-            if (user.getRole_index() == "1") {
-                role = "director";
-            } else {
-                role = "host";
-            }
-
-            // Determine status based on permissionyn
-            String status;
-            if (user.getPermissionyn() == false) {
-                status = "거절"; // Waiting
-            } else if (user.getPermissionyn() == true) {
-                status = "승인"; // Approved
-            } else {
-                status = "대기"; // Rejected
-            }
-
-
-            String id = user.getId();
-            String email = user.getEmail();
-            String name = user.getName();
-            String phone = user.getPhone();
-
-            Timestamp start_date = user.getStart_date();
-            Timestamp end_date = user.getEnd_date();
-            String org = user.getOrg();
-            String org_phone = user.getOrg_phone();
-
-
-            UserDetail userdetail = new UserDetail(user_index, id, email, name, phone, start_date, end_date, org, org_phone);
-            answer.add(userdetail);
-        }
-        return answer;
-    }*/
-
+    /**
+     * 1. MethodName: userdetail
+     * 2. ClassName : AdminService
+     * 3. Comment   : 회원가입 유저 상세보기
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 10
+     **/
     public List<UserDetail> userdetail(int user_index) {
         Optional<UserEntity> userOptional = loginRepository.findById(user_index);
         if (!userOptional.isPresent()) {
@@ -197,7 +171,13 @@ public class AdminService {
 
         return List.of(userDetail);
     }
-
+    /**
+     * 1. MethodName: permissionList
+     * 2. ClassName : AdminService
+     * 3. Comment   : 회원가입 유저 목록
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 10
+     **/
     public List<PermissionList> permissionList() {
         List<UserEntity> userList = loginRepository.findAll();
         List<PermissionList> answer = new ArrayList<>();
@@ -225,6 +205,13 @@ public class AdminService {
         return answer;
     }
 
+    /**
+     * 1. MethodName: getUserNameById
+     * 2. ClassName : AdminService
+     * 3. Comment   : index로 유저 찾기
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 10
+     **/
     public String getUserNameById(int userIndex) {
         Optional<UserEntity> userEntityOptional = loginRepository.findById(userIndex);
         if (userEntityOptional.isPresent()) {
@@ -235,6 +222,13 @@ public class AdminService {
             return null;
         }
     }
+    /**
+     * 1. MethodName: myqList
+     * 2. ClassName : AdminService
+     * 3. Comment   : 1:1문의 목록
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 17
+     **/
     public List<MyqList> myqList() {
         List<MyqEntity> myqlist = myqRepository.findAll();
         List<MyqList> answerlist = new ArrayList<>();
@@ -263,7 +257,13 @@ public class AdminService {
         return answerlist;
     }
 
-
+    /**
+     * 1. MethodName: answering
+     * 2. ClassName : AdminService
+     * 3. Comment   : 1:1 문의에 답하기
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 16
+     **/
     public Integer answering(int myq_index, String answercontext,  HttpServletRequest request) {
         //session
         HttpSession session = request.getSession();
@@ -287,7 +287,13 @@ public class AdminService {
         }
     }
 
-
+    /**
+     * 1. MethodName: unlock
+     * 2. ClassName : AdminService
+     * 3. Comment   : 잠긴 계정 풀기
+     * 4. 작성자    : boyeong, sumin
+     * 5. 작성일    : 2024. 07. 23
+     **/
 
     @Transactional
     public List<UnlockList> unlock() {

@@ -1,5 +1,13 @@
 package com.example.crowdm.dto.faq;
 
+/**
+ * 1. MethodName: Requestq
+ * 2. ClassName : Requestq
+ * 3. Comment   : 1:1 문의 답변 등록 요청 dto
+ * 4. 작성자    : boyeong
+ * 5. 작성일    : 2024. 07. 4
+ **/
+
 public class Requestq {
 
 

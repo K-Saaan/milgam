@@ -2,6 +2,15 @@ package com.example.crowdm.service.admin;
 import lombok.RequiredArgsConstructor;
 
 import java.security.SecureRandom;
+
+
+/**
+ * 1. MethodName: SimplePasswordGenerator
+ * 2. ClassName : SimplePasswordGenerator
+ * 3. Comment   : 랜덤 코드 생성
+ * 4. 작성자    : boyeong
+ * 5. 작성일    : 2024. 07. 04
+ **/
 @RequiredArgsConstructor
 public class SimplePasswordGenerator {
 

@@ -1,7 +1,13 @@
 package com.example.crowdm.dto.faq;
 
 import java.sql.Timestamp;
-
+/**
+ * 1. MethodName: UnlockList
+ * 2. ClassName : UnlockList
+ * 3. Comment   : 계정 잠금 해제 목록 dto
+ * 4. 작성자    : boyeong
+ * 5. 작성일    : 2024. 07. 10
+ **/
 public class UnlockList {
 
     private String id;
