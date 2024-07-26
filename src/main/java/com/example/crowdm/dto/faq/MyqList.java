@@ -2,6 +2,14 @@ package com.example.crowdm.dto.faq;
 
 import java.sql.Timestamp;
 
+/**
+ * 1. MethodName: MyqList
+ * 2. ClassName : MyqList
+ * 3. Comment   : admin입장에서 필요한 1:1문의 관련 dto
+ * 4. 작성자    : boyeong
+ * 5. 작성일    : 2024. 07. 17
+ **/
+
 public class MyqList {
     private Integer myq_index;
     private String question_title;

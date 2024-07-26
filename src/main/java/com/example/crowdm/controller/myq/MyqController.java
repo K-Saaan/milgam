@@ -1,12 +1,10 @@
 package com.example.crowdm.controller.myq;
 
-import com.example.crowdm.dto.faq.MyqList;
+
 import com.example.crowdm.dto.faq.MyqListTwo;
 import com.example.crowdm.dto.faq.RequestAddMyq;
 import com.example.crowdm.entity.admin.MyqEntity;
-import com.example.crowdm.entity.faq.FaqEntity;
-import com.example.crowdm.repository.faq.FaqRepository;
-import com.example.crowdm.service.faq.FaqService;
+
 import com.example.crowdm.service.myq.MyqService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +21,13 @@ import java.util.List;
 @RequestMapping("/myq")
 public class MyqController {
 
-    //private final FaqRepository faqRepository;
+    /**
+     * 1. MethodName: questionlist
+     * 2. ClassName : MyqController
+     * 3. Comment   : 1:1문의 질문 목록
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 12
+     **/
     private final MyqService myqService;
     @GetMapping("/questionlist")
     public ResponseEntity<List<MyqListTwo>> myqList(HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -31,11 +35,13 @@ public class MyqController {
         return ResponseEntity.ok(result);
     }
 
-//    @PostMapping("/addquestion")
-//    public ResponseEntity<MyqEntity> addQuestion(@RequestBody RequestAddMyq addmyq ) {
-//        MyqEntity result=myqService.addquestion(addmyq.getQuestion_title(), addmyq.getQuestion());
-//        return ResponseEntity.ok(result);
-//    }
+    /**
+     * 1. MethodName: addquestion
+     * 2. ClassName : MyqController
+     * 3. Comment   : 1:1 문의 등록
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 12
+     **/
     @PostMapping("/addquestion")
     public ResponseEntity<MyqEntity> addQuestion(@RequestBody RequestAddMyq addmyq,
                                              HttpServletRequest request) {

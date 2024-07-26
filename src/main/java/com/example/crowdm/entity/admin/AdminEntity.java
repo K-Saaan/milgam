@@ -4,7 +4,15 @@ package com.example.crowdm.entity.admin;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+
+
+/**
+ * 1. MethodName: admin
+ * 2. ClassName : AdminEntity
+ * 3. Comment   : 관리자 엔티티
+ * 4. 작성자    : boyeong
+ * 5. 작성일    : 2024. 07. 3
+ **/
 
 @Getter
 @Entity

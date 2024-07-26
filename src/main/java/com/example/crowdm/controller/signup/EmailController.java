@@ -6,18 +6,23 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.mail.MessagingException;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 
 public class EmailController {
+    /**
+     * 1. ClassName: signup
+     * 2. FileName : EmailController.java
+     * 3. Package  : com.example.crowdm.controller
+     * 4. Comment  : 회원가입 이메일 인증 API 컨트롤러
+     * 5. 작성자   : 유병민
+     * 6. 작성일   : 2024. 07. 26
+     */
     private final EmailService emailService;
     static int count = 0;
     // 인증코드 메일 발송

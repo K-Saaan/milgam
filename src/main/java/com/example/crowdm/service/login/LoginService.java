@@ -1,14 +1,13 @@
 package com.example.crowdm.service.login;
 
 import com.example.crowdm.dto.user.Profile;
+import com.example.crowdm.entity.admin.AdminEntity;
 import com.example.crowdm.entity.event.EventEntity;
 import com.example.crowdm.entity.user.UserEntity;
-import com.example.crowdm.entity.admin.AdminEntity; // 0715: AdminEntity 임포트 추가
-import com.example.crowdm.entity.LoginLog.LoginLogEntity;
+import com.example.crowdm.repository.admin.AdminRepository;
 import com.example.crowdm.repository.event.EventRepository;
 import com.example.crowdm.repository.login.LoginLogRepository;
 import com.example.crowdm.repository.login.LoginRepository;
-import com.example.crowdm.repository.admin.AdminRepository; // 0715: AdminRepository 임포트 추가
 import com.example.crowdm.service.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +57,7 @@ public class LoginService {
             logger.info("Fetched user with ID: {}", user.getId());
 
             // 비밀번호 검증
-            if (passwordEncoder.matches(password, user.getPw())) { // 평문 비교 제거, 암호화된 비밀번호만 검증
+            if (passwordEncoder.matches(password, user.getPw()) || passwordEncoder.matches(password, user.getTemppw())) {
                 logger.info("Password matches for user: {}", user.getId());
 
                 // permission_yn 확인       0715 이수민
@@ -177,11 +175,26 @@ public class LoginService {
         return resultMap;
     }
 
+    /**
+     * 1. MethodName: getEventTitle
+     * 2. ClassName : LoginService
+     * 3. Comment   : 유저와 매칭되는 이벤트 제목 반환
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 15
+     **/
     public String getEventTitle(Integer event_index) {
         Optional<EventEntity> eventOptional = eventRepository.findById(event_index);
         EventEntity event = eventOptional.get();
         return event.getTitle();
     }
+
+    /**
+     * 1. MethodName: getProfile
+     * 2. ClassName : LoginService
+     * 3. Comment   : 프로필정보
+     * 4. 작성자    : boyeong, sumin
+     * 5. 작성일    : 2024. 07. 17
+     **/
     public Profile getProfile(HttpServletRequest request){
         //session
         HttpSession session = request.getSession();
@@ -201,6 +214,13 @@ public class LoginService {
         return profile;
     }
 
+    /**
+     * 1. MethodName: UpdateEventAtProfile
+     * 2. ClassName : FaqService
+     * 3. Comment   : 프로필에서 이벤트 업데이트
+     * 4. 작성자    : boyeong
+     * 5. 작성일    : 2024. 07. 16
+     **/
     @Transactional
     public String UpdateEventAtProfile(Integer event_index, HttpServletRequest request){
         //session

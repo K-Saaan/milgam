@@ -1,14 +1,11 @@
 package com.example.crowdm.service.signup;
 
 import com.example.crowdm.dto.signup.EmailDto;
-import com.example.crowdm.dto.signup.SignUpDto;
 import com.example.crowdm.entity.user.EmailEntity;
 import com.example.crowdm.repository.signup.EmailRepository;
-import com.example.crowdm.service.admin.SimplePasswordGenerator;
 import com.example.crowdm.service.mail.MailSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,7 +14,14 @@ import javax.transaction.Transactional;
 @Service
 @RequiredArgsConstructor
 public class EmailService {
-
+    /**
+     * 1. ClassName: signup
+     * 2. FileName : EmailService.java
+     * 3. Package  : com.example.crowdm.service
+     * 4. Comment  : email을 전송하고 인증 번호 유효성을 검사함
+     * 5. 작성자   : 유병민
+     * 6. 작성일   : 2024. 07. 26
+     */
     private final MailSender mailSender;
     private final EmailRepository emailRepository;
 

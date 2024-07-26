@@ -5,6 +5,14 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import com.example.crowdm.entity.admin.AdminEntity;
 
+
+/**
+ * 1. MethodName: AdminRepository
+ * 2. ClassName : AdminRepository
+ * 3. Comment   : 관리자 repo
+ * 4. 작성자    : boyeong, sumin
+ * 5. 작성일    : 2024. 07. 16
+ **/
 @Repository
 public interface AdminRepository extends JpaRepository<AdminEntity, Integer>, JpaSpecificationExecutor<AdminEntity> {
 

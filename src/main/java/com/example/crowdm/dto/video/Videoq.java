@@ -1,5 +1,13 @@
 package com.example.crowdm.dto.video;
 
+/**
+ * 1. MethodName: Videoq
+ * 2. ClassName : Videoq
+ * 3. Comment   : 비디오 메타정보 dto
+ * 4. 작성자    : boyeong
+ * 5. 작성일    : 2024. 07. 16
+ **/
+
 public class Videoq {
 
     private String length;

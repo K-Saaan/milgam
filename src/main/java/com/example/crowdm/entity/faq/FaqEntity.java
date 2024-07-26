@@ -4,6 +4,13 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * 1. MethodName: FaqEntity
+ * 2. ClassName : FaqEntity
+ * 3. Comment   : FAQ 엔티티
+ * 4. 작성자    : boyeong
+ * 5. 작성일    : 2024. 07. 03
+ **/
 
 @Getter
 @Entity

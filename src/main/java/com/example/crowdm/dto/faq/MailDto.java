@@ -1,5 +1,13 @@
 package com.example.crowdm.dto.faq;
 
+/**
+ * 1. MethodName: MailDto
+ * 2. ClassName : MailDto
+ * 3. Comment   : 메일 발송 형식 dto
+ * 4. 작성자    : boyeong
+ * 5. 작성일    : 2024. 07. 5
+ **/
+
 public class MailDto {
     private String address;
     private String title;

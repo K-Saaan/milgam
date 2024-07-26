@@ -1,10 +1,8 @@
 package com.example.crowdm.controller.video;
 
-import com.example.crowdm.dto.faq.Answerq;
-import com.example.crowdm.dto.faq.Requestq;
+
 import com.example.crowdm.dto.video.Videoq;
-import com.example.crowdm.entity.event.EventEntity;
-import com.example.crowdm.entity.video.VideoEntity;
+
 import com.example.crowdm.service.video.VideoService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -17,14 +15,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
+
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -60,10 +58,13 @@ public class VideoController {
      **/
     @PostMapping("/videoUpload")
     public ResponseEntity<List<String>> videoUpload(@RequestParam("file") MultipartFile mFile,
-                                                         @RequestParam("originName") String fileOriginName,
-                                                         @RequestParam("place") String place,
-                                                         @RequestParam("time") String time,
-                                                         Model model) throws IOException{
+                                                    @RequestParam("originName") String fileOriginName,
+                                                    @RequestParam("place") String place,
+                                                    @RequestParam("time") String time,
+                                                    @RequestPart("videoq") Videoq videoq,
+                                                    Model model,
+                                                    HttpServletRequest request) throws IOException{
+        videoService.uploadmeta(videoq.getLength(), videoq.getSector(), videoq.getCamera_num(), videoq.getContent(), videoq.getFile_name(), videoq.getChunk_index(),request);
         List<String> result = videoService.uploadToGCP(mFile, fileOriginName, place, time);
         model.addAttribute("data", result);
         return ResponseEntity.ok(result);
@@ -89,19 +90,7 @@ public class VideoController {
     }
 
 
-    /**
-     * 1. MethodName: uploadmeta
-     * 2. ClassName : VideoController
-     * 3. Comment   : 비디오 메타 데이터 저장
-     * 4. 작성자    : boyeong
-     * 5. 작성일    : 2024. 07. 16
-     **/
-    @PostMapping("/uploadmeta")
-    public ResponseEntity<VideoEntity> uploadMeta(@RequestBody Videoq videoq, HttpServletRequest request) {
-        VideoEntity result = videoService.uploadmeta(videoq.getLength(), videoq.getSector(), videoq.getCamera_num(), videoq.getContent(), videoq.getFile_name(), videoq.getChunk_index(),request);
 
-        return ResponseEntity.ok(result);
-    }
 
 
 }

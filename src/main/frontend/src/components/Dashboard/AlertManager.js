@@ -17,7 +17,7 @@ export const AlertManager = ({ setAlerts, setLoading }) => {
           map[manage.logIndex] = manage;
           return map;
         }, {});
-        // console.log("Processed manageMap:", manageMap);
+        //console.log("Processed manageMap:", manageMap);
 
         massages.forEach(alert => {
           const index = alert.analysisIndex;
@@ -38,11 +38,11 @@ export const AlertManager = ({ setAlerts, setLoading }) => {
           });
         });
 
-        console.log('Processed Alerts Array:', newAlerts);
+        //console.log('Processed Alerts Array:', newAlerts);
         
         setAlerts(newAlerts);
       } catch (error) {
-        console.error('Failed to fetch dashboards:', error);
+        //console.error('Failed to fetch dashboards:', error);
       } finally {
         setLoading(false); // 로딩 종료
       }
@@ -56,7 +56,7 @@ export const AlertManager = ({ setAlerts, setLoading }) => {
 
 export const SseComponent = ({ setAlerts }) => {
   useEffect(() => {
-    const eventSource = new EventSource('http://localhost:8080/sse');
+    const eventSource = new EventSource('/sse');
 
     eventSource.addEventListener('message-log', function(event) {
       const newMessage = JSON.parse(event.data);
@@ -84,3 +84,4 @@ export const SseComponent = ({ setAlerts }) => {
 
   return null;
 };
+
