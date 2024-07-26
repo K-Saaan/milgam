@@ -41,6 +41,14 @@ const MenuButton = styled('button')(({ theme, isActive }) => ({
   },
 }));
 
+/**
+ * 1. ClassName: Topbar
+ * 2. FileName : Topbar.js
+ * 3. Package  : components.Topbar
+ * 4. Comment  : 탑바 컴포넌트
+ * 5. 작성자   : mijin
+ * 6. 작성일   : 2024. 07. 03
+ **/
 function Topbar({ isAdmin, toggleTheme }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -128,10 +136,6 @@ function Topbar({ isAdmin, toggleTheme }) {
       getWeather();
   }, []);
 
-  
-
-
-
   return (
     <Box>
       <AppBar position="static" style={appBarStyle}>
@@ -166,8 +170,6 @@ function Topbar({ isAdmin, toggleTheme }) {
             로그아웃
           </MenuButton>
           )}
-
-
 
         <div>
           {temp === null ? 
