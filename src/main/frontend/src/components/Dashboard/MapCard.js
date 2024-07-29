@@ -83,8 +83,6 @@ const MapCard = () => {
   const { selectedRegion, setSelectedRegion, mapCenter, setMapCenter } = useStore();
   const [crowdData, setCrowdData] = useState({});
   const [isFetching, setIsFetching] = useState(true);
-  const results = useQueries(queries);
-  const nearbyRegions = getNearbyRegionsByCenter(mapCenter, regions);
 
   useEffect(() => {
     if (!selectedRegion) {
@@ -95,12 +93,18 @@ const MapCard = () => {
       setMapCenter({ lat: selectedRegionData.lat, lng: selectedRegionData.lng });
     }
   }, [selectedRegion, setSelectedRegion, setMapCenter]);
+  const nearbyRegions = getNearbyRegionsByCenter(mapCenter, regions);
+
+
 
   const queries = nearbyRegions.map(region => ({
     queryKey: ['fetchData', region.value],
     queryFn: () => fetchData(region.value),
     staleTime: 300000,
   }));
+
+  const results = useQueries(queries);
+
 
   /**
    * 1. MethodName: -
