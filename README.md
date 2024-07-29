@@ -1,5 +1,5 @@
 # MilGam: AI Crowd Management
-![image](https://github.com/user-attachments/assets/a7bc8771-5433-49b4-ad06-fa4221f7f8e0)
+
 
 ### 밀감은 Ai를 활용한 인파밀집 및 이상행동 검출 서비스입니다
 ![image](https://github.com/user-attachments/assets/d79526d3-cf5e-4a43-a142-0fbdef4162c2)
@@ -26,7 +26,8 @@
 <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=CSS3&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=JavaScript&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=white"/></a>
-<img src="https://img.shields.io/badge/Bootstrap-7952B3?style=flat&logo=Bootstrap&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/MUI-007FFF?style=flat&logo=mui&logoColor=white"/>
+
 
 ##### CI/CD
 
