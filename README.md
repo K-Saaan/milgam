@@ -44,13 +44,19 @@
 ![아키텍처 3](https://github.com/user-attachments/assets/46a176ac-377f-446d-ad2d-18cd3e30027e)
 
 <br />
+
 # 프로젝트 상세
+
 ## 주최
+
 Kt
+
 ## 소속
+
 AivleSchool 5기
 ## 기간
 24.06.17~24.07.26
+
 ## 팀원별 역할
 - k-ssan
 - indoorkeyman
