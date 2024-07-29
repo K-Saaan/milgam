@@ -13,7 +13,7 @@
 <br/>
 -- 관리자 모드 gif
 <br/>
-[![Video Label](http://img.youtube.com/vi/FxWXDx1QPDk/0.jpg)](https://youtu.be/'FxWXDx1QPDk)
+[![Video Label](http://img.youtube.com/vi/FxWXDx1QPDk/0.jpg)](https://youtu.be/FxWXDx1QPDk)
 ## Development_Skills
 
 ##### BACK-END
