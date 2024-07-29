@@ -64,11 +64,20 @@
 
 ## 팀원별 역할
 - [K-Saaan](https://github.com/K-Saaan)
+  #### FE/BE/AI
 - [indoorkeyman](https://github.com/indoorkeyman)
+  #### FE/BE/AI/DB
 - [m1-j1n](https://github.com/m1-j1n)
+  #### FE
 - [Lumi-p](https://github.com/Lumi-p)
+  #### FE
 - [bboyeong](https://github.com/bboyeong)
+  #### BE/DB/AI
 - [w0n-100](https://github.com/w0n-100)
+  #### FE/AI
 - [dbqudals](https://github.com/dbqudals)
+  #### BE/CICD/EC2/JENKINS
 - [ideal402](https://github.com/ideal402)
+  #### AI/BE/FE
 - [leesumin](https://github.com/leesumin)
+  #### BE
