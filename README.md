@@ -4,6 +4,15 @@
 <br />
 
 ## 팀원별 역할
+- k-ssan
+- indoorkeyman
+- m1-j1n
+- Lumi-p
+- BBoyoung
+- qor_00
+- dbqudals
+- racoon402
+- leesumin
 
 ## Development_Skills
 
