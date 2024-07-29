@@ -58,12 +58,12 @@
 **24.06.17~24.07.26**
 
 ## 팀원별 역할
-- k-ssan
-- indoorkeyman
-- m1-j1n
-- Lumi-p
-- BBoyoung
-- qor_00
-- dbqudals
+- [k-ssan](https://github.com/k-ssan)
+- [indoorkeyman](https://github.com/indoorkeyman)
+- [m1-j1n](https://github.com/m1-j1n)
+- [Lumi-p](https://github.com/Lumi-p)
+- [bboyeong](https://github.com/bboyeong)
+- [qor_00](https://github.com/qor_00)
+- [dbqudals](https://github.com/dbqudals)
 - [racoon402](https://github.com/Racoon402)
-- leesumin
+- [leesumin](https://github.com/leesumin)
