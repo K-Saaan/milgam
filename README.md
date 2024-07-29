@@ -2,7 +2,8 @@
 밀감은 ai를 활용한 인파밀집 및 이상행동 검출 서비스입니다.
 
 ## Preview
-
+### 메인기능
+### 서브기능
 ## Development_Skills
 
 ##### BACK-END
