@@ -66,7 +66,7 @@
 - [m1-j1n](https://github.com/m1-j1n)
 - [Lumi-p](https://github.com/Lumi-p)
 - [bboyeong](https://github.com/bboyeong)
-- [won_100](https://github.com/won_100)
+- [w0n_100](https://github.com/w0n_100)
 - [dbqudals](https://github.com/dbqudals)
 - [ideal402](https://github.com/ideal402)
 - [leesumin](https://github.com/leesumin)
