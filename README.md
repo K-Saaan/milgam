@@ -58,7 +58,7 @@
 **24.06.17~24.07.26**
 
 ## 팀원별 역할
-- [k-ssan](https://github.com/k-ssan)
+- [K-Saaan](https://github.com/K-Saaan)
 - [indoorkeyman](https://github.com/indoorkeyman)
 - [m1-j1n](https://github.com/m1-j1n)
 - [Lumi-p](https://github.com/Lumi-p)
