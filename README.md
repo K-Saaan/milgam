@@ -7,10 +7,16 @@
 ![image](https://github.com/user-attachments/assets/d79526d3-cf5e-4a43-a142-0fbdef4162c2)
 
 ## Preview
+
+### AI 분석을 위한 영상 업로드
 ![영상업로드](https://github.com/user-attachments/assets/59d017c0-aca8-4c4f-aa03-94f88a74e086)
 <br/>
+
+### AI 분석 결과 알림 확인
 ![알림서비스](https://github.com/user-attachments/assets/5a358013-ed0b-4901-8422-ce75c5b3ec0d)
 <br/>
+
+### 관리자 모드
 ![관리자모드](https://github.com/user-attachments/assets/60a9c6ec-2ca4-40fd-a075-39e3342af417)
 <br/>
 [![Video Label](http://img.youtube.com/vi/FxWXDx1QPDk/0.jpg)](https://youtu.be/FxWXDx1QPDk)
