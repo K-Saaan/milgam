@@ -8,7 +8,7 @@
 <br/>
 -- 관리자 모드 gif
 <br/>
-[![Video Label](https://youtu.be/FxWXDx1QPDk)]
+https://www.youtube.com/watch?v=FxWXDx1QPDk
 ## Development_Skills
 
 ##### BACK-END
@@ -48,14 +48,13 @@
 # 프로젝트 상세
 
 ## 주최
-
-Kt
+**KT**
 
 ## 소속
+**AivleSchool 5기**
 
-AivleSchool 5기
 ## 기간
-24.06.17~24.07.26
+**24.06.17~24.07.26**
 
 ## 팀원별 역할
 - k-ssan
