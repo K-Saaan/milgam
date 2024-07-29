@@ -8,7 +8,7 @@
 <br/>
 -- 관리자 모드 gif
 <br/>
-https://www.youtube.com/watch?v=FxWXDx1QPDk
+[![Video Label](https://youtu.be/FxWXDx1QPDk)]
 ## Development_Skills
 
 ##### BACK-END
