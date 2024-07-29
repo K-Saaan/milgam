@@ -9,9 +9,9 @@
 ## Preview
 ![영상업로드](https://github.com/user-attachments/assets/59d017c0-aca8-4c4f-aa03-94f88a74e086)
 <br/>
--- 알림서비스 분석 gif
+![알림서비스](https://github.com/user-attachments/assets/5a358013-ed0b-4901-8422-ce75c5b3ec0d)
 <br/>
--- 관리자 모드 gif
+![관리자모드](https://github.com/user-attachments/assets/60a9c6ec-2ca4-40fd-a075-39e3342af417)
 <br/>
 [![Video Label](http://img.youtube.com/vi/FxWXDx1QPDk/0.jpg)](https://youtu.be/FxWXDx1QPDk)
 ## Development_Skills
