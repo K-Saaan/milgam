@@ -3,7 +3,7 @@
 
 
 
-### 밀감은 Ai를 활용한 인파밀집 및 이상행동 검출 서비스입니다
+### 밀감은 AI를 활용한 인파밀집 및 이상행동 검출 서비스입니다
 ![image](https://github.com/user-attachments/assets/d79526d3-cf5e-4a43-a142-0fbdef4162c2)
 
 ## Preview
