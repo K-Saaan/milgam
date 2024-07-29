@@ -1,9 +1,15 @@
 # MilGam: AI Crowd Management
 밀감은 ai를 활용한 인파밀집 및 이상행동 검출 서비스입니다.
-
+-- 1p 설명서 첨부
 ## Preview
-### 메인기능
-### 서브기능
+### 기능
+-- 영상업로드 및 분석
+<br/>
+-- 알림서비스 분석
+<br/>
+-- 관리자 모드
+<br/>
+
 ## Development_Skills
 
 ##### BACK-END
@@ -39,8 +45,14 @@
 ![아키텍처 3](https://github.com/user-attachments/assets/46a176ac-377f-446d-ad2d-18cd3e30027e)
 
 <br />
-
-# 팀원별 역할
+# 프로젝트 상세
+## 주최
+Kt
+## 소속
+AivleSchool 5기
+## 기간
+24.06.17~24.07.26
+## 팀원별 역할
 - k-ssan
 - indoorkeyman
 - m1-j1n
