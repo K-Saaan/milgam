@@ -3,28 +3,6 @@
 
 ## preview
 
-## Architecture
-![아키텍처 1](https://github.com/user-attachments/assets/aeb1bb27-b83e-46b0-acad-1c70e444980a)
-
-## CV
-![아키텍처 2](https://github.com/user-attachments/assets/22d30544-4f5c-4e00-b6da-29b250f5527d)
-
-## RAG
-![아키텍처 3](https://github.com/user-attachments/assets/46a176ac-377f-446d-ad2d-18cd3e30027e)
-
-<br />
-
-# 팀원별 역할
-- k-ssan
-- indoorkeyman
-- m1-j1n
-- Lumi-p
-- BBoyoung
-- qor_00
-- dbqudals
-- racoon402
-- leesumin
-
 ## Development_Skills
 
 ##### BACK-END
@@ -50,3 +28,24 @@
 <img src="https://img.shields.io/badge/GCP-4285F4?style=flat&logo=googlecloud&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/Filezilla-BF0000?style=flat&logo=filezilla&logoColor=white"/></a> 
 
+## Architecture
+![아키텍처 1](https://github.com/user-attachments/assets/aeb1bb27-b83e-46b0-acad-1c70e444980a)
+
+## CV
+![아키텍처 2](https://github.com/user-attachments/assets/22d30544-4f5c-4e00-b6da-29b250f5527d)
+
+## RAG
+![아키텍처 3](https://github.com/user-attachments/assets/46a176ac-377f-446d-ad2d-18cd3e30027e)
+
+<br />
+
+# 팀원별 역할
+- k-ssan
+- indoorkeyman
+- m1-j1n
+- Lumi-p
+- BBoyoung
+- qor_00
+- dbqudals
+- racoon402
+- leesumin
