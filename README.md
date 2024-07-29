@@ -19,6 +19,7 @@
 ### 관리자 모드
 ![관리자모드](https://github.com/user-attachments/assets/60a9c6ec-2ca4-40fd-a075-39e3342af417)
 <br/>
+### 발표 영상
 [![Video Label](http://img.youtube.com/vi/FxWXDx1QPDk/0.jpg)](https://youtu.be/FxWXDx1QPDk)
 ## Development_Skills
 
