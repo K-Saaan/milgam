@@ -1,4 +1,4 @@
-![홈2](https://github.com/user-attachments/assets/0a49a0da-3d48-4504-989a-15ffdbc4f1b3)
+
 # MilGam: AI Crowd Management
 
 
