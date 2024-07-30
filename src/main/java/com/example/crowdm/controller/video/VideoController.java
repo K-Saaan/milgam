@@ -1,8 +1,11 @@
 package com.example.crowdm.controller.video;
 
 
+import com.example.crowdm.dto.user.Profile;
 import com.example.crowdm.dto.video.Videoq;
 
+import com.example.crowdm.entity.video.VideoEntity;
+import com.example.crowdm.service.login.LoginService;
 import com.example.crowdm.service.video.VideoService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -29,9 +32,12 @@ import java.util.List;
 @RequestMapping("/api")
 public class VideoController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private final VideoService videoService;
+    private final LoginService loginService;
     public SimpMessagingTemplate messagingTemplate;
     private final RestTemplate restTemplate;
+
 
     @Value("${url.gcp_upload}")
     String gcpUrl;
@@ -64,10 +70,17 @@ public class VideoController {
                                                     @RequestPart("videoq") Videoq videoq,
                                                     Model model,
                                                     HttpServletRequest request) throws IOException{
-        videoService.uploadmeta(videoq.getLength(), videoq.getSector(), videoq.getCamera_num(), videoq.getContent(), videoq.getFile_name(), videoq.getChunk_index(),request);
+        // 영상 메타데이터 저장
+        VideoEntity newvideo = videoService.uploadmeta(videoq.getLength(), videoq.getSector(), videoq.getCamera_num(), videoq.getContent(), videoq.getFile_name(), videoq.getChunk_index(),request);
+
+        // 영상 uuid 메타데이터를 uuid에 저장
+        String uuid = newvideo.getUuid();
+
+        // 현재 사용자의 행사 정보를 받아오기 위한 사용자 정보 조회
+        String eventFeatures = videoService.selectEventFeatures(request);
 
         // GCP VM으로 비디오 전송
-        List<String> result = videoService.uploadToGCP(mFile, fileOriginName, place, time);
+        List<String> result = videoService.uploadToGCP(mFile, fileOriginName, place, time, uuid, eventFeatures);
         model.addAttribute("data", result);
         return ResponseEntity.ok(result);
     }

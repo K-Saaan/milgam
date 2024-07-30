@@ -34,6 +34,8 @@ public class LoginService {
     private final AdminRepository adminRepository; // 0715: AdminRepository 추가
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); // 0715: BCryptPasswordEncoder 추가
     private final AdminService adminService; // 0723 추가됨
+
+    @Transactional
     public Map<String, Object> updateLogin(String userId, String password, HttpServletRequest request) {
         Map<String, Object> resultMap = new HashMap<>();
 

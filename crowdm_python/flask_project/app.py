@@ -24,6 +24,7 @@ now = datetime.now()
 # 원하는 형식으로 포맷팅
 formatted_date = now.strftime('%Y년%m월%d일')
 yyyymm = now.strftime("%Y%m")
+dd = now.strftime("%d")
 load_dotenv()
 
 # 로그 설정
@@ -39,7 +40,7 @@ stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(formatter)
 logger.addHandler(stream_handler)
 log_now = now.strftime("%Y%m%d%H%M%S")
-log_path = f'/home/crowdm_python/flask_project/log/{yyyymm}'
+log_path = f'/home/crowdm_python/flask_project/log/{yyyymm}/{dd}'
 
 if not os.path.exists(log_path):
     os.makedirs(log_path)
@@ -53,9 +54,9 @@ processor = AutoProcessor.from_pretrained("openai/clip-vit-base-patch32")
 clip_model = CLIPVisionModel.from_pretrained("openai/clip-vit-base-patch32")
 
 
-def createGuide(situ, time, h_yn, place):
+def createGuide(situ, time, h_yn, place, eventFeatures):
     logger.info('Start createGuide LLM >>>>>>>>>>>>>>>>>>>>. ')
-    message = guide(situ, time, h_yn, place)
+    message = guide(situ, time, h_yn, place, eventFeatures)
     logger.info('End createGuide LLM >>>>>>>>>>>>>>>>>>>>. ')
     return message
 
@@ -82,11 +83,13 @@ def upload_api():
     fileName = request.form.get('fileName')
     place = request.form.get('place')
     time = request.form.get('time')
+    eventFeatures = request.form.get('eventFeatures')
     
     logger.info(f'file : {file}')
     logger.info(f'fileName : {fileName}')
     logger.info(f'place : {place}')
     logger.info(f'time : {time}')
+    logger.info(f'eventFeatures : {eventFeatures}')
 
     # 영상 파일 저장
     file_path = f'/home/crowdm_python/flask_project/data/video/{fileName}'
@@ -104,20 +107,20 @@ def upload_api():
     # 밀집도 파악
     logger.info(f'Start countPeople >>>>>>>>>>>>>>>>>')
     congestionResult = countPeople(file_path, place)
-    logger.info("Congestion : ", congestionResult)
+    logger.info('fCongestion : {congestionResult}')
     logger.info(f'End countPeople >>>>>>>>>>>>>>>>>')
     
     result = []
     nowClevel = ''
     for eventTime, cLevel in congestionResult:
-        logger.info("cLevel : ", cLevel)
-        logger.info("nowClevel : ", nowClevel)
+        logger.info(f"cLevel : {cLevel}")
+        logger.info(f"nowClevel : {nowClevel}")
         if nowClevel == '' and cLevel in ['혼잡', '매우혼잡']:
             nowClevel = cLevel
-            message = createGuide(cLevel, time, h_yn, place)
+            message = createGuide(cLevel, time, h_yn, place, eventFeatures)
             result.append((eventTime, cLevel, message))
         elif nowClevel != cLevel and cLevel in ['혼잡', '매우혼잡']:
-            message = createGuide(cLevel, time, h_yn, place)
+            message = createGuide(cLevel, time, h_yn, place, eventFeatures)
             result.append((eventTime, cLevel, message))
     
     logger.info(f'Start abnomal detection >>>>>>>>>>>>>>>>>')
@@ -133,11 +136,11 @@ def upload_api():
             action = action_detecter(file_path)
             if nowAction == '':
                 nowAction = action
-                actionMessage = createGuide(action, time, h_yn, place)
+                actionMessage = createGuide(action, time, h_yn, place, eventFeatures)
                 logger.info(f'message : {actionMessage}')
                 result.append((timestamp, action, actionMessage))
             elif nowAction != action:
-                actionMessage = createGuide(action, time, h_yn, place)
+                actionMessage = createGuide(action, time, h_yn, place, eventFeatures)
                 logger.info(f'message : {actionMessage}')
                 logger.info("Action : ", action)
                 result.append((timestamp, action, actionMessage))

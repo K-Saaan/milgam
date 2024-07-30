@@ -66,7 +66,7 @@ public class VideoService {
      * 4. 작성자    : san
      * 5. 작성일    : 2024. 07. 17
      **/
-    public List<String> uploadToGCP(MultipartFile file, String fileOriginName, String place, String time) {
+    public List<String> uploadToGCP(MultipartFile file, String fileOriginName, String place, String time, String uuid, String eventFeatures) {
         try{
             HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
             factory.setConnectTimeout(1000 * 300);
@@ -75,7 +75,7 @@ public class VideoService {
             restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
 
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-            String uuid = UUID.randomUUID().toString();
+//            String uuid = UUID.randomUUID().toString();
             String fileName = uuid + fileOriginName;
             String convertTime = DateUtil.convertTo24HourFormat(time);
 
@@ -85,6 +85,7 @@ public class VideoService {
             body.add("fileName", fileName);
             body.add("place", place);
             body.add("time", convertTime);
+            body.add("eventFeatures", eventFeatures);
 
             logger.info("body : {}",  body);
 
@@ -132,10 +133,6 @@ public class VideoService {
      * 5. 작성일    : 2024. 07. 24
      **/
     public String[] findGuDong(Integer user_index){
-        logger.info("user_index : {}", user_index);
-        if (user_index == null){
-            user_index = 11;
-        }
         Optional<UserEntity> userOptional = loginRepository.findById(user_index);
         UserEntity user = userOptional.get();
         Integer event_index=user.getEvent_index();
@@ -158,12 +155,8 @@ public class VideoService {
 
         //session
         HttpSession session = request.getSession();
-        Integer user_index = (Integer) session.getAttribute("user_index");
-        //Integer user_index = 11;
-        if(user_index == null){
-            user_index = 11;
-        }
-
+        Integer user_index = (Integer) session.getAttribute("userIndex");
+        logger.info("user_index : {}", user_index);
         String[] guDong = findGuDong(user_index);
         String gu = guDong[0];
         String dong = guDong[1];
@@ -177,6 +170,25 @@ public class VideoService {
         videoRepository.save(newvideo);
 
         return newvideo;
+    }
+
+    /**
+     * 1. MethodName: selectEventFeatures
+     * 2. ClassName : VideoService
+     * 3. Comment   : 현재 사용자의 행사 정보 받아오기
+     * 4. 작성자    : san
+     * 5. 작성일    : 2024. 07. 30
+     **/
+    public String selectEventFeatures(HttpServletRequest request) {
+
+        //session
+        HttpSession session = request.getSession();
+        Integer user_index = (Integer) session.getAttribute("userIndex");
+
+        int event_index = loginRepository.findById(user_index).get().getEvent_index();
+        String eventFeatures = eventRepository.findById(event_index).get().getMap_features();
+
+        return eventFeatures;
     }
 
 }

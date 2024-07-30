@@ -1,14 +1,9 @@
 server:
   port: 8080
-  
+
 spring:
   thymeleaf:
     cache: false
-  mvc:
-#    view:
-#      prefix: /WEB-INF/views/
-#      suffix: .jsp
-#    static-path-pattern: /static/**
   profiles:
     default: local
     include: secret
@@ -21,6 +16,7 @@ spring:
     generate-ddl: false
     hibernate:
       ddl-auto: none
+      use-new-id-generator-mappings: false
     show-sql: true
     properties:
       hibernate:
@@ -33,6 +29,7 @@ spring:
   h2:
     console:
       enabled: false
+
 logging:
   logging:
     config: classpath:logback/logback.xml
@@ -46,6 +43,5 @@ login:
 file_path:
   video_path: /video/upload
 
-
 url:
-  gcp_upload: http://34.64.251.222:5000/upload
+  gcp_upload: http://34.22.90.155:5000/upload
