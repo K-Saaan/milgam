@@ -60,8 +60,6 @@
 <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=white"/> <a>
 <img src="https://img.shields.io/badge/Flask-000000?style=flat&logo=flask&logoColor=white"/> <a> 
 <img src="https://img.shields.io/badge/postman-FF6C37?style=flat&logo=postman&logoColor=white"/> <a>
-<img src="https://img.shields.io/badge/postman-FF6C37?style=flat&logo=postman&logoColor=whites"/> <a> 
-
 
 #### AI
 <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=white"/> </a>
