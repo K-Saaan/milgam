@@ -17,6 +17,22 @@
 ![영상업로드](https://github.com/user-attachments/assets/59d017c0-aca8-4c4f-aa03-94f88a74e086)
 <br/>
 
+- 사람 수를 계산하고 이를 기반으로 밀집도를 나눈다.(여유, 보통, 혼잡, 매우혼잡)
+<img width="290" alt="스크린샷 2024-07-31 오후 12 06 53" src="https://github.com/user-attachments/assets/9c062f8c-4ef9-413b-a58f-28c285ca05a6">
+<br/>
+
+- 이상행동 점수를 계산하고 임계치를 기준으로 normal / anomal로 구분한다.
+<img width="301" alt="스크린샷 2024-07-31 오후 12 07 46" src="https://github.com/user-attachments/assets/027b7a18-dcc1-4fe7-86f3-7750d0cd8dcd">
+ 
+- anomal인 경우 mmaction을 사용해 어떤 이상행동인지 구분한다.
+<img width="287" alt="스크린샷 2024-07-31 오후 12 16 16" src="https://github.com/user-attachments/assets/9843d446-85fd-4e5a-abe0-db2951188e2e">
+<img width="350" alt="스크린샷 2024-07-31 오후 12 16 26" src="https://github.com/user-attachments/assets/0ba9d588-d3b0-49c8-9aa2-2e94b00c3e0a">
+
+- 인파밀집(혼잡, 매우혼잡) 또는 이상행동 발생 시 안전 가이드라인을 생성한다.
+<img width="480" alt="스크린샷 2024-07-31 오후 12 19 46" src="https://github.com/user-attachments/assets/3cf7e3e5-7266-467f-ab7d-30ee102e9352">
+
+
+
 ### AI 분석 결과 알림 확인
 ![알림서비스](https://github.com/user-attachments/assets/5a358013-ed0b-4901-8422-ce75c5b3ec0d)
 <br/>
@@ -44,6 +60,7 @@
 <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=white"/> <a>
 <img src="https://img.shields.io/badge/Flask-000000?style=flat&logo=flask&logoColor=white"/> <a> 
 <img src="https://img.shields.io/badge/postman-FF6C37?style=flat&logo=postman&logoColor=white"/> <a>
+<img src="https://img.shields.io/badge/postman-FF6C37?style=flat&logo=postman&logoColor=whites"/> <a> 
 
 
 #### AI
