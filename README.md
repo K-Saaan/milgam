@@ -110,20 +110,20 @@
 
 ## 팀원별 역할
 - [K-Saaan](https://github.com/K-Saaan)
-### BE
-> Spring Boot 프로젝트 환경 구축 및 관리 <br>
-> Spring Security 개발	<br>
-> 공통 함수 개발	<br>
-> 영상 업로드 API 개발 <br>
-> WebSocket 통신 개발 <br>
-> Flask 개발 환경 구축 <br>
-> 모델 분석 자동화 파이프라인 구축 <br>
-
-### AI
-
-> Human count 모델 개발	<br>
-> 이상행동 여부 판단 모델 개발	 <br>
-> LLM Prompt Engineering에 참여해 모델 성능 향상	<br>
+  ### BE
+  > Spring Boot 프로젝트 환경 구축 및 관리 <br>
+  > Spring Security 개발	<br>
+  > 공통 함수 개발	<br>
+  > 영상 업로드 API 개발 <br>
+  > WebSocket 통신 개발 <br>
+  > Flask 개발 환경 구축 <br>
+  > 모델 분석 자동화 파이프라인 구축 <br>
+  
+  ### AI
+  
+  > Human count 모델 개발	<br>
+  > 이상행동 여부 판단 모델 개발	 <br>
+  > LLM Prompt Engineering에 참여해 모델 성능 향상	<br>
 
 - [indoorkeyman](https://github.com/indoorkeyman)
   #### FE/BE/AI/DB
@@ -141,6 +141,7 @@
   #### AI
   > 이상행동 여부 판단 모델 시현 및 사용성 판단 <br>
   > 이상행동 분류 모델 시현 및 파인 튜닝 <br>
+  > 관절인식모델 시현 및 사용성 평가 <br>
   > 데이터셋 수집 및 학습 데이터셋 구성 <br>
   #### BE
   > 메세지 알림 API 개발	<br>
