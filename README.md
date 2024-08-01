@@ -138,23 +138,17 @@
 - [dbqudals](https://github.com/dbqudals)
   #### BE/CICD/EC2/JENKINS
 - [ideal402](https://github.com/ideal402)
-  #### AI/BE/FE
-  ### AI
-> 이상행동 여부 판단 모델 시현 및 사용성 판단 <br>
-> 이상행동 분류 모델 시현 및 파인 튜닝 <br>
-> 데이터셋 수집 및 학습 데이터셋 구성 <br>
-
-### BE
-
-> 메세지 알림 API 개발	<br>
-> 메세지 DB관리 API 개발	 <br>
-> SSE 통신 구현	<br>
-
-
-### FE
-
-> 메세지 관련 api 호출 코드 작성	<br>
-> api로 받아온 데이터 후처리 코드 작성	 <br>
+  #### AI
+  > 이상행동 여부 판단 모델 시현 및 사용성 판단 <br>
+  > 이상행동 분류 모델 시현 및 파인 튜닝 <br>
+  > 데이터셋 수집 및 학습 데이터셋 구성 <br>
+  #### BE
+  > 메세지 알림 API 개발	<br>
+  > 메세지 DB관리 API 개발	 <br>
+  > SSE 통신 구현	<br>
+  #### FE
+  > 메세지 관련 api 호출 코드 작성	<br>
+  > api로 받아온 데이터 후처리 코드 작성	 <br>
 
 - [leesumin](https://github.com/leesumin)
   #### BE
