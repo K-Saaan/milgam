@@ -1,49 +1,88 @@
 
 # MilGam: AI Crowd Management
 
-## AI를 활용한 인파밀집 및 이상행동 검출 서비스
+## 목차
+
+1. [프로젝트 소개](#프로젝트-소개)
+2. [프로젝트 개요](#프로젝트-개요)
+3. [주요 기능](#주요-기능)
+4. [기술 스택](#기술-스택)
+5. [아키텍처 및 모델 정의서](#아키텍처-및-모델-정의서)
+6. [팀원별 역할](#팀원별-역할)
+
+## 프로젝트 소개
+### AI를 활용한 인파밀집 및 이상행동 검출 서비스
+
+2022년 이태원 참사 이후 인파 관리에 대한 정부, 민간의 관심이 집중되고 있다. <br>
+인파 관리 문제를 해결하기 위한 다양한 솔루션이 나왔지만 우리는 여전히 인파 관리의 위험에 노출되어 있다. <br>
+또한, 칼부림, 묻지마 범죄, 흉기 난동과 같은 사건이 많이 발생하면서 시민들은 언제 자신이 피해자가 될지 모르는 불안감을 가지고 살고 있다. <br>
+"밀감"은 이러한 현 상황을 반영해 인파 밀집과 이상행동을 탐지해 시민들의 안전한 생활에 기여하고자 한다.
+
 
 ## 프로젝트 개요
-2022년 이태원 참사 이후 정부•민간의 관심이 인파관리에 집중되었다. <br>
-인파관리를 해결하기 위한 다양한 솔루션이 나왔지만 우리는 여전히 인파관리의 위험에 노출되어 있다. <br>
-또한, 칼부림, 묻지마 범죄, 흉기 난동과 같은 사건이 많이 발생하면서 시민들은 언제 자신이 피해자가 될지 모르는 불안 사회에 살고 있다. <br>
-"밀감"은 이러한 현 상황을 반영해 인파밀집과 이상행동을 탐지해 시민들의 안전한 생활에 기여하고자 한다.
 
-![image](https://github.com/user-attachments/assets/d79526d3-cf5e-4a43-a142-0fbdef4162c2)
+* **소속**: KT AivleSchool 5기 AI 트랙
+* **기간**: 24.06.17 - 24.07.26 <br>
 
-## Preview
+![1p정의서](https://github.com/user-attachments/assets/d79526d3-cf5e-4a43-a142-0fbdef4162c2)
 
-### AI 분석을 위한 영상 업로드
-![영상업로드](https://github.com/user-attachments/assets/59d017c0-aca8-4c4f-aa03-94f88a74e086)
+## 주요 기능
+
+### 1. AI 분석을 위한 영상 업로드
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/59d017c0-aca8-4c4f-aa03-94f88a74e086" alt="영상업로드" width="80%"/>
+</p>
 <br/>
 
-- 사람 수를 계산하고 이를 기반으로 밀집도를 나눈다.(여유, 보통, 혼잡, 매우혼잡)
-<img width="290" alt="스크린샷 2024-07-31 오후 12 06 53" src="https://github.com/user-attachments/assets/9c062f8c-4ef9-413b-a58f-28c285ca05a6">
-<br/>
+- **밀집도 계산**: 사람 수를 계산하고 이를 기반으로 밀집도 분류 (여유, 보통, 혼잡, 매우 혼잡)
 
-- 이상행동 점수를 계산하고 임계치를 기준으로 normal / anomal로 구분한다.
-<img width="301" alt="스크린샷 2024-07-31 오후 12 07 46" src="https://github.com/user-attachments/assets/027b7a18-dcc1-4fe7-86f3-7750d0cd8dcd">
- 
-- anomal인 경우 mmaction을 사용해 어떤 이상행동인지 구분한다.
-<img width="287" alt="스크린샷 2024-07-31 오후 12 16 16" src="https://github.com/user-attachments/assets/9843d446-85fd-4e5a-abe0-db2951188e2e">
-<img width="350" alt="스크린샷 2024-07-31 오후 12 16 26" src="https://github.com/user-attachments/assets/0ba9d588-d3b0-49c8-9aa2-2e94b00c3e0a">
-
-- 인파밀집(혼잡, 매우혼잡) 또는 이상행동 발생 시 안전 가이드라인을 생성한다.
-<img width="480" alt="스크린샷 2024-07-31 오후 12 19 46" src="https://github.com/user-attachments/assets/3cf7e3e5-7266-467f-ab7d-30ee102e9352">
+<p align="center">
+ <img src="https://github.com/user-attachments/assets/9c062f8c-4ef9-413b-a58f-28c285ca05a6" alt="밀집도" width="50%"/>
+</p>
 
 
+- **이상행동 점수 계산**: 이상행동 점수를 계산하고 임계치를 기준으로 normal / anomal로 구분
 
-### AI 분석 결과 알림 확인
-![알림서비스](https://github.com/user-attachments/assets/5a358013-ed0b-4901-8422-ce75c5b3ec0d)
-<br/>
+<p align="center">
+ <img src="https://github.com/user-attachments/assets/027b7a18-dcc1-4fe7-86f3-7750d0cd8dcd" alt="이상행동 점수" width="50%"/>
+</p>
 
-### 관리자 모드
-![관리자모드](https://github.com/user-attachments/assets/60a9c6ec-2ca4-40fd-a075-39e3342af417)
-<br/>
+
+- **이상행동 구분**: anomal인 경우 mmaction을 사용해 어떤 이상행동인지 구분
+  
+<p align="center">
+ <img src="https://github.com/user-attachments/assets/9843d446-85fd-4e5a-abe0-db2951188e2e" alt="이상행동 구분 1" width="50%"/> <img src="https://github.com/user-attachments/assets/0ba9d588-d3b0-49c8-9aa2-2e94b00c3e0a" alt="이상행동 구분 2" width="50%"/>
+</p>
+
+
+- **안전 가이드라인 생성**: 인파밀집(혼잡, 매우 혼잡) 또는 이상행동 발생 시 안전 가이드라인 생성
+
+<p align="center">
+ <img src="https://github.com/user-attachments/assets/3cf7e3e5-7266-467f-ab7d-30ee102e9352" alt="안전 가이드라인" width="50%"/>
+</p>
+
+<br>
+
+### 2. AI 분석 결과 알림 확인
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/5a358013-ed0b-4901-8422-ce75c5b3ec0d" alt="알림서비스" width="80%"/>
+</p>
+<br>
+
+### 3. 관리자 모드
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/60a9c6ec-2ca4-40fd-a075-39e3342af417" alt="관리자모드" width="80%"/>
+</p>
+
 ### 발표 영상
-[![Video Label](http://img.youtube.com/vi/FxWXDx1QPDk/0.jpg)](https://youtu.be/FxWXDx1QPDk)
+<p align="center">
+  <a href="https://youtu.be/FxWXDx1QPDk">
+    <img src="http://img.youtube.com/vi/FxWXDx1QPDk/0.jpg" alt="Video Label" width="60%"/>
+  </a>
+</p>
+<br>
 
-## Development_Skills
+## 기술 스택
 
 #### FRONT-END
 
@@ -86,31 +125,32 @@
 <img src="https://img.shields.io/badge/GCP-4285F4?style=flat&logo=googlecloud&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/Filezilla-BF0000?style=flat&logo=filezilla&logoColor=white"/></a> 
 
-## Architecture
-![아키텍처 1](https://github.com/user-attachments/assets/aeb1bb27-b83e-46b0-acad-1c70e444980a)
+<br>
 
-## CV
-![아키텍처 2](https://github.com/user-attachments/assets/22d30544-4f5c-4e00-b6da-29b250f5527d)
+## 아키텍처 및 모델 정의서
+- **Architecture**
 
-## RAG
-![아키텍처 3](https://github.com/user-attachments/assets/46a176ac-377f-446d-ad2d-18cd3e30027e)
+  <p align="center">
+    <img src="https://github.com/user-attachments/assets/aeb1bb27-b83e-46b0-acad-1c70e444980a" alt="아키텍처 1" width="80%"/>
+  </p>
 
-<br />
+- **CV**
 
-# 프로젝트 상세
+  <p align="center">
+    <img src="https://github.com/user-attachments/assets/22d30544-4f5c-4e00-b6da-29b250f5527d" alt="아키텍처 2" width="80%"/>
+  </p>
 
-## 주최
-**KT**
+- **RAG**
 
-## 소속
-**AivleSchool 5기**
-
-## 기간
-**24.06.17~24.07.26**
+  <p align="center">
+    <img src="https://github.com/user-attachments/assets/46a176ac-377f-446d-ad2d-18cd3e30027e" alt="아키텍처 3" width="80%"/>
+  </p>
+  
+<br>
 
 ## 팀원별 역할
 - [K-Saaan](https://github.com/K-Saaan)
-  ### BE
+  #### BE
   > Spring Boot 프로젝트 환경 구축 및 관리 <br>
   > Spring Security 개발	<br>
   > 공통 함수 개발	<br>
@@ -119,7 +159,7 @@
   > Flask 개발 환경 구축 <br>
   > 모델 분석 자동화 파이프라인 구축 <br>
   
-  ### AI
+  #### AI
   
   > Human count 모델 개발	<br>
   > 이상행동 여부 판단 모델 개발	 <br>
@@ -129,6 +169,11 @@
   #### FE/BE/AI/DB
 - [m1-j1n](https://github.com/m1-j1n)
   #### FE
+  > 대시보드 페이지 개발 <br>
+  > &emsp;◦ 네이버 지도 API, 서울시 실시간 인구 API 활용  <br>
+  > &emsp;◦ Chart.js, ApexCharts를 활용한 데이터 시각화 <br>
+  > 어드민 페이지, 문의 게시판, FAQ 페이지 개발 <br>
+  > 다크 모드 테마 설정
 - [Lumi-p](https://github.com/Lumi-p)
   #### FE
 - [bboyeong](https://github.com/bboyeong)
