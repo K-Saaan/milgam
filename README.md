@@ -187,7 +187,7 @@
   > 회원 가입 API 개발 <br>
 
   #### CICD(Jenkins - EC2)
-  > WEB 자동화 파이프라인 환경 구축 및 관리 <br>
+  > WEB Server 자동화 파이프라인 환경 구축 및 관리 <br>
 
 - [ideal402](https://github.com/ideal402)
   #### AI
