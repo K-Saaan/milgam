@@ -160,13 +160,13 @@
   > 모델 분석 자동화 파이프라인 구축 <br>
   
   #### AI
-  
   > Human count 모델 개발	<br>
   > 이상행동 여부 판단 모델 개발	 <br>
   > LLM Prompt Engineering에 참여해 모델 성능 향상	<br>
 
 - [indoorkeyman](https://github.com/indoorkeyman)
   #### FE/BE/AI/DB
+
 - [m1-j1n](https://github.com/m1-j1n)
   #### FE
   > 대시보드 페이지 개발 <br>
@@ -174,24 +174,33 @@
   > &emsp;◦ Chart.js, ApexCharts를 활용한 데이터 시각화 <br>
   > 어드민 페이지, 문의 게시판, FAQ 페이지 개발 <br>
   > 다크 모드 테마 설정
+
 - [Lumi-p](https://github.com/Lumi-p)
   #### FE
 - [bboyeong](https://github.com/bboyeong)
   #### BE/DB/AI
 - [w0n-100](https://github.com/w0n-100)
   #### FE/AI
+
 - [dbqudals](https://github.com/dbqudals)
-  #### BE/CICD/EC2/JENKINS
+  #### BE
+  > 회원 가입 API 개발 <br>
+
+  #### CICD(Jenkins - EC2)
+  > WEB 자동화 파이프라인 환경 구축 및 관리 <br>
+
 - [ideal402](https://github.com/ideal402)
   #### AI
   > 이상행동 여부 판단 모델 시현 및 사용성 판단 <br>
   > 이상행동 분류 모델 시현 및 파인 튜닝 <br>
   > 관절인식모델 시현 및 사용성 평가 <br>
   > 데이터셋 수집 및 학습 데이터셋 구성 <br>
+
   #### BE
   > 메세지 알림 API 개발	<br>
   > 메세지 DB관리 API 개발	 <br>
   > SSE 통신 구현	<br>
+
   #### FE
   > 메세지 관련 api 호출 코드 작성	<br>
   > api로 받아온 데이터 후처리 코드 작성	 <br>
