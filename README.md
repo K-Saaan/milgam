@@ -177,6 +177,11 @@
 
 - [Lumi-p](https://github.com/Lumi-p)
   #### FE
+  > 로그인/아웃 페이지 개발 및 로그인 상태 관리  <br>
+  > 영상 업로드, 분석 결과 페이지 개발  <br>
+  > 어드민 회원가입 승인 API 연동  <br>
+  > 라이트 모드 테마 설정, 테마 변경 개발  <br>
+
 - [bboyeong](https://github.com/bboyeong)
   #### BE/DB/AI
 - [w0n-100](https://github.com/w0n-100)
