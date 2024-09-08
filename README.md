@@ -165,7 +165,75 @@
   > LLM Prompt Engineering에 참여해 모델 성능 향상	<br>
 
 - [indoorkeyman](https://github.com/indoorkeyman)
-  #### FE/BE/AI/DB
+  #### FE
+  > React.js 프로젝트 환경 구축 및 관리 <br>
+  > 프로젝트 전반적인 d-buging <br>
+  > NavBar weather 기능 <br>
+  > Home 화면 구축 <br>
+  
+  #### BE
+  > Spring Boot Event Page API 구축 <br>
+  > Flask 개발 환경 구축 <br> 
+  > GCP 환경 구축 <br> 
+  
+  #### AI
+  > 벡## 아키텍처 및 모델 정의서
+- **Architecture**
+
+  <p align="center">
+    <img src="https://github.com/user-attachments/assets/aeb1bb27-b83e-46b0-acad-1c70e444980a" alt="아키텍처 1" width="80%"/>
+  </p>
+
+- **CV**
+
+  <p align="center">
+    <img src="https://github.com/user-attachments/assets/22d30544-4f5c-4e00-b6da-29b250f5527d" alt="아키텍처 2" width="80%"/>
+  </p>
+
+- **RAG**
+
+  <p align="center">
+    <img src="https://github.com/user-attachments/assets/46a176ac-377f-446d-ad2d-18cd3e30027e" alt="아키텍처 3" width="80%"/>
+  </p>
+  
+<br>
+
+## 팀원별 역할
+- [K-Saaan](https://github.com/K-Saaan)
+  #### BE
+  > Spring Boot 프로젝트 환경 구축 및 관리 <br>
+  > Spring Security 개발	<br>
+  > 공통 함수 개발	<br>
+  > 영상 업로드 API 개발 <br>
+  > WebSocket 통신 개발 <br>
+  > Flask 개발 환경 구축 <br>
+  > 모델 분석 자동화 파이프라인 구축 <br>
+  
+  #### AI
+  > Human count 모델 개발	<br>
+  > 이상행동 여부 판단 모델 개발	 <br>
+  > LLM Prompt Engineering에 참여해 모델 성능 향상	<br>
+
+- [indoorkeyman](https://github.com/indoorkeyman)
+  #### FE
+  > React.js 프로젝트 환경 구축 및 관리 <br>
+  > 프로젝트 전반적인 d-buging <br>
+  > NavBar weather 기능 <br>
+  > Home 화면 구축 <br>
+  
+  #### BE
+  > Spring Boot Event Page API 구축 <br>
+  > Flask 개발 환경 구축 <br> 
+  
+  #### AI
+  > RAG vector 데이터 생성 및 관리 <br>
+  > RAG BaseLine 개발 <br>
+  > GCP 환경 구축 <br>
+  
+  #### DB
+  > ERD 설계 <br>
+  > Supabase 구축 <br>
+  > Supabase 유지보수 및 관리 <br>
 
 - [m1-j1n](https://github.com/m1-j1n)
   #### FE
