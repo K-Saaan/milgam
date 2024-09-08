@@ -165,7 +165,26 @@
   > LLM Prompt Engineering에 참여해 모델 성능 향상	<br>
 
 - [indoorkeyman](https://github.com/indoorkeyman)
-  #### FE/BE/AI/DB
+  #### FE
+  > React.js 프로젝트 환경 구축 및 관리 <br>
+  > 프로젝트 전반적인 d-buging <br>
+  > NavBar weather 기능 <br>
+  > Home 화면 구축 <br>
+  
+  #### BE
+  > Spring Boot Event Page API 구축 <br>
+  > Flask 개발 환경 구축 <br> 
+  
+  #### AI
+  > RAG vector 데이터 생성 및 관리 <br>
+  > RAG BaseLine 개발 <br>
+  > LLM Prompt Engineering에 참여해 모델 성능 향상	<br>
+  > GCP 환경 구축 <br>
+  
+  #### DB
+  > ERD 설계 <br>
+  > Supabase로 프로젝트 DB 구축 <br>
+  > Supabase 유지보수 및 관리 <br>
 
 - [m1-j1n](https://github.com/m1-j1n)
   #### FE
